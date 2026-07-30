@@ -78,10 +78,11 @@
     .nav-brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 16px; text-decoration: none; color: var(--text); }
     .nav-mark {
       width: 32px; height: 32px; border-radius: 10px;
-      background: var(--gradient); display: grid; place-items: center; font-size: 16px;
+      background: var(--gradient); display: grid; place-items: center; font-size: 16px; font-weight:700; color:#fff;
       box-shadow: 0 4px 14px rgba(167,139,250,0.4); overflow: hidden;
     }
-    .nav-mark img { width:100%; height:100%; object-fit:cover; }
+    .nav-mark img { width:100%; height:100%; object-fit:cover; display:block; }
+    .nav-mark.fallback { font-family:'Playfair Display',serif; font-size:16px; }
     .nav-links { display: flex; gap: 4px; align-items: center; }
     .nav-link {
       padding: 8px 14px; border-radius: 10px; color: var(--muted);
@@ -137,14 +138,21 @@
       width: 128px; height: 128px; border-radius: 28px;
       background: var(--gradient); border: 4px solid var(--bg);
       box-shadow: 0 12px 40px rgba(167,139,250,0.4); position: relative; overflow: hidden;
+      display:grid; place-items:center;
     }
     .profile-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .profile-avatar.fb::after { display:none; }
+    .profile-avatar .fb-text {
+      font-family:'Playfair Display',serif;
+      font-size:56px; font-weight:800; color:#fff;
+    }
     .profile-avatar::after {
       content: "✦"; position: absolute; bottom: -6px; right: -6px;
       width: 32px; height: 32px; border-radius: 50%;
       background: linear-gradient(135deg, #22d3ee, #a78bfa);
-      border: 3px solid var(--bg); display: grid; place-items: center; font-size: 14px; color: #fff;
+      border: 3px solid var(--bg); display: grid; place-items: center; font-size: 14px; color: #fff; z-index:2;
     }
+    .profile-avatar.fb::after { content:"✦"; }
     .profile-actions { display: flex; gap: 10px; padding-bottom: 8px; flex-wrap: wrap; }
     .profile-info { margin-top: 20px; }
     .profile-name {
@@ -524,8 +532,10 @@
     .splash-icon {
       width: 96px; height: 96px; border-radius: 24px; margin: 0 auto 20px; overflow: hidden;
       box-shadow: 0 12px 40px rgba(167,139,250,0.5); border: 3px solid rgba(255,255,255,0.2);
+      background: var(--gradient); display:grid; place-items:center;
     }
-    .splash-icon img { width: 100%; height: 100%; object-fit: cover; }
+    .splash-icon img { width:100%; height:100%; object-fit:cover; display:block; }
+    .splash-icon.fb .fb-text { font-family:'Playfair Display',serif; font-size:42px; color:#fff; font-weight:800; }
     .splash-title {
       font-family: 'Playfair Display', serif; font-size: clamp(40px, 7vw, 64px); font-weight: 700;
       background: var(--gradient);
@@ -590,6 +600,7 @@
     body.light #splash { background: radial-gradient(circle at 30% 40%, rgba(167,139,250,0.25), #ffffff 70%); }
     body.light .profile-banner::after { background: radial-gradient(circle at 50% 100%, rgba(247,248,252,0.95) 0%, transparent 60%); }
     body.light .bxh-hero { background: linear-gradient(135deg, rgba(251,191,36,0.08), rgba(244,114,182,0.08), rgba(167,139,250,0.08)); }
+    body.light .bxh-chip { background: rgba(0,0,0,0.05); }
 
     @media (max-width: 900px) {
       .nav-links { display: none; }
@@ -602,6 +613,7 @@
       .profile-banner { height: 140px; }
       .profile-body { padding: 0 18px 22px; }
       .profile-avatar { width: 96px; height: 96px; margin-top: -48px; border-radius: 22px; }
+      .profile-avatar .fb-text { font-size:40px !important; }
       .profile-avatar::after { width: 26px; height: 26px; font-size: 12px; }
       .profile-stats { grid-template-columns: repeat(2,1fr); gap: 8px; }
       .pstat { padding: 12px 14px; } .pstat b { font-size: 20px; }
@@ -620,6 +632,8 @@
       .bxh-row .bxh-stat { text-align: left; grid-column: 2 / -1; }
       .bxh-row.head { display: none; }
       .bxh-hero { padding: 22px; }
+      .splash-icon { width:80px; height:80px; }
+      .splash-icon .fb-text { font-size:36px !important; }
     }
   </style>
 </head>
@@ -628,7 +642,9 @@
   <!-- Splash -->
   <div id="splash">
     <div class="splash-content">
-      <div class="splash-icon"><img src="icon.jpg" alt="TeaGhiu"></div>
+      <div class="splash-icon" id="splashIcon">
+        <img src="icon.jpg" alt="TeaGhiu" onerror="this.style.display='none';this.parentElement.classList.add('fb');this.parentElement.innerHTML+='<span class=\'fb-text\'>T</span>';">
+      </div>
       <h1 class="splash-title">TeaGhiu</h1>
       <p class="splash-desc">Thư viện WLW · Character Hub</p>
       <div class="splash-arrow">👆</div>
@@ -639,7 +655,9 @@
   <nav class="navbar">
     <div class="navbar-inner">
       <a href="#/" class="nav-brand">
-        <span class="nav-mark"><img src="icon.jpg" alt="TeaGhiu"></span>
+        <span class="nav-mark" id="navMark">
+          <img src="icon.jpg" alt="TeaGhiu" onerror="this.style.display='none';this.parentElement.classList.add('fallback');this.parentElement.textContent='T';">
+        </span>
         <span>TeaGhiu</span>
       </a>
       <div class="nav-links">
@@ -667,8 +685,8 @@
         </div>
         <div class="profile-body">
           <div class="profile-avatar-wrap">
-            <div class="profile-avatar">
-              <img src="icon.jpg" alt="TeaGhiu">
+            <div class="profile-avatar" id="heroAvatar">
+              <img src="icon.jpg" alt="TeaGhiu" onerror="this.style.display='none';this.parentElement.classList.add('fb');this.parentElement.innerHTML+='<span class=\'fb-text\'>T</span><div style=\'position:absolute;bottom:-6px;right:-6px;width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#22d3ee,#a78bfa);border:3px solid var(--bg);display:grid;place-items:center;font-size:14px;color:#fff;z-index:2;\'>✦</div>';">
             </div>
             <div class="profile-actions">
               <a href="#bxh" class="btn bxh-btn">🏆 Bảng xếp hạng</a>
@@ -844,11 +862,10 @@
 
   <script>
     /* =========================================================
-       ⚙️  CẤU HÌNH SUPABASE – ĐIỀN 2 DÒNG SAU KHI TẠO PROJECT
+       ⚙️  CẤU HÌNH SUPABASE
        ========================================================= */
-    const SUPABASE_URL = "https://supabase.com/dashboard/project/xdgnufnlbdwtydfagxzi/settings/general";      // Ví dụ: "https://abcxyz.supabase.co"
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhkZ251Zm5sYmR3dHlkZmFneHppIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzNTA3OTAsImV4cCI6MjEwMDkyNjc5MH0.Jopm_TQwiaiPtPOTCTItV39HJ1TZCAIzOD-cFFmD0gU"; // Ví dụ: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...."
-    // =========================================================
+    const SUPABASE_URL = "https://xdgnufnlbdwtydfagxzi.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhkZ251Zm5sYmR3dHlkZmFneHppIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzNTA3OTAsImV4cCI6MjEwMDkyNjc5MH0.Jopm_TQwiaiPtPOTCTItV39HJ1TZCAIzOD-cFFmD0gU";
 
     /* ================= DATA ================= */
     const chars = [
@@ -936,6 +953,8 @@
       { name:"Lâm Nhã & Thẩm Niên", tag:"#WLW #Hiện đại #Ngược Thân Ngược Tâm #Hình Sự", summary:"Cán cân rỉ sét dưới đáy vực sâu, nơi ánh sáng công lý mượn chiếc mặt nạ của quỷ dữ.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%2211T9A6Oa-VDbZHDGEN6HnSU8RoudOZIYA%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#E0EEEE" },
     ];
 
+    window.__CHARS_FULL = chars;
+
     /* ================= UTILS ================= */
     const $ = s => document.querySelector(s);
     const $$ = s => [...document.querySelectorAll(s)];
@@ -968,7 +987,6 @@
     }
     function firstTag(tagStr){ const t = (tagStr||'').match(/#[^\s#]+/); return t?t[0]:''; }
 
-    /* ================= WEEK / TIME ================= */
     function getMonday(d){
       const date = new Date(d); const day = date.getDay();
       const diff = (day+6)%7;
@@ -997,608 +1015,287 @@
     const WEEK_KEY = getWeekKey(new Date());
     const WEEK_MONDAY = getMonday(new Date());
 
-    /* ================= STATS ENGINE ================= */
-    // In-memory stats (mirrors DB or local)
-    let statsData = {}; // { name: { hearts, copies, pins } }
-    let likedSet = new Set(); // names hearted THIS week (local storage per-browser)
-    let pinnedLocal = []; // locally pinned names (max 3)
+    let statsData = {};
+    let likedSet = new Set();
+    let pinnedLocal = [];
     let supabase = null;
-    let cloudMode = false; // true if connected to Supabase
-    let pendingOps = []; // queue ops to retry if offline
+    let cloudMode = false;
 
     function defaultStats(){
       const s = {};
-      chars.forEach(c => { s[c.name] = { hearts:0, copies:0, pins:0 }; });
+      chars.forEach(c => { s[c.name] = {hearts:0,copies:0,pins:0}; });
       return s;
     }
-    function initStatsData(){
-      statsData = defaultStats();
-    }
+    function initStatsData(){ statsData = defaultStats(); }
 
     function setCloud(status, msg){
       cloudMode = status;
       if(status){
         cloudStatus.classList.remove('offline');
         cloudStatusText.textContent = msg || '☁️ Đã đồng bộ đám mây (Supabase)';
-        const chip = $('#bxhCloudChip');
-        if(chip) chip.innerHTML = '☁️ <b>Dữ liệu toàn cầu</b>';
+        const chip = $('#bxhCloudChip'); if(chip) chip.innerHTML = '☁️ <b>Dữ liệu toàn cầu</b>';
       } else {
         cloudStatus.classList.add('offline');
-        cloudStatusText.textContent = msg || '📴 Chế độ ngoại tuyến (dữ liệu cục bộ)';
-        const chip = $('#bxhCloudChip');
-        if(chip) chip.innerHTML = '📴 <b>Chế độ ngoại tuyến</b>';
+        cloudStatusText.textContent = msg || '📴 Chế độ ngoại tuyến';
+        const chip = $('#bxhCloudChip'); if(chip) chip.innerHTML = '📴 <b>Chế độ ngoại tuyến</b>';
       }
     }
 
     async function initSupabase(){
-      if(!SUPABASE_URL || !SUPABASE_ANON_KEY){
-        setCloud(false, '📴 Chưa cấu hình Supabase (chỉ lưu cục bộ)');
-        return false;
-      }
+      if(!SUPABASE_URL || !SUPABASE_ANON_KEY){ setCloud(false,'📴 Chưa cấu hình Supabase'); return false; }
       try {
-        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-          auth: { persistSession: false }
-        });
-        // Test connection + upsert week's rows
+        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth:{persistSession:false} });
         await ensureWeekRows();
         await fetchStats();
         setCloud(true);
         return true;
       } catch(err){
-        console.warn('Supabase init failed:', err);
-        setCloud(false, '⚠️ Lỗi kết nối – đang dùng dự phòng cục bộ');
+        console.warn('Supabase init failed:',err);
+        setCloud(false,'⚠️ Lỗi kết nối – dùng dự phòng cục bộ');
         supabase = null;
         return false;
       }
     }
-
     async function ensureWeekRows(){
       if(!supabase) return;
-      // Upsert all character rows for this week (only if missing) — safe idempotent operation
-      const rows = chars.map(c => ({
-        week_key: WEEK_KEY,
-        char_name: c.name,
-        hearts: 0, copies: 0, pins: 0
-      }));
+      const rows = chars.map(c => ({week_key:WEEK_KEY, char_name:c.name, hearts:0,copies:0,pins:0}));
       try {
-        // Insert but ignore conflicts (RLS policy needs to allow this)
-        const { error } = await supabase.from('char_stats').upsert(rows, {
-          onConflict: 'week_key,char_name',
-          ignoreDuplicates: true
-        });
-        if(error) console.warn('ensureWeekRows upsert warning:', error);
+        await supabase.from('char_stats').upsert(rows, {onConflict:'week_key,char_name', ignoreDuplicates:true});
       } catch(e){ console.warn(e); }
     }
-
     async function fetchStats(){
       if(!supabase) return;
       try {
-        const { data, error } = await supabase
-          .from('char_stats')
-          .select('char_name,hearts,copies,pins')
-          .eq('week_key', WEEK_KEY);
+        const {data,error} = await supabase.from('char_stats').select('char_name,hearts,copies,pins').eq('week_key',WEEK_KEY);
         if(error) throw error;
         if(data && data.length){
           const merged = defaultStats();
-          data.forEach(r => {
-            if(merged[r.char_name]){
-              merged[r.char_name] = {
-                hearts: r.hearts||0,
-                copies: r.copies||0,
-                pins: r.pins||0
-              };
-            }
-          });
+          data.forEach(r => { if(merged[r.char_name]) merged[r.char_name] = {hearts:r.hearts||0,copies:r.copies||0,pins:r.pins||0}; });
           statsData = merged;
         }
-      } catch(e){
-        console.warn('fetchStats failed:', e);
-      }
+      } catch(e){ console.warn('fetchStats failed:',e); }
     }
-
-    async function bumpStatRemote(name, field, delta){
+    async function bumpStatRemote(name,field,delta){
       if(!supabase) return false;
       try {
-        // Use RPC or raw SQL via increment via update with expression
-        // Easiest: read current value then update — but to avoid race conditions, we use rpc. If no rpc, do increment update.
-        // We'll use .update with raw increment — not supported directly in JS client; use rpc as fallback.
-        // Simple approach: increment via column = column + delta
-        const { error } = await supabase.rpc('increment_stat', {
-          wk: WEEK_KEY, cn: name, fld: field, d: delta
-        });
+        const {error} = await supabase.rpc('increment_stat',{wk:WEEK_KEY,cn:name,fld:field,d:delta});
         if(error) throw error;
         return true;
       } catch(e){
-        // Fallback: direct update (requires column = column + val; supabase doesn't support inline expression easily; use .update with object literal? no)
-        // Try raw REST via fetch
         try {
-          const res = await fetch(`${SUPABASE_URL}/rest/v1/char_stats?week_key=eq.${encodeURIComponent(WEEK_KEY)}&char_name=eq.${encodeURIComponent(name)}`, {
-            method: 'PATCH',
-            headers: {
-              'apikey': SUPABASE_ANON_KEY,
-              'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-              'Content-Type': 'application/json',
-              'Prefer': 'return=minimal'
+          const res = await fetch(`${SUPABASE_URL}/rest/v1/char_stats?week_key=eq.${encodeURIComponent(WEEK_KEY)}&char_name=eq.${encodeURIComponent(name)}`,{
+            method:'PATCH',
+            headers:{
+              'apikey':SUPABASE_ANON_KEY,
+              'Authorization':`Bearer ${SUPABASE_ANON_KEY}`,
+              'Content-Type':'application/json',
+              'Prefer':'return=minimal'
             },
-            body: JSON.stringify({ [field]: (statsData[name]?.[field]||0) + delta })
+            body: JSON.stringify({[field]: (statsData[name]?.[field]||0)+delta})
           });
-          if(!res.ok) throw new Error('patch failed');
-          return true;
-        } catch(e2){
-          console.warn('bumpStatRemote failed:', e2);
-          return false;
-        }
+          return res.ok;
+        } catch(e2){ return false; }
       }
     }
-
-    function charStats(name){
-      return statsData[name] || { hearts:0, copies:0, pins:0 };
-    }
-    function totalStats(){
-      let h=0,c=0,p=0;
-      Object.values(statsData).forEach(s => { h+=s.hearts||0; c+=s.copies||0; p+=s.pins||0; });
-      return { hearts:h, copies:c, pins:p };
-    }
+    function charStats(name){ return statsData[name]||{hearts:0,copies:0,pins:0}; }
+    function totalStats(){ let h=0,c=0,p=0; Object.values(statsData).forEach(s=>{h+=s.hearts||0;c+=s.copies||0;p+=s.pins||0;}); return {hearts:h,copies:c,pins:p}; }
 
     function loadLocalPrefs(){
-      // liked chars per week (local)
       const key = `liked_${WEEK_KEY}`;
       try { likedSet = new Set(JSON.parse(localStorage.getItem(key)||'[]')); } catch { likedSet = new Set(); }
-      // pinned
       try { pinnedLocal = JSON.parse(localStorage.getItem('pinnedChars'))||[]; } catch { pinnedLocal=[]; }
     }
-    function saveLiked(){
-      localStorage.setItem(`liked_${WEEK_KEY}`, JSON.stringify([...likedSet]));
-    }
+    function saveLiked(){ localStorage.setItem(`liked_${WEEK_KEY}`, JSON.stringify([...likedSet])); }
     function savePinned(){ localStorage.setItem('pinnedChars', JSON.stringify(pinnedLocal)); }
-
-    function updateLocalStat(name, field, delta){
-      if(!statsData[name]) statsData[name] = {hearts:0,copies:0,pins:0};
-      statsData[name][field] = Math.max(0, (statsData[name][field]||0) + delta);
+    function updateLocalStat(name,field,delta){
+      if(!statsData[name]) statsData[name]={hearts:0,copies:0,pins:0};
+      statsData[name][field] = Math.max(0,(statsData[name][field]||0)+delta);
     }
 
-    // Actions
-    async function doCopy(name, link){
-      // Update locally immediately
+    let toastTimeout=null,toastEl=$('#toast');
+    function showToast(msg,dur=2000){
+      if(toastTimeout){ clearTimeout(toastTimeout); toastTimeout=null; }
+      toastEl.textContent=msg; toastEl.style.display='block';
+      void toastEl.offsetWidth; toastEl.classList.add('show');
+      toastTimeout=setTimeout(()=>{toastEl.classList.remove('show'); setTimeout(()=>toastEl.style.display='none',300);},dur);
+    }
+
+    async function doCopy(name,link){
       updateLocalStat(name,'copies',1);
-      if(supabase){
-        bumpStatRemote(name,'copies',1).then(ok => {
-          if(ok) fetchStats().then(()=>{ renderAll(); });
-        });
-      }
-      try {
-        await navigator.clipboard.writeText(link);
-        showToast('✅ Đã copy link thành công!');
-      } catch {
-        showToast('❌ Không copy được trên thiết bị này', 2500);
-      }
+      if(supabase) bumpStatRemote(name,'copies',1).then(ok=>{if(ok)fetchStats().then(renderAll);});
+      try { await navigator.clipboard.writeText(link); showToast('✅ Đã copy link!'); }
+      catch { showToast('❌ Không copy được',2500); }
       renderAll();
     }
     window.doCopy = doCopy;
-
     async function toggleHeart(name){
-      const wasLiked = likedSet.has(name);
-      const delta = wasLiked ? -1 : 1;
-      // Toggle local set
-      if(wasLiked) likedSet.delete(name);
-      else likedSet.add(name);
-      saveLiked();
-      // Update local state immediately
-      updateLocalStat(name,'hearts',delta);
-      renderAll();
-      if(supabase){
-        const ok = await bumpStatRemote(name,'hearts',delta);
-        if(ok) fetchStats().then(()=>renderAll());
-      }
-      showToast(wasLiked ? `🤍 Bỏ yêu thích ${name}` : `❤️ Đã yêu thích ${name}`);
+      const wasLiked = likedSet.has(name); const delta = wasLiked?-1:1;
+      if(wasLiked) likedSet.delete(name); else likedSet.add(name);
+      saveLiked(); updateLocalStat(name,'hearts',delta); renderAll();
+      if(supabase){ const ok=await bumpStatRemote(name,'hearts',delta); if(ok) fetchStats().then(renderAll); }
+      showToast(wasLiked?`🤍 Bỏ tim ${name}`:`❤️ Đã tim ${name}`);
     }
-
     async function togglePin(name){
-      const idx = pinnedLocal.indexOf(name);
-      if(idx !== -1){
-        pinnedLocal.splice(idx,1);
-        savePinned();
-        updateLocalStat(name,'pins',-1);
+      const idx=pinnedLocal.indexOf(name);
+      if(idx!==-1){
+        pinnedLocal.splice(idx,1); savePinned(); updateLocalStat(name,'pins',-1);
         showToast(`📌 Đã bỏ ghim ${name}`);
-        if(supabase){
-          bumpStatRemote(name,'pins',-1).then(ok=>ok?fetchStats().then(renderAll):null);
-        }
+        if(supabase) bumpStatRemote(name,'pins',-1).then(ok=>ok?fetchStats().then(renderAll):null);
       } else {
-        if(pinnedLocal.length>=3){
-          showToast('⚠️ Ghim tối đa 3 nhân vật!',2500);
-          return;
-        }
-        pinnedLocal.push(name);
-        savePinned();
-        updateLocalStat(name,'pins',1);
+        if(pinnedLocal.length>=3){ showToast('⚠️ Tối đa 3 ghim!',2500); return; }
+        pinnedLocal.push(name); savePinned(); updateLocalStat(name,'pins',1);
         showToast(`📌 Đã ghim ${name}`);
-        if(supabase){
-          bumpStatRemote(name,'pins',1).then(ok=>ok?fetchStats().then(renderAll):null);
-        }
+        if(supabase) bumpStatRemote(name,'pins',1).then(ok=>ok?fetchStats().then(renderAll):null);
       }
       renderAll();
     }
 
-    /* ================= SEARCH HISTORY ================= */
-    const historyDropdown = $('#searchHistoryDropdown');
-    const suggestionsEl = $('#searchSuggestions');
-    const HISTORY_KEY = 'searchHistory_wlw';
-    const MAX_HISTORY = 3;
-    function getHistory(){ try{return JSON.parse(localStorage.getItem(HISTORY_KEY))||[];}catch{return[];} }
-    function setHistory(h){ localStorage.setItem(HISTORY_KEY, JSON.stringify(h)); }
-    function addSearchTerm(term){
-      if(!term.trim()) return;
-      let h = getHistory().filter(x=>x!==term.trim());
-      h.unshift(term.trim());
-      if(h.length>MAX_HISTORY) h.pop();
-      setHistory(h); renderHistory();
-    }
-    function renderHistory(){
-      const h = getHistory();
-      if(!h.length){ historyDropdown.style.display='none'; return; }
-      historyDropdown.innerHTML = h.map(t=>`<div data-term="${escapeHtml(t)}">🕘 ${escapeHtml(t)}</div>`).join('');
-    }
-    function allSuggestionKeywords(){
-      const kws=[];
-      chars.forEach(c=>{
-        kws.push(c.name);
-        (c.tag||'').match(/#[^\s#]+/g)?.forEach(t=>kws.push(t.replace('#','')));
-      });
-      return [...new Set(kws)].sort();
-    }
-    const allSuggestions = allSuggestionKeywords();
-    function renderSuggestions(query){
-      query = query.toLowerCase().trim();
-      if(!query){ suggestionsEl.style.display='none'; return; }
-      const matched = allSuggestions.filter(k=>k.toLowerCase().includes(query)).slice(0,10);
-      if(!matched.length){ suggestionsEl.style.display='none'; return; }
-      suggestionsEl.innerHTML = matched.map(t=>`<div data-term="${escapeHtml(t)}">🔎 ${escapeHtml(t)}</div>`).join('');
-      suggestionsEl.style.display='block';
-    }
-    historyDropdown.addEventListener('click', e => {
-      const t = e.target.closest('div[data-term]'); if(!t) return;
-      search.value = t.dataset.term; addSearchTerm(t.dataset.term); currentPage=1; historyDropdown.style.display='none'; render();
-    });
-    suggestionsEl.addEventListener('click', e => {
-      const t = e.target.closest('div[data-term]'); if(!t) return;
-      search.value = t.dataset.term; addSearchTerm(t.dataset.term); suggestionsEl.style.display='none'; currentPage=1; render();
-    });
-    search.addEventListener('focus', () => {
-      if(search.value.trim()){ renderSuggestions(search.value); historyDropdown.style.display='none'; }
-      else { renderHistory(); historyDropdown.style.display = getHistory().length?'block':'none'; suggestionsEl.style.display='none'; }
-    });
-    search.addEventListener('blur', () => setTimeout(()=>{historyDropdown.style.display='none'; suggestionsEl.style.display='none';},200));
-    search.addEventListener('input', () => {
-      currentPage=1;
-      if(search.value){ renderSuggestions(search.value); historyDropdown.style.display='none'; }
-      else suggestionsEl.style.display='none';
-      render();
-    });
-    search.addEventListener('keydown', e => {
-      if(e.key==='Enter'){
-        const t=search.value.trim();
-        if(t){ addSearchTerm(t); historyDropdown.style.display='none'; suggestionsEl.style.display='none'; currentPage=1; render(); }
-      }
-    });
+    /* SEARCH */
+    const historyDropdown=$('#searchHistoryDropdown'),suggestionsEl=$('#searchSuggestions');
+    const HK='searchHistory_wlw';
+    function getHistory(){try{return JSON.parse(localStorage.getItem(HK))||[];}catch{return[]}}
+    function setHistory(h){localStorage.setItem(HK,JSON.stringify(h))}
+    function addSearchTerm(t){if(!t.trim())return;let h=getHistory().filter(x=>x!==t.trim());h.unshift(t.trim());if(h.length>3)h.pop();setHistory(h);renderHistory();}
+    function renderHistory(){const h=getHistory();if(!h.length){historyDropdown.style.display='none';return;}historyDropdown.innerHTML=h.map(t=>`<div data-term="${escapeHtml(t)}">🕘 ${escapeHtml(t)}</div>`).join('');}
+    function allKW(){const k=[];chars.forEach(c=>{k.push(c.name);(c.tag||'').match(/#[^\s#]+/g)?.forEach(t=>k.push(t.replace('#','')));});return[...new Set(k)].sort();}
+    const allSug = allKW();
+    function renderSuggestions(q){q=q.toLowerCase().trim();if(!q){suggestionsEl.style.display='none';return;}const m=allSug.filter(k=>k.toLowerCase().includes(q)).slice(0,10);if(!m.length){suggestionsEl.style.display='none';return;}suggestionsEl.innerHTML=m.map(t=>`<div data-term="${escapeHtml(t)}">🔎 ${escapeHtml(t)}</div>`).join('');suggestionsEl.style.display='block';}
+    historyDropdown.addEventListener('click',e=>{const t=e.target.closest('div[data-term]');if(!t)return;search.value=t.dataset.term;addSearchTerm(t.dataset.term);currentPage=1;historyDropdown.style.display='none';render();});
+    suggestionsEl.addEventListener('click',e=>{const t=e.target.closest('div[data-term]');if(!t)return;search.value=t.dataset.term;addSearchTerm(t.dataset.term);suggestionsEl.style.display='none';currentPage=1;render();});
+    search.addEventListener('focus',()=>{if(search.value.trim()){renderSuggestions(search.value);historyDropdown.style.display='none';}else{renderHistory();historyDropdown.style.display=getHistory().length?'block':'none';suggestionsEl.style.display='none';}});
+    search.addEventListener('blur',()=>setTimeout(()=>{historyDropdown.style.display='none';suggestionsEl.style.display='none';},200));
+    search.addEventListener('input',()=>{currentPage=1;if(search.value){renderSuggestions(search.value);historyDropdown.style.display='none';}else suggestionsEl.style.display='none';render();});
+    search.addEventListener('keydown',e=>{if(e.key==='Enter'){const t=search.value.trim();if(t){addSearchTerm(t);historyDropdown.style.display='none';suggestionsEl.style.display='none';currentPage=1;render();}}});
 
-    /* ================= CARD RENDER ================= */
-    let currentPage = 1;
-    const pageSize = 20;
-    let cachedRandomItems = null;
-    let lastRandomKey = '';
-
+    /* CARDS */
+    let currentPage=1, pageSize=20, cachedRandom=null, lastRandomKey='';
     function cardHTML(item){
-      const accent = item.accent || '#a78bfa';
-      const s = charStats(item.name);
-      const isLiked = likedSet.has(item.name);
-      const isPinned = pinnedLocal.includes(item.name);
-      return `
-        <article class="card" style="--card-accent:${accent}; --card-glow: radial-gradient(circle, ${accent}33, transparent 70%);">
-          <div class="card-top">
-            <div class="avatar" style="background: linear-gradient(135deg, ${accent}, ${accent}99);">${avatarText(item.name)}</div>
-            <div class="meta">
-              <h3>${escapeHtml(item.name)}</h3>
-              <span class="tag">${renderTagChips(item.tag)}</span>
-            </div>
-          </div>
-          <div class="card-stats-mini">
-            <span class="mini-stat ${isLiked?'hearted':''}">❤️ ${s.hearts||0}</span>
-            <span class="mini-stat">📋 ${s.copies||0}</span>
-            ${isPinned?'<span class="mini-stat pinned-mini">📌 Đã ghim</span>':''}
-          </div>
-          <p class="desc">${escapeHtml(item.summary)}</p>
-          ${item.extra?`<details class="more"><summary>Xem thêm ▾</summary><div class="more-body">${escapeHtml(item.extra)}</div></details>`:''}
-          <div class="actions">
-            <a class="btn primary" href="${item.link}" target="_blank" rel="noopener">Mở link ↗</a>
-            <button class="btn" type="button" onclick='doCopy(${JSON.stringify(item.name)}, ${JSON.stringify(item.link)})'>📋 Copy</button>
-            <button class="btn icon-btn heart-btn ${isLiked?'liked':''}" data-action="heart" data-name="${escapeHtml(item.name)}" title="Yêu thích">${isLiked?'❤️':'🤍'}</button>
-            <button class="btn icon-btn pin-btn ${isPinned?'pinned':''}" data-action="pin" data-name="${escapeHtml(item.name)}" ${pinnedLocal.length>=3 && !isPinned?'disabled':''} title="Ghim">📌</button>
-          </div>
-        </article>`;
+      const a=item.accent||'#a78bfa', s=charStats(item.name), il=likedSet.has(item.name), ip=pinnedLocal.includes(item.name);
+      return `<article class="card" style="--card-accent:${a};--card-glow:radial-gradient(circle,${a}33,transparent 70%);">
+        <div class="card-top">
+          <div class="avatar" style="background:linear-gradient(135deg,${a},${a}99);">${avatarText(item.name)}</div>
+          <div class="meta"><h3>${escapeHtml(item.name)}</h3><span class="tag">${renderTagChips(item.tag)}</span></div>
+        </div>
+        <div class="card-stats-mini">
+          <span class="mini-stat ${il?'hearted':''}">❤️ ${s.hearts||0}</span><span class="mini-stat">📋 ${s.copies||0}</span>${ip?'<span class="mini-stat pinned-mini">📌 Đã ghim</span>':''}
+        </div>
+        <p class="desc">${escapeHtml(item.summary)}</p>
+        ${item.extra?`<details class="more"><summary>Xem thêm ▾</summary><div class="more-body">${escapeHtml(item.extra)}</div></details>`:''}
+        <div class="actions">
+          <a class="btn primary" href="${item.link}" target="_blank" rel="noopener">Mở link ↗</a>
+          <button class="btn" onclick='doCopy(${JSON.stringify(item.name)},${JSON.stringify(item.link)})'>📋 Copy</button>
+          <button class="btn icon-btn heart-btn ${il?'liked':''}" data-action="heart" data-name="${escapeHtml(item.name)}">${il?'❤️':'🤍'}</button>
+          <button class="btn icon-btn pin-btn ${ip?'pinned':''}" data-action="pin" data-name="${escapeHtml(item.name)}" ${pinnedLocal.length>=3&&!ip?'disabled':''}>📌</button>
+        </div></article>`;
     }
-
-    /* ================= FILTER / SORT ================= */
     function getFiltered(){
-      const q = normalize(search.value);
-      const tag = filterEl.value;
-      let items = chars.filter(item => {
-        const mq = !q || [item.name,item.tag,item.summary,item.extra].some(v=>normalize(v).includes(q));
-        const mt = tag==='all' || (item.tag||'').split(/\s+/).some(t=>t===tag);
-        return mq && mt;
-      });
-      const order = sortEl.value;
-      if(order==='name-asc') items.sort((a,b)=>String(a.name).localeCompare(String(b.name),'vi'));
-      if(order==='name-desc') items.sort((a,b)=>String(b.name).localeCompare(String(a.name),'vi'));
-      if(order==='hearts') items.sort((a,b)=>((charStats(b.name).hearts||0)-(charStats(a.name).hearts||0)) || String(a.name).localeCompare(String(b.name),'vi'));
-      if(order==='copies') items.sort((a,b)=>((charStats(b.name).copies||0)-(charStats(a.name).copies||0)) || String(a.name).localeCompare(String(b.name),'vi'));
-      if(order==='score') items.sort((a,b)=>{
-        const sa = charStats(a.name); const sb = charStats(b.name);
-        return ((sb.hearts*3+sb.copies*2+sb.pins*5) - (sa.hearts*3+sa.copies*2+sa.pins*5)) || String(a.name).localeCompare(String(b.name),'vi');
-      });
-      if(order==='random'){
-        const key = `${q}|${tag}|${order}`;
-        if(cachedRandomItems===null || lastRandomKey!==key){
-          cachedRandomItems = [...items].sort(()=>Math.random()-0.5);
-          lastRandomKey = key;
-        }
-        items = cachedRandomItems;
-      }
-      return [
-        ...items.filter(i=>pinnedLocal.includes(i.name)),
-        ...items.filter(i=>!pinnedLocal.includes(i.name))
-      ];
+      const q=normalize(search.value),t=filterEl.value;
+      let items=chars.filter(i=>{const mq=!q||[i.name,i.tag,i.summary,i.extra].some(v=>normalize(v).includes(q));const mt=t==='all'||(i.tag||'').split(/\s+/).some(x=>x===t);return mq&&mt;});
+      const o=sortEl.value;
+      if(o==='name-asc')items.sort((a,b)=>a.name.localeCompare(b.name,'vi'));
+      if(o==='name-desc')items.sort((a,b)=>b.name.localeCompare(a.name,'vi'));
+      if(o==='hearts')items.sort((a,b)=>charStats(b.name).hearts-charStats(a.name).hearts||a.name.localeCompare(b.name,'vi'));
+      if(o==='copies')items.sort((a,b)=>charStats(b.name).copies-charStats(a.name).copies||a.name.localeCompare(b.name,'vi'));
+      if(o==='score')items.sort((a,b)=>{const sa=charStats(a.name),sb=charStats(b.name);return(sb.hearts*3+sb.copies*2+sb.pins*5)-(sa.hearts*3+sa.copies*2+sa.pins*5)||a.name.localeCompare(b.name,'vi');});
+      if(o==='random'){const k=`${q}|${t}|${o}`;if(!cachedRandom||lastRandomKey!==k){cachedRandom=[...items].sort(()=>Math.random()-0.5);lastRandomKey=k;}items=cachedRandom;}
+      return [...items.filter(i=>pinnedLocal.includes(i.name)),...items.filter(i=>!pinnedLocal.includes(i.name))];
     }
-    function buildPagination(totalPages, cur){
-      if(totalPages<=1){ paginationTop.innerHTML=''; paginationBottom.innerHTML=''; return; }
-      let html = `<button class="page-btn" onclick="gotoPage(${cur-1})" ${cur===1?'disabled':''}>←</button>`;
-      for(let i=1;i<=totalPages;i++) html += `<button class="page-btn ${i===cur?'active':''}" onclick="gotoPage(${i})">${i}</button>`;
-      html += `<button class="page-btn" onclick="gotoPage(${cur+1})" ${cur===totalPages?'disabled':''}>→</button>`;
-      paginationTop.innerHTML = html; paginationBottom.innerHTML = html;
-    }
+    function buildPag(tp,c){if(tp<=1){paginationTop.innerHTML='';paginationBottom.innerHTML='';return;}let h=`<button class="page-btn" onclick="gotoPage(${c-1})" ${c===1?'disabled':''}>←</button>`;for(let i=1;i<=tp;i++)h+=`<button class="page-btn ${i===c?'active':''}" onclick="gotoPage(${i})">${i}</button>`;h+=`<button class="page-btn" onclick="gotoPage(${c+1})" ${c===tp?'disabled':''}>→</button>`;paginationTop.innerHTML=h;paginationBottom.innerHTML=h;}
     function renderStatus(n){
-      const q = normalize(search.value);
-      const tag = filterEl.value==='all'?'tất cả nhóm':filterEl.value;
-      statusText.textContent = q ? `Bộ lọc: ${tag} · "${search.value}"` : `Đang xem: ${tag}`;
-      countInfo.textContent = `${n} / ${chars.length} nhân vật`;
-      $('#statTotal').textContent = String(chars.length);
-      $('#statShown').textContent = String(n);
-      const ts = totalStats();
-      $('#statHearts').textContent = String(ts.hearts);
-      $('#statCopies').textContent = String(ts.copies);
-      $('#weekLabel').textContent = formatWeekLabel(WEEK_MONDAY);
+      const q=normalize(search.value),t=filterEl.value==='all'?'tất cả nhóm':filterEl.value;
+      statusText.textContent=q?`Bộ lọc: ${t} · "${search.value}"`:`Đang xem: ${t}`;
+      countInfo.textContent=`${n} / ${chars.length} nhân vật`;
+      $('#statTotal').textContent=chars.length;$('#statShown').textContent=n;
+      const ts=totalStats();$('#statHearts').textContent=ts.hearts;$('#statCopies').textContent=ts.copies;
+      $('#weekLabel').textContent=formatWeekLabel(WEEK_MONDAY);
     }
-
     function render(){
-      const items = getFiltered();
-      const totalPages = Math.max(1, Math.ceil(items.length/pageSize));
-      if(currentPage>totalPages) currentPage = totalPages;
-      const start = (currentPage-1)*pageSize;
-      const pageItems = items.slice(start, start+pageSize);
+      const items=getFiltered();const tp=Math.max(1,Math.ceil(items.length/pageSize));
+      if(currentPage>tp)currentPage=tp;
+      const pi=items.slice((currentPage-1)*pageSize,currentPage*pageSize);
       grid.classList.add('fade-out');
       setTimeout(()=>{
-        grid.innerHTML = pageItems.map(cardHTML).join('');
-        grid.classList.remove('fade-out');
-        empty.style.display = items.length?'none':'block';
-        chips.forEach(b => b.classList.toggle('active', b.dataset.filter===filterEl.value || (filterEl.value==='all' && b.dataset.filter==='all')));
-        buildPagination(totalPages, currentPage);
-        renderStatus(items.length);
+        grid.innerHTML=pi.map(cardHTML).join('');grid.classList.remove('fade-out');
+        empty.style.display=items.length?'none':'block';
+        chips.forEach(b=>b.classList.toggle('active',b.dataset.filter===filterEl.value||(filterEl.value==='all'&&b.dataset.filter==='all')));
+        buildPag(tp,currentPage);renderStatus(items.length);
       },150);
     }
     function renderFeatured(){
-      const names = ["Lâm Sơ Yến","Miên Dư","Tiên Tuyền/Dạ Phân"];
-      let set = names.map(n=>chars.find(c=>c.name===n)).filter(Boolean);
-      if(set.length<3) set = chars.slice(0,3);
-      featuredGrid.innerHTML = set.map(cardHTML).join('');
+      const n=["Lâm Sơ Yến","Miên Dư","Tiên Tuyền/Dạ Phân"];
+      let s=n.map(x=>chars.find(c=>c.name===x)).filter(Boolean);
+      if(s.length<3)s=chars.slice(0,3);
+      featuredGrid.innerHTML=s.map(cardHTML).join('');
     }
-    function renderAll(){
-      render(); renderFeatured(); renderHeroStats();
-      if(bxhView.classList.contains('active')) renderBXH();
-    }
-    function renderHeroStats(){
-      renderStatus(getFiltered().length);
-    }
-    function gotoPage(p){
-      const items = getFiltered();
-      const totalPages = Math.max(1, Math.ceil(items.length/pageSize));
-      currentPage = Math.max(1, Math.min(p, totalPages));
-      render();
-      $('#library').scrollIntoView({behavior:'smooth', block:'start'});
-    }
-    window.gotoPage = gotoPage;
+    function renderAll(){render();renderFeatured();renderStatus(getFiltered().length);if(bxhView.classList.contains('active'))renderBXH();}
+    function gotoPage(p){const items=getFiltered();const tp=Math.max(1,Math.ceil(items.length/pageSize));currentPage=Math.max(1,Math.min(p,tp));render();$('#library').scrollIntoView({behavior:'smooth',block:'start'});}
+    window.gotoPage=gotoPage;
 
-    /* ================= RANKINGS PAGE ================= */
-    function scoreOf(s){ return (s.hearts||0)*3 + (s.copies||0)*2 + (s.pins||0)*5; }
+    function scoreOf(s){return(s.hearts||0)*3+(s.copies||0)*2+(s.pins||0)*5;}
     function renderBXH(){
-      $('#bxhWeekLabel').textContent = formatWeekLabel(WEEK_MONDAY);
-      $('#bxhCountdown').textContent = getCountdown(WEEK_MONDAY);
-      const list = chars.map(c => {
-        const s = charStats(c.name);
-        return { ...c, hearts:s.hearts||0, copies:s.copies||0, pins:s.pins||0, score:scoreOf(s) };
-      });
-      const top3 = [...list].sort((a,b)=>b.score-a.score || a.name.localeCompare(b.name,'vi')).slice(0,3);
-      const medals = ['gold','silver','bronze'];
-      $('#podium').innerHTML = top3.some(c=>c.score>0) ? top3.map((c,i)=>`
-        <a href="#/" class="podium-card ${medals[i]}" style="text-decoration:none;color:inherit;">
-          <div class="podium-rank">${i+1}</div>
-          <div class="avatar-podium" style="background: linear-gradient(135deg, ${c.accent||'#a78bfa'}, ${c.accent||'#a78bfa'}99);">${avatarText(c.name)}</div>
-          <div class="podium-name">${escapeHtml(c.name)}</div>
-          <div class="podium-score"><b>${c.score}</b> điểm</div>
-          <div style="margin-top:8px;display:flex;gap:8px;justify-content:center;font-size:12px;color:var(--muted);flex-wrap:wrap;">
-            <span>❤️ ${c.hearts}</span><span>📋 ${c.copies}</span><span>📌 ${c.pins}</span>
-          </div>
-        </a>`).join('') : `<div class="bxh-empty" style="grid-column:1/-1;">Chưa có dữ liệu tuần này — hãy tương tác với các nhân vật nhé! ❤️📋📌</div>`;
-
-      function table(rows, key, emoji, colorClass, label){
-        const sorted = [...rows].sort((a,b)=>b[key]-a[key] || a.name.localeCompare(b.name,'vi'));
-        const top = sorted.filter(c=>c[key]>0).slice(0,20);
-        if(!top.length) return `<div class="bxh-empty">Chưa có lượt ${label} nào trong tuần này.</div>`;
-        return `
-          <div class="bxh-row head">
-            <span>#</span><span>Nhân vật</span>
-            <span class="bxh-stat ${colorClass}">${emoji}<small>${label}</small></span>
-            <span class="bxh-stat" style="color:var(--heart)"><small>Tim</small></span>
-            <span class="bxh-stat" style="color:var(--accent-2)"><small>Copy</small></span>
-          </div>
-          ${top.map((c,i)=>`
-            <a href="#/" class="bxh-row ${i<3?'top-'+(i+1):''}" style="text-decoration:none;color:inherit;">
-              <span class="bxh-rank-num">${i+1}</span>
-              <div class="name-cell">
-                <div class="mini-avatar" style="background: linear-gradient(135deg, ${c.accent||'#a78bfa'}, ${c.accent||'#a78bfa'}99);">${avatarText(c.name)}</div>
-                <div class="name-text">
-                  <b>${escapeHtml(c.name)}</b>
-                  <small>${escapeHtml(firstTag(c.tag)||'')}</small>
-                </div>
-              </div>
-              <span class="bxh-stat ${colorClass}">${c[key]}</span>
-              <span class="bxh-stat" style="color:var(--heart)">${c.hearts}</span>
-              <span class="bxh-stat" style="color:var(--accent-2)">${c.copies}</span>
-            </a>`).join('')}`;
+      $('#bxhWeekLabel').textContent=formatWeekLabel(WEEK_MONDAY);
+      $('#bxhCountdown').textContent=getCountdown(WEEK_MONDAY);
+      const list=chars.map(c=>{const s=charStats(c);return{...c,hearts:s.hearts||0,copies:s.copies||0,pins:s.pins||0,score:scoreOf(s)};});
+      const top3=[...list].sort((a,b)=>b.score-a.score||a.name.localeCompare(b.name,'vi')).slice(0,3);
+      const md=['gold','silver','bronze'];
+      $('#podium').innerHTML=top3.some(c=>c.score>0)?top3.map((c,i)=>`<a href="#/" class="podium-card ${md[i]}"><div class="podium-rank">${i+1}</div><div class="avatar-podium" style="background:linear-gradient(135deg,${c.accent||'#a78bfa'},${c.accent||'#a78bfa'}99);">${avatarText(c.name)}</div><div class="podium-name">${escapeHtml(c.name)}</div><div class="podium-score"><b>${c.score}</b> điểm</div><div style="margin-top:8px;display:flex;gap:8px;justify-content:center;font-size:12px;color:var(--muted);flex-wrap:wrap;"><span>❤️ ${c.hearts}</span><span>📋 ${c.copies}</span><span>📌 ${c.pins}</span></div></a>`).join(''):'<div class="bxh-empty" style="grid-column:1/-1;">Chưa có dữ liệu tuần này — hãy tương tác nhé! ❤️📋📌</div>';
+      function tbl(rows,k,e,cc,l){
+        const s=[...rows].sort((a,b)=>b[k]-a[k]||a.name.localeCompare(b.name,'vi'));const t=s.filter(c=>c[k]>0).slice(0,20);
+        if(!t.length)return`<div class="bxh-empty">Chưa có lượt ${l} nào.</div>`;
+        return`<div class="bxh-row head"><span>#</span><span>Nhân vật</span><span class="bxh-stat ${cc}">${e}<small>${l}</small></span><span class="bxh-stat" style="color:var(--heart)"><small>Tim</small></span><span class="bxh-stat" style="color:var(--accent-2)"><small>Copy</small></span></div>${t.map((c,i)=>`<a href="#/" class="bxh-row ${i<3?'top-'+(i+1):''}"><span class="bxh-rank-num">${i+1}</span><div class="name-cell"><div class="mini-avatar" style="background:linear-gradient(135deg,${c.accent||'#a78bfa'},${c.accent||'#a78bfa'}99);">${avatarText(c.name)}</div><div class="name-text"><b>${escapeHtml(c.name)}</b><small>${escapeHtml(firstTag(c.tag)||'')}</small></div></div><span class="bxh-stat ${cc}">${c[k]}</span><span class="bxh-stat" style="color:var(--heart)">${c.hearts}</span><span class="bxh-stat" style="color:var(--accent-2)">${c.copies}</span></a>`).join('')}`;
       }
-      $('#bxhHearts').innerHTML = table(list,'hearts','❤️','heart-c','tim');
-      $('#bxhCopies').innerHTML = table(list,'copies','📋','copy-c','copy');
-      $('#bxhPins').innerHTML = table(list,'pins','📌','pin-c','ghim');
-      const overall = [...list].sort((a,b)=>b.score-a.score || a.name.localeCompare(b.name,'vi')).slice(0,20);
-      $('#bxhOverall').innerHTML = overall.some(c=>c.score>0) ? `
-        <div class="bxh-row head">
-          <span>#</span><span>Nhân vật</span>
-          <span class="bxh-stat" style="color:#a78bfa">⭐<small>Điểm</small></span>
-          <span class="bxh-stat" style="color:var(--heart)"><small>Tim</small></span>
-          <span class="bxh-stat" style="color:var(--accent-2)"><small>Copy</small></span>
-        </div>
-        ${overall.map((c,i)=>`
-          <a href="#/" class="bxh-row ${i<3?'top-'+(i+1):''}" style="text-decoration:none;color:inherit;">
-            <span class="bxh-rank-num">${i+1}</span>
-            <div class="name-cell">
-              <div class="mini-avatar" style="background: linear-gradient(135deg, ${c.accent||'#a78bfa'}, ${c.accent||'#a78bfa'}99);">${avatarText(c.name)}</div>
-              <div class="name-text"><b>${escapeHtml(c.name)}</b><small>📌 ${c.pins}</small></div>
-            </div>
-            <span class="bxh-stat" style="color:#a78bfa">${c.score}</span>
-            <span class="bxh-stat" style="color:var(--heart)">${c.hearts}</span>
-            <span class="bxh-stat" style="color:var(--accent-2)">${c.copies}</span>
-          </a>`).join('')}` : `<div class="bxh-empty">Chưa có dữ liệu tuần này.</div>`;
+      $('#bxhHearts').innerHTML=tbl(list,'hearts','❤️','heart-c','tim');
+      $('#bxhCopies').innerHTML=tbl(list,'copies','📋','copy-c','copy');
+      $('#bxhPins').innerHTML=tbl(list,'pins','📌','pin-c','ghim');
+      const ov=[...list].sort((a,b)=>b.score-a.score||a.name.localeCompare(b.name,'vi')).slice(0,20);
+      $('#bxhOverall').innerHTML=ov.some(c=>c.score>0)?`<div class="bxh-row head"><span>#</span><span>Nhân vật</span><span class="bxh-stat" style="color:#a78bfa">⭐<small>Điểm</small></span><span class="bxh-stat" style="color:var(--heart)"><small>Tim</small></span><span class="bxh-stat" style="color:var(--accent-2)"><small>Copy</small></span></div>${ov.map((c,i)=>`<a href="#/" class="bxh-row ${i<3?'top-'+(i+1):''}"><span class="bxh-rank-num">${i+1}</span><div class="name-cell"><div class="mini-avatar" style="background:linear-gradient(135deg,${c.accent||'#a78bfa'},${c.accent||'#a78bfa'}99);">${avatarText(c.name)}</div><div class="name-text"><b>${escapeHtml(c.name)}</b><small>📌 ${c.pins}</small></div></div><span class="bxh-stat" style="color:#a78bfa">${c.score}</span><span class="bxh-stat" style="color:var(--heart)">${c.hearts}</span><span class="bxh-stat" style="color:var(--accent-2)">${c.copies}</span></a>`).join('')}`:'<div class="bxh-empty">Chưa có dữ liệu.</div>';
     }
 
-    /* ================= HASH ROUTING ================= */
     function navigate(){
-      const hash = location.hash || '#/';
-      const isBXH = hash.startsWith('#bxh');
-      if(isBXH){
-        mainView.classList.add('hidden');
-        bxhView.classList.add('active');
-        if(supabase) fetchStats().then(renderBXH);
-        else renderBXH();
-        window.scrollTo({top:0, behavior:'instant'});
-      } else {
-        mainView.classList.remove('hidden');
-        bxhView.classList.remove('active');
-        if(hash==='#featured') setTimeout(()=>$('#featured').scrollIntoView({behavior:'smooth'}),50);
-        else if(hash==='#library') setTimeout(()=>$('#library').scrollIntoView({behavior:'smooth'}),50);
-      }
-      $$('.nav-link[data-nav]').forEach(a => {
-        a.classList.toggle('active',
-          (a.dataset.nav==='bxh' && isBXH) ||
-          (a.dataset.nav==='home' && !isBXH) ||
-          (a.dataset.nav==='featured' && hash==='#featured')
-        );
-      });
+      const h=location.hash||'#/';const b=h.startsWith('#bxh');
+      if(b){mainView.classList.add('hidden');bxhView.classList.add('active');if(supabase)fetchStats().then(renderBXH);else renderBXH();window.scrollTo({top:0,behavior:'instant'});}
+      else{mainView.classList.remove('hidden');bxhView.classList.remove('active');if(h==='#featured')setTimeout(()=>$('#featured').scrollIntoView({behavior:'smooth'}),50);else if(h==='#library')setTimeout(()=>$('#library').scrollIntoView({behavior:'smooth'}),50);}
+      $$('.nav-link[data-nav]').forEach(a=>a.classList.toggle('active',(a.dataset.nav==='bxh'&&b)||(a.dataset.nav==='home'&&!b)||(a.dataset.nav==='featured'&&h==='#featured')));
     }
-    window.addEventListener('hashchange', navigate);
+    window.addEventListener('hashchange',navigate);
 
-    /* ================= EVENTS ================= */
-    chips.forEach(b => b.addEventListener('click', () => { filterEl.value = b.dataset.filter; currentPage=1; cachedRandomItems=null; render(); }));
-    filterEl.addEventListener('change', () => { currentPage=1; cachedRandomItems=null; render(); });
-    sortEl.addEventListener('change', () => { currentPage=1; cachedRandomItems=null; render(); });
-    $('#clearSearch').addEventListener('click', () => { search.value=''; currentPage=1; render(); search.focus(); });
-    $('#resetFilters').addEventListener('click', () => {
-      search.value=''; filterEl.value='all'; sortEl.value='default'; currentPage=1;
-      chips.forEach(b=>b.classList.toggle('active',b.dataset.filter==='all'));
-      cachedRandomItems=null; render();
-    });
-    function openRandom(){ const r=chars[Math.floor(Math.random()*chars.length)]; if(r) window.open(r.link,'_blank'); }
-    $('#randomBtn').addEventListener('click', openRandom);
-    $('#randomHeroBtn').addEventListener('click', openRandom);
-    $('#refreshBXH').addEventListener('click', () => {
-      if(supabase) fetchStats().then(()=>{ renderBXH(); showToast('🔄 Đã cập nhật dữ liệu'); });
-      else { renderBXH(); showToast('🔄 Đã làm mới'); }
-    });
+    const chips=$$('.chip');
+    chips.forEach(b=>b.addEventListener('click',()=>{filterEl.value=b.dataset.filter;currentPage=1;cachedRandom=null;render();}));
+    filterEl.addEventListener('change',()=>{currentPage=1;cachedRandom=null;render();});
+    sortEl.addEventListener('change',()=>{currentPage=1;cachedRandom=null;render();});
+    $('#clearSearch').addEventListener('click',()=>{search.value='';currentPage=1;render();search.focus();});
+    $('#resetFilters').addEventListener('click',()=>{search.value='';filterEl.value='all';sortEl.value='default';currentPage=1;chips.forEach(b=>b.classList.toggle('active',b.dataset.filter==='all'));cachedRandom=null;render();});
+    function openRandom(){const r=chars[Math.floor(Math.random()*chars.length)];if(r)window.open(r.link,'_blank');}
+    $('#randomBtn').addEventListener('click',openRandom);
+    $('#randomHeroBtn').addEventListener('click',openRandom);
+    $('#refreshBXH').addEventListener('click',()=>{if(supabase)fetchStats().then(()=>{renderBXH();showToast('🔄 Đã cập nhật');});else{renderBXH();showToast('🔄 Đã làm mới');}});
 
-    // Delegation for heart/pin on both grids
-    function attachGridDelegation(el){
-      el.addEventListener('click', async e => {
-        const btn = e.target.closest('[data-action]');
-        if(!btn || btn.disabled) return;
-        const name = btn.dataset.name; if(!name) return;
-        btn.classList.add('loading');
-        if(btn.dataset.action === 'heart') await toggleHeart(name);
-        else if(btn.dataset.action === 'pin') await togglePin(name);
-        btn.classList.remove('loading');
-      });
-    }
-    attachGridDelegation(grid);
-    attachGridDelegation(featuredGrid);
+    function attachG(el){el.addEventListener('click',async e=>{const b=e.target.closest('[data-action]');if(!b||b.disabled)return;const n=b.dataset.name;if(!n)return;b.classList.add('loading');if(b.dataset.action==='heart')await toggleHeart(n);else if(b.dataset.action==='pin')await togglePin(n);b.classList.remove('loading');});}
+    attachG(grid);attachG(featuredGrid);
 
-    // Back to top
-    const backBtn = $('#backToTop');
-    window.addEventListener('scroll', () => { backBtn.style.display = window.scrollY>400?'block':'none'; });
-    backBtn.addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
+    const bb=$('#backToTop');
+    window.addEventListener('scroll',()=>{bb.style.display=window.scrollY>400?'block':'none';});
+    bb.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 
-    // View mode
-    const toggleBtn = $('#toggleView');
-    let viewMode = localStorage.getItem('viewMode')||'grid';
-    function applyView(){
-      if(viewMode==='list'){ grid.classList.add('list'); toggleBtn.innerHTML='📐 Dạng lưới'; }
-      else { grid.classList.remove('list'); toggleBtn.innerHTML='📋 Danh sách'; }
-    }
-    applyView();
-    toggleBtn.addEventListener('click', () => {
-      viewMode = viewMode==='grid'?'list':'grid';
-      localStorage.setItem('viewMode', viewMode); applyView();
-    });
+    const tb=$('#toggleView');let vm=localStorage.getItem('viewMode')||'grid';
+    function apV(){if(vm==='list'){grid.classList.add('list');tb.innerHTML='📐 Dạng lưới';}else{grid.classList.remove('list');tb.innerHTML='📋 Danh sách';}}
+    apV();tb.addEventListener('click',()=>{vm=vm==='grid'?'list':'grid';localStorage.setItem('viewMode',vm);apV();});
 
-    // Theme
-    const themeToggle = $('#themeToggle');
-    const storedTheme = localStorage.getItem('theme')||'dark';
-    if(storedTheme==='light'){ document.body.classList.add('light'); themeToggle.textContent='☀️'; }
-    else themeToggle.textContent='🌙';
-    themeToggle.addEventListener('click', () => {
-      document.body.classList.toggle('light');
-      const isLight = document.body.classList.contains('light');
-      localStorage.setItem('theme', isLight?'light':'dark');
-      themeToggle.textContent = isLight?'☀️':'🌙';
-    });
+    const tt=$('#themeToggle');const stm=localStorage.getItem('theme')||'dark';
+    if(stm==='light'){document.body.classList.add('light');tt.textContent='☀️';}else tt.textContent='🌙';
+    tt.addEventListener('click',()=>{document.body.classList.toggle('light');const l=document.body.classList.contains('light');localStorage.setItem('theme',l?'light':'dark');tt.textContent=l?'☀️':'🌙';});
 
-    // Splash
-    const splash = $('#splash');
-    let touchStartY=0;
-    function hideSplash(){ splash.classList.add('hide'); localStorage.setItem('splashSeen','true'); }
-    splash.addEventListener('click', hideSplash);
-    splash.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; });
-    splash.addEventListener('touchmove', e => {
-      if(!touchStartY) return;
-      if(touchStartY - e.touches[0].clientY > 50){ hideSplash(); touchStartY=0; }
-    });
-    splash.addEventListener('touchend', () => { touchStartY=0; });
-    if(localStorage.getItem('splashSeen')==='true') splash.style.display='none';
+    const sp=$('#splash');let tsy=0;
+    function hs(){sp.classList.add('hide');localStorage.setItem('splashSeen','true');}
+    sp.addEventListener('click',hs);
+    sp.addEventListener('touchstart',e=>{tsy=e.touches[0].clientY;});
+    sp.addEventListener('touchmove',e=>{if(tsy&&tsy-e.touches[0].clientY>50){hs();tsy=0;}});
+    sp.addEventListener('touchend',()=>{tsy=0;});
+    if(localStorage.getItem('splashSeen')==='true')sp.style.display='none';
 
-    /* ================= INIT ================= */
-    initStatsData();
-    loadLocalPrefs();
-    renderFeatured();
-    render();
-    renderHeroStats();
-    navigate();
-    // Connect to Supabase (async)
-    initSupabase().then(connected => {
-      renderAll();
-    });
-    // Periodically refresh stats from cloud every 60s when BXH is active
-    setInterval(() => {
-      if(supabase && bxhView.classList.contains('active')){
-        fetchStats().then(() => renderBXH());
-      }
-      const cd = $('#bxhCountdown');
-      if(cd) cd.textContent = getCountdown(WEEK_MONDAY);
-    }, 60000);
+    initStatsData();loadLocalPrefs();renderFeatured();render();renderStatus(getFiltered().length);navigate();
+    initSupabase().then(renderAll);
+    setInterval(()=>{if(supabase&&bxhView.classList.contains('active'))fetchStats().then(renderBXH);const cd=$('#bxhCountdown');if(cd)cd.textContent=getCountdown(WEEK_MONDAY);},60000);
   </script>
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a23117040879d976',t:'MTc4NTM4MDE4Mw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a23135401c51f8d3',t:'MTc4NTM4MTQyMg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
