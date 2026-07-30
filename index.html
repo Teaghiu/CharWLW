@@ -527,7 +527,8 @@
       display: flex; align-items: center; justify-content: center; text-align: center;
       transition: opacity 0.6s ease, transform 0.6s ease; backdrop-filter: blur(6px); cursor: pointer;
     }
-    #splash.hide { opacity: 0; transform: scale(1.05); pointer-events: none; }
+    #splash.hide { opacity: 0; transform: scale(1.05); pointer-events: none; visibility: hidden; }
+#splash { touch-action: manipulation; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; }
     .splash-content { padding: 20px; animation: float 3s ease-in-out infinite; }
     .splash-icon {
       width: 96px; height: 96px; border-radius: 24px; margin: 0 auto 20px; overflow: hidden;
@@ -1285,13 +1286,25 @@
     if(stm==='light'){document.body.classList.add('light');tt.textContent='☀️';}else tt.textContent='🌙';
     tt.addEventListener('click',()=>{document.body.classList.toggle('light');const l=document.body.classList.contains('light');localStorage.setItem('theme',l?'light':'dark');tt.textContent=l?'☀️':'🌙';});
 
-    const sp=$('#splash');let tsy=0;
-    function hs(){sp.classList.add('hide');localStorage.setItem('splashSeen','true');}
+        const sp=$('#splash');let tsy=0,sx=0,sdismissed=false;
+    function hs(){if(sdismissed)return;sdismissed=true;sp.classList.add('hide');localStorage.setItem('splashSeen','true');setTimeout(()=>{sp.style.display='none';},650);}
+    // Auto-hide after 4 seconds nếu người dùng chưa chạm
+    setTimeout(hs,4000);
+    // Bắt mọi kiểu chạm/click (móc vào pointer events – hoạt động cả chuột lẫn cảm ứng)
+    sp.addEventListener('pointerdown',e=>{tsy=e.clientY;sx=e.clientX;},{passive:true});
+    sp.addEventListener('pointerup',e=>{if(!tsy)return;const dy=tsy-e.clientY;const dx=sx-e.clientX;tsy=0;sx=0;// cho phép click hoặc vuốt lên/qua >30px đều ẩn
+      if(Math.abs(dy)>30||Math.abs(dx)>30)return hs(); // có vuốt thì đợi pointerup của vuốt sẽ không chạy click
+      // tap thường – cho ẩn ngay
+      hs();
+    },{passive:true});
+    // Fallback cho click/enter/space/phím bất kỳ
     sp.addEventListener('click',hs);
-    sp.addEventListener('touchstart',e=>{tsy=e.touches[0].clientY;});
-    sp.addEventListener('touchmove',e=>{if(tsy&&tsy-e.touches[0].clientY>50){hs();tsy=0;}});
-    sp.addEventListener('touchend',()=>{tsy=0;});
-    if(localStorage.getItem('splashSeen')==='true')sp.style.display='none';
+    window.addEventListener('keydown',hs,{once:true});
+    window.addEventListener('wheel',hs,{once:true,passive:true});
+    // Vuốt lên kiểu cũ trên touch (đề phòng device cũ)
+    sp.addEventListener('touchstart',e=>{tsy=e.touches[0].clientY;},{passive:true});
+    sp.addEventListener('touchmove',e=>{if(tsy&&tsy-e.touches[0].clientY>40){hs();tsy=0;}},{passive:true});
+    if(localStorage.getItem('splashSeen')==='true'){sp.style.display='none';sdismissed=true;}
 
     initStatsData();loadLocalPrefs();renderFeatured();render();renderStatus(getFiltered().length);navigate();
     initSupabase().then(renderAll);
