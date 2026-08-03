@@ -641,7 +641,7 @@
 <body>
 
   <!-- Splash -->
-  <div id="splash">
+  <div id="splash" onclick="this.classList.add('hide'); this.style.pointerEvents='none'; setTimeout(()=>this.style.display='none',550);" ontouchstart="this.classList.add('hide'); this.style.pointerEvents='none'; setTimeout(()=>this.style.display='none',550);">
     <div class="splash-content">
       <div class="splash-icon" id="splashIcon">
         <img src="icon.jpg" alt="TeaGhiu" onerror="this.style.display='none';this.parentElement.classList.add('fb');this.parentElement.innerHTML+='<span class=\'fb-text\'>T</span>';">
@@ -868,6 +868,14 @@
     const SUPABASE_URL = "https://xdgnufnlbdwtydfagxzi.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhkZ251Zm5sYmR3dHlkZmFneHppIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzNTA3OTAsImV4cCI6MjEwMDkyNjc5MH0.Jopm_TQwiaiPtPOTCTItV39HJ1TZCAIzOD-cFFmD0gU";
 
+    /* ================= LOCAL STORAGE HELPER ================= */
+    function safeGet(key, def = null) {
+      try { return localStorage.getItem(key) ?? def; } catch (e) { return def; }
+    }
+    function safeSet(key, val) {
+      try { localStorage.setItem(key, val); } catch (e) { }
+    }
+
     /* ================= DATA ================= */
     const chars = [
       { name:"Lâm Sơ Yến", tag:"#WLW #Cbiz #Drama #Hiện đại #Tổng_tài", summary:"Kẻ cầm lái biết cách thưởng thức những con sóng ngầm đang chực chờ nuốt chửng quân cờ của mình.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221J6ppWVKMe32pnV9rOEAZLRCTFM86-Nyr%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#8b7bff" },
@@ -1052,6 +1060,10 @@
     async function initSupabase(){
       if(!SUPABASE_URL || !SUPABASE_ANON_KEY){ setCloud(false,'📴 Chưa cấu hình Supabase'); return false; }
       try {
+        if (!window.supabase || typeof window.supabase.createClient !== 'function') {
+          setCloud(false, '📴 Chưa tải thư viện Supabase');
+          return false;
+        }
         supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth:{persistSession:false} });
         await ensureWeekRows();
         await fetchStats();
@@ -1113,8 +1125,8 @@
       try { likedSet = new Set(JSON.parse(localStorage.getItem(key)||'[]')); } catch { likedSet = new Set(); }
       try { pinnedLocal = JSON.parse(localStorage.getItem('pinnedChars'))||[]; } catch { pinnedLocal=[]; }
     }
-    function saveLiked(){ localStorage.setItem(`liked_${WEEK_KEY}`, JSON.stringify([...likedSet])); }
-    function savePinned(){ localStorage.setItem('pinnedChars', JSON.stringify(pinnedLocal)); }
+    function saveLiked(){ safeSet(`liked_${WEEK_KEY}`, JSON.stringify([...likedSet])); }
+    function savePinned(){ safeSet('pinnedChars', JSON.stringify(pinnedLocal)); }
     function updateLocalStat(name,field,delta){
       if(!statsData[name]) statsData[name]={hearts:0,copies:0,pins:0};
       statsData[name][field] = Math.max(0,(statsData[name][field]||0)+delta);
@@ -1162,7 +1174,7 @@
     const historyDropdown=$('#searchHistoryDropdown'),suggestionsEl=$('#searchSuggestions');
     const HK='searchHistory_wlw';
     function getHistory(){try{return JSON.parse(localStorage.getItem(HK))||[];}catch{return[]}}
-    function setHistory(h){localStorage.setItem(HK,JSON.stringify(h))}
+    function setHistory(h){safeSet(HK,JSON.stringify(h))}
     function addSearchTerm(t){if(!t.trim())return;let h=getHistory().filter(x=>x!==t.trim());h.unshift(t.trim());if(h.length>3)h.pop();setHistory(h);renderHistory();}
     function renderHistory(){const h=getHistory();if(!h.length){historyDropdown.style.display='none';return;}historyDropdown.innerHTML=h.map(t=>`<div data-term="${escapeHtml(t)}">🕘 ${escapeHtml(t)}</div>`).join('');}
     function allKW(){const k=[];chars.forEach(c=>{k.push(c.name);(c.tag||'').match(/#[^\s#]+/g)?.forEach(t=>k.push(t.replace('#','')));});return[...new Set(k)].sort();}
@@ -1261,7 +1273,7 @@
 
     function navigate(){
       const h=location.hash||'#/';const b=h.startsWith('#bxh');
-      if(b){mainView.classList.add('hidden');bxhView.classList.add('active');if(supabase)fetchStats().then(renderBXH);else renderBXH();window.scrollTo({top:0,behavior:'instant'});}
+      if(b){mainView.classList.add('hidden');bxhView.classList.add('active');if(supabase)fetchStats().then(renderBXH);else renderBXH();window.scrollTo(0, 0);}
       else{mainView.classList.remove('hidden');bxhView.classList.remove('active');if(h==='#featured')setTimeout(()=>$('#featured').scrollIntoView({behavior:'smooth'}),50);else if(h==='#library')setTimeout(()=>$('#library').scrollIntoView({behavior:'smooth'}),50);}
       $$('.nav-link[data-nav]').forEach(a=>a.classList.toggle('active',(a.dataset.nav==='bxh'&&b)||(a.dataset.nav==='home'&&!b)||(a.dataset.nav==='featured'&&h==='#featured')));
     }
@@ -1285,37 +1297,43 @@
     window.addEventListener('scroll',()=>{bb.style.display=window.scrollY>400?'block':'none';});
     bb.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 
-    const tb=$('#toggleView');let vm=localStorage.getItem('viewMode')||'grid';
+    const tb=$('#toggleView');let vm=safeGet('viewMode')||'grid';
     function apV(){if(vm==='list'){grid.classList.add('list');tb.innerHTML='📐 Dạng lưới';}else{grid.classList.remove('list');tb.innerHTML='📋 Danh sách';}}
-    apV();tb.addEventListener('click',()=>{vm=vm==='grid'?'list':'grid';localStorage.setItem('viewMode',vm);apV();});
+    apV();tb.addEventListener('click',()=>{vm=vm==='grid'?'list':'grid';safeSet('viewMode',vm);apV();});
 
-    const tt=$('#themeToggle');const stm=localStorage.getItem('theme')||'dark';
+    const tt=$('#themeToggle');const stm=safeGet('theme')||'dark';
     if(stm==='light'){document.body.classList.add('light');tt.textContent='☀️';}else tt.textContent='🌙';
-    tt.addEventListener('click',()=>{document.body.classList.toggle('light');const l=document.body.classList.contains('light');localStorage.setItem('theme',l?'light':'dark');tt.textContent=l?'☀️':'🌙';});
+    tt.addEventListener('click',()=>{document.body.classList.toggle('light');const l=document.body.classList.contains('light');safeSet('theme',l?'light':'dark');tt.textContent=l?'☀️':'🌙';});
 
-        const sp=$('#splash');let tsy=0,sx=0,sdismissed=false;
-    function hs(){if(sdismissed)return;sdismissed=true;sp.classList.add('hide');localStorage.setItem('splashSeen','true');setTimeout(()=>{sp.style.display='none';},650);}
-    // Auto-hide after 4 seconds nếu người dùng chưa chạm
-    setTimeout(hs,4000);
-    // Bắt mọi kiểu chạm/click (móc vào pointer events – hoạt động cả chuột lẫn cảm ứng)
-    sp.addEventListener('pointerdown',e=>{tsy=e.clientY;sx=e.clientX;},{passive:true});
-    sp.addEventListener('pointerup',e=>{if(!tsy)return;const dy=tsy-e.clientY;const dx=sx-e.clientX;tsy=0;sx=0;// cho phép click hoặc vuốt lên/qua >30px đều ẩn
-      if(Math.abs(dy)>30||Math.abs(dx)>30)return hs(); // có vuốt thì đợi pointerup của vuốt sẽ không chạy click
-      // tap thường – cho ẩn ngay
-      hs();
-    },{passive:true});
-    // Fallback cho click/enter/space/phím bất kỳ
-    sp.addEventListener('click',hs);
-    window.addEventListener('keydown',hs,{once:true});
-    window.addEventListener('wheel',hs,{once:true,passive:true});
-    // Vuốt lên kiểu cũ trên touch (đề phòng device cũ)
-    sp.addEventListener('touchstart',e=>{tsy=e.touches[0].clientY;},{passive:true});
-    sp.addEventListener('touchmove',e=>{if(tsy&&tsy-e.touches[0].clientY>40){hs();tsy=0;}},{passive:true});
-    if(localStorage.getItem('splashSeen')==='true'){sp.style.display='none';sdismissed=true;}
+        const sp = $('#splash');
+    let sdismissed = false;
+    function hs() {
+      if (sdismissed) return;
+      sdismissed = true;
+      if (sp) {
+        sp.classList.add('hide');
+        sp.style.pointerEvents = 'none';
+        setTimeout(() => { sp.style.display = 'none'; }, 550);
+      }
+      safeSet('splashSeen', 'true');
+    }
+    if (sp) {
+      sp.addEventListener('click', hs, { passive: true });
+      sp.addEventListener('pointerdown', hs, { passive: true });
+      sp.addEventListener('touchstart', hs, { passive: true });
+      window.addEventListener('keydown', hs, { once: true });
+      window.addEventListener('wheel', hs, { once: true, passive: true });
+      if (safeGet('splashSeen') === 'true') {
+        sp.style.display = 'none';
+        sdismissed = true;
+      } else {
+        setTimeout(hs, 2500);
+      }
+    }
 
     initStatsData();loadLocalPrefs();renderFeatured();render();renderStatus(getFiltered().length);navigate();
     initSupabase().then(renderAll);
     setInterval(()=>{if(supabase&&bxhView.classList.contains('active'))fetchStats().then(renderBXH);const cd=$('#bxhCountdown');if(cd)cd.textContent=getCountdown(WEEK_MONDAY);},60000);
   </script>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a2519790dee6c6f3',t:'MTc4NTcyMDk5Mw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
