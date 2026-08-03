@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <style>
     :root {
       --bg: #0a0b14;
@@ -870,7 +870,10 @@
 
     /* ================= LOCAL STORAGE HELPER ================= */
     function safeGet(key, def = null) {
-      try { return localStorage.getItem(key) ?? def; } catch (e) { return def; }
+      try {
+        const val = localStorage.getItem(key);
+        return val !== null ? val : def;
+      } catch (e) { return def; }
     }
     function safeSet(key, val) {
       try { localStorage.setItem(key, val); } catch (e) { }
@@ -1057,13 +1060,17 @@
       }
     }
 
-    async function initSupabase(){
+    async function initSupabase(retry = 2){
       if(!SUPABASE_URL || !SUPABASE_ANON_KEY){ setCloud(false,'📴 Chưa cấu hình Supabase'); return false; }
-      try {
-        if (!window.supabase || typeof window.supabase.createClient !== 'function') {
-          setCloud(false, '📴 Chưa tải thư viện Supabase');
+      if (!window.supabase || typeof window.supabase.createClient !== 'function') {
+        if (retry > 0) {
+          setTimeout(() => initSupabase(retry - 1), 1500);
           return false;
         }
+        setCloud(false, '📴 Chế độ ngoại tuyến (Không tải được CDN)');
+        return false;
+      }
+      try {
         supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth:{persistSession:false} });
         await ensureWeekRows();
         await fetchStats();
@@ -1122,8 +1129,15 @@
 
     function loadLocalPrefs(){
       const key = `liked_${WEEK_KEY}`;
-      try { likedSet = new Set(JSON.parse(localStorage.getItem(key)||'[]')); } catch { likedSet = new Set(); }
-      try { pinnedLocal = JSON.parse(localStorage.getItem('pinnedChars'))||[]; } catch { pinnedLocal=[]; }
+      try {
+        const parsed = JSON.parse(safeGet(key) || '[]');
+        likedSet = new Set(Array.isArray(parsed) ? parsed : []);
+      } catch { likedSet = new Set(); }
+      try {
+        const parsed = JSON.parse(safeGet('pinnedChars') || '[]');
+        pinnedLocal = Array.isArray(parsed) ? parsed : [];
+      } catch { pinnedLocal = []; }
+      if (!Array.isArray(pinnedLocal)) pinnedLocal = [];
     }
     function saveLiked(){ safeSet(`liked_${WEEK_KEY}`, JSON.stringify([...likedSet])); }
     function savePinned(){ safeSet('pinnedChars', JSON.stringify(pinnedLocal)); }
@@ -1177,7 +1191,7 @@
     function setHistory(h){safeSet(HK,JSON.stringify(h))}
     function addSearchTerm(t){if(!t.trim())return;let h=getHistory().filter(x=>x!==t.trim());h.unshift(t.trim());if(h.length>3)h.pop();setHistory(h);renderHistory();}
     function renderHistory(){const h=getHistory();if(!h.length){historyDropdown.style.display='none';return;}historyDropdown.innerHTML=h.map(t=>`<div data-term="${escapeHtml(t)}">🕘 ${escapeHtml(t)}</div>`).join('');}
-    function allKW(){const k=[];chars.forEach(c=>{k.push(c.name);(c.tag||'').match(/#[^\s#]+/g)?.forEach(t=>k.push(t.replace('#','')));});return[...new Set(k)].sort();}
+    function allKW(){const k=[];chars.forEach(c=>{k.push(c.name);const m=(c.tag||'').match(/#[^\s#]+/g);if(m)m.forEach(t=>k.push(t.replace('#','')));});return[...new Set(k)].sort();}
     const allSug = allKW();
     function renderSuggestions(q){q=q.toLowerCase().trim();if(!q){suggestionsEl.style.display='none';return;}const m=allSug.filter(k=>k.toLowerCase().includes(q)).slice(0,10);if(!m.length){suggestionsEl.style.display='none';return;}suggestionsEl.innerHTML=m.map(t=>`<div data-term="${escapeHtml(t)}">🔎 ${escapeHtml(t)}</div>`).join('');suggestionsEl.style.display='block';}
     historyDropdown.addEventListener('click',e=>{const t=e.target.closest('div[data-term]');if(!t)return;search.value=t.dataset.term;addSearchTerm(t.dataset.term);currentPage=1;historyDropdown.style.display='none';render();});
@@ -1229,17 +1243,24 @@
       const ts=totalStats();$('#statHearts').textContent=ts.hearts;$('#statCopies').textContent=ts.copies;
       $('#weekLabel').textContent=formatWeekLabel(WEEK_MONDAY);
     }
-    function render(){
+    function render(sync = false){
       const items=getFiltered();const tp=Math.max(1,Math.ceil(items.length/pageSize));
       if(currentPage>tp)currentPage=tp;
       const pi=items.slice((currentPage-1)*pageSize,currentPage*pageSize);
-      grid.classList.add('fade-out');
-      setTimeout(()=>{
-        grid.innerHTML=pi.map(cardHTML).join('');grid.classList.remove('fade-out');
+      const doRender = () => {
+        grid.innerHTML=pi.map(cardHTML).join('');
+        grid.classList.remove('fade-out');
         empty.style.display=items.length?'none':'block';
         chips.forEach(b=>b.classList.toggle('active',b.dataset.filter===filterEl.value||(filterEl.value==='all'&&b.dataset.filter==='all')));
-        buildPag(tp,currentPage);renderStatus(items.length);
-      },150);
+        buildPag(tp,currentPage);
+        renderStatus(items.length);
+      };
+      if (sync === true) {
+        doRender();
+      } else {
+        grid.classList.add('fade-out');
+        setTimeout(doRender, 150);
+      }
     }
     function renderFeatured(){
       const n=["Lâm Sơ Yến","Miên Dư","Tiên Tuyền/Dạ Phân"];
@@ -1331,9 +1352,9 @@
       }
     }
 
-    initStatsData();loadLocalPrefs();renderFeatured();render();renderStatus(getFiltered().length);navigate();
+    initStatsData();loadLocalPrefs();renderFeatured();render(true);renderStatus(getFiltered().length);navigate();
     initSupabase().then(renderAll);
     setInterval(()=>{if(supabase&&bxhView.classList.contains('active'))fetchStats().then(renderBXH);const cd=$('#bxhCountdown');if(cd)cd.textContent=getCountdown(WEEK_MONDAY);},60000);
   </script>
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a2519790dee6c6f3',t:'MTc4NTcyMDk5Mw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a2519790dee6c6f3',t:'MTc4NTcyMDk5Mw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a251a920bc13ff8b',t:'MTc4NTcyMTcxMg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
