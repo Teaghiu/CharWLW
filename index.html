@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabaseClient/supabaseClient-js@2"></script>
   <style>
     :root {
       --bg: #0a0b14;
@@ -862,6 +862,7 @@
   <div id="toast" class="toast"></div>
 
   <script>
+  
     /* =========================================================
        ⚙️  CẤU HÌNH SUPABASE
        ========================================================= */
@@ -1044,7 +1045,7 @@
     let statsData = {};
     let likedSet = new Set();
     let pinnedLocal = [];
-    let supabase = null;
+    let supabaseClient = null;
     let cloudMode = false;
 
     function defaultStats(){
@@ -1074,7 +1075,7 @@
           setCloud(false, '📴 Chưa tải thư viện Supabase');
           return false;
         }
-        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth:{persistSession:false} });
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth:{persistSession:false} });
         await ensureWeekRows();
         await fetchStats();
         setCloud(true);
@@ -1082,21 +1083,21 @@
       } catch(err){
         console.warn('Supabase init failed:',err);
         setCloud(false,'⚠️ Lỗi kết nối – dùng dự phòng cục bộ');
-        supabase = null;
+        supabaseClient = null;
         return false;
       }
     }
     async function ensureWeekRows(){
-      if(!supabase) return;
+      if(!supabaseClient) return;
       const rows = chars.map(c => ({week_key:WEEK_KEY, char_name:c.name, hearts:0,copies:0,pins:0}));
       try {
-        await supabase.from('char_stats').upsert(rows, {onConflict:'week_key,char_name', ignoreDuplicates:true});
+        await supabaseClient.from('char_stats').upsert(rows, {onConflict:'week_key,char_name', ignoreDuplicates:true});
       } catch(e){ console.warn(e); }
     }
     async function fetchStats(){
-      if(!supabase) return;
+      if(!supabaseClient) return;
       try {
-        const {data,error} = await supabase.from('char_stats').select('char_name,hearts,copies,pins').eq('week_key',WEEK_KEY);
+        const {data,error} = await supabaseClient.from('char_stats').select('char_name,hearts,copies,pins').eq('week_key',WEEK_KEY);
         if(error) throw error;
         if(data && data.length){
           const merged = defaultStats();
@@ -1106,9 +1107,9 @@
       } catch(e){ console.warn('fetchStats failed:',e); }
     }
     async function bumpStatRemote(name,field,delta){
-      if(!supabase) return false;
+      if(!supabaseClient) return false;
       try {
-        const {error} = await supabase.rpc('increment_stat',{wk:WEEK_KEY,cn:name,fld:field,d:delta});
+        const {error} = await supabaseClient.rpc('increment_stat',{wk:WEEK_KEY,cn:name,fld:field,d:delta});
         if(error) throw error;
         return true;
       } catch(e){
@@ -1152,7 +1153,7 @@
 
     async function doCopy(name,link){
       updateLocalStat(name,'copies',1);
-      if(supabase) bumpStatRemote(name,'copies',1).then(ok=>{if(ok)fetchStats().then(renderAll);});
+      if(supabaseClient) bumpStatRemote(name,'copies',1).then(ok=>{if(ok)fetchStats().then(renderAll);});
       try { await navigator.clipboard.writeText(link); showToast('✅ Đã copy link!'); }
       catch { showToast('❌ Không copy được',2500); }
       renderAll();
@@ -1162,7 +1163,7 @@
       const wasLiked = likedSet.has(name); const delta = wasLiked?-1:1;
       if(wasLiked) likedSet.delete(name); else likedSet.add(name);
       saveLiked(); updateLocalStat(name,'hearts',delta); renderAll();
-      if(supabase){ const ok=await bumpStatRemote(name,'hearts',delta); if(ok) fetchStats().then(renderAll); }
+      if(supabaseClient){ const ok=await bumpStatRemote(name,'hearts',delta); if(ok) fetchStats().then(renderAll); }
       showToast(wasLiked?`🤍 Bỏ tim ${name}`:`❤️ Đã tim ${name}`);
     }
     async function togglePin(name){
@@ -1170,12 +1171,12 @@
       if(idx!==-1){
         pinnedLocal.splice(idx,1); savePinned(); updateLocalStat(name,'pins',-1);
         showToast(`📌 Đã bỏ ghim ${name}`);
-        if(supabase) bumpStatRemote(name,'pins',-1).then(ok=>ok?fetchStats().then(renderAll):null);
+        if(supabaseClient) bumpStatRemote(name,'pins',-1).then(ok=>ok?fetchStats().then(renderAll):null);
       } else {
         if(pinnedLocal.length>=3){ showToast('⚠️ Tối đa 3 ghim!',2500); return; }
         pinnedLocal.push(name); savePinned(); updateLocalStat(name,'pins',1);
         showToast(`📌 Đã ghim ${name}`);
-        if(supabase) bumpStatRemote(name,'pins',1).then(ok=>ok?fetchStats().then(renderAll):null);
+        if(supabaseClient) bumpStatRemote(name,'pins',1).then(ok=>ok?fetchStats().then(renderAll):null);
       }
       renderAll();
     }
@@ -1283,7 +1284,7 @@
 
     function navigate(){
       const h=location.hash||'#/';const b=h.startsWith('#bxh');
-      if(b){mainView.classList.add('hidden');bxhView.classList.add('active');if(supabase)fetchStats().then(renderBXH);else renderBXH();window.scrollTo(0, 0);}
+      if(b){mainView.classList.add('hidden');bxhView.classList.add('active');if(supabaseClient)fetchStats().then(renderBXH);else renderBXH();window.scrollTo(0, 0);}
       else{mainView.classList.remove('hidden');bxhView.classList.remove('active');if(h==='#featured')setTimeout(()=>$('#featured').scrollIntoView({behavior:'smooth'}),50);else if(h==='#library')setTimeout(()=>$('#library').scrollIntoView({behavior:'smooth'}),50);}
       $$('.nav-link[data-nav]').forEach(a=>a.classList.toggle('active',(a.dataset.nav==='bxh'&&b)||(a.dataset.nav==='home'&&!b)||(a.dataset.nav==='featured'&&h==='#featured')));
     }
@@ -1298,7 +1299,7 @@
     function openRandom(){const r=chars[Math.floor(Math.random()*chars.length)];if(r)window.open(r.link,'_blank');}
     $('#randomBtn').addEventListener('click',openRandom);
     $('#randomHeroBtn').addEventListener('click',openRandom);
-    $('#refreshBXH').addEventListener('click',()=>{if(supabase)fetchStats().then(()=>{renderBXH();showToast('🔄 Đã cập nhật');});else{renderBXH();showToast('🔄 Đã làm mới');}});
+    $('#refreshBXH').addEventListener('click',()=>{if(supabaseClient)fetchStats().then(()=>{renderBXH();showToast('🔄 Đã cập nhật');});else{renderBXH();showToast('🔄 Đã làm mới');}});
 
     function attachG(el){el.addEventListener('click',async e=>{const b=e.target.closest('[data-action]');if(!b||b.disabled)return;const n=b.dataset.name;if(!n)return;b.classList.add('loading');if(b.dataset.action==='heart')await toggleHeart(n);else if(b.dataset.action==='pin')await togglePin(n);b.classList.remove('loading');});}
     attachG(grid);attachG(featuredGrid);
@@ -1343,7 +1344,9 @@
 
     initStatsData();loadLocalPrefs();renderFeatured();render();renderStatus(getFiltered().length);navigate();
     initSupabase().then(renderAll);
-    setInterval(()=>{if(supabase&&bxhView.classList.contains('active'))fetchStats().then(renderBXH);const cd=$('#bxhCountdown');if(cd)cd.textContent=getCountdown(WEEK_MONDAY);},60000);
+    setInterval(()=>{if(supabaseClient&&bxhView.classList.contains('active'))fetchStats().then(renderBXH);const cd=$('#bxhCountdown');if(cd)cd.textContent=getCountdown(WEEK_MONDAY);},60000);
   </script>
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a2519790dee6c6f3',t:'MTc4NTcyMDk5Mw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a2519790dee6c6f3',t:'MTc4NTcyMDk5Mw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();
+  
+</script></body>
 </html>
