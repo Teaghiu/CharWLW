@@ -227,7 +227,7 @@
     .section-sub { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
 
     /* FEATURED GRID */
-    .featured-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; }
+    .featured-grid { display: flex; flex-wrap: nowrap; align-items: stretch; gap: 16px; }
 
     /* CONTROL PANEL */
     .control-panel {
@@ -295,18 +295,28 @@
 
     /* CARDS */
     .grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;
+      display: flex; flex-direction: column; gap: 16px;
       transition: opacity 0.25s ease, transform 0.25s ease;
     }
     .grid.fade-out { opacity: 0; transform: scale(0.98); }
+    .card-row { display: flex; flex-wrap: nowrap; align-items: stretch; gap: 16px; }
+    /* Expandable card mechanism: equal flex-basis (near-square) by default,
+       active card grows via flex-grow while row siblings shrink to fit — no line wrap, no overlap. */
+    .card-row .card, .featured-grid .card {
+      flex: 1 1 0%; min-width: 0;
+      transition: flex-grow 0.45s cubic-bezier(0.2,0,0,1), flex-shrink 0.45s cubic-bezier(0.2,0,0,1), all 0.3s cubic-bezier(0.2,0,0,1);
+    }
+    .card-row .card.active, .featured-grid .card.active { flex: 4 1 0%; }
     .card {
       border: 1px solid var(--line);
       background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.02) 100%);
       border-radius: var(--radius); padding: 20px; display: flex; flex-direction: column;
-      position: relative; overflow: hidden;
+      position: relative; overflow: hidden; cursor: pointer;
       transition: all 0.3s cubic-bezier(0.2,0,0,1); backdrop-filter: blur(8px);
       animation: fadeUp 0.5s ease forwards; opacity: 0; transform: translateY(16px);
     }
+    .card.active { border-color: var(--card-accent, var(--accent)); box-shadow: 0 20px 50px rgba(0,0,0,0.4), 0 0 0 1px var(--card-accent, var(--accent)); }
+    .card.active .meta .tag { max-width: none; }
     @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
     .card::before {
       content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
@@ -391,7 +401,7 @@
     .empty-icon { font-size: 48px; margin-bottom: 12px; opacity: 0.6; }
 
     /* LIST VIEW */
-    .grid.list { grid-template-columns: 1fr !important; }
+    .grid.list .card-row { flex-direction: column; }
     .grid.list .card { flex-direction: row; flex-wrap: wrap; align-items: center; padding: 16px 20px; gap: 16px; }
     .grid.list .card .card-top { flex: 0 0 200px; }
     .grid.list .card .desc { flex: 2; min-width: 180px; margin-top: 0; font-size: 13px; }
@@ -607,7 +617,9 @@
       .nav-links { display: none; }
       .profile-stats { grid-template-columns: repeat(2,1fr); }
       .toolbar { grid-template-columns: 1fr 1fr; }
-      .featured-grid, .podium { grid-template-columns: 1fr; }
+      .featured-grid { flex-direction: column; }
+      .featured-grid .card { flex: none; width: 100%; }
+      .podium { grid-template-columns: 1fr; }
     }
     @media (max-width: 640px) {
       .wrap { padding: 0 14px; }
@@ -620,7 +632,6 @@
       .pstat { padding: 12px 14px; } .pstat b { font-size: 20px; }
       .toolbar { grid-template-columns: 1fr; }
       .nav-cta { display: none; }
-      .grid { grid-template-columns: 1fr; }
       .grid.list .card { flex-direction: column; align-items: stretch; }
       .grid.list .card .card-top { flex: 0 0 auto; }
       .grid.list .card .desc { min-width: 0; }
@@ -1006,10 +1017,11 @@
       const ini = w => (w[0]||'').toUpperCase();
       return parts.length===1 ? ini(parts[0]) : ini(parts[0]) + ini(parts[parts.length-1]);
     }
-    function renderTagChips(tagStr){
+    function renderTagChips(tagStr, limit=5){
       const tags = (tagStr||'').match(/#[^\s#]+/g)||[];
       const rem = (tagStr||'').replace(/#[^\s#]+/g,'').trim().split(/\s+/).filter(Boolean);
-      const all = [...tags, ...rem.map(t=>'#'+t)].filter(Boolean).slice(0,5);
+      let all = [...tags, ...rem.map(t=>'#'+t)].filter(Boolean);
+      if(limit!=null) all = all.slice(0,limit);
       return all.map(t=>`<span class="t">${escapeHtml(t)}</span>`).join('');
     }
     function firstTag(tagStr){ const t = (tagStr||'').match(/#[^\s#]+/); return t?t[0]:''; }
@@ -1205,7 +1217,7 @@
       return `<article class="card" style="--card-accent:${a};--card-glow:radial-gradient(circle,${a}33,transparent 70%);">
         <div class="card-top">
           <div class="avatar" style="background:linear-gradient(135deg,${a},${a}99);">${avatarText(item.name)}</div>
-          <div class="meta"><h3>${escapeHtml(item.name)}</h3><span class="tag">${renderTagChips(item.tag)}</span></div>
+          <div class="meta"><h3>${escapeHtml(item.name)}</h3><span class="tag" data-tag="${escapeHtml(item.tag||'')}">${renderTagChips(item.tag)}</span></div>
         </div>
         <div class="card-stats-mini">
           <span class="mini-stat ${il?'hearted':''}">❤️ ${s.hearts||0}</span><span class="mini-stat">📋 ${s.copies||0}</span>${ip?'<span class="mini-stat pinned-mini">📌 Đã ghim</span>':''}
@@ -1240,13 +1252,24 @@
       const ts=totalStats();$('#statHearts').textContent=ts.hearts;$('#statCopies').textContent=ts.copies;
       $('#weekLabel').textContent=formatWeekLabel(WEEK_MONDAY);
     }
+    function getPerRow(){
+      if(grid.classList.contains('list'))return 1;
+      const w=window.innerWidth;
+      if(w>=1000)return 4;
+      if(w>=700)return 3;
+      if(w>=460)return 2;
+      return 1;
+    }
+    function chunkArr(arr,n){const out=[];for(let i=0;i<arr.length;i+=n)out.push(arr.slice(i,i+n));return out;}
     function render(){
       const items=getFiltered();const tp=Math.max(1,Math.ceil(items.length/pageSize));
       if(currentPage>tp)currentPage=tp;
       const pi=items.slice((currentPage-1)*pageSize,currentPage*pageSize);
       grid.classList.add('fade-out');
       setTimeout(()=>{
-        grid.innerHTML=pi.map(cardHTML).join('');grid.classList.remove('fade-out');
+        const perRow=getPerRow();
+        grid.innerHTML=chunkArr(pi,perRow).map(row=>`<div class="card-row">${row.map(cardHTML).join('')}</div>`).join('');
+        grid.classList.remove('fade-out');
         empty.style.display=items.length?'none':'block';
         chips.forEach(b=>b.classList.toggle('active',b.dataset.filter===filterEl.value||(filterEl.value==='all'&&b.dataset.filter==='all')));
         buildPag(tp,currentPage);renderStatus(items.length);
@@ -1304,13 +1327,39 @@
     function attachG(el){el.addEventListener('click',async e=>{const b=e.target.closest('[data-action]');if(!b||b.disabled)return;const n=b.dataset.name;if(!n)return;b.classList.add('loading');if(b.dataset.action==='heart')await toggleHeart(n);else if(b.dataset.action==='pin')await togglePin(n);b.classList.remove('loading');});}
     attachG(grid);attachG(featuredGrid);
 
+    /* Expandable card click behavior — max 1 active card per row, siblings shrink automatically */
+    function collapseCard(c){
+      c.classList.remove('active');
+      const tagEl=c.querySelector('.tag');
+      if(tagEl)tagEl.innerHTML=renderTagChips(tagEl.dataset.tag,5);
+    }
+    function expandCard(c){
+      c.classList.add('active');
+      const tagEl=c.querySelector('.tag');
+      if(tagEl)tagEl.innerHTML=renderTagChips(tagEl.dataset.tag,null);
+    }
+    function attachExpand(el){
+      el.addEventListener('click',e=>{
+        if(e.target.closest('a, button, details, summary, [data-action]'))return;
+        const card=e.target.closest('.card');
+        if(!card||!el.contains(card))return;
+        const row=card.parentElement;
+        const wasActive=card.classList.contains('active');
+        row.querySelectorAll('.card.active').forEach(collapseCard);
+        if(!wasActive)expandCard(card);
+      });
+    }
+    attachExpand(grid);attachExpand(featuredGrid);
+    let resizeT=null;
+    window.addEventListener('resize',()=>{clearTimeout(resizeT);resizeT=setTimeout(render,200);});
+
     const bb=$('#backToTop');
     window.addEventListener('scroll',()=>{bb.style.display=window.scrollY>400?'block':'none';});
     bb.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 
     const tb=$('#toggleView');let vm=safeGet('viewMode')||'grid';
     function apV(){if(vm==='list'){grid.classList.add('list');tb.innerHTML='📐 Dạng lưới';}else{grid.classList.remove('list');tb.innerHTML='📋 Danh sách';}}
-    apV();tb.addEventListener('click',()=>{vm=vm==='grid'?'list':'grid';safeSet('viewMode',vm);apV();});
+    apV();tb.addEventListener('click',()=>{vm=vm==='grid'?'list':'grid';safeSet('viewMode',vm);apV();render();});
 
     const tt=$('#themeToggle');const stm=safeGet('theme')||'dark';
     if(stm==='light'){document.body.classList.add('light');tt.textContent='☀️';}else tt.textContent='🌙';
