@@ -227,7 +227,7 @@
     .section-sub { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
 
     /* FEATURED GRID */
-    .featured-grid { display: flex; flex-wrap: nowrap; align-items: stretch; gap: 16px; }
+    .featured-grid { display: flex; flex-wrap: nowrap; align-items: flex-start; gap: 16px; }
 
     /* CONTROL PANEL */
     .control-panel {
@@ -299,7 +299,7 @@
       transition: opacity 0.25s ease, transform 0.25s ease;
     }
     .grid.fade-out { opacity: 0; transform: scale(0.98); }
-    .card-row { display: flex; flex-wrap: nowrap; align-items: stretch; gap: 16px; }
+    .card-row { display: flex; flex-wrap: nowrap; align-items: flex-start; gap: 16px; }
     /* Expandable card mechanism: equal flex-basis (near-square) by default,
        active card grows via flex-grow while row siblings shrink to fit — no line wrap, no overlap. */
     .card-row .card, .featured-grid .card {
