@@ -226,8 +226,62 @@
     }
     .section-sub { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
 
-    /* FEATURED GRID */
-    .featured-grid { display: flex; flex-wrap: nowrap; align-items: flex-start; gap: 16px; }
+    /* SELECT CHARACTER HERO CAROUSEL */
+    .hero-select {
+      background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius-lg);
+      padding: 22px 20px 24px; backdrop-filter: blur(12px); position: relative; overflow: hidden;
+    }
+    .hs-label {
+      text-align: center; font-size: 11px; font-weight: 700; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--muted); margin: 0 0 4px;
+    }
+    .hs-label-accent {
+      background: var(--gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hs-counter { text-align: center; font-size: 11px; color: var(--muted-2); margin-bottom: 14px; font-variant-numeric: tabular-nums; }
+    .hs-nav { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 16px; }
+    .hs-arrow {
+      width: 40px; height: 40px; flex: 0 0 auto; border-radius: 50%; border: 1px solid var(--line);
+      background: var(--panel-2); color: var(--text); font-size: 18px; line-height: 1;
+      display: grid; place-items: center; cursor: pointer; transition: all 0.2s; font-family: inherit;
+    }
+    .hs-arrow:hover { background: var(--panel-hover); border-color: var(--line-strong); transform: translateY(-1px); }
+    .hs-name {
+      margin: 0; font-family: 'Playfair Display', serif; font-weight: 700; font-size: clamp(18px, 5vw, 25px);
+      text-align: center; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;
+      white-space: nowrap; letter-spacing: -0.01em;
+    }
+    .hs-stage {
+      position: relative; height: 190px; border-radius: 20px; overflow: hidden; margin-bottom: 16px;
+      display: grid; place-items: center; transition: background 0.4s ease;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08), 0 16px 40px rgba(0,0,0,0.35);
+    }
+    .hs-stage::before {
+      content: ""; position: absolute; inset: 0;
+      background-image: repeating-linear-gradient(45deg, transparent, transparent 30px, rgba(255,255,255,0.05) 30px, rgba(255,255,255,0.05) 60px);
+    }
+    .hs-stage::after {
+      content: ""; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 115%, rgba(0,0,0,0.55) 0%, transparent 60%);
+    }
+    .hs-stage-mark {
+      position: relative; z-index: 1; font-family: 'Playfair Display', serif; font-weight: 800;
+      font-size: 88px; color: rgba(255,255,255,0.92); text-shadow: 0 8px 30px rgba(0,0,0,0.35); letter-spacing: -2px;
+    }
+    .hs-tags {
+      text-align: center; font-size: 12px; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted); margin: 0 0 18px;
+    }
+    .hs-open { display: flex; width: 100%; padding: 13px; font-size: 14px; border-radius: 14px; }
+    .hs-peek { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 16px; }
+    .hs-peek-item {
+      border: 1px solid var(--line); background: rgba(255,255,255,0.03); color: var(--muted);
+      padding: 7px 13px; border-radius: 999px; font-size: 12px; font-weight: 500; cursor: pointer;
+      transition: all 0.2s; font-family: inherit; display: inline-flex; align-items: center; gap: 5px;
+    }
+    .hs-peek-item:hover { background: var(--panel-2); color: var(--text); border-color: var(--line-strong); transform: translateY(-1px); }
+    body.light .hs-arrow { background: #fff; }
+    body.light .hs-peek-item { background: rgba(0,0,0,0.03); }
 
     /* CONTROL PANEL */
     .control-panel {
@@ -302,11 +356,11 @@
     .card-row { display: flex; flex-wrap: nowrap; align-items: flex-start; gap: 16px; }
     /* Expandable card mechanism: equal flex-basis (near-square) by default,
        active card grows via flex-grow while row siblings shrink to fit — no line wrap, no overlap. */
-    .card-row .card, .featured-grid .card {
+    .card-row .card {
       flex: 1 1 0%; min-width: 0;
       transition: flex-grow 0.45s cubic-bezier(0.2,0,0,1), flex-shrink 0.45s cubic-bezier(0.2,0,0,1), all 0.3s cubic-bezier(0.2,0,0,1);
     }
-    .card-row .card.active, .featured-grid .card.active { flex: 4 1 0%; }
+    .card-row .card.active { flex: 4 1 0%; }
     .card {
       border: 1px solid var(--line);
       background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.02) 100%);
@@ -617,8 +671,6 @@
       .nav-links { display: none; }
       .profile-stats { grid-template-columns: repeat(2,1fr); }
       .toolbar { grid-template-columns: 1fr 1fr; }
-      .featured-grid { flex-direction: column; }
-      .featured-grid .card { flex: none; width: 100%; }
       .podium { grid-template-columns: 1fr; }
     }
     @media (max-width: 640px) {
@@ -646,6 +698,10 @@
       .bxh-hero { padding: 22px; }
       .splash-icon { width:80px; height:80px; }
       .splash-icon .fb-text { font-size:36px !important; }
+      .hs-stage { height: 150px; border-radius: 16px; }
+      .hs-stage-mark { font-size: 60px; }
+      .hs-arrow { width: 36px; height: 36px; font-size: 16px; }
+      .hero-select { padding: 18px 16px 20px; }
     }
   </style>
 </head>
@@ -736,16 +792,23 @@
         </div>
       </section>
 
-      <!-- Featured -->
+      <!-- Select Character -->
       <section class="section" id="featured">
-        <div class="section-head">
-          <div>
-            <h2 class="section-title">Nhân vật <span class="accent">tiêu biểu</span></h2>
-            <p class="section-sub">3 nhân vật nổi bật được tuyển chọn từ thư viện</p>
+        <div class="hero-select">
+          <p class="hs-label">Select <span class="hs-label-accent">Character</span></p>
+          <p class="hs-counter" id="heroCounter"></p>
+          <div class="hs-nav">
+            <button type="button" class="hs-arrow" id="heroPrev" aria-label="Nhân vật trước">‹</button>
+            <h3 class="hs-name" id="heroName">—</h3>
+            <button type="button" class="hs-arrow" id="heroNext" aria-label="Nhân vật sau">›</button>
           </div>
-          <a href="#library" class="btn ghost">Xem tất cả →</a>
+          <div class="hs-stage" id="heroStage">
+            <span class="hs-stage-mark" id="heroMark">?</span>
+          </div>
+          <p class="hs-tags" id="heroTags"></p>
+          <a class="btn primary hs-open" id="heroOpenBtn" href="#" target="_blank" rel="noopener">Mở Character ↗</a>
+          <div class="hs-peek" id="heroPeek"></div>
         </div>
-        <div id="featuredGrid" class="featured-grid"></div>
       </section>
 
       <!-- Library -->
@@ -814,7 +877,7 @@
       <footer class="footer">
         <div class="footer-links">
           <a href="#/">Thư viện</a>
-          <a href="#featured">Nhân vật tiêu biểu</a>
+          <a href="#featured">Chọn nhân vật</a>
           <a href="#bxh">Bảng xếp hạng</a>
           <a href="https://aistudio.google.com/" target="_blank" rel="noopener">Google AI Studio</a>
         </div>
@@ -862,7 +925,7 @@
       <footer class="footer">
         <div class="footer-links">
           <a href="#/">← Quay lại thư viện</a>
-          <a href="#featured">Nhân vật tiêu biểu</a>
+          <a href="#featured">Chọn nhân vật</a>
         </div>
         <div>Dữ liệu tương tác được đồng bộ thời gian thực từ Supabase · Reset tự động mỗi thứ 2.</div>
       </footer>
@@ -997,7 +1060,6 @@
     const $ = s => document.querySelector(s);
     const $$ = s => [...document.querySelectorAll(s)];
     const grid = $('#grid');
-    const featuredGrid = $('#featuredGrid');
     const empty = $('#empty');
     const search = $('#search');
     const filterEl = $('#filter');
@@ -1213,22 +1275,18 @@
     /* CARDS */
     let currentPage=1, pageSize=20, cachedRandom=null, lastRandomKey='';
     function cardHTML(item){
-      const a=item.accent||'#a78bfa', s=charStats(item.name), il=likedSet.has(item.name), ip=pinnedLocal.includes(item.name);
+      const a=item.accent||'#a78bfa', il=likedSet.has(item.name), ip=pinnedLocal.includes(item.name);
       return `<article class="card" style="--card-accent:${a};--card-glow:radial-gradient(circle,${a}33,transparent 70%);">
         <div class="card-top">
           <div class="avatar" style="background:linear-gradient(135deg,${a},${a}99);">${avatarText(item.name)}</div>
           <div class="meta"><h3>${escapeHtml(item.name)}</h3><span class="tag" data-tag="${escapeHtml(item.tag||'')}">${renderTagChips(item.tag)}</span></div>
         </div>
-        <div class="card-stats-mini">
-          <span class="mini-stat ${il?'hearted':''}">❤️ ${s.hearts||0}</span><span class="mini-stat">📋 ${s.copies||0}</span>${ip?'<span class="mini-stat pinned-mini">📌 Đã ghim</span>':''}
-        </div>
         <p class="desc">${escapeHtml(item.summary)}</p>
-        ${item.extra?`<details class="more"><summary>Xem thêm ▾</summary><div class="more-body">${escapeHtml(item.extra)}</div></details>`:''}
         <div class="actions">
-          <a class="btn primary" href="${item.link}" target="_blank" rel="noopener">Mở link ↗</a>
-          <button class="btn" onclick='doCopy(${JSON.stringify(item.name)},${JSON.stringify(item.link)})'>📋 Copy</button>
-          <button class="btn icon-btn heart-btn ${il?'liked':''}" data-action="heart" data-name="${escapeHtml(item.name)}">${il?'❤️':'🤍'}</button>
-          <button class="btn icon-btn pin-btn ${ip?'pinned':''}" data-action="pin" data-name="${escapeHtml(item.name)}" ${pinnedLocal.length>=3&&!ip?'disabled':''}>📌</button>
+          <a class="btn primary" href="${item.link}" target="_blank" rel="noopener">Mở Character ↗</a>
+          <button class="btn icon-btn heart-btn ${il?'liked':''}" data-action="heart" data-name="${escapeHtml(item.name)}" title="Yêu thích">${il?'❤️':'🤍'}</button>
+          <button class="btn icon-btn" onclick='doCopy(${JSON.stringify(item.name)},${JSON.stringify(item.link)})' title="Copy link">📋</button>
+          <button class="btn icon-btn pin-btn ${ip?'pinned':''}" data-action="pin" data-name="${escapeHtml(item.name)}" ${pinnedLocal.length>=3&&!ip?'disabled':''} title="Ghim">📌</button>
         </div></article>`;
     }
     function getFiltered(){
@@ -1275,13 +1333,52 @@
         buildPag(tp,currentPage);renderStatus(items.length);
       },150);
     }
-    function renderFeatured(){
-      const n=["Lâm Sơ Yến","Miên Dư","Tiên Tuyền/Dạ Phân"];
-      let s=n.map(x=>chars.find(c=>c.name===x)).filter(Boolean);
-      if(s.length<3)s=chars.slice(0,3);
-      featuredGrid.innerHTML=s.map(cardHTML).join('');
+    /* SELECT CHARACTER CAROUSEL */
+    function shadeColor(hex, percent){
+      let c=(hex||'#a78bfa').replace('#','');
+      if(c.length===3) c=c.split('').map(x=>x+x).join('');
+      const num=parseInt(c,16)||0xa78bfa;
+      let r=(num>>16)&255,g=(num>>8)&255,b=num&255;
+      const t=percent<0?0:255, p=Math.abs(percent);
+      r=Math.round((t-r)*p)+r; g=Math.round((t-g)*p)+g; b=Math.round((t-b)*p)+b;
+      return '#'+(0x1000000+(r<<16)+(g<<8)+b).toString(16).slice(1);
     }
-    function renderAll(){render();renderFeatured();renderStatus(getFiltered().length);if(bxhView.classList.contains('active'))renderBXH();}
+    function heroTagLine(tagStr){
+      const tags=(tagStr||'').match(/#[^\s#]+/g)||[];
+      return tags.slice(0,3).map(t=>t.replace('#','').replace(/_/g,' ').toUpperCase()).join(' · ');
+    }
+    let heroIndex = Math.max(0, chars.findIndex(c=>c.name==='Lâm Sơ Yến'));
+    function renderHero(){
+      const item=chars[heroIndex]; if(!item) return;
+      const a=item.accent||'#a78bfa', a2=shadeColor(a,-0.55);
+      $('#heroName').textContent=item.name;
+      $('#heroMark').textContent=avatarText(item.name);
+      $('#heroStage').style.background=`linear-gradient(155deg, ${a} 0%, ${a2} 100%)`;
+      $('#heroTags').textContent=heroTagLine(item.tag);
+      $('#heroOpenBtn').href=item.link;
+      $('#heroCounter').textContent=`${String(heroIndex+1).padStart(2,'0')} / ${chars.length}`;
+      const peek=[1,2,3].map(o=>chars[(heroIndex+o)%chars.length]);
+      $('#heroPeek').innerHTML=peek.map(c=>`<button type="button" class="hs-peek-item" data-name="${escapeHtml(c.name)}">○ ${escapeHtml(c.name)}</button>`).join('');
+    }
+    function heroGo(delta){ heroIndex=(heroIndex+delta+chars.length)%chars.length; renderHero(); }
+    function heroGoTo(name){ const idx=chars.findIndex(c=>c.name===name); if(idx!==-1){ heroIndex=idx; renderHero(); } }
+    $('#heroPrev').addEventListener('click',()=>heroGo(-1));
+    $('#heroNext').addEventListener('click',()=>heroGo(1));
+    $('#heroPeek').addEventListener('click',e=>{
+      const b=e.target.closest('.hs-peek-item'); if(!b)return;
+      heroGoTo(b.dataset.name);
+    });
+    (function(){
+      let tX=null; const st=$('#heroStage');
+      st.addEventListener('touchstart',e=>{tX=e.touches[0].clientX;},{passive:true});
+      st.addEventListener('touchend',e=>{
+        if(tX==null)return;
+        const dx=e.changedTouches[0].clientX-tX;
+        if(Math.abs(dx)>40) heroGo(dx<0?1:-1);
+        tX=null;
+      },{passive:true});
+    })();
+    function renderAll(){render();renderStatus(getFiltered().length);if(bxhView.classList.contains('active'))renderBXH();}
     function gotoPage(p){const items=getFiltered();const tp=Math.max(1,Math.ceil(items.length/pageSize));currentPage=Math.max(1,Math.min(p,tp));render();$('#library').scrollIntoView({behavior:'smooth',block:'start'});}
     window.gotoPage=gotoPage;
 
@@ -1325,7 +1422,7 @@
     $('#refreshBXH').addEventListener('click',()=>{if(supabaseClient)fetchStats().then(()=>{renderBXH();showToast('🔄 Đã cập nhật');});else{renderBXH();showToast('🔄 Đã làm mới');}});
 
     function attachG(el){el.addEventListener('click',async e=>{const b=e.target.closest('[data-action]');if(!b||b.disabled)return;const n=b.dataset.name;if(!n)return;b.classList.add('loading');if(b.dataset.action==='heart')await toggleHeart(n);else if(b.dataset.action==='pin')await togglePin(n);b.classList.remove('loading');});}
-    attachG(grid);attachG(featuredGrid);
+    attachG(grid);
 
     /* Expandable card click behavior — max 1 active card per row, siblings shrink automatically */
     function collapseCard(c){
@@ -1349,7 +1446,7 @@
         if(!wasActive)expandCard(card);
       });
     }
-    attachExpand(grid);attachExpand(featuredGrid);
+    attachExpand(grid);
     let resizeT=null;
     window.addEventListener('resize',()=>{clearTimeout(resizeT);resizeT=setTimeout(render,200);});
 
@@ -1391,7 +1488,7 @@
       }
     }
 
-    initStatsData();loadLocalPrefs();renderFeatured();render();renderStatus(getFiltered().length);navigate();
+    initStatsData();loadLocalPrefs();renderHero();render();renderStatus(getFiltered().length);navigate();
     initSupabase().then(renderAll);
     setInterval(()=>{if(supabaseClient&&bxhView.classList.contains('active'))fetchStats().then(renderBXH);const cd=$('#bxhCountdown');if(cd)cd.textContent=getCountdown(WEEK_MONDAY);},60000);
   </script>
