@@ -283,6 +283,60 @@
     body.light .hs-arrow { background: #fff; }
     body.light .hs-peek-item { background: rgba(0,0,0,0.03); }
 
+
+    /* RANDOM SPIN ANIMATION */
+    .hero-select.spinning { pointer-events: none; }
+    .hs-spin-track {
+      position: absolute; inset: 0; display: flex; align-items: center;
+      gap: 16px; padding: 0 20px; will-change: transform;
+      transition: none;
+    }
+    .hs-spin-item {
+      flex: 0 0 auto; width: 120px; height: 140px; border-radius: 16px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 8px; border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      transition: transform 0.2s, opacity 0.2s, filter 0.2s;
+      opacity: 0.45; transform: scale(0.82); filter: blur(0.5px);
+      background: linear-gradient(155deg, var(--spin-a, #a78bfa) 0%, var(--spin-b, #5b4bb8) 100%);
+    }
+    .hs-spin-item.center {
+      opacity: 1; transform: scale(1.12); filter: none;
+      border-color: rgba(255,255,255,0.35);
+      box-shadow: 0 12px 36px rgba(0,0,0,0.4), 0 0 0 2px rgba(255,255,255,0.15);
+      z-index: 2;
+    }
+    .hs-spin-mark {
+      font-family: 'Playfair Display', serif; font-weight: 800;
+      font-size: 42px; color: rgba(255,255,255,0.95);
+      text-shadow: 0 4px 16px rgba(0,0,0,0.35); letter-spacing: -1px;
+      line-height: 1;
+    }
+    .hs-spin-name {
+      font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.9);
+      text-align: center; max-width: 100px; overflow: hidden;
+      text-overflow: ellipsis; white-space: nowrap; padding: 0 4px;
+    }
+    .hs-wish {
+      text-align: center; margin: 12px 0 0; font-size: 14px;
+      color: var(--muted); font-style: italic; opacity: 0;
+      transition: opacity 0.4s ease; min-height: 22px;
+    }
+    .hs-wish.show { opacity: 1; color: var(--text); }
+    .hs-stage.spin-mode {
+      overflow: hidden; position: relative;
+    }
+    .hs-stage.spin-mode .hs-stage-mark { display: none; }
+    .hs-stage.spin-mode::before, .hs-stage.spin-mode::after { opacity: 0.3; }
+    body.light .hs-spin-item {
+      border-color: rgba(0,0,0,0.08);
+    }
+    @media (max-width: 640px) {
+      .hs-spin-item { width: 96px; height: 120px; }
+      .hs-spin-mark { font-size: 32px; }
+      .hs-spin-name { font-size: 10px; max-width: 80px; }
+    }
+
     /* CONTROL PANEL */
     .control-panel {
       background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius-lg);
@@ -316,9 +370,7 @@
     .btn.primary { background: var(--gradient-2); color: #07111a; font-weight: 700; border-color: transparent; }
     .btn.primary:hover { filter: brightness(1.08); box-shadow: 0 8px 20px rgba(167,139,250,0.35); }
     .btn.ghost { background: transparent; }
-    .btn.bxh-btn { background: linear-gradient(135deg, #fbbf24, #f472b6); color: #1a0b0b; font-weight: 700; border-color: transparent; }
-    .btn.bxh-btn:hover { box-shadow: 0 8px 20px rgba(251,191,36,0.3); }
-    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
     .chip {
       border: 1px solid var(--line); background: rgba(255,255,255,0.03); color: var(--muted);
       padding: 8px 14px; border-radius: 999px; cursor: pointer; font-size: 13px; font-weight: 500;
@@ -463,96 +515,6 @@
     .grid.list .card .more, .grid.list .card .card-stats-mini { width: 100%; }
     .grid.list .card::before { width: 3px; height: auto; inset: 8px auto 8px 0; right: auto; border-radius: 3px; }
 
-    /* RANKINGS PAGE */
-    .rankings-page { display: none; }
-    .rankings-page.active { display: block; }
-    .main-view.hidden { display: none; }
-    .bxh-hero {
-      margin-top: 28px; padding: 32px; border-radius: var(--radius-lg);
-      background: linear-gradient(135deg, rgba(251,191,36,0.12), rgba(244,114,182,0.12), rgba(167,139,250,0.12));
-      border: 1px solid rgba(251,191,36,0.25); backdrop-filter: blur(12px); position: relative; overflow: hidden;
-    }
-    .bxh-hero::before {
-      content: ""; position: absolute; inset: 0;
-      background: radial-gradient(circle at 80% 20%, rgba(251,191,36,0.2), transparent 50%); pointer-events: none;
-    }
-    .bxh-title {
-      font-family: 'Playfair Display', serif; font-size: clamp(28px, 4vw, 44px); font-weight: 700; margin: 0;
-      background: linear-gradient(135deg, #fbbf24, #f472b6, #a78bfa);
-      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; position: relative;
-    }
-    .bxh-sub { margin: 8px 0 0; color: var(--muted); font-size: 14px; position: relative; }
-    .bxh-week-info { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; position: relative; }
-    .bxh-chip {
-      padding: 6px 14px; background: rgba(0,0,0,0.25); border: 1px solid var(--line);
-      border-radius: 999px; font-size: 12px; color: var(--muted);
-    }
-    body.light .bxh-chip { background: rgba(255,255,255,0.6); }
-    .bxh-chip b { color: var(--text); }
-    .bxh-actions { margin-top: 18px; display: flex; gap: 10px; flex-wrap: wrap; position: relative; }
-    .podium { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 32px; }
-    .podium-card {
-      background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
-      padding: 24px 20px; text-align: center; position: relative; overflow: hidden;
-      backdrop-filter: blur(10px); transition: all 0.3s; text-decoration: none; color: inherit; display: block;
-    }
-    .podium-card:hover { transform: translateY(-4px); border-color: var(--line-strong); }
-    .podium-card.gold { border-color: rgba(251,191,36,0.4); }
-    .podium-card.gold::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #fbbf24, #f59e0b); }
-    .podium-card.silver::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #e2e8f0, #94a3b8); }
-    .podium-card.bronze::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #d97706, #92400e); }
-    .podium-rank {
-      width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center;
-      font-size: 22px; font-weight: 900; margin: 0 auto 12px; font-family: 'Playfair Display', serif;
-    }
-    .podium-card.gold .podium-rank { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #422006; box-shadow: 0 8px 24px rgba(251,191,36,0.4); }
-    .podium-card.silver .podium-rank { background: linear-gradient(135deg, #e2e8f0, #94a3b8); color: #1e293b; box-shadow: 0 8px 24px rgba(148,163,184,0.3); }
-    .podium-card.bronze .podium-rank { background: linear-gradient(135deg, #d97706, #92400e); color: #fff; box-shadow: 0 8px 24px rgba(217,119,6,0.3); }
-    .podium-name { font-size: 16px; font-weight: 700; margin: 0; }
-    .podium-score { display: inline-block; margin-top: 6px; font-size: 13px; color: var(--muted); }
-    .podium-score b {
-      font-size: 22px; background: var(--gradient);
-      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800;
-    }
-    .avatar-podium {
-      width: 64px; height: 64px; border-radius: 16px; margin: 0 auto 12px;
-      display: grid; place-items: center; color: #fff; font-weight: 800;
-      font-family: 'Playfair Display', serif; font-size: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-    }
-    .bxh-section { margin-top: 40px; }
-    .bxh-section-title { font-size: 20px; font-weight: 700; margin: 0 0 14px; display: flex; align-items: center; gap: 10px; }
-    .bxh-table { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
-    .bxh-row {
-      display: grid; grid-template-columns: 50px 1fr auto auto auto; gap: 16px; align-items: center;
-      padding: 14px 20px; border-bottom: 1px solid var(--line); transition: background 0.2s;
-      text-decoration: none; color: inherit;
-    }
-    .bxh-row:last-child { border-bottom: none; }
-    .bxh-row:hover { background: var(--panel-2); }
-    .bxh-row.head {
-      font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600;
-      background: rgba(255,255,255,0.02);
-    }
-    .bxh-row.head:hover { background: rgba(255,255,255,0.02); }
-    .bxh-rank-num { font-weight: 800; font-size: 18px; text-align: center; font-family: 'Playfair Display', serif; color: var(--muted); }
-    .bxh-row.top-1 .bxh-rank-num { color: var(--gold); }
-    .bxh-row.top-2 .bxh-rank-num { color: var(--silver); }
-    .bxh-row.top-3 .bxh-rank-num { color: var(--bronze); }
-    .name-cell { display: flex; align-items: center; gap: 12px; min-width: 0; }
-    .mini-avatar {
-      width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center;
-      color: #fff; font-weight: 700; font-size: 13px; flex-shrink: 0; font-family: 'Playfair Display', serif;
-    }
-    .name-text { min-width: 0; }
-    .name-text b { font-size: 14px; font-weight: 600; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .name-text small { color: var(--muted-2); font-size: 11px; }
-    .bxh-stat { text-align: right; font-variant-numeric: tabular-nums; font-size: 14px; font-weight: 700; min-width: 60px; }
-    .bxh-stat.heart-c { color: var(--heart); }
-    .bxh-stat.copy-c { color: var(--accent-2); }
-    .bxh-stat.pin-c { color: var(--gold); }
-    .bxh-stat small { display: block; font-size: 10px; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; }
-    .bxh-empty { padding: 32px; text-align: center; color: var(--muted); }
-
     /* FOOTER */
     .footer {
       margin: 56px 0 24px; padding: 28px; border-top: 1px solid var(--line);
@@ -646,8 +608,8 @@
     body.light .chip.active { color: #fff; }
     body.light .btn { background: rgba(0,0,0,0.04); }
     body.light .btn.primary { color: #fff; }
-    body.light .btn.bxh-btn { color: #1a0b0b; }
-    body.light .meta .tag .t { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.08); }
+    body.light
+body.light .meta .tag .t { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.08); }
     body.light .pstat { background: #fff; }
     body.light #searchSuggestions, body.light #searchHistoryDropdown {
       background: #ffffff !important; border-color: rgba(0,0,0,0.1); box-shadow: 0 16px 40px rgba(0,0,0,0.1);
@@ -660,19 +622,13 @@
     body.light .page-btn.active { color: #fff; }
     body.light .pin-btn.pinned { color: #b45309; }
     body.light .mini-stat { background: rgba(0,0,0,0.03); }
-    body.light .podium-card, body.light .bxh-table { background: #fff; }
-    body.light .bxh-row.head { background: rgba(0,0,0,0.02); }
-    body.light #splash { background: radial-gradient(circle at 30% 40%, rgba(167,139,250,0.25), #ffffff 70%); }
+body.light #splash { background: radial-gradient(circle at 30% 40%, rgba(167,139,250,0.25), #ffffff 70%); }
     body.light .profile-banner::after { background: radial-gradient(circle at 50% 100%, rgba(247,248,252,0.95) 0%, transparent 60%); }
-    body.light .bxh-hero { background: linear-gradient(135deg, rgba(251,191,36,0.08), rgba(244,114,182,0.08), rgba(167,139,250,0.08)); }
-    body.light .bxh-chip { background: rgba(0,0,0,0.05); }
-
-    @media (max-width: 900px) {
+@media (max-width: 900px) {
       .nav-links { display: none; }
       .profile-stats { grid-template-columns: repeat(2,1fr); }
       .toolbar { grid-template-columns: 1fr 1fr; }
-      .podium { grid-template-columns: 1fr; }
-    }
+}
     @media (max-width: 640px) {
       .wrap { padding: 0 14px; }
       .profile-banner { height: 140px; }
@@ -692,11 +648,7 @@
       .section-head { align-items: start; flex-direction: column; }
       .profile-actions { width: 100%; }
       .profile-actions .btn { flex: 1; }
-      .bxh-row { grid-template-columns: 36px 1fr; padding: 12px 14px; gap: 10px; }
-      .bxh-row .bxh-stat { text-align: left; grid-column: 2 / -1; }
-      .bxh-row.head { display: none; }
-      .bxh-hero { padding: 22px; }
-      .splash-icon { width:80px; height:80px; }
+.splash-icon { width:80px; height:80px; }
       .splash-icon .fb-text { font-size:36px !important; }
       .hs-stage { height: 150px; border-radius: 16px; }
       .hs-stage-mark { font-size: 60px; }
@@ -731,12 +683,10 @@
       <div class="nav-links">
         <a href="#/" class="nav-link" data-nav="home">Thư viện</a>
         <a href="#featured" class="nav-link" data-nav="featured">Nhân vật</a>
-        <a href="#bxh" class="nav-link" data-nav="bxh">Bảng xếp hạng</a>
         <a href="https://aistudio.google.com/" target="_blank" rel="noopener" class="nav-link">AI Studio ↗</a>
       </div>
       <div class="nav-actions">
         <button id="themeToggle" class="theme-toggle-btn" aria-label="Chuyển theme">🌙</button>
-        <a href="#bxh" class="nav-cta">🏆 BXH tuần</a>
       </div>
     </div>
   </nav>
@@ -757,7 +707,6 @@
               <img src="icon.jpg" alt="TeaGhiu" onerror="this.style.display='none';this.parentElement.classList.add('fb');this.parentElement.innerHTML+='<span class=\'fb-text\'>T</span><div style=\'position:absolute;bottom:-6px;right:-6px;width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#22d3ee,#a78bfa);border:3px solid var(--bg);display:grid;place-items:center;font-size:14px;color:#fff;z-index:2;\'>✦</div>';">
             </div>
             <div class="profile-actions">
-              <a href="#bxh" class="btn bxh-btn">🏆 Bảng xếp hạng</a>
               <button id="randomHeroBtn" class="btn">🎲 Char ngẫu nhiên</button>
             </div>
           </div>
@@ -770,8 +719,8 @@
             <div class="profile-stats">
               <a href="#library" class="pstat" style="text-decoration:none;color:inherit;"><b id="statTotal">0</b><span>Nhân vật</span></a>
               <a href="#library" class="pstat" style="text-decoration:none;color:inherit;"><b id="statShown">0</b><span>Đang hiển thị</span></a>
-              <a href="#bxh" class="pstat" style="text-decoration:none;color:inherit;"><b id="statHearts">0</b><span>Lượt tim tuần</span></a>
-              <a href="#bxh" class="pstat" style="text-decoration:none;color:inherit;"><b id="statCopies">0</b><span>Lượt copy tuần</span></a>
+              <div class="pstat"><b id="statHearts">0</b><span>Lượt tim tuần</span></div>
+              <div class="pstat"><b id="statCopies">0</b><span>Lượt copy tuần</span></div>
             </div>
             <div class="tag-cloud">
               <span class="tag-pill">#WLW</span>
@@ -806,6 +755,7 @@
             <span class="hs-stage-mark" id="heroMark">?</span>
           </div>
           <p class="hs-tags" id="heroTags"></p>
+          <p class="hs-wish" id="heroWish"></p>
           <a class="btn primary hs-open" id="heroOpenBtn" href="#" target="_blank" rel="noopener">Mở Character ↗</a>
           <div class="hs-peek" id="heroPeek"></div>
         </div>
@@ -878,56 +828,9 @@
         <div class="footer-links">
           <a href="#/">Thư viện</a>
           <a href="#featured">Chọn nhân vật</a>
-          <a href="#bxh">Bảng xếp hạng</a>
           <a href="https://aistudio.google.com/" target="_blank" rel="noopener">Google AI Studio</a>
         </div>
         <div>Thư viện WLW by TeaGhiu <span class="heart">♥</span> · Hosted on GitHub Pages · Đồng bộ bởi Supabase</div>
-      </footer>
-    </div>
-  </div>
-
-  <!-- RANKINGS PAGE -->
-  <div class="rankings-page" id="bxhView">
-    <div class="wrap">
-      <section class="bxh-hero">
-        <h1 class="bxh-title">🏆 Bảng xếp hạng tuần</h1>
-        <p class="bxh-sub">Tổng hợp số liệu tương tác toàn cầu từ mọi người dùng: ❤️ yêu thích, 📋 copy link, 📌 ghim. Dữ liệu tự động làm mới vào Thứ 2 hàng tuần.</p>
-        <div class="bxh-week-info">
-          <span class="bxh-chip">📅 Tuần: <b id="bxhWeekLabel"></b></span>
-          <span class="bxh-chip">⏳ Reset sau: <b id="bxhCountdown"></b></span>
-          <span class="bxh-chip" id="bxhCloudChip">☁️ Đang đồng bộ...</span>
-        </div>
-        <div class="bxh-actions">
-          <a href="#/" class="btn primary">← Quay lại thư viện</a>
-          <button id="refreshBXH" class="btn ghost">🔄 Làm mới</button>
-        </div>
-      </section>
-      <div class="podium" id="podium"></div>
-
-      <section class="bxh-section">
-        <h3 class="bxh-section-title">❤️ Top yêu thích nhiều nhất</h3>
-        <div class="bxh-table" id="bxhHearts"><div class="bxh-empty">Đang tải...</div></div>
-      </section>
-      <section class="bxh-section">
-        <h3 class="bxh-section-title">📋 Top copy link nhiều nhất</h3>
-        <div class="bxh-table" id="bxhCopies"><div class="bxh-empty">Đang tải...</div></div>
-      </section>
-      <section class="bxh-section">
-        <h3 class="bxh-section-title">📌 Top ghim nhiều nhất</h3>
-        <div class="bxh-table" id="bxhPins"><div class="bxh-empty">Đang tải...</div></div>
-      </section>
-      <section class="bxh-section">
-        <h3 class="bxh-section-title">🌟 Top tổng điểm</h3>
-        <p class="section-sub" style="margin:-8px 0 14px;">Công thức: Tim × 3 + Copy × 2 + Ghim × 5</p>
-        <div class="bxh-table" id="bxhOverall"><div class="bxh-empty">Đang tải...</div></div>
-      </section>
-
-      <footer class="footer">
-        <div class="footer-links">
-          <a href="#/">← Quay lại thư viện</a>
-          <a href="#featured">Chọn nhân vật</a>
-        </div>
-        <div>Dữ liệu tương tác được đồng bộ thời gian thực từ Supabase · Reset tự động mỗi thứ 2.</div>
       </footer>
     </div>
   </div>
@@ -1067,8 +970,7 @@
     const statusText = $('#statusText');
     const countInfo = $('#countInfo');
     const mainView = $('#mainView');
-    const bxhView = $('#bxhView');
-    const cloudStatus = $('#cloudStatus');
+        const cloudStatus = $('#cloudStatus');
     const cloudStatusText = $('#cloudStatusText');
 
     function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
@@ -1134,11 +1036,9 @@
       if(status){
         cloudStatus.classList.remove('offline');
         cloudStatusText.textContent = msg || '☁️ Đã đồng bộ đám mây (Supabase)';
-        const chip = $('#bxhCloudChip'); if(chip) chip.innerHTML = '☁️ <b>Dữ liệu toàn cầu</b>';
       } else {
         cloudStatus.classList.add('offline');
         cloudStatusText.textContent = msg || '📴 Chế độ ngoại tuyến';
-        const chip = $('#bxhCloudChip'); if(chip) chip.innerHTML = '📴 <b>Chế độ ngoại tuyến</b>';
       }
     }
 
@@ -1378,35 +1278,15 @@
         tX=null;
       },{passive:true});
     })();
-    function renderAll(){render();renderStatus(getFiltered().length);if(bxhView.classList.contains('active'))renderBXH();}
+    function renderAll(){render();renderStatus(getFiltered().length);}
     function gotoPage(p){const items=getFiltered();const tp=Math.max(1,Math.ceil(items.length/pageSize));currentPage=Math.max(1,Math.min(p,tp));render();$('#library').scrollIntoView({behavior:'smooth',block:'start'});}
     window.gotoPage=gotoPage;
 
-    function scoreOf(s){return(s.hearts||0)*3+(s.copies||0)*2+(s.pins||0)*5;}
-    function renderBXH(){
-      $('#bxhWeekLabel').textContent=formatWeekLabel(WEEK_MONDAY);
-      $('#bxhCountdown').textContent=getCountdown(WEEK_MONDAY);
-      const list=chars.map(c=>{const s=charStats(c);return{...c,hearts:s.hearts||0,copies:s.copies||0,pins:s.pins||0,score:scoreOf(s)};});
-      const top3=[...list].sort((a,b)=>b.score-a.score||a.name.localeCompare(b.name,'vi')).slice(0,3);
-      const md=['gold','silver','bronze'];
-      $('#podium').innerHTML=top3.some(c=>c.score>0)?top3.map((c,i)=>`<a href="#/" class="podium-card ${md[i]}"><div class="podium-rank">${i+1}</div><div class="avatar-podium" style="background:linear-gradient(135deg,${c.accent||'#a78bfa'},${c.accent||'#a78bfa'}99);">${avatarText(c.name)}</div><div class="podium-name">${escapeHtml(c.name)}</div><div class="podium-score"><b>${c.score}</b> điểm</div><div style="margin-top:8px;display:flex;gap:8px;justify-content:center;font-size:12px;color:var(--muted);flex-wrap:wrap;"><span>❤️ ${c.hearts}</span><span>📋 ${c.copies}</span><span>📌 ${c.pins}</span></div></a>`).join(''):'<div class="bxh-empty" style="grid-column:1/-1;">Chưa có dữ liệu tuần này — hãy tương tác nhé! ❤️📋📌</div>';
-      function tbl(rows,k,e,cc,l){
-        const s=[...rows].sort((a,b)=>b[k]-a[k]||a.name.localeCompare(b.name,'vi'));const t=s.filter(c=>c[k]>0).slice(0,20);
-        if(!t.length)return`<div class="bxh-empty">Chưa có lượt ${l} nào.</div>`;
-        return`<div class="bxh-row head"><span>#</span><span>Nhân vật</span><span class="bxh-stat ${cc}">${e}<small>${l}</small></span><span class="bxh-stat" style="color:var(--heart)"><small>Tim</small></span><span class="bxh-stat" style="color:var(--accent-2)"><small>Copy</small></span></div>${t.map((c,i)=>`<a href="#/" class="bxh-row ${i<3?'top-'+(i+1):''}"><span class="bxh-rank-num">${i+1}</span><div class="name-cell"><div class="mini-avatar" style="background:linear-gradient(135deg,${c.accent||'#a78bfa'},${c.accent||'#a78bfa'}99);">${avatarText(c.name)}</div><div class="name-text"><b>${escapeHtml(c.name)}</b><small>${escapeHtml(firstTag(c.tag)||'')}</small></div></div><span class="bxh-stat ${cc}">${c[k]}</span><span class="bxh-stat" style="color:var(--heart)">${c.hearts}</span><span class="bxh-stat" style="color:var(--accent-2)">${c.copies}</span></a>`).join('')}`;
-      }
-      $('#bxhHearts').innerHTML=tbl(list,'hearts','❤️','heart-c','tim');
-      $('#bxhCopies').innerHTML=tbl(list,'copies','📋','copy-c','copy');
-      $('#bxhPins').innerHTML=tbl(list,'pins','📌','pin-c','ghim');
-      const ov=[...list].sort((a,b)=>b.score-a.score||a.name.localeCompare(b.name,'vi')).slice(0,20);
-      $('#bxhOverall').innerHTML=ov.some(c=>c.score>0)?`<div class="bxh-row head"><span>#</span><span>Nhân vật</span><span class="bxh-stat" style="color:#a78bfa">⭐<small>Điểm</small></span><span class="bxh-stat" style="color:var(--heart)"><small>Tim</small></span><span class="bxh-stat" style="color:var(--accent-2)"><small>Copy</small></span></div>${ov.map((c,i)=>`<a href="#/" class="bxh-row ${i<3?'top-'+(i+1):''}"><span class="bxh-rank-num">${i+1}</span><div class="name-cell"><div class="mini-avatar" style="background:linear-gradient(135deg,${c.accent||'#a78bfa'},${c.accent||'#a78bfa'}99);">${avatarText(c.name)}</div><div class="name-text"><b>${escapeHtml(c.name)}</b><small>📌 ${c.pins}</small></div></div><span class="bxh-stat" style="color:#a78bfa">${c.score}</span><span class="bxh-stat" style="color:var(--heart)">${c.hearts}</span><span class="bxh-stat" style="color:var(--accent-2)">${c.copies}</span></a>`).join('')}`:'<div class="bxh-empty">Chưa có dữ liệu.</div>';
-    }
-
     function navigate(){
-      const h=location.hash||'#/';const b=h.startsWith('#bxh');
-      if(b){mainView.classList.add('hidden');bxhView.classList.add('active');if(supabaseClient)fetchStats().then(renderBXH);else renderBXH();window.scrollTo(0, 0);}
-      else{mainView.classList.remove('hidden');bxhView.classList.remove('active');if(h==='#featured')setTimeout(()=>$('#featured').scrollIntoView({behavior:'smooth'}),50);else if(h==='#library')setTimeout(()=>$('#library').scrollIntoView({behavior:'smooth'}),50);}
-      $$('.nav-link[data-nav]').forEach(a=>a.classList.toggle('active',(a.dataset.nav==='bxh'&&b)||(a.dataset.nav==='home'&&!b)||(a.dataset.nav==='featured'&&h==='#featured')));
+      const h=location.hash||'#/';
+      if(h==='#featured')setTimeout(()=>$('#featured').scrollIntoView({behavior:'smooth'}),50);
+      else if(h==='#library')setTimeout(()=>$('#library').scrollIntoView({behavior:'smooth'}),50);
+      $$('.nav-link[data-nav]').forEach(a=>a.classList.toggle('active',(a.dataset.nav==='home'&&h!=='#featured'&&h!=='#library')||(a.dataset.nav==='featured'&&h==='#featured')));
     }
     window.addEventListener('hashchange',navigate);
 
@@ -1416,10 +1296,149 @@
     sortEl.addEventListener('change',()=>{currentPage=1;cachedRandom=null;render();});
     $('#clearSearch').addEventListener('click',()=>{search.value='';currentPage=1;render();search.focus();});
     $('#resetFilters').addEventListener('click',()=>{search.value='';filterEl.value='all';sortEl.value='default';currentPage=1;chips.forEach(b=>b.classList.toggle('active',b.dataset.filter==='all'));cachedRandom=null;render();});
-    function openRandom(){const r=chars[Math.floor(Math.random()*chars.length)];if(r)window.open(r.link,'_blank');}
+    
+    /* ================= RANDOM HORIZONTAL SPIN ================= */
+    let isSpinning = false;
+    function shadeColorSpin(hex, percent){
+      let c=(hex||'#a78bfa').replace('#','');
+      if(c.length===3) c=c.split('').map(x=>x+x).join('');
+      const num=parseInt(c,16)||0xa78bfa;
+      let r=(num>>16)&255,g=(num>>8)&255,b=num&255;
+      const t=percent<0?0:255, p=Math.abs(percent);
+      r=Math.round((t-r)*p)+r; g=Math.round((t-g)*p)+g; b=Math.round((t-b)*p)+b;
+      return '#'+(0x1000000+(r<<16)+(g<<8)+b).toString(16).slice(1);
+    }
+    function startRandomSpin(){
+      if(isSpinning || !chars.length) return;
+      isSpinning = true;
+      const heroSelect = document.querySelector('.hero-select');
+      const stage = $('#heroStage');
+      const wishEl = $('#heroWish');
+      const openBtn = $('#heroOpenBtn');
+      if(wishEl){ wishEl.textContent=''; wishEl.classList.remove('show'); }
+      if(heroSelect) heroSelect.classList.add('spinning');
+      stage.classList.add('spin-mode');
+      const rb = $('#randomBtn'), rh = $('#randomHeroBtn');
+      if(rb){ rb.disabled = true; rb.style.opacity = '0.6'; }
+      if(rh){ rh.disabled = true; rh.style.opacity = '0.6'; }
+
+      // Scroll featured into view
+      const featured = $('#featured');
+      if(featured) featured.scrollIntoView({behavior:'smooth', block:'center'});
+
+      // Build a long strip of random chars for the spin
+      const targetIndex = Math.floor(Math.random() * chars.length);
+      const target = chars[targetIndex];
+      const stripLen = 40 + Math.floor(Math.random() * 12); // total items in track
+      const stopAt = stripLen - 4; // land near end
+      const strip = [];
+      for(let i=0; i<stripLen; i++){
+        if(i === stopAt) strip.push(target);
+        else strip.push(chars[Math.floor(Math.random()*chars.length)]);
+      }
+
+      // Create track
+      stage.innerHTML = '';
+      const track = document.createElement('div');
+      track.className = 'hs-spin-track';
+      strip.forEach((c, i) => {
+        const item = document.createElement('div');
+        item.className = 'hs-spin-item' + (i === 0 ? ' center' : '');
+        item.style.setProperty('--spin-a', c.accent || '#a78bfa');
+        item.style.setProperty('--spin-b', shadeColorSpin(c.accent || '#a78bfa', -0.55));
+        item.innerHTML = '<span class="hs-spin-mark">'+escapeHtml(avatarText(c.name))+'</span><span class="hs-spin-name">'+escapeHtml(c.name)+'</span>';
+        track.appendChild(item);
+      });
+      stage.appendChild(track);
+      // Force layout so measurements are accurate
+      void track.offsetWidth;
+
+      // Measure
+      const stageW = stage.clientWidth || 300;
+      const firstItem = track.children[0];
+      const itemStyle = firstItem ? getComputedStyle(firstItem) : null;
+      const gap = 16;
+      const itemW = firstItem ? (firstItem.offsetWidth + gap) : 136;
+      // Center the stop item under the stage midpoint
+      const targetOffset = Math.max(0, stopAt * itemW - (stageW / 2) + (itemW / 2));
+
+      // Animate with requestAnimationFrame + ease-out
+      const duration = 3200 + Math.random() * 800; // ~3.2–4s
+      const start = performance.now();
+      let lastCenter = -1;
+
+      function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
+
+      function frame(now){
+        const t = Math.min(1, (now - start) / duration);
+        const eased = easeOutCubic(t);
+        const x = -targetOffset * eased;
+        track.style.transform = 'translateX(' + x + 'px)';
+
+        // Highlight center item
+        const centerX = stageW / 2;
+        let closest = 0, closestDist = Infinity;
+        for(let i=0; i<track.children.length; i++){
+          const el = track.children[i];
+          const rect = el.getBoundingClientRect();
+          const stageRect = stage.getBoundingClientRect();
+          const mid = rect.left + rect.width/2 - stageRect.left;
+          const dist = Math.abs(mid - centerX);
+          if(dist < closestDist){ closestDist = dist; closest = i; }
+        }
+        if(closest !== lastCenter){
+          if(lastCenter >= 0 && track.children[lastCenter]) track.children[lastCenter].classList.remove('center');
+          if(track.children[closest]) track.children[closest].classList.add('center');
+          lastCenter = closest;
+          // Live update name while spinning (optional feedback)
+          const live = strip[closest];
+          if(live){
+            $('#heroName').textContent = live.name;
+            $('#heroTags').textContent = heroTagLine(live.tag);
+            $('#heroCounter').textContent = String(closest+1).padStart(2,'0') + ' / ' + strip.length;
+          }
+        }
+
+        if(t < 1){
+          requestAnimationFrame(frame);
+        } else {
+          // Final settle on target
+          track.style.transform = 'translateX(' + (-targetOffset) + 'px)';
+          Array.from(track.children).forEach((el,i)=>el.classList.toggle('center', i===stopAt));
+          heroIndex = targetIndex;
+          // Update surrounding UI (stage still shows spin track with winner centered)
+          $('#heroName').textContent = target.name;
+          stage.style.background = 'linear-gradient(155deg, '+(target.accent||'#a78bfa')+' 0%, '+shadeColor(target.accent||'#a78bfa',-0.55)+' 100%)';
+          $('#heroTags').textContent = heroTagLine(target.tag);
+          openBtn.href = target.link;
+          $('#heroCounter').textContent = String(heroIndex+1).padStart(2,'0') + ' / ' + chars.length;
+          const peek=[1,2,3].map(o=>chars[(heroIndex+o)%chars.length]);
+          $('#heroPeek').innerHTML = peek.map(c=>'<button type="button" class="hs-peek-item" data-name="'+escapeHtml(c.name)+'">○ '+escapeHtml(c.name)+'</button>').join('');
+
+          if(wishEl){
+            wishEl.textContent = 'chúc bạn trải nghiệm vui vẻ ( ≧∀≦)ノ';
+            wishEl.classList.add('show');
+          }
+
+          // After brief pause so user can see the result, restore stage & open link
+          setTimeout(() => {
+            stage.classList.remove('spin-mode');
+            stage.innerHTML = '<span class="hs-stage-mark" id="heroMark">'+escapeHtml(avatarText(target.name))+'</span>';
+            if(heroSelect) heroSelect.classList.remove('spinning');
+            const rb2 = $('#randomBtn'), rh2 = $('#randomHeroBtn');
+            if(rb2){ rb2.disabled = false; rb2.style.opacity = ''; }
+            if(rh2){ rh2.disabled = false; rh2.style.opacity = ''; }
+            isSpinning = false;
+            window.open(target.link, '_blank', 'noopener');
+          }, 1600);
+        }
+      }
+      requestAnimationFrame(frame);
+    }
+
+    function openRandom(){ startRandomSpin(); }
     $('#randomBtn').addEventListener('click',openRandom);
     $('#randomHeroBtn').addEventListener('click',openRandom);
-    $('#refreshBXH').addEventListener('click',()=>{if(supabaseClient)fetchStats().then(()=>{renderBXH();showToast('🔄 Đã cập nhật');});else{renderBXH();showToast('🔄 Đã làm mới');}});
 
     function attachG(el){el.addEventListener('click',async e=>{const b=e.target.closest('[data-action]');if(!b||b.disabled)return;const n=b.dataset.name;if(!n)return;b.classList.add('loading');if(b.dataset.action==='heart')await toggleHeart(n);else if(b.dataset.action==='pin')await togglePin(n);b.classList.remove('loading');});}
     attachG(grid);
@@ -1490,7 +1509,7 @@
 
     initStatsData();loadLocalPrefs();renderHero();render();renderStatus(getFiltered().length);navigate();
     initSupabase().then(renderAll);
-    setInterval(()=>{if(supabaseClient&&bxhView.classList.contains('active'))fetchStats().then(renderBXH);const cd=$('#bxhCountdown');if(cd)cd.textContent=getCountdown(WEEK_MONDAY);},60000);
+    // countdown no longer needed after BXH removal
   </script>
 <script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a2519790dee6c6f3',t:'MTc4NTcyMDk5Mw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();
   
