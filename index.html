@@ -784,9 +784,10 @@ body.light #splash { background: radial-gradient(circle at 30% 40%, rgba(167,139
             <select id="filter" class="select">
               <option value="all">Tất cả nhóm</option>
               <option value="#WLW">#WLW</option>
-              <option value="#AOB">#AOB</option>
-              <option value="#Hiện đại">#Hiện đại</option>
-              <option value="#Cổ trang">#Cổ trang</option>
+              <option value="genre:aob">AOB</option>
+              <option value="genre:hiện đại">Hiện đại</option>
+              <option value="genre:cổ trang">Cổ trang</option>
+              <option value="genre:khác">Khác</option>
             </select>
             <select id="sort" class="select">
               <option value="default">Mặc định</option>
@@ -804,9 +805,10 @@ body.light #splash { background: radial-gradient(circle at 30% 40%, rgba(167,139
           <div class="chips" id="chips">
             <button class="chip active" data-filter="all">Tất cả</button>
             <button class="chip" data-filter="#WLW">WLW</button>
-            <button class="chip" data-filter="#Hiện đại">Hiện đại</button>
-            <button class="chip" data-filter="#Cổ trang">Cổ trang</button>
-            <button class="chip" data-filter="#AOB">AOB</button>
+            <button class="chip" data-filter="genre:hiện đại">Hiện đại</button>
+            <button class="chip" data-filter="genre:cổ trang">Cổ trang</button>
+            <button class="chip" data-filter="genre:aob">AOB</button>
+            <button class="chip" data-filter="genre:khác">Khác</button>
           </div>
         </div>
 
@@ -879,7 +881,7 @@ body.light #splash { background: radial-gradient(circle at 30% 40%, rgba(167,139
       { name:"Lam Tịch", tag:"#WLW #Cổ trang #Thần thú #Bọ cạp #Tsundere", summary:"Mạng của ngươi là của ta. Ngươi chỉ có thể chết vì độc của ta thôi. Đồ vô dụng.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221mGspMorIcGWDCAW8C_7go0QVuaF9dlGP%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#9b8cff" },
       { name:"Tưởng Hạ Lộ", tag:"#WLW #Hiện đại #Motocross #NASCAR #Đua xe", summary:"Mày chạy cái xe giẻ rách đó làm gì? Về đây tao nuôi, hay muốn tao xích chân mày lại?", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221387ZpOqaOsXRy0WmdVlF9LkraYELfHcg%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#FF0000" },
       { name:"Lâm Vị Mạn & Trình Yên", tag:"#WLW #A x E x O #Hiện đại #Tay ba #AOB", summary:"Mạng của em tôi đã đổi bằng đôi chân này, dù em có quên, tôi cũng không để em rời đi lần nữa.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221hHvnryswZ5gcC1KUGZexk9XTCk2F_ajI%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#5dc8c6" },
-      { name:"Tịch Nguyệt", tag:"#WLW #Cổ trắng #Yêu vật #Yêu hận đan xen", summary:"Vốn trên đời này không ai cần nàng, vậy thì cứ làm một phế vật ngoan ngoãn để ta nuôi dưỡng đi.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221xsoH4DRW4Zpu0IV8WUvEAMkBTv3-BIYv%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#99CCFF" },
+      { name:"Tịch Nguyệt", tag:"#WLW #Cổ trang #Yêu vật #Yêu hận đan xen", summary:"Vốn trên đời này không ai cần nàng, vậy thì cứ làm một phế vật ngoan ngoãn để ta nuôi dưỡng đi.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221xsoH4DRW4Zpu0IV8WUvEAMkBTv3-BIYv%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#99CCFF" },
       { name:"Lâm Hải Yến & Hạ Mây", tag:"#WLW #Hiện đại #Tay ba #ToxicRelationship #ObsessiveLove", summary:"Một người muốn mua lại quá khứ bằng tiền, một người muốn khóa chặt tương lai bằng sự chiếm hữu.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221eT-LiO8UAJX1d0ps-5jH2ocYfTDFrl-Y%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#CC66FF" },
       { name:"Đốm", tag:"#WLW #Hiện đại #Trang trại #BDSM #R21", summary:"R18 – Nếu chủ nhân không lấy sữa của tôi thì tôi sẽ làm đến khi cái đó của người cũng chảy sữa!!", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221SFDKK8Rf7wjqlo4MAlI7m5FL69s7YaeI%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#555555" },
       { name:"Kanzaki Rin", tag:"#WLW #EdoPeriod #Yoshiwara #ProfessionalJealousy", summary:"Ta bán cả thân xác mới có được vàng, còn ngươi chỉ gảy ba dây đàn là có được sự tôn kính. Thật nực cười!", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221PxOxrXi2z2zikbSgw-QISWRoB9ZjafUk%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#FF3333" },
@@ -975,6 +977,128 @@ body.light #splash { background: radial-gradient(circle at 30% 40%, rgba(167,139
 
     function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
     function normalize(s){ return String(s||'').toLowerCase().trim(); }
+
+    /* ================= CHUẨN HÓA & PHÂN LOẠI TAG (Hiện đại / Cổ trang / AOB / Khác) =================
+       Vấn đề gốc: các tag nhiều từ như "#Hiện đại" / "#Cổ trang" chứa khoảng trắng bên trong,
+       nên logic tách tag cũ (theo khoảng trắng) đã cắt gãy chúng thành 2 tag rời rạc.
+       => parseTags() tách đúng từng tag hoàn chỉnh (từ dấu # đến trước dấu # kế tiếp).
+       => tagFlags()/classifyChar() dùng alias xây từ tag THỰC TẾ trong dữ liệu để gom nhóm,
+          không suy đoán/không dùng contains() tràn lan. */
+    function parseTags(tagStr){
+      return (String(tagStr||'').match(/#[^#]+/g) || []).map(t => t.trim()).filter(Boolean);
+    }
+    // Chuẩn hóa 1 tag để so sánh: bỏ dấu #, chuẩn hóa Unicode NFC, viết thường,
+    // coi gạch dưới/gạch nối như khoảng trắng, gộp khoảng trắng thừa
+    function normalizeTagToken(raw){
+      return String(raw || '')
+        .normalize('NFC')
+        .trim()
+        .replace(/^#+/, '')
+        .toLowerCase()
+        .replace(/[_\-]+/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+    // Dạng "nén" — bỏ hết khoảng trắng, dùng để so khớp biến thể viết liền/viết cách (VD "Cổ trang" ~ "CổTrang")
+    function compactTag(normalizedTag){ return normalizedTag.replace(/\s+/g, ''); }
+
+    // Cờ phân loại cho 1 tag đơn lẻ, dựa trên alias xây từ tag thực tế đang có trong dữ liệu:
+    // - HIỆN ĐẠI: "Hiện đại", "Hiện đại Châu Âu"...
+    // - CỔ TRANG: "Cổ trang", "CổTrang", "CổTrangAOB", "Cổ đại", "Tu tiên", "Cung đấu", "Tu chân tiên hiệp"...
+    // - AOB: "AOB", "ABO", "Alpha"/"Beta"/"Omega" đứng riêng, hoặc ký hiệu ghép cặp kiểu
+    //   "A x A", "O x E", "A x E x O", "AlphaXAlpha"...
+
+    // Danh sách alias [Cổ trang] — mỗi alias là 1 cụm từ đã chuẩn hóa (mảng các từ theo đúng thứ tự).
+    // Chỉ gồm đúng các cụm được yêu cầu gộp nhóm, không tự ý thêm cụm khác.
+    const ANCIENT_ALIAS_PHRASES = [
+      ['cổ', 'trang'],
+      ['cổ', 'đại'],
+      ['tu', 'tiên'],
+      ['cung', 'đấu'],
+      ['tu', 'chân', 'tiên', 'hiệp'],
+    ];
+    // So khớp 1 tag (đã tách từ + nén) với 1 alias-phrase: hỗ trợ cả dạng viết cách (khớp đúng thứ tự
+    // từng từ đầu) lẫn dạng viết liền không dấu cách (khớp phần đầu chuỗi đã nén) — không dùng contains() mơ hồ.
+    function matchesAliasPhrase(words, compact, phraseWords){
+      const wordMatch = phraseWords.every((w, idx) => words[idx] === w);
+      const compactMatch = compact.startsWith(phraseWords.join(''));
+      return wordMatch || compactMatch;
+    }
+
+    function tagFlags(rawTagToken){
+      const norm = normalizeTagToken(rawTagToken);
+      const compact = compactTag(norm);
+      const words = norm.split(' ').filter(Boolean);
+      const flags = { modern: false, ancient: false, aob: false };
+
+      if (compact === 'aob' || compact === 'abo') flags.aob = true;
+      if (compact === 'alpha' || compact === 'beta' || compact === 'omega') flags.aob = true;
+      if (/^(alpha|beta|omega|[aboe])(x(alpha|beta|omega|[aboe]))+$/.test(compact)) flags.aob = true;
+
+      if ((words[0] === 'hiện' && words[1] === 'đại') || compact.startsWith('hiệnđại')) {
+        flags.modern = true;
+      }
+
+      if (ANCIENT_ALIAS_PHRASES.some(phrase => matchesAliasPhrase(words, compact, phrase))) {
+        flags.ancient = true;
+        // Tag ghép thực tế "CổTrangAOB" => vừa Cổ trang vừa AOB
+        if (compact.startsWith('cổtrang')) {
+          const suffix = compact.slice('cổtrang'.length);
+          if (suffix === 'aob' || suffix === 'abo') flags.aob = true;
+        }
+      }
+
+      return flags;
+    }
+
+    // Phân loại 1 Character: thể loại chính (Hiện đại / Cổ trang / Khác) + cờ AOB (không loại trừ lẫn nhau)
+    function classifyChar(item){
+      const tags = parseTags(item.tag);
+      let hasModern = false, hasAncient = false, hasAob = false;
+      tags.forEach(t => {
+        const f = tagFlags(t);
+        if (f.modern) hasModern = true;
+        if (f.ancient) hasAncient = true;
+        if (f.aob) hasAob = true;
+      });
+      let primary = 'khác';
+      if (hasModern && !hasAncient) primary = 'hiện đại';
+      else if (hasAncient && !hasModern) primary = 'cổ trang';
+      // Có cả 2 mà không có quy tắc ưu tiên rõ ràng trong dữ liệu => Khác (không đoán bừa)
+      return { hasModern, hasAncient, hasAob, primary };
+    }
+
+    // So khớp Character với 1 giá trị filter: hỗ trợ filter theo nhóm thể loại chính (genre:...)
+    // lẫn filter theo tag thô như "#WLW" (giữ nguyên hành vi cũ cho các tag không thuộc 2 nhóm chính)
+    function matchesFilter(item, filterVal){
+      if (filterVal === 'all') return true;
+      if (filterVal === 'genre:aob') return classifyChar(item).hasAob;
+      if (filterVal === 'genre:hiện đại') return classifyChar(item).primary === 'hiện đại';
+      if (filterVal === 'genre:cổ trang') return classifyChar(item).primary === 'cổ trang';
+      if (filterVal === 'genre:khác') return classifyChar(item).primary === 'khác';
+      return parseTags(item.tag).some(t => t === filterVal);
+    }
+
+    // Nhãn hiển thị thân thiện cho trạng thái filter đang chọn
+    function filterLabel(v){
+      const map = { 'all': 'tất cả nhóm', '#WLW': '#WLW', 'genre:aob': 'AOB', 'genre:hiện đại': 'Hiện đại', 'genre:cổ trang': 'Cổ trang', 'genre:khác': 'Khác' };
+      return map[v] || v;
+    }
+
+    // Tìm theo từ khóa/tag tự do (Tầng 2): chấp nhận có/không dấu #, hoa/thường, viết liền/viết cách
+    function textMatches(item, rawQuery){
+      const q = normalizeTagToken(rawQuery);
+      if (!q) return true;
+      const qCompact = compactTag(q);
+      const plain = normalize(item.name) + ' ' + normalize(item.summary || '') + ' ' + normalize(item.extra || '');
+      if (plain.includes(q)) return true;
+      return parseTags(item.tag).some(t => {
+        const nt = normalizeTagToken(t);
+        if (nt.includes(q)) return true;
+        return compactTag(nt).includes(qCompact);
+      });
+    }
+
     function avatarText(name){
       const parts = String(name||'').trim().split(/[\s·&]+/).filter(Boolean);
       if(!parts.length) return '?';
@@ -982,13 +1106,11 @@ body.light #splash { background: radial-gradient(circle at 30% 40%, rgba(167,139
       return parts.length===1 ? ini(parts[0]) : ini(parts[0]) + ini(parts[parts.length-1]);
     }
     function renderTagChips(tagStr, limit=5){
-      const tags = (tagStr||'').match(/#[^\s#]+/g)||[];
-      const rem = (tagStr||'').replace(/#[^\s#]+/g,'').trim().split(/\s+/).filter(Boolean);
-      let all = [...tags, ...rem.map(t=>'#'+t)].filter(Boolean);
+      let all = parseTags(tagStr);
       if(limit!=null) all = all.slice(0,limit);
       return all.map(t=>`<span class="t">${escapeHtml(t)}</span>`).join('');
     }
-    function firstTag(tagStr){ const t = (tagStr||'').match(/#[^\s#]+/); return t?t[0]:''; }
+    function firstTag(tagStr){ const t = parseTags(tagStr); return t.length?t[0]:''; }
 
     function getMonday(d){
       const date = new Date(d); const day = date.getDay();
@@ -1162,7 +1284,7 @@ body.light #splash { background: radial-gradient(circle at 30% 40%, rgba(167,139
     function setHistory(h){safeSet(HK,JSON.stringify(h))}
     function addSearchTerm(t){if(!t.trim())return;let h=getHistory().filter(x=>x!==t.trim());h.unshift(t.trim());if(h.length>3)h.pop();setHistory(h);renderHistory();}
     function renderHistory(){const h=getHistory();if(!h.length){historyDropdown.style.display='none';return;}historyDropdown.innerHTML=h.map(t=>`<div data-term="${escapeHtml(t)}">🕘 ${escapeHtml(t)}</div>`).join('');}
-    function allKW(){const k=[];chars.forEach(c=>{k.push(c.name);(c.tag||'').match(/#[^\s#]+/g)?.forEach(t=>k.push(t.replace('#','')));});return[...new Set(k)].sort();}
+    function allKW(){const k=[];chars.forEach(c=>{k.push(c.name);parseTags(c.tag).forEach(t=>k.push(t.replace(/^#/,'')));});return[...new Set(k)].sort();}
     const allSug = allKW();
     function renderSuggestions(q){q=q.toLowerCase().trim();if(!q){suggestionsEl.style.display='none';return;}const m=allSug.filter(k=>k.toLowerCase().includes(q)).slice(0,10);if(!m.length){suggestionsEl.style.display='none';return;}suggestionsEl.innerHTML=m.map(t=>`<div data-term="${escapeHtml(t)}">🔎 ${escapeHtml(t)}</div>`).join('');suggestionsEl.style.display='block';}
     historyDropdown.addEventListener('click',e=>{const t=e.target.closest('div[data-term]');if(!t)return;search.value=t.dataset.term;addSearchTerm(t.dataset.term);currentPage=1;historyDropdown.style.display='none';render();});
@@ -1190,20 +1312,20 @@ body.light #splash { background: radial-gradient(circle at 30% 40%, rgba(167,139
         </div></article>`;
     }
     function getFiltered(){
-      const q=normalize(search.value),t=filterEl.value;
-      let items=chars.filter(i=>{const mq=!q||[i.name,i.tag,i.summary,i.extra].some(v=>normalize(v).includes(q));const mt=t==='all'||(i.tag||'').split(/\s+/).some(x=>x===t);return mq&&mt;});
+      const rawQ=search.value,t=filterEl.value;
+      let items=chars.filter(i=>{const mq=!rawQ.trim()||textMatches(i,rawQ);const mt=matchesFilter(i,t);return mq&&mt;});
       const o=sortEl.value;
       if(o==='name-asc')items.sort((a,b)=>a.name.localeCompare(b.name,'vi'));
       if(o==='name-desc')items.sort((a,b)=>b.name.localeCompare(a.name,'vi'));
       if(o==='hearts')items.sort((a,b)=>charStats(b.name).hearts-charStats(a.name).hearts||a.name.localeCompare(b.name,'vi'));
       if(o==='copies')items.sort((a,b)=>charStats(b.name).copies-charStats(a.name).copies||a.name.localeCompare(b.name,'vi'));
       if(o==='score')items.sort((a,b)=>{const sa=charStats(a.name),sb=charStats(b.name);return(sb.hearts*3+sb.copies*2+sb.pins*5)-(sa.hearts*3+sa.copies*2+sa.pins*5)||a.name.localeCompare(b.name,'vi');});
-      if(o==='random'){const k=`${q}|${t}|${o}`;if(!cachedRandom||lastRandomKey!==k){cachedRandom=[...items].sort(()=>Math.random()-0.5);lastRandomKey=k;}items=cachedRandom;}
+      if(o==='random'){const k=`${rawQ}|${t}|${o}`;if(!cachedRandom||lastRandomKey!==k){cachedRandom=[...items].sort(()=>Math.random()-0.5);lastRandomKey=k;}items=cachedRandom;}
       return [...items.filter(i=>pinnedLocal.includes(i.name)),...items.filter(i=>!pinnedLocal.includes(i.name))];
     }
     function buildPag(tp,c){if(tp<=1){paginationTop.innerHTML='';paginationBottom.innerHTML='';return;}let h=`<button class="page-btn" onclick="gotoPage(${c-1})" ${c===1?'disabled':''}>←</button>`;for(let i=1;i<=tp;i++)h+=`<button class="page-btn ${i===c?'active':''}" onclick="gotoPage(${i})">${i}</button>`;h+=`<button class="page-btn" onclick="gotoPage(${c+1})" ${c===tp?'disabled':''}>→</button>`;paginationTop.innerHTML=h;paginationBottom.innerHTML=h;}
     function renderStatus(n){
-      const q=normalize(search.value),t=filterEl.value==='all'?'tất cả nhóm':filterEl.value;
+      const q=normalize(search.value),t=filterLabel(filterEl.value);
       statusText.textContent=q?`Bộ lọc: ${t} · "${search.value}"`:`Đang xem: ${t}`;
       countInfo.textContent=`${n} / ${chars.length} nhân vật`;
       $('#statTotal').textContent=chars.length;$('#statShown').textContent=n;
@@ -1244,8 +1366,8 @@ body.light #splash { background: radial-gradient(circle at 30% 40%, rgba(167,139
       return '#'+(0x1000000+(r<<16)+(g<<8)+b).toString(16).slice(1);
     }
     function heroTagLine(tagStr){
-      const tags=(tagStr||'').match(/#[^\s#]+/g)||[];
-      return tags.slice(0,3).map(t=>t.replace('#','').replace(/_/g,' ').toUpperCase()).join(' · ');
+      const tags = parseTags(tagStr);
+      return tags.slice(0,3).map(t=>t.replace(/^#/,'').replace(/_/g,' ').toUpperCase()).join(' · ');
     }
     let heroIndex = Math.max(0, chars.findIndex(c=>c.name==='Lâm Sơ Yến'));
     function renderHero(){
