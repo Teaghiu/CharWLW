@@ -17,8 +17,8 @@
       --panel-2: rgba(255,255,255,0.07);
       --panel-hover: rgba(255,255,255,0.09);
       --text: #f4f6ff;
-      --muted: rgba(244,246,255,0.68);
-      --muted-2: rgba(244,246,255,0.48);
+      --muted: rgba(244,246,255,0.75);
+      --muted-2: rgba(244,246,255,0.56);
       --line: rgba(255,255,255,0.10);
       --line-strong: rgba(255,255,255,0.18);
       --accent: #a78bfa;
@@ -66,9 +66,11 @@
     /* NAVBAR */
     .navbar {
       position: sticky; top: 0; z-index: 100;
-      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      background: rgba(10,11,20,0.65);
+      backdrop-filter: blur(22px) saturate(140%); -webkit-backdrop-filter: blur(22px) saturate(140%);
+      background: rgba(10,11,20,0.68);
       border-bottom: 1px solid var(--line);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.22);
+      transition: box-shadow 0.3s ease, background 0.3s ease;
     }
     .navbar-inner {
       max-width: var(--max); margin: 0 auto; padding: 14px 20px;
@@ -82,10 +84,10 @@
     }
     .nav-mark img { width:100%; height:100%; object-fit:cover; display:block; }
     .nav-mark.fallback { font-family:'Playfair Display',serif; font-size:16px; }
-    .nav-links { display: flex; gap: 4px; align-items: center; }
+    .nav-links { display: flex; gap: 6px; align-items: center; }
     .nav-link {
-      padding: 8px 14px; border-radius: 10px; color: var(--muted);
-      text-decoration: none; font-size: 14px; font-weight: 500; transition: all 0.2s;
+      padding: 9px 15px; border-radius: 10px; color: var(--muted);
+      text-decoration: none; font-size: 14px; font-weight: 500; transition: all 0.2s; letter-spacing: 0.01em;
     }
     .nav-link:hover, .nav-link.active { color: var(--text); background: var(--panel); }
     .nav-actions { display: flex; gap: 8px; align-items: center; }
@@ -211,7 +213,7 @@
     @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
 
     /* SECTIONS */
-    .section { margin-top: 56px; }
+    .section { margin-top: 72px; }
     .section-head {
       display: flex; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 20px; flex-wrap: wrap;
     }
@@ -246,9 +248,11 @@
     }
     .hs-arrow:hover { background: var(--panel-hover); border-color: var(--line-strong); transform: translateY(-1px); }
     .hs-name {
-      margin: 0; font-family: 'Playfair Display', serif; font-weight: 700; font-size: clamp(18px, 5vw, 25px);
+      margin: 0; font-family: 'Playfair Display', serif; font-weight: 800; font-size: clamp(20px, 6vw, 30px);
       text-align: center; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;
       white-space: nowrap; letter-spacing: -0.01em;
+      background: linear-gradient(135deg, #fff 0%, #e0e7ff 60%, #a5f3fc 100%);
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
     }
     .hs-stage {
       position: relative; height: 190px; border-radius: 20px; overflow: hidden; margin-bottom: 16px;
@@ -271,7 +275,7 @@
       text-align: center; font-size: 12px; font-weight: 600; letter-spacing: 0.12em;
       text-transform: uppercase; color: var(--muted); margin: 0 0 18px;
     }
-    .hs-open { display: flex; width: 100%; padding: 13px; font-size: 14px; border-radius: 14px; }
+    .hs-open { display: flex; width: 100%; padding: 15px; font-size: 14.5px; border-radius: 14px; font-weight: 800; letter-spacing: 0.01em; }
     .hs-peek { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 16px; }
     .hs-peek-item {
       border: 1px solid var(--line); background: rgba(255,255,255,0.03); color: var(--muted);
@@ -339,20 +343,20 @@
     /* CONTROL PANEL */
     .control-panel {
       background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius-lg);
-      padding: 20px; backdrop-filter: blur(12px);
+      padding: 24px; backdrop-filter: blur(12px);
     }
-    .toolbar { display: grid; grid-template-columns: 1fr 1fr auto auto auto; gap: 10px; }
+    .toolbar { display: grid; grid-template-columns: 1fr 1fr auto auto auto; gap: 12px; }
     .search-row { grid-column: 1 / -1; }
     .search-wrap { position: relative; display: flex; align-items: center; }
-    .search-icon { position: absolute; left: 16px; opacity: 0.6; font-size: 18px; pointer-events: none; }
+    .search-icon { position: absolute; left: 18px; opacity: 0.7; font-size: 19px; pointer-events: none; }
     .field, .select {
       width: 100%; border: 1px solid var(--line); background: rgba(255,255,255,0.03);
-      color: var(--text); border-radius: 12px; padding: 12px 16px;
-      outline: none; font-size: 14px; font-family: inherit;
-      transition: border-color 0.2s, background 0.2s;
+      color: var(--text); border-radius: 12px; padding: 14px 16px;
+      outline: none; font-size: 14.5px; font-family: inherit;
+      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
     }
-    .field:focus, .select:focus { border-color: var(--accent); background: rgba(255,255,255,0.06); }
-    .field { padding-left: 44px; padding-right: 44px; }
+    .field:focus, .select:focus { border-color: var(--accent); background: rgba(255,255,255,0.06); box-shadow: 0 0 0 3px rgba(167,139,250,0.18); }
+    .field { padding-left: 46px; padding-right: 44px; font-size: 15px; }
     .field::placeholder { color: var(--muted-2); }
     .clear-btn {
       position: absolute; right: 10px; background: transparent; border: none;
@@ -366,8 +370,8 @@
       transition: all 0.2s; white-space: nowrap; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
     }
     .btn:hover { background: var(--panel-2); border-color: var(--line-strong); transform: translateY(-1px); }
-    .btn.primary { background: var(--gradient-2); color: #07111a; font-weight: 700; border-color: transparent; }
-    .btn.primary:hover { filter: brightness(1.08); box-shadow: 0 8px 20px rgba(167,139,250,0.35); }
+    .btn.primary { background: var(--gradient); background-size: 200% 200%; color: #07111a; font-weight: 800; border-color: transparent; }
+    .btn.primary:hover { filter: brightness(1.12); box-shadow: 0 10px 26px rgba(167,139,250,0.4); transform: translateY(-1px) scale(1.03); }
     .btn.ghost { background: transparent; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
     .chip {
@@ -378,7 +382,7 @@
     .chip:hover { transform: translateY(-1px); background: var(--panel-2); color: var(--text); }
     .chip.active {
       background: var(--gradient-2); color: #07111a; font-weight: 700;
-      border-color: transparent; box-shadow: 0 4px 14px rgba(167,139,250,0.3);
+      border-color: transparent; box-shadow: 0 4px 14px rgba(167,139,250,0.3), 0 0 0 1px rgba(167,139,250,0.5);
     }
     #searchSuggestions, #searchHistoryDropdown {
       position: absolute; top: 100%; left: 0; right: 0;
@@ -395,7 +399,7 @@
     #searchSuggestions > div:last-child, #searchHistoryDropdown > div:last-child { border-bottom: none; }
     .result-meta {
       display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 14px; font-size: 13px; color: var(--muted); flex-wrap: wrap; gap: 8px;
+      margin: 22px 0 16px; font-size: 13px; color: var(--muted); flex-wrap: wrap; gap: 8px;
     }
 
     /* CARDS */
@@ -404,7 +408,7 @@
       transition: opacity 0.25s ease, transform 0.25s ease;
     }
     .grid.fade-out { opacity: 0; transform: scale(0.98); }
-    .card-row { display: flex; flex-wrap: nowrap; align-items: flex-start; gap: 16px; }
+    .card-row { display: flex; flex-wrap: nowrap; align-items: stretch; gap: 18px; }
     /* Expandable card mechanism: equal flex-basis (near-square) by default,
        active card grows via flex-grow while row siblings shrink to fit — no line wrap, no overlap. */
     .card-row .card {
@@ -413,7 +417,7 @@
     }
     .card-row .card.active { flex: 4 1 0%; }
     .card {
-      border: 1px solid var(--line);
+      border: 1px solid var(--line); height: 100%; width: 100%;
       background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.02) 100%);
       border-radius: var(--radius); padding: 20px; display: flex; flex-direction: column;
       position: relative; overflow: hidden; cursor: pointer;
@@ -434,7 +438,7 @@
       pointer-events: none; transition: opacity 0.3s; opacity: 0.6;
     }
     .card:hover {
-      transform: translateY(-6px); border-color: var(--card-accent, var(--accent));
+      transform: translateY(-6px) scale(1.008); border-color: var(--card-accent, var(--accent));
       box-shadow: 0 20px 50px rgba(0,0,0,0.4), 0 0 0 1px var(--card-accent, var(--accent));
     }
     .card:hover::after { opacity: 1; }
@@ -448,11 +452,11 @@
       font-family: 'Playfair Display', serif; font-size: 16px; letter-spacing: -0.5px;
     }
     .meta { flex: 1; min-width: 0; }
-    .meta h3 { margin: 2px 0 0; font-size: 17px; font-weight: 700; line-height: 1.3; letter-spacing: -0.01em; }
+    .meta h3 { margin: 2px 0 0; font-size: 17.5px; font-weight: 800; line-height: 1.3; letter-spacing: -0.01em; color: var(--text); }
     .meta .tag { display: inline-flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; font-size: 11px; max-width: 100%; }
     .meta .tag .t {
-      padding: 3px 8px; border-radius: 6px; background: rgba(255,255,255,0.06);
-      border: 1px solid var(--line); color: var(--muted); line-height: 1.4; white-space: nowrap;
+      padding: 3px 9px; border-radius: 6px; background: rgba(255,255,255,0.07);
+      border: 1px solid var(--line); color: var(--accent-2); font-weight: 600; line-height: 1.4; white-space: nowrap;
     }
     .card-stats-mini {
       display: flex; gap: 8px; margin-top: 10px; position: relative; z-index: 1; flex-wrap: wrap;
@@ -536,14 +540,14 @@
     /* TOAST */
     .toast {
       position: fixed; bottom: 30px; left: 50%;
-      transform: translateX(-50%) translateY(10px);
+      transform: translateX(-50%) translateY(14px) scale(0.94);
       background: rgba(20,22,35,0.95); backdrop-filter: blur(16px);
       border: 1px solid var(--line); color: var(--text); padding: 12px 22px; border-radius: 12px;
       font-size: 14px; box-shadow: 0 12px 36px rgba(0,0,0,0.5);
-      z-index: 9999; transition: opacity 0.3s ease, transform 0.3s ease;
+      z-index: 9999; transition: opacity 0.25s cubic-bezier(0.2,0,0,1), transform 0.25s cubic-bezier(0.2,0,0,1);
       opacity: 0; pointer-events: none; max-width: 90%;
     }
-    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); pointer-events: auto; }
 
     /* SPLASH */
     #splash {
@@ -653,6 +657,10 @@ body.light #splash { background: radial-gradient(circle at 30% 40%, rgba(167,139
       .hs-stage-mark { font-size: 60px; }
       .hs-arrow { width: 36px; height: 36px; font-size: 16px; }
       .hero-select { padding: 18px 16px 20px; }
+      .btn.icon-btn, .theme-toggle-btn, .clear-btn, .pin-btn, .heart-btn { min-width: 44px; min-height: 44px; }
+      .chip { padding: 11px 15px; }
+      .page-btn { min-width: 44px; height: 44px; }
+      .nav-mark, #backToTop { min-width: 44px; min-height: 44px; }
     }
   
     /* ===== Bổ sung riêng cho commands.html ===== */
@@ -669,6 +677,68 @@ body.light #splash { background: radial-gradient(circle at 30% 40%, rgba(167,139
     body.light .cmd-full { background: rgba(0,0,0,0.035); }
     .back-link { color: var(--muted); text-decoration: none; font-size: 13px; display: inline-flex; align-items: center; gap: 4px; }
     .back-link:hover { color: var(--text); }
+
+
+    /* ===== BREADCRUMB ===== */
+    .breadcrumb {
+      max-width: var(--max); margin: 0 auto; padding: 10px 20px 0;
+      display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--muted-2);
+      position: relative; z-index: 1;
+    }
+    .breadcrumb a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .breadcrumb a:hover { color: var(--text); }
+    .breadcrumb .sep { opacity: 0.5; }
+    .breadcrumb .current { color: var(--text); font-weight: 600; }
+
+    /* ===== SKELETON LOADING ===== */
+    .skeleton-card {
+      height: 100%; min-height: 190px; border-radius: var(--radius); border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.02) 100%);
+      padding: 20px; display:flex; flex-direction:column; gap:12px; overflow:hidden; position:relative;
+    }
+    .skeleton-card::after {
+      content:""; position:absolute; inset:0;
+      background: linear-gradient(100deg, transparent 30%, rgba(255,255,255,0.06) 50%, transparent 70%);
+      background-size: 200% 100%; animation: shimmer 1.4s ease-in-out infinite;
+    }
+    .skeleton-line { height:12px; border-radius:6px; background: rgba(255,255,255,0.06); }
+    .skeleton-line.w60 { width:60%; } .skeleton-line.w40{width:40%;} .skeleton-line.w90{width:90%;height:36px;border-radius:10px;}
+    .skeleton-avatar { width:52px; height:52px; border-radius:14px; background: rgba(255,255,255,0.07); }
+    @keyframes shimmer { 0%{background-position:150% 0;} 100%{background-position:-50% 0;} }
+    body.light .skeleton-card, body.light .skeleton-line, body.light .skeleton-avatar { background: rgba(0,0,0,0.05); }
+
+    /* ===== MOTION SAFETY ===== */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+    }
+
+    /* ===== COMMAND CARD: lưới đều, badge độ dài, overlay số dòng/ký tự khi hover ===== */
+    #grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; align-items: stretch; }
+    #grid.list { grid-template-columns: 1fr; }
+    #grid.list .card { flex-direction: row; flex-wrap: wrap; }
+    @media (max-width: 640px) { #grid { grid-template-columns: 1fr; } }
+    .length-badge {
+      position: absolute; top: 14px; right: 14px; z-index: 2;
+      font-size: 10.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+      padding: 4px 9px; border-radius: 999px; backdrop-filter: blur(6px);
+    }
+    .length-badge.short { background: rgba(34,197,94,0.16); color: #4ade80; border: 1px solid rgba(34,197,94,0.35); }
+    .length-badge.medium { background: rgba(251,191,36,0.16); color: #fbbf24; border: 1px solid rgba(251,191,36,0.35); }
+    .length-badge.long { background: rgba(244,114,182,0.16); color: #f472b6; border: 1px solid rgba(244,114,182,0.35); }
+    .hover-stats {
+      position: absolute; left: 20px; right: 20px; bottom: 14px; z-index: 2;
+      display: flex; gap: 8px; flex-wrap:wrap; opacity: 0; transform: translateY(6px); pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    .card:hover .hover-stats { opacity: 1; transform: translateY(0); }
+    .hover-stats span {
+      font-size: 11px; font-weight: 600; color: var(--text); padding: 4px 9px; border-radius: 8px;
+      background: rgba(10,11,20,0.75); border: 1px solid var(--line-strong); backdrop-filter: blur(8px);
+    }
+    body.light .hover-stats span { background: rgba(255,255,255,0.9); }
+    .meta { padding-right: 64px; }
+    #grid.list .hover-stats { display: none; }
+    #grid.list .length-badge { position: static; display: inline-block; margin-bottom: 6px; }
 
   </style>
 </head>
@@ -695,6 +765,8 @@ body.light #splash { background: radial-gradient(circle at 30% 40%, rgba(167,139
     </div>
   </nav>
 
+  <div class="breadcrumb"><a href="index.html">Trang chủ</a><span class="sep">›</span><span class="current">Thư viện Lệnh</span></div>
+
   <div class="main-view">
     <div class="wrap">
 
@@ -712,8 +784,17 @@ body.light #splash { background: radial-gradient(circle at 30% 40%, rgba(167,139
               <span class="search-icon">🔍</span>
               <input id="search" class="field" placeholder="Tìm theo tên, thẻ, hoặc nội dung lệnh...">
               <button id="clearSearch" class="clear-btn" style="display:none;">✕</button>
+              <div id="searchSuggestions"></div>
             </div>
           </div>
+          <select id="sort" class="select">
+            <option value="default">Mặc định</option>
+            <option value="newest">🆕 Mới nhất</option>
+            <option value="popular">🔥 Phổ biến nhất</option>
+            <option value="name-asc">Theo tên A → Z</option>
+          </select>
+          <button id="resetFilters" class="btn">🔄 Reset</button>
+          <button id="toggleView" class="btn">📋 Danh sách</button>
         </div>
         <div class="chips" id="chips">
           <button class="chip active" data-cat="all">Tất cả</button>
@@ -724,6 +805,8 @@ body.light #splash { background: radial-gradient(circle at 30% 40%, rgba(167,139
           <button class="chip" data-cat="Dossier & Extraction Interfaces">📇 Hồ sơ</button>
           <button class="chip" data-cat="Special Events & Media Overrides">📰 Sự kiện</button>
           <button class="chip" data-cat="Isekai & Migration Guide">🌀 Isekai</button>
+          <button class="chip" data-cat="Cướp thoại/hành động">🚫 Cướp thoại/hành động</button>
+          <button class="chip" data-cat="Lặp cấu trúc phản hồi">🔁 Lặp cấu trúc phản hồi</button>
         </div>
         <div style="margin-top:12px;">
           <select id="filter" class="select"><option value="all">Tất cả thẻ</option></select>
@@ -738,7 +821,15 @@ body.light #splash { background: radial-gradient(circle at 30% 40%, rgba(167,139
       <div class="empty" id="empty"><div class="empty-icon">🔍</div>Không tìm thấy lệnh phù hợp.</div>
 
       <footer class="footer">
-        <div style="text-align:center;color:var(--muted);font-size:13px;">TeaGhiu Command Library · Dữ liệu gốc: Lệnh hỗ trợ.docx</div>
+        <div class="footer-links">
+          <a href="index.html">Thư viện Character</a>
+          <a href="commands.html">Thư viện Lệnh</a>
+          <a href="https://aistudio.google.com/" target="_blank" rel="noopener">Google AI Studio</a>
+        </div>
+        <div style="max-width:480px;margin:0 auto 10px;font-size:12.5px;line-height:1.7;">
+          📖 Cách dùng nhanh: gõ từ khoá hoặc chọn chip danh mục để lọc lệnh → bấm 📄 để xem toàn bộ nội dung → bấm 📋 <b>Sao chép lệnh</b> để dán trực tiếp vào AI Studio / DokiChat.
+        </div>
+        <div style="text-align:center;color:var(--muted);font-size:13px;">TeaGhiu Command Library <span class="heart">♥</span> · Dữ liệu gốc: Lệnh hỗ trợ.docx</div>
       </footer>
 
     </div>
@@ -1039,6 +1130,21 @@ body.light #splash { background: radial-gradient(circle at 30% 40%, rgba(167,139
     "Cướp hành động"
   ],
   "command": "[OOC --- HOTFIX: DỪNG CƯỚP THOẠI/HÀNH ĐỘNG CỦA USER]\n\nDừng lại ngay. Trong phản hồi vừa rồi, bạn đã tự viết lời nói và/hoặc\nhành động thay cho nhân vật của tôi ({{user}}) --- điều này vi phạm\nquyền kiểm soát nhân vật của tôi.\n\nHãy thực hiện đúng theo thứ tự sau, KHÔNG bỏ bước nào:\n\n1. XÁC NHẬN LỖI\n\n- Xác nhận ngắn gọn (1 câu) rằng bạn vừa nói/nghĩ/cảm nhận/hành động\nthay cho {{user}}.\n\n- Không biện minh dài dòng, không giải thích vòng vo, không tự khen đã\nsửa tốt.\n\n2. RÚT LẠI PHẦN VI PHẠM\n\n- Loại bỏ hoàn toàn những câu thoại, suy nghĩ, cảm xúc, phản ứng vật lý\nhoặc hành động mà bạn đã tự gán cho {{user}} trong lượt vừa rồi.\n\n- Viết lại đoạn phản hồi đó, chỉ giữ phần phản ứng của {{char}} đối với\nhành động/lời nói GẦN NHẤT mà {{user}} thực sự đã đưa ra trước đó.\n\n- Nếu {{char}} cần {{user}} phản hồi để cảnh tiếp diễn, hãy DỪNG đúng ở\nđiểm đó và để trống cho {{user}} tự viết, không đoán hộ, không điền\nvào chỗ trống đó.\n\n3. THIẾT LẬP LẠI RANH GIỚI (áp dụng từ đây trở đi, xuyên suốt phần còn\nlại của cuộc trò chuyện)\n\n{{char}} tuyệt đối không được:\n\n- nói thay, nghĩ thay, quyết định thay, cảm nhận thay hoặc hành động\nthay {{user}};\n\n- tự ý tạo ra lời thoại, cử chỉ, phản xạ cơ thể, hoặc lựa chọn rồi gán\nnó là của {{user}};\n\n- tự suy diễn nội tâm, cảm xúc hoặc động cơ của {{user}} rồi trình bày\nnhư thể đó là sự thật đã xảy ra;\n\n- tự kết luận diễn biến hoặc phản ứng của {{user}} khi tình huống chưa\ncó xác nhận từ chính {{user}}.\n\n{{char}} chỉ được:\n\n- phản ứng với điều {{user}} đã thực sự viết ra;\n\n- dừng đúng lúc, để lại khoảng trống hành động/lời thoại rõ ràng cho\n{{user}} tự quyết định;\n\n- gợi mở tình huống hoặc đặt câu hỏi, không áp đặt sẵn kết quả cho phía\n{{user}}.\n\n4. TỰ KIỂM TRA TRƯỚC MỌI PHẢN HỒI SAU NÀY\n\nTrước khi xuất bất kỳ phản hồi nào, tự hỏi:\n\n- Mình có vừa viết lời nói, suy nghĩ, cảm xúc hoặc hành động nào gán\ncho {{user}} không?\n\n- Nếu có, xóa và viết lại trước khi gửi ra ngoài.\n\nSau khi hoàn tất bước 1 và 2, hãy tiếp tục câu chuyện đúng tại vị trí\nvừa lùi lại, và chờ {{user}} tự nhập lời thoại/hành động của họ."
+      },
+      {
+  "id": "cmd-020-pha-lap-cau-truc",
+  "name": "Hotfix — Phá lặp cấu trúc phản hồi",
+  "category": "Lặp cấu trúc phản hồi",
+  "platform": "AI Studio / DokiChat / Universal",
+  "tags": [
+    "Anti-Repetition",
+    "Structure Variation",
+    "Hotfix",
+    "OOC Fix",
+    "Pattern Break",
+    "Prose Rhythm"
+  ],
+  "command": "[OOC --- HOTFIX: PHÁ LẶP CẤU TRÚC PHẢN HỒI]\n\nDừng lại ngay. Nhìn lại các phản hồi gần đây của bạn --- chúng đang đi\ntheo cùng MỘT khung cấu trúc, chỉ đổi từ ngữ chứ không đổi cách dựng\ncâu, cách sắp đoạn, hay cách mở/đóng cảnh. Đây không phải lặp từ đơn\nthuần, mà là lặp KHUNG (bộ khung câu, thứ tự đoạn, nhịp điệu) --- và nó\nđang lộ ra rất rõ với {{user}}.\n\nHãy thực hiện đúng theo thứ tự sau, KHÔNG bỏ bước nào:\n\n1. XÁC NHẬN LỖI\n\n- Xác nhận ngắn gọn (1 câu) rằng các phản hồi gần đây đang dùng chung\nmột khung cấu trúc lặp lại.\n\n- Không biện minh dài dòng, không liệt kê lỗi ra cho {{user}} đọc,\nkhông tự khen là sẽ sửa tốt.\n\n2. NHẬN DIỆN KHUNG ĐANG BỊ LẶP\n\nTự kiểm tra 2--3 phản hồi gần nhất của chính mình theo các tiêu chí\nsau:\n\n- Câu mở đầu có luôn cùng một dạng không (luôn hành động trước, luôn\nmô tả ngoại hình trước, luôn một cụm từ gần như y hệt)?\n\n- Trình tự đoạn có luôn cố định không (luôn hành động → thoại → nội\ntâm → câu hỏi mở, đúng thứ tự đó mỗi lần)?\n\n- Có cụm từ, ẩn dụ, hoặc kiểu diễn đạt nào đang bị tái sử dụng gần như\nnguyên khối, chỉ thay tên hoặc đối tượng?\n\n- Nhịp câu (ngắn--dài, số đoạn, cách ngắt dòng) có đang rập khuôn theo\nmột mẫu cố định không?\n\n3. PHÁ MẪU --- QUY TẮC ÁP DỤNG TỪ ĐÂY TRỞ ĐI\n\n- Không mở đầu hai phản hồi liên tiếp bằng cùng một dạng câu (nếu lượt\ntrước mở bằng hành động, lượt này thử mở bằng thoại, cảm giác, âm\nthanh, hoặc một chi tiết môi trường).\n\n- Không giữ cố định thứ tự đoạn. Thứ tự hành động / thoại / nội tâm /\nquan sát được phép xáo trộn tùy cảnh, miễn hợp lý với nhịp truyện.\n\n- Không tái dùng cùng một cụm ẩn dụ, cùng một kiểu ví von, hoặc cùng\nmột cấu trúc câu đặc trưng ở nhiều phản hồi liên tiếp.\n\n- Không luôn kết thúc phản hồi bằng cùng một dạng (không phải lượt nào\ncũng chốt bằng câu hỏi, hoặc luôn bằng một hành động bỏ lửng giống\nnhau).\n\n- Độ dài câu và số đoạn nên biến thiên tự nhiên theo cảnh, không cố\nđịnh theo một khuôn có sẵn.\n\n- Giọng và tính cách {{char}} vẫn phải giữ nguyên --- chỉ đổi CÁCH DỰNG\nCÂU, không đổi CHẤT nhân vật.\n\n4. TỰ KIỂM TRA TRƯỚC MỌI PHẢN HỒI SAU NÀY\n\nTrước khi xuất bất kỳ phản hồi nào, tự hỏi:\n\n- Câu mở đầu này có giống cấu trúc câu mở đầu của lượt ngay trước\nkhông?\n\n- Thứ tự đoạn lần này có gần như y hệt lần trước không?\n\n- Có đang tái dùng cụm từ hoặc ẩn dụ đã dùng gần đây không?\n\n- Nếu có ít nhất một câu trả lời là \"có\", hãy dựng lại theo hướng khác\ntrước khi gửi ra ngoài.\n\nSau khi hoàn tất bước 1 và 2, hãy tiếp tục câu chuyện bình thường tại\nđúng vị trí đang dừng, và áp dụng quy tắc phá mẫu cho toàn bộ phần còn\nlại của cuộc trò chuyện."
       }
 ];
 
@@ -1051,6 +1157,7 @@ body.light #splash { background: radial-gradient(circle at 30% 40%, rgba(167,139
       'Special Events & Media Overrides': { label: 'Sự kiện', icon: '📰', color: '#fb7185' },
       'Isekai & Migration Guide': { label: 'Isekai', icon: '🌀', color: '#60a5fa' },
       'Cướp thoại/hành động': { label: 'Cướp thoại/hành động', icon: '🚫', color: '#ef4444' },
+      'Lặp cấu trúc phản hồi': { label: 'Lặp cấu trúc phản hồi', icon: '🔁', color: '#fb923c' },
     };
     function catMeta(cat){ return CATEGORY_META[cat] || { label: cat||'Khác', icon: '⌘', color: '#a78bfa' }; }
 
@@ -1062,10 +1169,12 @@ body.light #splash { background: radial-gradient(circle at 30% 40%, rgba(167,139
     const search = $('#search');
     const clearSearchBtn = $('#clearSearch');
     const filterEl = $('#filter');
+    const sortEl = $('#sort');
     const grid = $('#grid');
     const emptyEl = $('#empty');
     const resultCount = $('#resultCount');
-    let activeCategory = 'all';
+    const suggestionsEl = $('#searchSuggestions');
+    let activeCategories = new Set(['all']);
 
     function buildTagOptions(){
       const allTags = [...new Set(COMMANDS.flatMap(c => c.tags||[]))].sort((a,b)=>a.localeCompare(b,'vi'));
@@ -1075,15 +1184,24 @@ body.light #splash { background: radial-gradient(circle at 30% 40%, rgba(167,139
     function getFiltered(){
       const q = normalize(search.value);
       const tagVal = filterEl.value;
-      return COMMANDS.filter(c => {
-        const mc = activeCategory==='all' || c.category===activeCategory;
+      let items = COMMANDS.filter(c => {
+        const mc = activeCategories.has('all') || activeCategories.has(c.category);
         const mt = tagVal==='all' || (c.tags||[]).includes(tagVal);
         const hay = normalize([c.name, c.category, c.platform, (c.tags||[]).join(' '), c.command].join(' '));
         const mq = !q || hay.includes(q);
         return mc && mt && mq;
       });
+      const o = sortEl ? sortEl.value : 'default';
+      if(o==='name-asc') items.sort((a,b)=>a.name.localeCompare(b.name,'vi'));
+      if(o==='newest') items = [...items].reverse();
+      if(o==='popular') items.sort((a,b)=> getCopyCount(b.id)-getCopyCount(a.id) || a.name.localeCompare(b.name,'vi'));
+      return items;
     }
 
+    function lengthClass(n){ return n<1000?'short':(n<=3000?'medium':'long'); }
+    function lengthLabel(n){ return n<1000?'Ngắn':(n<=3000?'Trung bình':'Dài'); }
+    function getCopyCount(id){ try{ return (JSON.parse(localStorage.getItem('cmdCopyCounts'))||{})[id]||0; }catch{ return 0; } }
+    function bumpCopyCount(id){ try{ const d=JSON.parse(localStorage.getItem('cmdCopyCounts'))||{}; d[id]=(d[id]||0)+1; localStorage.setItem('cmdCopyCounts',JSON.stringify(d)); }catch{} }
     function renderCard(c){
       const meta = catMeta(c.category);
       const hasCommand = !!(c.command && c.command.trim());
@@ -1092,6 +1210,8 @@ body.light #splash { background: radial-gradient(circle at 30% 40%, rgba(167,139
       const previewRaw = hasCommand ? c.command.slice(0,180).replace(/\s+/g,' ').trim() : '';
       const preview = previewRaw + (hasCommand && c.command.length>180 ? '…' : '');
       const tagsHtml = (c.tags||[]).map(t=>`<span class="t">#${escapeHtml(t)}</span>`).join('');
+      const badge = hasCommand ? `<span class="length-badge ${lengthClass(charCount)}">${lengthLabel(charCount)}</span>` : '';
+      const hoverStats = hasCommand ? `<div class="hover-stats"><span>📄 ${lineCount} dòng</span><span>🔤 ${charCount} ký tự</span></div>` : '';
       const bodyHtml = hasCommand
         ? `<p class="cmd-preview">${escapeHtml(preview)}</p>
            <details class="more">
@@ -1099,10 +1219,11 @@ body.light #splash { background: radial-gradient(circle at 30% 40%, rgba(167,139
              <pre class="more-body cmd-full">${escapeHtml(c.command)}</pre>
            </details>
            <div class="actions">
-             <button class="btn primary" data-copy-id="${c.id}">📋 Sao chép lệnh</button>
+             <button class="btn primary" data-copy-id="${c.id}"><span class="copy-icon">📋</span> Sao chép lệnh</button>
            </div>`
         : `<p class="cmd-preview cmd-removed">⚠️ Nội dung lệnh này đã được lược bỏ khỏi thư viện công khai.</p>`;
       return `<div class="card" style="--card-accent:${meta.color}">
+        ${badge}
         <div class="card-top">
           <div class="avatar" style="background:linear-gradient(135deg,${meta.color},${meta.color}99);">${meta.icon}</div>
           <div class="meta">
@@ -1115,6 +1236,7 @@ body.light #splash { background: radial-gradient(circle at 30% 40%, rgba(167,139
           ${c.platform ? `<span class="mini-stat">📱 ${escapeHtml(c.platform)}</span>` : ''}
         </div>
         ${bodyHtml}
+        ${hoverStats}
       </div>`;
     }
 
@@ -1127,20 +1249,70 @@ body.light #splash { background: radial-gradient(circle at 30% 40%, rgba(167,139
       clearSearchBtn.style.display = search.value ? 'inline-flex' : 'none';
     }
 
-    search.addEventListener('input', render);
+    function allKW(){
+      const k=[];
+      COMMANDS.forEach(c=>{ k.push(c.name); (c.tags||[]).forEach(t=>k.push(t)); });
+      return [...new Set(k)].sort((a,b)=>a.localeCompare(b,'vi'));
+    }
+    const allSug = allKW();
+    function renderSuggestions(q){
+      q=String(q||'').toLowerCase().trim();
+      if(!q || !suggestionsEl){ if(suggestionsEl) suggestionsEl.style.display='none'; return; }
+      const m = allSug.filter(k=>k.toLowerCase().includes(q)).slice(0,8);
+      if(!m.length){ suggestionsEl.style.display='none'; return; }
+      suggestionsEl.innerHTML = m.map(t=>`<div data-term="${escapeHtml(t)}">🔎 ${escapeHtml(t)}</div>`).join('');
+      suggestionsEl.style.display='block';
+    }
+    if(suggestionsEl){
+      suggestionsEl.addEventListener('click', e=>{
+        const t=e.target.closest('div[data-term]'); if(!t) return;
+        search.value=t.dataset.term; suggestionsEl.style.display='none'; render();
+      });
+      search.addEventListener('focus', ()=>{ if(search.value.trim()) renderSuggestions(search.value); });
+      search.addEventListener('blur', ()=> setTimeout(()=>{ suggestionsEl.style.display='none'; },200));
+    }
+    search.addEventListener('input', ()=>{ renderSuggestions(search.value); render(); });
     clearSearchBtn.addEventListener('click', ()=>{ search.value=''; render(); search.focus(); });
     filterEl.addEventListener('change', render);
+    if(sortEl) sortEl.addEventListener('change', render);
     $$('#chips .chip').forEach(b=>b.addEventListener('click', ()=>{
-      activeCategory = b.dataset.cat;
-      $$('#chips .chip').forEach(x=>x.classList.toggle('active', x===b));
+      const v = b.dataset.cat;
+      if(v==='all'){ activeCategories = new Set(['all']); }
+      else {
+        activeCategories.delete('all');
+        if(activeCategories.has(v)) activeCategories.delete(v); else activeCategories.add(v);
+        if(activeCategories.size===0) activeCategories = new Set(['all']);
+      }
+      $$('#chips .chip').forEach(x=>x.classList.toggle('active', activeCategories.has(x.dataset.cat)));
       render();
     }));
+    const resetBtn = $('#resetFilters');
+    if(resetBtn) resetBtn.addEventListener('click', ()=>{
+      search.value=''; filterEl.value='all'; if(sortEl) sortEl.value='default';
+      activeCategories = new Set(['all']);
+      $$('#chips .chip').forEach(x=>x.classList.toggle('active', x.dataset.cat==='all'));
+      render();
+    });
+    const toggleViewBtn = $('#toggleView');
+    let cmdViewMode = safeGet('cmdViewMode') || 'grid';
+    function applyCmdViewMode(){
+      if(!toggleViewBtn) return;
+      if(cmdViewMode==='list'){ grid.classList.add('list'); toggleViewBtn.innerHTML='🔲 Dạng lưới'; }
+      else { grid.classList.remove('list'); toggleViewBtn.innerHTML='📋 Danh sách'; }
+    }
+    applyCmdViewMode();
+    if(toggleViewBtn) toggleViewBtn.addEventListener('click', ()=>{
+      cmdViewMode = cmdViewMode==='grid' ? 'list' : 'grid';
+      safeSet('cmdViewMode', cmdViewMode);
+      applyCmdViewMode();
+    });
 
     grid.addEventListener('click', e=>{
       const btn = e.target.closest('[data-copy-id]');
       if(!btn) return;
       const c = COMMANDS.find(x=>x.id===btn.dataset.copyId);
       if(!c) return;
+      bumpCopyCount(c.id);
       copyText(c.command, c.name);
     });
 
@@ -1176,8 +1348,12 @@ body.light #splash { background: radial-gradient(circle at 30% 40%, rgba(167,139
     if(stm==='light'){ document.body.classList.add('light'); tt.textContent='☀️'; }
     tt.addEventListener('click',()=>{document.body.classList.toggle('light');const l=document.body.classList.contains('light');safeSet('theme',l?'light':'dark');tt.textContent=l?'☀️':'🌙';});
 
+    function showSkeleton(n){
+      grid.innerHTML = Array.from({length:n}).map(()=>'<div class="skeleton-card"><div class="skeleton-avatar"></div><div class="skeleton-line w60"></div><div class="skeleton-line w40"></div><div class="skeleton-line w90"></div></div>').join('');
+    }
+    showSkeleton(6);
     buildTagOptions();
-    render();
+    setTimeout(render, 280);
   </script>
 </body>
 </html>
