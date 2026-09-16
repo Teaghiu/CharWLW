@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cẩm nang Chuyển sinh (Isekai) · TeaGhiu</title>
+  <link rel="icon" type="image/jpeg" href="icon.jpg">
+  <link rel="apple-touch-icon" href="icon.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+<style>
+    :root {
+      --bg: #0a0b14;
+      --panel: rgba(255,255,255,0.04);
+      --panel-2: rgba(255,255,255,0.07);
+      --text: #f4f6ff;
+      --muted: rgba(244,246,255,0.75);
+      --muted-2: rgba(244,246,255,0.56);
+      --line: rgba(255,255,255,0.10);
+      --line-strong: rgba(255,255,255,0.18);
+      --accent: #a78bfa;
+      --accent-2: #22d3ee;
+      --accent-3: #f472b6;
+      --bible: #34d399;
+      --snapshot: #fbbf24;
+      --gradient: linear-gradient(135deg, #a78bfa 0%, #22d3ee 50%, #f472b6 100%);
+      --shadow: 0 20px 60px rgba(0,0,0,0.45);
+      --radius: 20px;
+      --radius-lg: 28px;
+      --max: 880px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg); color: var(--text); min-height: 100vh; position: relative;
+      overflow-x: hidden; line-height: 1.7; -webkit-font-smoothing: antialiased;
+    }
+    body::before {
+      content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background:
+        radial-gradient(ellipse at 15% 10%, rgba(167,139,250,0.20) 0%, transparent 45%),
+        radial-gradient(ellipse at 85% 20%, rgba(34,211,238,0.15) 0%, transparent 45%),
+        radial-gradient(ellipse at 50% 90%, rgba(244,114,182,0.15) 0%, transparent 50%);
+    }
+    .wrap { max-width: var(--max); margin: 0 auto; position: relative; z-index: 1; padding: 0 20px; }
+
+    /* NAVBAR (đồng bộ với commands.html) */
+    .navbar {
+      position: sticky; top: 0; z-index: 100;
+      backdrop-filter: blur(22px) saturate(140%); -webkit-backdrop-filter: blur(22px) saturate(140%);
+      background: rgba(10,11,20,0.68); border-bottom: 1px solid var(--line);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.22);
+    }
+    .navbar-inner {
+      max-width: 1200px; margin: 0 auto; padding: 14px 20px;
+      display: flex; justify-content: space-between; align-items: center; gap: 20px;
+    }
+    .nav-brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 16px; text-decoration: none; color: var(--text); }
+    .nav-mark {
+      width: 32px; height: 32px; border-radius: 10px; background: var(--gradient);
+      display: grid; place-items: center; font-size: 16px; font-weight:700; color:#fff;
+      box-shadow: 0 4px 14px rgba(167,139,250,0.4); overflow: hidden;
+    }
+    .nav-mark img { width:100%; height:100%; object-fit:cover; display:block; }
+    .nav-links { display: flex; gap: 6px; align-items: center; }
+    .nav-link { padding: 9px 15px; border-radius: 10px; color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 500; transition: all 0.2s; }
+    .nav-link:hover, .nav-link.active { color: var(--text); background: var(--panel); }
+    @media (max-width: 760px) { .nav-links { display: none; } }
+
+    .breadcrumb {
+      max-width: 1200px; margin: 0 auto; padding: 10px 20px 0;
+      display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--muted-2); position: relative; z-index: 1;
+    }
+    .breadcrumb a { color: var(--muted); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--text); }
+    .breadcrumb .sep { opacity: 0.5; }
+    .breadcrumb .current { color: var(--text); font-weight: 600; }
+
+    /* HERO */
+    .hero { padding: 40px 0 8px; }
+    .hero .kicker { color: var(--accent-2); font-size: 13.5px; font-weight: 600; margin: 0 0 10px; }
+    .hero h1 {
+      font-family: 'Playfair Display', serif; font-weight: 700;
+      font-size: clamp(28px, 5vw, 42px); line-height: 1.2; margin: 0 0 14px;
+    }
+    .hero p.lede { color: var(--muted); font-size: 15.5px; max-width: 640px; margin: 0; }
+
+    .tldr {
+      margin-top: 24px; padding: 18px 20px; border-radius: var(--radius);
+      background: var(--panel); border: 1px solid var(--line); font-size: 14px; color: var(--muted);
+    }
+    .tldr b { color: var(--text); }
+
+    /* SECTIONS */
+    section.block { margin-top: 48px; }
+    section.block h2 {
+      font-size: 20px; font-weight: 800; margin: 0 0 6px; display: flex; align-items: center; gap: 10px;
+    }
+    section.block > p.sub { color: var(--muted); font-size: 14px; margin: 0 0 20px; max-width: 620px; }
+
+    /* GLOSSARY */
+    .glossary { display: grid; gap: 12px; }
+    .gterm {
+      padding: 16px 18px; border-radius: 14px; background: var(--panel); border: 1px solid var(--line);
+    }
+    .gterm dt { font-weight: 700; font-size: 14px; color: var(--accent); margin-bottom: 4px; }
+    .gterm dd { margin: 0; color: var(--muted); font-size: 13.5px; line-height: 1.6; }
+
+    /* STEP CARDS */
+    .steps { display: grid; gap: 14px; counter-reset: step; }
+    .step {
+      position: relative; padding: 18px 20px 18px 58px; border-radius: 16px;
+      background: var(--panel); border: 1px solid var(--line);
+    }
+    .step::before {
+      counter-increment: step; content: counter(step);
+      position: absolute; left: 16px; top: 18px; width: 28px; height: 28px; border-radius: 9px;
+      background: var(--gradient); color: #0a0b14; font-weight: 800; font-size: 13px;
+      display: grid; place-items: center;
+    }
+    .step h3 { margin: 0 0 6px; font-size: 15px; font-weight: 700; }
+    .step p { margin: 0; color: var(--muted); font-size: 13.5px; line-height: 1.65; }
+    .step .cmdref {
+      display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; padding: 6px 12px;
+      border-radius: 999px; background: rgba(167,139,250,0.12); border: 1px solid rgba(167,139,250,0.3);
+      color: var(--accent); font-size: 12px; font-weight: 600; text-decoration: none;
+    }
+    .step .cmdref:hover { background: rgba(167,139,250,0.2); }
+
+    /* SAMPLE BOX */
+    .sample {
+      border-radius: 14px; border: 1px solid var(--line); overflow: hidden; margin-top: 14px;
+    }
+    .sample .sample-head {
+      padding: 10px 16px; font-size: 12.5px; font-weight: 700; letter-spacing: 0.02em;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .sample.bible .sample-head { background: rgba(52,211,153,0.14); color: var(--bible); }
+    .sample.snapshot .sample-head { background: rgba(251,191,36,0.14); color: var(--snapshot); }
+    .sample pre {
+      margin: 0; padding: 16px; font-size: 12.5px; line-height: 1.7; white-space: pre-wrap; word-break: break-word;
+      background: rgba(0,0,0,0.2); color: var(--muted); font-family: 'SFMono-Regular', Consolas, Menlo, monospace;
+    }
+
+    /* TWO-TIER COMPARE */
+    .tier-compare { display: grid; gap: 14px; grid-template-columns: 1fr 1fr; margin-top: 6px; }
+    @media (max-width: 620px) { .tier-compare { grid-template-columns: 1fr; } }
+    .tier-card { padding: 16px 18px; border-radius: 14px; border: 1px solid var(--line); background: var(--panel); }
+    .tier-card.bible { border-color: rgba(52,211,153,0.35); }
+    .tier-card.snapshot { border-color: rgba(251,191,36,0.35); }
+    .tier-card h4 { margin: 0 0 8px; font-size: 14px; display: flex; align-items: center; gap: 6px; }
+    .tier-card.bible h4 { color: var(--bible); }
+    .tier-card.snapshot h4 { color: var(--snapshot); }
+    .tier-card ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 13px; line-height: 1.7; }
+
+    /* TABLE */
+    .cmdtable { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13.5px; }
+    .cmdtable th, .cmdtable td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+    .cmdtable th { color: var(--muted-2); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.03em; }
+    .cmdtable td { color: var(--muted); }
+    .cmdtable td b { color: var(--text); }
+    .cmdtable a { color: var(--accent-2); text-decoration: none; }
+    .cmdtable a:hover { text-decoration: underline; }
+    .rowgroup td { padding-top: 18px; font-weight: 700; color: var(--text); border-bottom: none; }
+
+    /* FAQ */
+    .faq details {
+      padding: 14px 18px; border-radius: 14px; background: var(--panel); border: 1px solid var(--line); margin-bottom: 10px;
+    }
+    .faq summary { cursor: pointer; font-weight: 600; font-size: 14px; }
+    .faq p { margin: 10px 0 0; color: var(--muted); font-size: 13.5px; line-height: 1.65; }
+
+    .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
+    .btn {
+      appearance: none; border: 1px solid var(--line); background: var(--panel-2); color: var(--text);
+      padding: 11px 18px; border-radius: 12px; text-decoration: none; font-size: 13.5px; font-weight: 600;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn.primary { background: var(--gradient); color: #0a0b14; border-color: transparent; font-weight: 800; }
+
+    footer.footer { margin: 60px 0 40px; text-align: center; color: var(--muted-2); font-size: 12.5px; }
+    footer.footer a { color: var(--muted); text-decoration: none; margin: 0 8px; }
+    footer.footer a:hover { color: var(--text); }
+</style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="nav-brand">
+        <span class="nav-mark"><img src="icon.jpg" alt="TeaGhiu" onerror="this.style.display='none';this.parentElement.textContent='T';"></span>
+        <span>TeaGhiu</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Thư viện</a>
+        <a href="commands.html" class="nav-link">Hỗ trợ lệnh</a>
+        <a href="isekai-guide.html" class="nav-link active">📖 Cẩm nang Isekai</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="breadcrumb">
+    <a href="index.html">Trang chủ</a><span class="sep">›</span>
+    <a href="commands.html">Thư viện Lệnh</a><span class="sep">›</span>
+    <span class="current">Cẩm nang Isekai</span>
+  </div>
+
+  <div class="wrap">
+
+    <section class="hero">
+      <p class="kicker">🌀 CẨM NANG CHO NGƯỜI MỚI</p>
+      <h1>Chuyển sinh (Isekai) là gì, và làm sao dùng cho đúng?</h1>
+      <p class="lede">Hướng dẫn từng bước để chuyển một cuộc trò chuyện đang chat dở sang link mới mà char không bị "quên chuyện cũ" — kể cả khi bạn đã chuyển sinh nhiều lần.</p>
+
+      <div class="tldr">
+        <b>Tóm tắt 1 phút:</b> mỗi link chat trên AI Studio có giới hạn độ dài. Khi gần chạm giới hạn, bạn "chuyển sinh" — tức là tóm tắt lại toàn bộ chuyện đã xảy ra rồi dán sang link mới, để char tiếp tục đúng mạch chứ không bắt đầu lại từ đầu. <b>Lần đầu chuyển sinh</b> thì làm theo 3 bước đơn giản. <b>Từ lần 2 trở đi</b>, thay vì dán chồng nhiều bản tóm tắt cũ (sẽ quá dài), bạn tách thông tin thành 2 phần — một phần ít đổi, một phần hay đổi — rồi chỉ cập nhật phần hay đổi mỗi lần.
+      </div>
+    </section>
+
+    <section class="block">
+      <h2>📚 Từ điển thuật ngữ nhanh</h2>
+      <p class="sub">Không cần nhớ hết — mỗi khi gặp từ lạ trong lệnh, quay lại đây tra là được.</p>
+      <dl class="glossary">
+        <div class="gterm"><dt>Chuyển sinh (Isekai)</dt><dd>Hành động chuyển một cuộc trò chuyện đang dở sang link/chat mới, kèm theo bản tóm tắt để char "nhớ" tiếp câu chuyện thay vì bắt đầu lại từ số 0.</dd></div>
+        <div class="gterm"><dt>OOC (Out Of Character)</dt><dd>Một đoạn nhắn "ngoài vai" — bạn đang nói chuyện trực tiếp với AI, không phải với nhân vật. Dùng để ra lệnh, hỏi, hoặc chỉnh sửa mà không làm gián đoạn mạch truyện.</dd></div>
+        <div class="gterm"><dt>{{char}} / {{user}}</dt><dd>Ký hiệu đại diện cho nhân vật AI ({{char}}) và cho bạn ({{user}}). Khi dán lệnh, không cần đổi thủ công — bot tự hiểu.</dd></div>
+        <div class="gterm"><dt>Lore</dt><dd>Toàn bộ thông tin nền của câu chuyện: tính cách nhân vật, mối quan hệ, sự kiện đã xảy ra, bí mật, v.v.</dd></div>
+        <div class="gterm"><dt>RELATIONSHIP_BIBLE</dt><dd>Bản ghi những thông tin <b style="color:var(--text)">ổn định, hiếm khi đổi</b> — tính cách gốc, các cột mốc quan hệ lớn, bí mật cốt lõi. Chỉ dùng từ lần chuyển sinh thứ 2 trở đi.</dd></div>
+        <div class="gterm"><dt>ARC_SNAPSHOT</dt><dd>Bản ghi những thông tin <b style="color:var(--text)">tạm thời, thuộc nhánh truyện hiện tại</b> — cảnh đang diễn ra, tâm trạng lúc này. Mỗi lần chuyển sinh sẽ thay hoàn toàn snapshot cũ bằng snapshot mới.</dd></div>
+      </dl>
+    </section>
+
+    <section class="block">
+      <h2>1️⃣ Lần đầu chuyển sinh</h2>
+      <p class="sub">Dùng khi đây là lần đầu tiên bạn chuyển link cho char này. Làm đúng theo thứ tự 3 bước.</p>
+      <div class="steps">
+        <div class="step">
+          <h3>Trích xuất báo cáo đầy đủ</h3>
+          <p>Trong link đang chat (link cũ), dán lệnh này vào. AI sẽ xuất ra một bản báo cáo đầy đủ gồm 9 mục: tính cách, mối quan hệ, NPC, mốc thời gian, bối cảnh, bí mật, giọng văn...</p>
+          <a class="cmdref" href="commands.html#cat=isekai">📋 Isekai — Báo cáo trích xuất lore thủ công (Bước 1 · Lần đầu)</a>
+        </div>
+        <div class="step">
+          <h3>Bổ sung nếu báo cáo còn thiếu <span style="color:var(--muted-2);font-weight:500;">(tùy chọn)</span></h3>
+          <p>Nếu đọc lại thấy báo cáo Bước 1 còn sơ sài, thiếu chi tiết ở mục nào đó — dán lệnh này để AI bổ sung thêm, không cần làm lại từ đầu.</p>
+          <a class="cmdref" href="commands.html#cat=isekai">📋 Isekai — OOC bổ sung tóm tắt (Bước 2 · Lần đầu, nếu cần)</a>
+        </div>
+        <div class="step">
+          <h3>Setup ở link mới</h3>
+          <p>Mở link/chat mới cho cùng char đó. Dán lệnh này, rồi dán toàn bộ báo cáo từ Bước 1 (đã bổ sung nếu có Bước 2) vào chỗ được đánh dấu. AI sẽ xác nhận lại 3 điểm chính trước khi tiếp tục truyện.</p>
+          <a class="cmdref" href="commands.html#cat=isekai">📋 Isekai — OOC setup chat mới (Bước 3 · Lần đầu)</a>
+        </div>
+      </div>
+
+      <div class="sample bible" style="margin-top:20px;">
+        <div class="sample-head">📄 VÍ DỤ — một phần báo cáo Bước 1 đã điền</div>
+        <pre>【A. NHÂN VẬT CHÍNH --- {{char}}】
+• Tính cách GỐC (từ đầu truyện): lạnh lùng, kiệm lời, trung thành sâu
+• Điểm khác biệt lớn nhất so với ban đầu: đã bắt đầu để lộ sự quan tâm
+  thay vì che giấu như trước
+• Đang giấu/kìm nén điều gì: nguồn gốc thật của bản thân
+
+【C. MỐI QUAN HỆ】
+• Mức độ quan hệ: từ xa lạ → tin tưởng
+• Sự kiện khiến quan hệ thay đổi lớn nhất: {{char}} đã cứu {{user}}
+  khỏi nguy hiểm ở chương 3</pre>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2>2️⃣ Từ lần chuyển sinh thứ 2 trở đi</h2>
+      <p class="sub">Đừng dán chồng nhiều báo cáo 9-mục vào link mới — sẽ quá dài và làm nhiễu AI. Thay vào đó, tách thông tin thành 2 lớp và chỉ cập nhật lớp hay đổi.</p>
+
+      <div class="tier-compare">
+        <div class="tier-card bible">
+          <h4>📖 RELATIONSHIP_BIBLE — giữ nguyên phần lớn</h4>
+          <ul>
+            <li>Tính cách gốc & đặc điểm cốt lõi</li>
+            <li>Giọng văn, thói quen hành vi</li>
+            <li>Cột mốc quan hệ lớn</li>
+            <li>Bí mật cốt lõi</li>
+            <li>NPC quan trọng dài hạn</li>
+            <li>Lời hứa chưa hoàn thành</li>
+          </ul>
+        </div>
+        <div class="tier-card snapshot">
+          <h4>🎬 ARC_SNAPSHOT — thay mới hoàn toàn</h4>
+          <ul>
+            <li>Địa điểm & thời gian hiện tại</li>
+            <li>Xung đột đang mở của cảnh gần nhất</li>
+            <li>Tâm trạng, trạng thái tức thời</li>
+            <li>NPC riêng của nhánh này</li>
+            <li>Cảnh cuối cùng trước khi dừng</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="steps" style="margin-top:24px;">
+        <div class="step">
+          <h3>Tách báo cáo cũ thành Bible + Snapshot <span style="color:var(--muted-2);font-weight:500;">(chỉ làm 1 lần duy nhất, ngay trước lần chuyển sinh thứ 2)</span></h3>
+          <p>Dán báo cáo đầy đủ từ lần chuyển sinh đầu tiên vào lệnh này. AI sẽ tự phân loại và xuất ra 2 khối riêng: Bible và Snapshot. Lưu lại cả hai — Bible là bản bạn sẽ dùng lâu dài.</p>
+          <a class="cmdref" href="commands.html#cat=isekai">📋 Isekai — Tách Bible + Snapshot (Bước 0 · Chuẩn bị cho Lần 2)</a>
+        </div>
+        <div class="step">
+          <h3>Cập nhật Bible</h3>
+          <p>Trước khi rời link cũ, dán Bible hiện có vào lệnh này. AI chỉ sửa những mục thực sự thay đổi, giữ nguyên phần còn lại — không viết lại từ đầu.</p>
+          <a class="cmdref" href="commands.html#cat=isekai">📋 Isekai — Cập nhật RELATIONSHIP_BIBLE (Lần 2 trở đi · Living Document)</a>
+        </div>
+        <div class="step">
+          <h3>Tạo Snapshot mới</h3>
+          <p>Cũng trong link cũ, dán lệnh này để lấy bản Snapshot ngắn gọn của cảnh hiện tại. Snapshot mới sẽ thay thế hoàn toàn snapshot lần trước — không cần giữ bản cũ.</p>
+          <a class="cmdref" href="commands.html#cat=isekai">📋 Isekai — Tạo ARC_SNAPSHOT mới (Lần 2 trở đi)</a>
+        </div>
+        <div class="step">
+          <h3>Setup ở link mới</h3>
+          <p>Mở link mới. Dán lệnh này, rồi dán Bible (đã cập nhật) + Snapshot (vừa tạo) vào 2 chỗ được đánh dấu. Dù chuyển sinh bao nhiêu lần, bạn luôn chỉ dán đúng 2 khối này — không tăng dần theo số lần.</p>
+          <a class="cmdref" href="commands.html#cat=isekai">📋 Isekai — OOC setup chat mới (Lần 2 trở đi · Two-Tier)</a>
+        </div>
+      </div>
+
+      <div class="sample bible">
+        <div class="sample-head">📖 VÍ DỤ — RELATIONSHIP_BIBLE điền sẵn</div>
+        <pre>A. Tính cách gốc: lạnh lùng, kiệm lời, trung thành sâu
+C. Cột mốc: đã cứu {{user}} khỏi nguy hiểm ở chương 3 → quan hệ
+   chuyển từ xa lạ sang tin tưởng
+D. Bí mật cốt lõi: nguồn gốc thật vẫn chưa tiết lộ
+B. Giọng văn: ngắn, ít cảm xúc bề mặt, hay dùng ẩn dụ về mưa/đêm</pre>
+      </div>
+      <div class="sample snapshot">
+        <div class="sample-head">🎬 VÍ DỤ — ARC_SNAPSHOT điền sẵn</div>
+        <pre>1. Địa điểm: căn phòng nhỏ sau trận chiến
+2. Xung đột đang mở: {{char}} đang che giấu vết thương
+3. Tâm trạng: lo lắng nhưng cố tỏ ra bình thản
+5. Cảnh cuối: đang ngồi cạnh {{user}}, nhìn ra cửa sổ</pre>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2>📋 Toàn bộ lệnh cần dùng</h2>
+      <p class="sub">Bấm vào tên lệnh để mở đúng mục Isekai trong Thư viện Lệnh và sao chép.</p>
+      <table class="cmdtable">
+        <thead><tr><th>Bước</th><th>Tên lệnh</th><th>Dùng khi nào</th></tr></thead>
+        <tbody>
+          <tr class="rowgroup"><td colspan="3">Lần đầu chuyển sinh</td></tr>
+          <tr><td>Bước 1</td><td><a href="commands.html#cat=isekai"><b>Báo cáo trích xuất lore thủ công</b></a></td><td>Ở link cũ, ngay trước khi chuyển sinh</td></tr>
+          <tr><td>Bước 2</td><td><a href="commands.html#cat=isekai"><b>OOC bổ sung tóm tắt</b></a></td><td>Chỉ khi báo cáo Bước 1 còn thiếu</td></tr>
+          <tr><td>Bước 3</td><td><a href="commands.html#cat=isekai"><b>OOC setup chat mới</b></a></td><td>Ở link mới, dán kèm báo cáo</td></tr>
+          <tr class="rowgroup"><td colspan="3">Từ lần 2 trở đi</td></tr>
+          <tr><td>Bước 0</td><td><a href="commands.html#cat=isekai"><b>Tách Bible + Snapshot</b></a></td><td>Chỉ 1 lần duy nhất, trước lần chuyển sinh thứ 2</td></tr>
+          <tr><td>Cập nhật</td><td><a href="commands.html#cat=isekai"><b>Cập nhật RELATIONSHIP_BIBLE</b></a></td><td>Ở link cũ, ngay trước khi chuyển sinh</td></tr>
+          <tr><td>Snapshot</td><td><a href="commands.html#cat=isekai"><b>Tạo ARC_SNAPSHOT mới</b></a></td><td>Ở link cũ, cùng lúc với cập nhật Bible</td></tr>
+          <tr><td>Setup</td><td><a href="commands.html#cat=isekai"><b>OOC setup chat mới (Two-Tier)</b></a></td><td>Ở link mới, dán Bible + Snapshot</td></tr>
+        </tbody>
+      </table>
+      <div class="cta-row">
+        <a class="btn primary" href="commands.html#cat=isekai">🌀 Mở mục lệnh Isekai</a>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2>❓ Câu hỏi thường gặp</h2>
+      <div class="faq">
+        <details open>
+          <summary>Chuyển sinh nhiều lần có làm char bị "lú", quên tính cách không?</summary>
+          <p>Không, nếu bạn dùng đúng quy trình Two-Tier ở trên. Rủi ro "lú" chủ yếu đến từ việc dán chồng quá nhiều báo cáo cũ vào 1 link — khi đó context quá dài và lộn xộn khiến AI khó bám đúng thông tin mới nhất. Tách Bible (ổn định) và Snapshot (thay mới mỗi lần) giữ cho lượng thông tin dán vào luôn gọn, dù đã chuyển sinh bao nhiêu lần.</p>
+        </details>
+        <details>
+          <summary>Tôi đã chuyển sinh vài lần theo cách cũ (dán full báo cáo) rồi, giờ đổi sang Two-Tier được không?</summary>
+          <p>Được. Lấy báo cáo đầy đủ gần nhất (mới nhất) bạn có, dán vào lệnh Bước 0 để tách thành Bible + Snapshot. Từ lần chuyển sinh tiếp theo, dùng quy trình 4 bước của mục "Từ lần 2 trở đi".</p>
+        </details>
+        <details>
+          <summary>Bible và Snapshot khác gì nhau, sao phải tách?</summary>
+          <p>Bible là những gì gần như không đổi — nếu viết lại mỗi lần sẽ tốn chỗ và dễ mâu thuẫn với bản cũ. Snapshot là những gì chỉ đúng cho khoảnh khắc hiện tại — nếu giữ lại các Snapshot cũ, chúng chồng chất và không còn đúng nữa. Tách riêng để mỗi phần được xử lý đúng cách: Bible cập nhật nhẹ nhàng, Snapshot thay mới hoàn toàn.</p>
+        </details>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div><a href="index.html">Thư viện Character</a><a href="commands.html">Thư viện Lệnh</a></div>
+      <div style="margin-top:6px;">TeaGhiu Command Library <span style="color:#ef4444;">♥</span></div>
+    </footer>
+
+  </div>
+
+</body>
+</html>

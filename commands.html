@@ -757,6 +757,7 @@ body.light #splash { background: radial-gradient(circle at 30% 40%, rgba(167,139
         <a href="index.html" class="nav-link">Thư viện</a>
         <a href="index.html#featured" class="nav-link">Nhân vật</a>
         <a href="commands.html" class="nav-link active">Hỗ trợ lệnh</a>
+        <a href="isekai-guide.html" class="nav-link">📖 Cẩm nang Isekai</a>
         <a href="https://aistudio.google.com/" target="_blank" rel="noopener" class="nav-link">AI Studio ↗</a>
       </div>
       <div class="nav-actions">
@@ -776,6 +777,15 @@ body.light #splash { background: radial-gradient(circle at 30% 40%, rgba(167,139
         <h1>📜 Thư viện Lệnh TeaGhiu</h1>
         <p>lệnh hỗ trợ nhập vai trên AI Studio — tìm theo tên/nội dung, lọc theo danh mục &amp; thẻ, sao chép nhanh.</p>
       </section>
+
+      <a href="isekai-guide.html" style="display:flex;align-items:center;gap:12px;margin-top:16px;padding:14px 18px;border-radius:14px;background:var(--panel);border:1px solid var(--line);text-decoration:none;color:var(--text);transition:background 0.2s;">
+        <span style="font-size:22px;">🌀</span>
+        <span style="flex:1;">
+          <strong style="font-size:14px;">Lần đầu dùng lệnh Chuyển sinh (Isekai)?</strong>
+          <span style="display:block;color:var(--muted);font-size:12.5px;margin-top:2px;">Xem Cẩm nang Isekai — giải thích thuật ngữ, mẫu điền sẵn, cách dùng cho lần đầu và các lần sau.</span>
+        </span>
+        <span style="color:var(--muted);font-size:13px;">Xem cẩm nang →</span>
+      </a>
 
       <section class="control-panel" style="margin-top:18px;">
         <div class="toolbar">
@@ -1049,12 +1059,13 @@ body.light #splash { background: radial-gradient(circle at 30% 40%, rgba(167,139
   },
   {
     "id": "cmd-017a-cap-a-bao-cao",
-    "name": "Isekai — Báo cáo trích xuất lore thủ công (Bước 1)",
+    "name": "Isekai — Báo cáo trích xuất lore thủ công (Bước 1 · Lần đầu)",
     "category": "Isekai & Migration Guide",
     "platform": "AI Studio / General RP",
     "tags": [
       "Isekai",
       "Bước 1",
+      "Lần đầu",
       "Manual Lore Extraction",
       "Comprehensive"
     ],
@@ -1062,12 +1073,13 @@ body.light #splash { background: radial-gradient(circle at 30% 40%, rgba(167,139
   },
   {
     "id": "cmd-017b-cap-b-ooc",
-    "name": "Isekai — OOC bổ sung tóm tắt (Bước 2 [nếu cần])",
+    "name": "Isekai — OOC bổ sung tóm tắt (Bước 2 · Lần đầu, nếu cần)",
     "category": "Isekai & Migration Guide",
     "platform": "AI Studio / General RP",
     "tags": [
       "Isekai",
       "Bước 2",
+      "Lần đầu",
       "OOC",
       "Summary Expansion"
     ],
@@ -1075,16 +1087,74 @@ body.light #splash { background: radial-gradient(circle at 30% 40%, rgba(167,139
   },
   {
     "id": "cmd-017c-cach2-ooc-setup",
-    "name": "Isekai — OOC setup chat mới (Bước 3)",
+    "name": "Isekai — OOC setup chat mới (Bước 3 · Lần đầu)",
     "category": "Isekai & Migration Guide",
     "platform": "AI Studio / General RP",
     "tags": [
       "Isekai",
+      "Bước 3",
+      "Lần đầu",
       "Setup Chat Mới",
       "OOC Template",
       "First Message"
     ],
     "command": "[OOC: Đây là phiên tiếp nối từ cuộc trò chuyện\n\ntrước. Dưới đây là TOÀN BỘ thông tin bạn cần\n\nnhớ và tuân thủ như thể chúng ta đã trải qua\n\ntất cả những điều này. KHÔNG được coi đây là\n\nkhởi đầu mới. Hãy hành xử, phản ứng, và duy\n\ntrì tính cách ĐÚNG NHƯ đã phát triển trong\n\nbáo cáo dưới đây:]\n\n═══════════════════════════════════\n\n{DÁN TOÀN BỘ BÁO CÁO TRÍCH XUẤT LORE VÀO ĐÂY}\n\n═══════════════════════════════════\n\n[OOC: Xác nhận bạn đã tiếp nhận toàn bộ thông\n\ntin trên bằng cách liệt kê nhanh 3 điểm:]\n\n1. Mối quan hệ hiện tại giữa {{char}} và {{user}}\n\n2. Sự kiện quan trọng nhất đã xảy ra\n\n3. Tâm trạng/trạng thái hiện tại của {{char}}\n\n[Sau khi xác nhận, hãy tiếp tục câu chuyện từ\n\nbối cảnh: {mô tả cảnh cuối, 2-3 câu}]"
+  },
+  {
+    "id": "cmd-017d-buoc0-tach-bible-snapshot",
+    "name": "Isekai — Tách Bible + Snapshot (Bước 0 · Chuẩn bị cho Lần 2)",
+    "category": "Isekai & Migration Guide",
+    "platform": "AI Studio / General RP",
+    "tags": [
+      "Isekai",
+      "Bước 0",
+      "Lần 2+",
+      "RELATIONSHIP_BIBLE",
+      "ARC_SNAPSHOT",
+      "Two-Tier Setup"
+    ],
+    "command": "[OOC: Tạm dừng roleplay. Tôi có một BÁO CÁO\n\nTRÍCH XUẤT LORE đầy đủ từ lần chuyển sinh\n\ntrước, dán bên dưới. Nhiệm vụ của bạn là TÁCH\n\nbáo cáo này thành 2 khối riêng biệt, không\n\nđược bỏ sót hay gộp lẫn:]\n\n{DÁN BÁO CÁO TRÍCH XUẤT LORE ĐẦY ĐỦ (BƯỚC 1) VÀO ĐÂY}\n\nHãy phân loại theo đúng quy tắc sau:\n\n【KHỐI 1 --- RELATIONSHIP_BIBLE (chỉ giữ thông\n\ntin ỔN ĐỊNH, hiếm khi đổi)】\n\nBao gồm:\n\nA. Tính cách GỐC & đặc điểm cốt lõi của {{char}}\n\nB. Giọng văn & thói quen hành vi đặc trưng\n\nC. Các cột mốc quan hệ lớn (theo thứ tự thời gian)\n\nD. Bí mật cốt lõi (đã/chưa tiết lộ)\n\nE. NPC quan trọng dài hạn (còn ảnh hưởng về sau)\n\nF. Lời hứa/cam kết CHƯA hoàn thành\n\n【KHỐI 2 --- ARC_SNAPSHOT (chỉ giữ thông tin\n\nĐỘNG, thuộc nhánh hiện tại)】\n\nBao gồm:\n\n1. Địa điểm & thời gian hiện tại\n\n2. Xung đột/tình huống đang mở của cảnh gần nhất\n\n3. Tâm trạng & trạng thái vật lý tức thời\n\n4. NPC chỉ xuất hiện trong nhánh này\n\n5. Cảnh cuối cùng trước khi dừng (2-3 câu)\n\nQUY TẮC PHÂN LOẠI: nếu một chi tiết sẽ còn\n\nđúng ở 5 cảnh nữa thì xếp vào Bible; nếu chỉ\n\nđúng cho cảnh hiện tại thì xếp vào Snapshot.\n\nKhi phân vân, ưu tiên xếp vào Snapshot --- vì\n\nSnapshot được thay mới liên tục nên không sợ\n\nmất, còn Bible cần chính xác tuyệt đối.\n\nXuất kết quả theo đúng format:\n\n═══════════════════════════════════\n\n📖 RELATIONSHIP_BIBLE\n\n═══════════════════════════════════\n\n[nội dung theo mục A--F]\n\n═══════════════════════════════════\n\n🎬 ARC_SNAPSHOT\n\n═══════════════════════════════════\n\n[nội dung theo mục 1--5]\n\n[Không thêm bình luận, không giải thích, chỉ\n\nxuất đúng 2 khối trên.]"
+  },
+  {
+    "id": "cmd-017e-cap-nhat-bible",
+    "name": "Isekai — Cập nhật RELATIONSHIP_BIBLE (Lần 2 trở đi · Living Document)",
+    "category": "Isekai & Migration Guide",
+    "platform": "AI Studio / General RP",
+    "tags": [
+      "Isekai",
+      "Lần 2+",
+      "RELATIONSHIP_BIBLE",
+      "Living Document",
+      "Cập nhật"
+    ],
+    "command": "[OOC: Tạm dừng roleplay. Đây là bản\n\nRELATIONSHIP_BIBLE hiện tại của {{char}}, dán\n\nbên dưới:]\n\n{DÁN RELATIONSHIP_BIBLE HIỆN CÓ VÀO ĐÂY}\n\n[Dựa trên toàn bộ cuộc trò chuyện vừa diễn ra\n\n(link sắp kết thúc), hãy CẬP NHẬT bản Bible\n\ntrên theo đúng nguyên tắc:]\n\n1. CHỈ ghi đè những mục đã thực sự thay đổi\n\ntrong link này (tính cách phát triển thêm, có\n\ncột mốc quan hệ mới, bí mật đã được tiết lộ).\n\n2. GIỮ NGUYÊN 100% những mục chưa có gì thay\n\nđổi --- không viết lại, không diễn giải khác\n\nđi, không \\\"làm mới\\\" câu chữ nếu nội dung vẫn\n\nđúng.\n\n3. XÓA khỏi Bible những gì không còn là thông\n\ntin dài hạn nữa (một xung đột đã giải quyết\n\ndứt điểm thì không còn thuộc Bible --- nó đã\n\nkết thúc, không cần nhớ mãi).\n\n4. KHÔNG thêm bất kỳ thông tin nào thuộc phạm\n\nvi ARC_SNAPSHOT (cảnh hiện tại, tâm trạng tức\n\nthời, địa điểm lúc này) --- những thứ đó xử lý\n\nở lệnh Snapshot riêng.\n\nXuất bản Bible đã cập nhật theo đúng format\n\ngốc (giữ nguyên các mục A--F), không thêm lời\n\ndẫn hay giải thích trước/sau. Đây sẽ là bản\n\nBible lưu lại để dùng cho lần chuyển sinh tiếp\n\ntheo.]"
+  },
+  {
+    "id": "cmd-017f-tao-snapshot",
+    "name": "Isekai — Tạo ARC_SNAPSHOT mới (Lần 2 trở đi)",
+    "category": "Isekai & Migration Guide",
+    "platform": "AI Studio / General RP",
+    "tags": [
+      "Isekai",
+      "Lần 2+",
+      "ARC_SNAPSHOT",
+      "Snapshot"
+    ],
+    "command": "[OOC: Tạm dừng roleplay. Tôi cần một\n\nARC_SNAPSHOT mới cho nhánh truyện vừa diễn ra,\n\nđể chuẩn bị chuyển sinh. Đây là snapshot TẠM\n\nTHỜI, sẽ thay thế hoàn toàn snapshot cũ ---\n\nkhông cần tham chiếu lại snapshot trước.\n\nChỉ xuất đúng 5 mục sau, ngắn gọn, mỗi mục\n\n1-3 câu, không lặp lại thông tin đã có sẵn\n\ntrong RELATIONSHIP_BIBLE:]\n\n═══════════════════════════════════\n\n🎬 ARC_SNAPSHOT\n\n═══════════════════════════════════\n\n1. Địa điểm & thời gian hiện tại:\n\n2. Xung đột/tình huống đang mở:\n\n3. Tâm trạng & trạng thái vật lý tức thời của\n\n{{char}}:\n\n4. NPC riêng của nhánh này (nếu có --- tên,\n\nvai trò, còn ảnh hưởng gì không):\n\n5. Cảnh cuối cùng (mô tả 2-3 câu, đúng như\n\nđang dừng lại):\n\n[Không thêm phần nào khác, không lặp lại nội\n\ndung đã thuộc Bible.]"
+  },
+  {
+    "id": "cmd-017g-setup-lan2",
+    "name": "Isekai — OOC setup chat mới (Lần 2 trở đi · Two-Tier)",
+    "category": "Isekai & Migration Guide",
+    "platform": "AI Studio / General RP",
+    "tags": [
+      "Isekai",
+      "Lần 2+",
+      "Setup Chat Mới",
+      "Two-Tier",
+      "OOC Template"
+    ],
+    "command": "[OOC: Đây là phiên tiếp nối từ những link\n\ntrước --- KHÔNG phải khởi đầu mới. Dưới đây là\n\n2 khối thông tin bạn phải tuân thủ tuyệt đối:]\n\n═══════════════════════════════════\n\n📖 RELATIONSHIP_BIBLE (ổn định --- áp dụng\n\nxuyên suốt)\n\n═══════════════════════════════════\n\n{DÁN RELATIONSHIP_BIBLE MỚI NHẤT VÀO ĐÂY}\n\n═══════════════════════════════════\n\n🎬 ARC_SNAPSHOT (nhánh hiện tại --- THAY THẾ\n\nHOÀN TOÀN mọi snapshot trước đó)\n\n═══════════════════════════════════\n\n{DÁN ARC_SNAPSHOT MỚI VÀO ĐÂY}\n\n[OOC: Xác nhận bạn đã tiếp nhận bằng cách liệt\n\nkê nhanh 3 điểm:]\n\n1. Mối quan hệ hiện tại giữa {{char}} và {{user}}\n\n2. Điều quan trọng nhất từ Bible cần nhớ xuyên suốt\n\n3. Tình huống mở đầu từ Snapshot\n\n[Sau khi xác nhận, hãy tiếp tục câu chuyện đúng\n\ntừ cảnh cuối trong ARC_SNAPSHOT. Không tóm tắt\n\nlại, không hỏi lại thông tin đã có, không coi\n\nđây là màn chào hỏi đầu tiên.]"
   },
   {
   "id": "cmd-018a-content-filter-bypass",
@@ -1174,7 +1244,10 @@ body.light #splash { background: radial-gradient(circle at 30% 40%, rgba(167,139
     const emptyEl = $('#empty');
     const resultCount = $('#resultCount');
     const suggestionsEl = $('#searchSuggestions');
-    let activeCategories = new Set(['all']);
+    let activeCategories = location.hash.toLowerCase().includes('cat=isekai')
+      ? new Set(['Isekai & Migration Guide'])
+      : new Set(['all']);
+    $$('#chips .chip').forEach(x=>x.classList.toggle('active', activeCategories.has(x.dataset.cat)));
 
     function buildTagOptions(){
       const allTags = [...new Set(COMMANDS.flatMap(c => c.tags||[]))].sort((a,b)=>a.localeCompare(b,'vi'));
