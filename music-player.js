@@ -6,31 +6,31 @@
   const playlist = [
     {
       title: "呓语 (Whisper)",
-      src: "music/whisper.mp3"
+      src: "whisper.mp3"
     },
     {
       title: "你是不是也喜欢我 (Nữ sinh)",
-      src: "music/xihuan-wo.mp3"
+      src: "xihuan-wo.mp3"
     },
     {
       title: "烟波辞 (Lovers in River Mist)",
-      src: "music/river-mist.mp3"
+      src: "river-mist.mp3"
     },
     {
       title: "七夕雨 (Qixi Festival Rain)",
-      src: "music/qixi-rain.mp3"
+      src: "qixi-rain.mp3"
     },
     {
       title: "Love Spanning Millennia",
-      src: "music/millennia-dance.mp3"
+      src: "millennia-dance.mp3"
     },
     {
       title: "Sword of Coming Safety",
-      src: "music/sword-safety.mp3"
+      src: "sword-safety.mp3"
     },
     {
       title: "Moonlit Lanterns",
-      src: "music/moonlit-lanterns.mp3"
+      src: "moonlit-lanterns.mp3"
     }
   ];
 
