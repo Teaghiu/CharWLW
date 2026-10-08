@@ -9,7 +9,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/@supabaseClient/supabaseClient-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <meta name="description" content="Thư viện Character WLW by TeaGhiu — tìm kiếm, lọc, tim, ghim và khám phá hàng trăm nhân vật WLW cho Google AI Studio." />
+  <meta property="og:title" content="Thư viện WLW · TeaGhiu" />
+  <meta property="og:description" content="Tìm kiếm, lọc, tim, ghim và khám phá nhân vật WLW cho Google AI Studio." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="icon.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -39,6 +45,7 @@
         <a href="#/" class="nav-link" data-nav="home">Thư viện</a>
         <a href="#featured" class="nav-link" data-nav="featured">Nhân vật</a>
         <a href="commands.html" class="nav-link">Hỗ trợ lệnh</a>
+        <a href="isekai-guide.html" class="nav-link">📖 Cẩm nang Isekai</a>
         <a href="https://aistudio.google.com/" target="_blank" rel="noopener" class="nav-link">AI Studio ↗</a>
       </div>
       <div class="nav-actions">
@@ -129,7 +136,7 @@
               <div class="search-wrap">
                 <span class="search-icon">🔍</span>
                 <input id="search" class="field" type="text" placeholder="Tìm nhân vật theo tên, tag, mô tả..." />
-                <button id="clearSearch" class="clear-btn" type="button">✖</button>
+                <button id="clearSearch" class="clear-btn" type="button" style="display:none;">✖</button>
                 <div id="searchHistoryDropdown"></div>
                 <div id="searchSuggestions"></div>
               </div>
@@ -168,6 +175,7 @@
 
         <div class="result-meta">
           <span id="statusText">Đang tải...</span>
+          <span id="cloudStatus" style="font-size:12px;color:var(--muted);"><span id="cloudStatusText">☁️ Đang kết nối...</span></span>
           <span id="countInfo"></span>
         </div>
         <div id="paginationTop" class="pagination"></div>
@@ -684,7 +692,7 @@
     suggestionsEl.addEventListener('click',e=>{const t=e.target.closest('div[data-term]');if(!t)return;search.value=t.dataset.term;addSearchTerm(t.dataset.term);suggestionsEl.style.display='none';currentPage=1;render();});
     search.addEventListener('focus',()=>{if(search.value.trim()){renderSuggestions(search.value);historyDropdown.style.display='none';}else{renderHistory();historyDropdown.style.display=getHistory().length?'block':'none';suggestionsEl.style.display='none';}});
     search.addEventListener('blur',()=>setTimeout(()=>{historyDropdown.style.display='none';suggestionsEl.style.display='none';},200));
-    search.addEventListener('input',()=>{currentPage=1;if(search.value){renderSuggestions(search.value);historyDropdown.style.display='none';}else suggestionsEl.style.display='none';render();});
+    search.addEventListener('input',()=>{$('#clearSearch').style.display=search.value?'inline-flex':'none';currentPage=1;if(search.value){renderSuggestions(search.value);historyDropdown.style.display='none';}else suggestionsEl.style.display='none';render();});
     search.addEventListener('keydown',e=>{if(e.key==='Enter'){const t=search.value.trim();if(t){addSearchTerm(t);historyDropdown.style.display='none';suggestionsEl.style.display='none';currentPage=1;render();}}});
 
     /* CARDS */
@@ -825,7 +833,7 @@
     }));
     filterEl.addEventListener('change',()=>{activeChipFilters=new Set([filterEl.value]);currentPage=1;cachedRandom=null;render();});
     sortEl.addEventListener('change',()=>{currentPage=1;cachedRandom=null;render();});
-    $('#clearSearch').addEventListener('click',()=>{search.value='';currentPage=1;render();search.focus();});
+    $('#clearSearch').addEventListener('click',()=>{search.value='';$('#clearSearch').style.display='none';currentPage=1;render();search.focus();});
     $('#resetFilters').addEventListener('click',()=>{search.value='';filterEl.value='all';sortEl.value='default';activeChipFilters=new Set(['all']);currentPage=1;chips.forEach(b=>b.classList.toggle('active',b.dataset.filter==='all'));cachedRandom=null;render();});
     
     /* ================= RANDOM HORIZONTAL SPIN ================= */
@@ -1041,8 +1049,7 @@
     initSupabase().then(renderAll);
     // countdown no longer needed after BXH removal
   </script>
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a2519790dee6c6f3',t:'MTc4NTcyMDk5Mw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();
-  <script src="click-sound.js"></script>
+<script src="click-sound.js"></script>
   <script src="music-player.js"></script>
   
 </body>
