@@ -185,6 +185,77 @@
     footer.footer a { color: var(--muted); text-decoration: none; margin: 0 8px; }
     footer.footer a:hover { color: var(--text); }
 </style>
+<style>
+/* ============================================================
+   THÊM 11/10/2026 — BOTTOM TAB BAR + TINH CHỈNH MOBILE
+   (chỉ áp dụng cho màn hình ≤ 900px, desktop không đổi gì)
+   ============================================================ */
+.tabbar { display: none; }
+
+@media (max-width: 900px) {
+  body { padding-bottom: calc(78px + env(safe-area-inset-bottom, 0px)); }
+
+  .tabbar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 95;
+    display: grid; grid-auto-flow: column; grid-auto-columns: 1fr;
+    gap: 2px; padding: 6px 6px calc(7px + env(safe-area-inset-bottom, 0px));
+    background: rgba(10,11,20,0.88);
+    backdrop-filter: blur(20px) saturate(140%); -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border-top: 1px solid var(--line);
+    box-shadow: 0 -10px 30px rgba(0,0,0,0.38);
+  }
+  .tab-item {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+    padding: 8px 2px 7px; border-radius: 14px; text-decoration: none;
+    color: var(--muted-2); font-size: 10.5px; font-weight: 600; letter-spacing: .01em;
+    -webkit-tap-highlight-color: transparent;
+    transition: color .18s ease, background .18s ease, transform .15s ease;
+  }
+  .tab-item .tab-ico { font-size: 20px; line-height: 1; transition: transform .18s ease; }
+  .tab-item.active {
+    color: var(--text);
+    background: linear-gradient(180deg, rgba(167,139,250,0.22), rgba(34,211,238,0.10));
+    box-shadow: inset 0 0 0 1px rgba(167,139,250,0.35);
+  }
+  .tab-item.active .tab-ico { transform: translateY(-1px) scale(1.1); }
+  .tab-item:active { transform: scale(0.94); }
+
+  /* nút nổi phải né thanh tab */
+  #backToTop { bottom: calc(88px + env(safe-area-inset-bottom, 0px)) !important; }
+  .toast     { bottom: calc(96px + env(safe-area-inset-bottom, 0px)) !important; }
+
+  /* chip thể loại: cuộn ngang kiểu app */
+  .chips {
+    flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden;
+    -webkit-overflow-scrolling: touch; scroll-snap-type: x proximity;
+    padding: 2px 2px 8px; scrollbar-width: none;
+  }
+  .chips::-webkit-scrollbar { display: none; }
+  .chip { flex: 0 0 auto; scroll-snap-align: start; }
+
+  /* mục neo không bị thanh trên che */
+  #featured, #library, .section { scroll-margin-top: 86px; }
+
+  /* toolbar: xếp 2 cột cho gọn, đỡ phải cuộn dài */
+  .toolbar { grid-template-columns: 1fr 1fr; }
+  .toolbar .search-row { grid-column: 1 / -1; }
+  .toolbar #randomBtn { grid-column: 1 / -1; }
+  body.commands-page .toolbar > .select { grid-column: 1 / -1; }
+}
+
+body.light .tabbar { background: rgba(247,248,252,0.92); }
+
+/* 2 ô thống kê cho gọn (trước đây khai lưới 4 cột mà chỉ có 2 ô) */
+.profile-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+/* Banner Isekai trong trang Lệnh: xuống dòng gọn trên điện thoại */
+@media (max-width: 640px) {
+  body.commands-page .isekai-callout { flex-wrap: wrap; align-items: flex-start; }
+  body.commands-page .isekai-callout > span:first-of-type { font-size: 26px; line-height: 1; }
+  body.commands-page .isekai-callout > span:nth-of-type(2) { flex: 1 1 100%; }
+  body.commands-page .isekai-callout > span:last-child { flex: 1 1 100%; text-align: right; font-weight: 600; }
+}
+  </style>
 </head>
 <body>
 
@@ -382,9 +453,18 @@ B. Giọng văn: ngắn, ít cảm xúc bề mặt, hay dùng ẩn dụ về mư
       <div style="margin-top:6px;">TeaGhiu Command Library <span style="color:#ef4444;">♥</span></div>
     </footer>
     <script src="click-sound.js"></script>
-    <script src="music-player1.js"></script>
+    <script src="music-player-v3.js"></script>
 
   </div>
 
-</body>
+  <!-- BOTTOM TAB BAR (chỉ hiện trên điện thoại) -->
+  <nav class="tabbar" aria-label="Điều hướng nhanh">
+    <a href="index.html" class="tab-item"><span class="tab-ico">📚</span><span>Thư viện</span></a>
+    <a href="index.html#featured" class="tab-item"><span class="tab-ico">⭐</span><span>Nhân vật</span></a>
+    <a href="commands.html" class="tab-item"><span class="tab-ico">📜</span><span>Lệnh</span></a>
+    <a href="isekai-guide.html" class="tab-item active"><span class="tab-ico">🌀</span><span>Cẩm nang</span></a>
+    <a href="https://aistudio.google.com/" target="_blank" rel="noopener" class="tab-item"><span class="tab-ico">🚀</span><span>AI Studio</span></a>
+  </nav>
+
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a48d4beff9b9066e',t:'MTc5MTcxNTc1MA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
