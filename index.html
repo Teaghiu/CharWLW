@@ -148,6 +148,8 @@
               <option value="genre:hiện đại">Hiện đại</option>
               <option value="genre:cổ trang">Cổ trang</option>
               <option value="genre:khác">Khác</option>
+              <option value="liked">❤️ Yêu thích</option>
+              <option value="pinned">📌 Đã ghim</option>
             </select>
             <select id="sort" class="select">
               <option value="default">Mặc định</option>
@@ -170,6 +172,8 @@
             <button class="chip" data-filter="genre:cổ trang">Cổ trang</button>
             <button class="chip" data-filter="genre:aob">AOB</button>
             <button class="chip" data-filter="genre:khác">Khác</button>
+            <button class="chip" data-filter="liked">❤️ Yêu thích</button>
+            <button class="chip" data-filter="pinned">📌 Đã ghim</button>
           </div>
         </div>
 
@@ -476,12 +480,14 @@
       if (filterVal === 'genre:hiện đại') return classifyChar(item).primary === 'hiện đại';
       if (filterVal === 'genre:cổ trang') return classifyChar(item).primary === 'cổ trang';
       if (filterVal === 'genre:khác') return classifyChar(item).primary === 'khác';
+      if (filterVal === 'liked')  return likedSet.has(item.name);
+      if (filterVal === 'pinned') return pinnedLocal.includes(item.name);
       return parseTags(item.tag).some(t => t === filterVal);
     }
 
     // Nhãn hiển thị thân thiện cho trạng thái filter đang chọn
     function filterLabel(v){
-      const map = { 'all': 'tất cả nhóm', '#WLW': '#WLW', 'genre:aob': 'AOB', 'genre:hiện đại': 'Hiện đại', 'genre:cổ trang': 'Cổ trang', 'genre:khác': 'Khác' };
+      const map = { 'all': 'tất cả nhóm', '#WLW': '#WLW', 'genre:aob': 'AOB', 'genre:hiện đại': 'Hiện đại', 'genre:cổ trang': 'Cổ trang', 'genre:khác': 'Khác', 'liked': '❤️ Yêu thích', 'pinned': '📌 Đã ghim' };
       return map[v] || v;
     }
 
@@ -573,8 +579,14 @@
           return false;
         }
         supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth:{persistSession:false} });
-        await ensureWeekRows();
-        await fetchStats();
+        const rowsOk  = await ensureWeekRows();
+        const fetchOk = await fetchStats();
+        if(!fetchOk){
+          // Kết nối được client nhưng KHÔNG truy vấn được (project pause/xoá, sai key, mất mạng...)
+          supabaseClient = null;
+          setCloud(false, rowsOk ? '⚠️ Supabase trả lỗi – đang dùng dữ liệu cục bộ' : '📴 Không kết nối được Supabase – dùng dữ liệu cục bộ');
+          return false;
+        }
         setCloud(true);
         return true;
       } catch(err){
@@ -585,11 +597,13 @@
       }
     }
     async function ensureWeekRows(){
-      if(!supabaseClient) return;
+      if(!supabaseClient) return false;
       const rows = chars.map(c => ({week_key:WEEK_KEY, char_name:c.name, hearts:0,copies:0,pins:0}));
       try {
-        await supabaseClient.from('char_stats').upsert(rows, {onConflict:'week_key,char_name', ignoreDuplicates:true});
-      } catch(e){ console.warn(e); }
+        const {error} = await supabaseClient.from('char_stats').upsert(rows, {onConflict:'week_key,char_name', ignoreDuplicates:true});
+        if(error) throw error;
+        return true;
+      } catch(e){ console.warn('ensureWeekRows failed:',e); return false; }
     }
     async function fetchStats(){
       if(!supabaseClient) return;
@@ -601,7 +615,11 @@
           data.forEach(r => { if(merged[r.char_name]) merged[r.char_name] = {hearts:r.hearts||0,copies:r.copies||0,pins:r.pins||0}; });
           statsData = merged;
         }
-      } catch(e){ console.warn('fetchStats failed:',e); }
+        return true;                       // kết nối + truy vấn thành công
+      } catch(e){
+        console.warn('fetchStats failed:',e);
+        return false;                      // mất mạng / bảng chưa tạo / project bị pause
+      }
     }
     async function bumpStatRemote(name,field,delta){
       if(!supabaseClient) return false;
@@ -1052,5 +1070,14 @@
 <script src="click-sound.js"></script>
   <script src="music-player.js"></script>
   
-</body>
+  <!-- BOTTOM TAB BAR (chỉ hiện trên điện thoại) -->
+  <nav class="tabbar" aria-label="Điều hướng nhanh">
+    <a href="index.html" class="tab-item active"><span class="tab-ico">📚</span><span>Thư viện</span></a>
+    <a href="index.html#featured" class="tab-item"><span class="tab-ico">⭐</span><span>Nhân vật</span></a>
+    <a href="commands.html" class="tab-item"><span class="tab-ico">📜</span><span>Lệnh</span></a>
+    <a href="isekai-guide.html" class="tab-item"><span class="tab-ico">🌀</span><span>Cẩm nang</span></a>
+    <a href="https://aistudio.google.com/" target="_blank" rel="noopener" class="tab-item"><span class="tab-ico">🚀</span><span>AI Studio</span></a>
+  </nav>
+
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a48bea0aeac5219a',t:'MTc5MTcwMTI1NA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
