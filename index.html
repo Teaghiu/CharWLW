@@ -1256,7 +1256,7 @@
       csSheetEl.setAttribute('aria-hidden','false');
       document.body.style.overflow='hidden';
       if(csTimer){ clearTimeout(csTimer); csTimer=null; }
-      if(wishMode) csTimer=setTimeout(csClose,6000);   /* 🎲 tự đóng sau 6 giây */
+            if(wishMode) csTimer=setTimeout(()=>{ if(csIsOpen) window.location.href=item.link; },6000);   /* 🎲 hết 6 giây → chuyển thẳng sang link character */
       csFill(item, i);
     }
     function csClose(){
