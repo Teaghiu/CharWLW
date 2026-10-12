@@ -17,6 +17,73 @@
   <meta property="og:image" content="icon.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
 <link rel="stylesheet" href="style.css">
+  <!-- ═══ ẢNH NHÂN VẬT + KHUNG LỚN · thêm 11/10/2026 ═══ -->
+  <style id="char-photo-style">
+  /* ảnh thay ô chữ cái trên thẻ */
+  .avatar{position:relative;overflow:hidden}
+  .avatar-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:inherit}
+  /* ảnh mờ ở khung SELECT CHARACTER */
+  .hs-stage .hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+    filter:blur(2px) brightness(.6) saturate(1.02);opacity:0;transition:opacity .45s ease;pointer-events:none;z-index:0}
+  .hs-stage .hero-photo.on{opacity:1}
+  .hs-stage.has-photo .hs-stage-mark,.hs-stage.has-photo .hs-stage-bgmark{opacity:0;transition:opacity .3s ease}
+  .hs-hint{text-align:center;font-size:11.5px;color:var(--muted);margin:-6px 0 14px;opacity:.9}
+  /* khung lớn nhân vật (giống khung hộp nhạc) */
+  .cs-scrim{position:fixed;inset:0;z-index:9995;background:rgba(4,3,10,.66);backdrop-filter:blur(3px);
+    opacity:0;pointer-events:none;transition:opacity .25s}
+  .cs-scrim.on{opacity:1;pointer-events:auto}
+  .cs-sheet{position:fixed;left:0;right:0;bottom:0;z-index:9996;display:flex;flex-direction:column;
+    max-height:88vh;max-width:620px;margin:0 auto;background:linear-gradient(180deg,#17142c,#0e0c1c);
+    border-top:1px solid #3a3560;border-radius:22px 22px 0 0;box-shadow:0 -18px 50px rgba(0,0,0,.55);
+    transform:translateY(102%);transition:transform .34s cubic-bezier(.2,0,.2,1);visibility:hidden}
+  .cs-sheet.on{transform:translateY(0);visibility:visible}
+  .cs-topbar{position:sticky;top:0;z-index:6;flex:0 0 auto;background:linear-gradient(180deg,#17142c 70%,rgba(23,20,44,.85));
+    border-radius:22px 22px 0 0;padding-top:2px}
+  .cs-grip{position:relative;width:64px;height:5px;border-radius:99px;background:#4a4470;margin:10px auto 10px;touch-action:none}
+  .cs-grip::after{content:"vuốt xuống để đóng";position:absolute;left:50%;bottom:calc(100% + 5px);
+    transform:translateX(-50%);font-size:9.5px;letter-spacing:.04em;color:var(--muted);white-space:nowrap;pointer-events:none}
+  .cs-head{display:flex;align-items:center;justify-content:space-between;padding:0 16px 10px;
+    font-size:11px;letter-spacing:.2em;color:var(--muted)}
+  .cs-x{background:#221e3f;border:1px solid var(--line);color:var(--text);width:34px;height:34px;
+    border-radius:12px;font-size:15px;line-height:1}
+  .cs-body{overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:26px}
+  .cs-photo{position:relative;margin:0 16px;border-radius:16px;overflow:hidden;background:#0d0b18;
+    display:grid;place-items:center;min-height:180px}
+  /* NHIỀU ẢNH: lướt ngang trong khung lớn */
+  .cs-slides{display:flex;width:100%;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .cs-slides::-webkit-scrollbar{display:none}
+  .cs-slide{flex:0 0 100%;scroll-snap-align:center;position:relative;display:grid;place-items:center;
+    min-height:180px;overflow:hidden}
+  .cs-slide-bg{position:absolute;inset:-14%;background-size:cover;background-position:center;
+    filter:blur(20px) brightness(.5);transform:scale(1.15)}
+  .cs-slide img{position:relative;z-index:1;max-width:100%;max-height:44vh;object-fit:contain;display:block}
+  .cs-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:34px;height:34px;border-radius:50%;
+    border:1px solid var(--line);background:rgba(12,10,24,.62);color:var(--text);font-size:19px;line-height:1;
+    display:grid;place-items:center;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+  .cs-nav-prev{left:8px} .cs-nav-next{right:8px}
+  .cs-dots{position:absolute;left:0;right:0;bottom:8px;z-index:3;display:flex;justify-content:center;gap:5px;
+    pointer-events:none}
+  .cs-dots i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.38);display:block;transition:width .2s,background .2s}
+  .cs-dots i.on{background:#fff;width:16px;border-radius:99px}
+  .cs-mark{font-family:'Playfair Display',serif;font-weight:800;font-size:64px;color:rgba(255,255,255,.9);z-index:1}
+  .cs-info{padding:14px 16px 0}
+  .cs-name{font-size:21px;font-weight:800;margin:2px 0 8px}
+  .cs-tags{display:flex;flex-wrap:wrap;gap:6px}
+  .cs-tag{font-size:11.5px;padding:4px 9px;border-radius:999px;background:rgba(255,255,255,.06);
+    border:1px solid var(--line);color:var(--text)}
+  .cs-quote{font-size:13.5px;line-height:1.6;color:var(--text);font-style:italic;margin:12px 0 14px;
+    border-left:2px solid var(--accent);padding-left:10px;opacity:.92}
+  .cs-acts{display:flex;gap:8px}
+  .cs-acts .btn.primary{flex:1}
+  .cs-wish{display:none;text-align:center;padding:12px 0 4px}
+  .cs-wish b{display:block;font-size:20px;background:linear-gradient(135deg,#8b7bff,#4fc3ff);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .cs-wish span{display:block;margin-top:8px;font-size:12px;color:var(--muted)}
+  .cs-sheet.wishmode .cs-acts{display:none}
+  .cs-sheet.wishmode .cs-wish{display:block}
+  @media (max-width:420px){ .cs-sheet{max-height:86vh} .cs-photo{margin:0 12px} .cs-info{padding:12px 12px 0} }
+  </style>
 </head>
 <body>
 
@@ -114,6 +181,7 @@
             <span class="hs-stage-bgmark" id="heroMarkBg" aria-hidden="true">?</span>
             <span class="hs-stage-mark" id="heroMark">?</span>
           </div>
+          <p class="hs-hint" id="heroHint">👆 chạm vào ảnh để mở khung lớn</p>
           <p class="hs-tags" id="heroTags"></p>
           <p class="hs-wish" id="heroWish"></p>
           <a class="btn primary hs-open" id="heroOpenBtn" href="#" target="_blank" rel="noopener">Mở Character ↗</a>
@@ -209,6 +277,31 @@
 
   <button id="backToTop" aria-label="Lên đầu trang">↑</button>
   <div id="toast" class="toast"></div>
+
+  <!-- KHUNG LỚN NHÂN VẬT (bấm khung SELECT CHARACTER hoặc thẻ nhân vật) -->
+  <div class="cs-scrim" id="csScrim"></div>
+  <section class="cs-sheet" id="csSheet" aria-hidden="true">
+    <div class="cs-topbar">
+      <div class="cs-grip" id="csGrip" title="Vuốt xuống hoặc chạm để đóng"></div>
+      <div class="cs-head"><span>NHÂN VẬT</span><button class="cs-x" id="csClose" aria-label="Đóng">✕</button></div>
+    </div>
+    <div class="cs-body">
+      <div class="cs-photo" id="csPhoto">
+        <div class="cs-slides" id="csSlides"></div>
+        <span class="cs-mark" id="csMark">?</span>
+        <button class="cs-nav cs-nav-prev" id="csPrev" type="button" aria-label="Ảnh trước" hidden>‹</button>
+        <button class="cs-nav cs-nav-next" id="csNext" type="button" aria-label="Ảnh sau" hidden>›</button>
+        <div class="cs-dots" id="csDots" hidden></div>
+      </div>
+      <div class="cs-info">
+        <div class="cs-name" id="csName">—</div>
+        <div class="cs-tags" id="csTags"></div>
+        <p class="cs-quote" id="csQuote"></p>
+        <div class="cs-acts" id="csActs"></div>
+        <div class="cs-wish"><b>Chúc bạn chơi vui vẻ 🎉</b><span>nhân vật đã chọn sẵn — bấm “Mở Character ↗” để bắt đầu</span></div>
+      </div>
+    </div>
+  </section>
 
   <script>
   
@@ -718,9 +811,9 @@
     let activeChipFilters = new Set(['all']);
     function cardHTML(item){
       const a=item.accent||'#a78bfa', il=likedSet.has(item.name), ip=pinnedLocal.includes(item.name);
-      return `<article class="card" style="--card-accent:${a};--card-glow:radial-gradient(circle,${a}33,transparent 70%);">
+      return `<article class="card" data-idx="${item.__i!=null?item.__i:-1}" style="--card-accent:${a};--card-glow:radial-gradient(circle,${a}33,transparent 70%);">
         <div class="card-top">
-          <div class="avatar" style="background:linear-gradient(135deg,${a},${a}99);">${avatarText(item.name)}</div>
+          <div class="avatar" style="background:linear-gradient(135deg,${a},${a}99);">${item.__img?`<img class="avatar-img" src="${item.__img}" alt="" loading="lazy" decoding="async" data-c="${item.__cands}" data-k="1" onerror="window.__imgStep?__imgStep(this):this.remove()">`:''}${avatarText(item.name)}</div>
           <div class="meta"><h3>${escapeHtml(item.name)}</h3><span class="tag" data-tag="${escapeHtml(item.tag||'')}">${renderTagChips(item.tag,null)}</span></div>
         </div>
         <p class="desc">${escapeHtml(item.summary)}</p>
@@ -801,6 +894,7 @@
       $('#heroMark').textContent=avatarText(item.name);
       const heroBg=$('#heroMarkBg'); if(heroBg) heroBg.textContent=avatarText(item.name);
       $('#heroStage').style.background=`linear-gradient(155deg, ${a} 0%, ${a2} 100%)`;
+      stagePhoto(item);
       $('#heroTags').textContent=heroTagLine(item.tag);
       $('#heroOpenBtn').href=item.link;
       $('#heroCounter').textContent=`${String(heroIndex+1).padStart(2,'0')} / ${chars.length}`;
@@ -972,12 +1066,7 @@
           const peek=[1,2,3].map(o=>chars[(heroIndex+o)%chars.length]);
           $('#heroPeek').innerHTML = peek.map(c=>'<button type="button" class="hs-peek-item" data-name="'+escapeHtml(c.name)+'">○ '+escapeHtml(c.name)+'</button>').join('');
 
-          if(wishEl){
-            wishEl.textContent = 'chúc bạn trải nghiệm vui vẻ ( ≧∀≦)ノ';
-            wishEl.classList.add('show');
-          }
-
-          // After brief pause so user can see the result, restore stage & open link
+          // Sau khi ngừng quay: hiện KHUNG LỚN + câu chúc (tự đóng sau 6 giây)
           setTimeout(() => {
             stage.classList.remove('spin-mode');
             stage.innerHTML = '<span class="hs-stage-bgmark" id="heroMarkBg" aria-hidden="true">'+escapeHtml(avatarText(target.name))+'</span><span class="hs-stage-mark" id="heroMark">'+escapeHtml(avatarText(target.name))+'</span>';
@@ -986,7 +1075,8 @@
             if(rb2){ rb2.disabled = false; rb2.style.opacity = ''; }
             if(rh2){ rh2.disabled = false; rh2.style.opacity = ''; }
             isSpinning = false;
-            window.open(target.link, '_blank', 'noopener');
+            stagePhoto(target);
+            csOpenAs(heroIndex, true);
           }, 1600);
         }
       }
@@ -1000,21 +1090,17 @@
     function attachG(el){el.addEventListener('click',async e=>{const b=e.target.closest('[data-action]');if(!b||b.disabled)return;const n=b.dataset.name;if(!n)return;b.classList.add('loading');if(b.dataset.action==='heart')await toggleHeart(n);else if(b.dataset.action==='pin')await togglePin(n);b.classList.remove('loading');});}
     attachG(grid);
 
-    /* Expandable card click behavior — max 1 active card per row, siblings shrink automatically */
-    function collapseCard(c){ c.classList.remove('active'); }
-    function expandCard(c){ c.classList.add('active'); }
-    function attachExpand(el){
+    /* 11/10/2026 — bấm thẻ nhân vật = mở KHUNG LỚN (đã bỏ hiệu ứng nở thẻ cho hết lỗi "viền thừa" ở chế độ máy tính) */
+    function attachOpenCard(el){
       el.addEventListener('click',e=>{
         if(e.target.closest('a, button, details, summary, [data-action]'))return;
         const card=e.target.closest('.card');
         if(!card||!el.contains(card))return;
-        const row=card.parentElement;
-        const wasActive=card.classList.contains('active');
-        row.querySelectorAll('.card.active').forEach(collapseCard);
-        if(!wasActive)expandCard(card);
+        const i=parseInt(card.dataset.idx,10);
+        if(!isNaN(i)) csOpenAs(i,false);
       });
     }
-    attachExpand(grid);
+    attachOpenCard(grid);
     let resizeT=null;
     window.addEventListener('resize',()=>{clearTimeout(resizeT);resizeT=setTimeout(render,200);});
 
@@ -1061,6 +1147,134 @@
       const row = Array.from({length:getPerRow()}).map(()=>'<div class="skeleton-card"><div class="skeleton-avatar"></div><div class="skeleton-line w60"></div><div class="skeleton-line w40"></div><div class="skeleton-line w90"></div></div>').join('');
       grid.innerHTML = Array.from({length:Math.max(1,Math.ceil(n/getPerRow()))}).map(()=>'<div class="card-row">'+row+'</div>').join('');
     }
+    /* ══════════════ ẢNH NHÂN VẬT + KHUNG LỚN · thêm 11/10/2026 ══════════════ */
+    const CS_DIR = 'chars/';   // thư mục ảnh: chars/pic001.jpg … chars/pic120.jpg (đúng số thứ tự 01/120)
+    function picBase(i){ return 'pic'+String(i+1).padStart(3,'0'); }
+    /* ảnh bìa: chars/pic001.jpg → pic001.jpg (gốc repo) → chars/pic001_1.jpg → pic001_1.jpg */
+    function coverCands(i){ const b=picBase(i); return [CS_DIR+b+'.jpg', b+'.jpg', CS_DIR+b+'_1.jpg', b+'_1.jpg']; }
+    chars.forEach((c,i)=>{ c.__i=i; const cd=coverCands(i); c.__img=cd[0]; c.__cands=cd.join(','); });
+
+    /* đổi sang đường dẫn kế tiếp khi ảnh lỗi */
+    window.__imgStep=function(el){
+      const cands=(el.getAttribute('data-c')||'').split(',').filter(Boolean);
+      let k=parseInt(el.getAttribute('data-k')||'1',10); if(isNaN(k)) k=1;
+      if(k<cands.length){ el.setAttribute('data-k',String(k+1)); el.setAttribute('src',cands[k]); return true; }
+      el.remove(); return false;
+    };
+    function __imgAlt(el){ return window.__imgStep(el); }
+
+    function stagePhoto(item){
+      const st=$('#heroStage'); if(!st) return;
+      let im=st.querySelector('.hero-photo');
+      if(!item||!item.__img){ if(im) im.remove(); st.classList.remove('has-photo'); return; }
+      if(!im){ im=document.createElement('img'); im.className='hero-photo'; im.alt=''; im.decoding='async';
+               st.insertBefore(im, st.firstChild); }
+      im.setAttribute('data-c', item.__cands||''); im.setAttribute('data-k','1');
+      im.onerror=()=>{ if(window.__imgStep(im)) return; im.classList.remove('on'); st.classList.remove('has-photo'); };
+      im.onload =()=>{ im.classList.add('on');    st.classList.add('has-photo'); };
+      if(im.getAttribute('data-src')!==item.__img){ im.setAttribute('data-src',item.__img); im.src=item.__img; }
+    }
+
+    const csSheetEl=$('#csSheet'), csScrimEl=$('#csScrim');
+    let csIsOpen=false, csOpenedAt=0, csTimer=null, csSeq=0;
+    let csList=[], csIdx=0;
+
+    /* tìm các ảnh của 1 nhân vật: pic001.jpg (bìa) rồi pic001_2.jpg, pic001_3.jpg… dừng ở tấm đầu tiên bị thiếu
+       (nếu không có ảnh bìa thì bắt đầu từ pic001_1.jpg). Kết quả được nhớ lại, không dò lại từ đầu. */
+    function csProbe(name, ok, fail){
+      const a=new Image();
+      a.onload=()=>ok(CS_DIR+name);
+      a.onerror=()=>{ const b=new Image(); b.onload=()=>ok(name); b.onerror=fail; b.src=name; };
+      a.src=CS_DIR+name;
+    }
+    function imgsFor(i, cb){
+      const c=chars[i]; if(!c){ cb([]); return; }
+      if(c.__imgs){ cb(c.__imgs); return; }
+      const base=picBase(i), list=[];
+      const done=()=>{ c.__imgs=list; cb(list); };
+      const more=k=>{ if(k>12){ done(); return; }
+        csProbe(base+'_'+k+'.jpg', src=>{ list.push(src); more(k+1); }, done); };
+      csProbe(base+'.jpg', src=>{ list.push(src); more(2); },
+              ()=>csProbe(base+'_1.jpg', src=>{ list.push(src); more(2); }, done));
+    }
+    function csDots(k){ const d=$('#csDots'); if(d) [...d.children].forEach((el,i)=>el.classList.toggle('on',i===k)); }
+    function csRender(list){
+      const sl=$('#csSlides'), mk=$('#csMark'), dots=$('#csDots'), pv=$('#csPrev'), nx=$('#csNext'), ph=$('#csPhoto');
+      csList=list; csIdx=0;
+      if(!list.length){ sl.innerHTML=''; dots.hidden=true; pv.hidden=true; nx.hidden=true; mk.style.display='grid'; return; }
+      mk.style.display='none'; ph.style.background='#0d0b18';
+      sl.innerHTML=list.map((src,k)=>'<div class="cs-slide"><div class="cs-slide-bg" style="background-image:url(\''+src+'\')"></div>'+
+        '<img src="'+src+'" alt="" decoding="async" loading="'+(k?'lazy':'eager')+'"></div>').join('');
+      sl.scrollLeft=0;
+      const many=list.length>1;
+      dots.hidden=!many; pv.hidden=!many; nx.hidden=!many;
+      dots.innerHTML=many?list.map((_,k)=>'<i class="'+(k?'':'on')+'"></i>').join(''):'';
+    }
+    function csGo(k){ const sl=$('#csSlides'); if(!csList.length) return;
+      csIdx=Math.max(0,Math.min(k,csList.length-1));
+      sl.scrollTo({left:csIdx*sl.clientWidth, behavior:'smooth'}); csDots(csIdx); }
+    $('#csSlides').addEventListener('scroll',()=>{ const sl=$('#csSlides'); if(csList.length<2) return;
+      const k=Math.round(sl.scrollLeft/sl.clientWidth); if(k!==csIdx){ csIdx=k; csDots(k); } },{passive:true});
+    $('#csPrev').addEventListener('click',e=>{ e.stopPropagation(); csGo(csIdx-1); });
+    $('#csNext').addEventListener('click',e=>{ e.stopPropagation(); csGo(csIdx+1); });
+
+    function csFill(item, i){
+      const a=item.accent||'#8b7bff', a2=shadeColor(a,-0.55);
+      const ph=$('#csPhoto'), mk=$('#csMark');
+      ph.style.background='linear-gradient(155deg,'+a+' 0%,'+a2+' 100%)';
+      mk.style.display='grid'; mk.textContent=avatarText(item.name);
+      $('#csSlides').innerHTML='';
+      $('#csDots').hidden=true; $('#csPrev').hidden=true; $('#csNext').hidden=true;
+      const tok=++csSeq;
+      imgsFor(i, list=>{ if(tok===csSeq && csIsOpen) csRender(list); });
+      $('#csName').textContent=item.name;
+      $('#csTags').innerHTML=parseTags(item.tag).map(t=>'<span class="cs-tag">'+escapeHtml(t)+'</span>').join('');
+      $('#csQuote').textContent='“'+(item.summary||'')+'”';
+      const il=likedSet.has(item.name), ip=pinnedLocal.includes(item.name);
+      $('#csActs').innerHTML=
+        '<a class="btn primary" href="'+item.link+'" target="_blank" rel="noopener">Mở Character ↗</a>'+
+        '<button class="btn icon-btn heart-btn '+(il?'liked':'')+'" data-action="heart" data-name="'+escapeHtml(item.name)+'" title="Yêu thích">'+(il?'❤️':'🤍')+'</button>'+
+        '<button class="btn icon-btn" onclick=\'doCopy('+JSON.stringify(item.name)+','+JSON.stringify(item.link)+')\' title="Copy link">📋</button>'+
+        '<button class="btn icon-btn pin-btn '+(ip?'pinned':'')+'" data-action="pin" data-name="'+escapeHtml(item.name)+'" '+(pinnedLocal.length>=3&&!ip?'disabled':'')+' title="Ghim">📌</button>';
+    }
+    function csOpenAs(i, wishMode){
+      const item=chars[i]; if(!item) return;
+      csFill(item, i);
+      csSheetEl.classList.toggle('wishmode',!!wishMode);
+      csIsOpen=true; csOpenedAt=Date.now();
+      csSheetEl.classList.add('on'); csScrimEl.classList.add('on');
+      csSheetEl.setAttribute('aria-hidden','false');
+      document.body.style.overflow='hidden';
+      if(csTimer){ clearTimeout(csTimer); csTimer=null; }
+      if(wishMode) csTimer=setTimeout(csClose,6000);   /* 🎲 tự đóng sau 6 giây */
+    }
+    function csClose(){
+      csIsOpen=false;
+      if(csTimer){ clearTimeout(csTimer); csTimer=null; }
+      csSheetEl.classList.remove('on'); csScrimEl.classList.remove('on');
+      csSheetEl.setAttribute('aria-hidden','true');
+      document.body.style.overflow='';
+      csSheetEl.style.transition=''; csSheetEl.style.transform='';
+    }
+    /* nuốt "click ảo" ~300ms sau khi mở — mẹo đã sửa cho hộp nhạc */
+    document.addEventListener('click',e=>{ if(csIsOpen&&Date.now()-csOpenedAt<700){ e.stopPropagation(); e.preventDefault(); } },true);
+    csScrimEl.addEventListener('click',()=>{ if(Date.now()-csOpenedAt>700) csClose(); });
+    $('#csClose').addEventListener('click',csClose);
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&csIsOpen) csClose(); });
+    attachG($('#csActs'));
+    (function(){
+      const g=$('#csGrip'); let y0=null, dy=0;
+      g.addEventListener('pointerdown',e=>{ y0=e.clientY; dy=0; try{g.setPointerCapture(e.pointerId);}catch(_){} });
+      g.addEventListener('pointermove',e=>{ if(y0==null) return; dy=e.clientY-y0;
+        if(dy>0){ csSheetEl.style.transition='none'; csSheetEl.style.transform='translateY('+dy+'px)'; } });
+      const fin=()=>{ if(y0==null) return; const d=dy; y0=null; dy=0;
+        csSheetEl.style.transition=''; csSheetEl.style.transform=''; if(d>70) csClose(); };
+      g.addEventListener('pointerup',fin); g.addEventListener('pointercancel',fin);
+      g.addEventListener('click',e=>{ e.stopPropagation(); csClose(); });
+    })();
+    $('#heroStage').addEventListener('click',()=>{ if(!isSpinning) csOpenAs(heroIndex,false); });
+    if(window.console) console.log('🏞️ Ảnh nhân vật: đã bật (11/10/2026) · chars/pic001.jpg … pic120.jpg');
+
     showSkeleton(8);
     initStatsData();loadLocalPrefs();renderHero();
     setTimeout(()=>{ render();renderStatus(getFiltered().length);navigate(); }, 300);
@@ -1079,5 +1293,5 @@
     <a href="https://aistudio.google.com/" target="_blank" rel="noopener" class="tab-item"><span class="tab-ico">🚀</span><span>AI Studio</span></a>
   </nav>
 
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a48d6baeed98ddca',t:'MTc5MTcxNzA1MA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</body>
 </html>
