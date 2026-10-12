@@ -91,6 +91,9 @@
     .cs-slide img{max-height:70vh}
     .cs-name{font-size:26px}
     .cs-quote{font-size:15px}
+      /* 🪽 ô mới: 3 ô đều nhau */
+  .profile-stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+  </style>
   }
   </style>
 </head>
@@ -158,8 +161,9 @@
               <span>TeaGhiu · Google AI Studio Prompts</span>
             </div>
             <div class="profile-stats">
-              <a href="#library" class="pstat" style="text-decoration:none;color:inherit;"><b id="statTotal">0</b><span>Nhân vật</span></a>
+                            <a href="#library" class="pstat" style="text-decoration:none;color:inherit;"><b id="statTotal">0</b><span>Nhân vật</span></a>
               <a href="#library" class="pstat" style="text-decoration:none;color:inherit;"><b id="statShown">0</b><span>Đang hiển thị</span></a>
+                            <div class="pstat"><b id="statClicks">…</b><span>🪽 Lượt mở link</span></div>
             </div>
             <div class="tag-cloud">
               <span class="tag-pill">#WLW</span>
@@ -659,7 +663,18 @@
       chars.forEach(c => { s[c.name] = {hearts:0,copies:0,pins:0}; });
       return s;
     }
-    function initStatsData(){ statsData = defaultStats(); }
+        function initStatsData(){ statsData = defaultStats(); }
+
+    /* 🪽 12/10/2026 — đếm tổng lượt mở link: mỗi lần trang được mở +1, hiện ở ô thứ 3 */
+    async function initSiteCounter(){
+      const el=$('#statClicks'); if(!el) return;
+      if(!supabaseClient){ el.textContent='–'; return; }
+      try{
+        const {data,error}=await supabaseClient.rpc('bump_site',{d:1});
+        if(error) throw error;
+        el.textContent=Number(data||0).toLocaleString('vi-VN');
+      }catch(e){ console.warn('site counter:',e); el.textContent='–'; }
+      }
 
     function setCloud(status, msg){
       cloudMode = status;
@@ -1289,7 +1304,7 @@
     showSkeleton(8);
     initStatsData();loadLocalPrefs();renderHero();
     setTimeout(()=>{ render();renderStatus(getFiltered().length);navigate(); }, 300);
-    initSupabase().then(renderAll);
+        initSupabase().then(r=>{ renderAll(r); initSiteCounter(); });
     // countdown no longer needed after BXH removal
   </script>
 <script src="click-sound.js"></script>
