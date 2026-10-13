@@ -716,6 +716,124 @@
   /* =========================================================
      11. KHỞI ĐỘNG
      ========================================================= */
+    /* THANH NHẠC ANDROID / MÀN HÌNH KHÓA */
+  if ("mediaSession" in navigator) {
+    var media = navigator.mediaSession;
+    var lastMediaPosition = 0;
+
+    function syncMediaPosition() {
+      if (!media.setPositionState) return;
+      try {
+        if (isFinite(audio.duration) && audio.duration > 0) {
+          media.setPositionState({
+            duration: audio.duration,
+            playbackRate: audio.playbackRate || 1,
+            position: Math.max(
+              0, Math.min(audio.currentTime, audio.duration)
+            )
+          });
+        } else {
+          media.setPositionState();
+        }
+      } catch (e) {}
+    }
+
+    function syncMediaInfo() {
+      var track = playlist[currentIndex];
+
+      if ("MediaMetadata" in window) {
+        try {
+          media.metadata = new MediaMetadata({
+            title: track.title,
+            artist: track.sub || "TeaGhiu",
+            album: "Hộp nhạc TeaGhiu",
+            artwork: [
+              {
+                src: new URL("icon-192.png", location.href).href,
+                sizes: "192x192",
+                type: "image/png"
+              },
+              {
+                src: new URL("icon-512.png", location.href).href,
+                sizes: "512x512",
+                type: "image/png"
+              }
+            ]
+          });
+        } catch (e) {}
+      }
+
+      try {
+        media.playbackState = audio.ended
+          ? "none"
+          : audio.paused ? "paused" : "playing";
+      } catch (e) {}
+
+      syncMediaPosition();
+    }
+
+    function mediaAction(name, handler) {
+      try {
+        media.setActionHandler(name, handler);
+      } catch (e) {}
+    }
+
+    function mediaSeek(time) {
+      if (!isFinite(audio.duration) || audio.duration <= 0) return;
+      audio.currentTime = Math.max(
+        0, Math.min(time, audio.duration)
+      );
+      syncMediaPosition();
+    }
+
+    mediaAction("play", function () {
+      togglePlay(true);
+    });
+    mediaAction("pause", function () {
+      audio.pause();
+    });
+    mediaAction("previoustrack", function () {
+      prevTrack();
+    });
+    mediaAction("nexttrack", function () {
+      nextTrack(false);
+    });
+    mediaAction("seekto", function (details) {
+      if (typeof details.seekTime === "number") {
+        mediaSeek(details.seekTime);
+      }
+    });
+    mediaAction("seekbackward", function (details) {
+      mediaSeek(audio.currentTime - (details.seekOffset || 10));
+    });
+    mediaAction("seekforward", function (details) {
+      mediaSeek(audio.currentTime + (details.seekOffset || 10));
+    });
+    mediaAction("stop", function () {
+      audio.pause();
+      if (isFinite(audio.duration)) audio.currentTime = 0;
+      syncMediaInfo();
+    });
+
+    ["play", "pause", "ended", "loadedmetadata", "emptied"]
+      .forEach(function (eventName) {
+        audio.addEventListener(eventName, syncMediaInfo);
+      });
+
+    ["seeked", "durationchange", "ratechange"]
+      .forEach(function (eventName) {
+        audio.addEventListener(eventName, syncMediaPosition);
+      });
+
+    audio.addEventListener("timeupdate", function () {
+      var now = Date.now();
+      if (now - lastMediaPosition >= 1000) {
+        lastMediaPosition = now;
+        syncMediaPosition();
+      }
+    });
+  }
+  
   loadTrack(currentIndex, false);
   updateUI();
   console.log("%c🎧 Hộp nhạc TeaGhiu v3 · 11/10/2026 · bản đã sửa lỗi bấm đĩa", "color:#a78bfa;font-weight:bold");
