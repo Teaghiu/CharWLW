@@ -1,0 +1,16 @@
+{
+  "name": "Thư viện WLW · TeaGhiu",
+  "short_name": "TeaGhiu",
+  "description": "Thư viện Character WLW cho Google AI Studio",
+  "lang": "vi",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0e0c1c",
+  "theme_color": "#0e0c1c",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

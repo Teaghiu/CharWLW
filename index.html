@@ -5,7 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Thư viện WLW · TeaGhiu</title>
   <link rel="icon" type="image/jpeg" href="icon.jpg">
-  <link rel="apple-touch-icon" href="icon.jpg">
+    <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0e0c1c">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="TeaGhiu">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
@@ -1309,6 +1315,14 @@
   </script>
 <script src="click-sound.js"></script>
   <script src="music-player-v4.js"></script>
+    <script>
+    /* 📲 PWA 12/10/2026 — register service worker so web can be installed like an app */
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(e => console.warn('SW:', e));
+      });
+    }
+    </script>
   
   <!-- BOTTOM TAB BAR (chỉ hiện trên điện thoại) -->
   <nav class="tabbar" aria-label="Điều hướng nhanh">
