@@ -37,7 +37,27 @@
     { title: "山巅 (Mountain Podium)",         src: "mountain-podium.mp3",  sub: "Gió thổi trên đỉnh núi" },
     { title: "疏光眠 (Shu Guang Mian)",        src: "shugmian.mp3",         sub: "Ánh sáng thưa · dễ ngủ" },
     { title: "瞬息 (Transient)",               src: "transient.mp3",        sub: "Chỉ trong khoảnh khắc" },
-    { title: "山间静思 (Mountain Study)",      src: "mountain-study.mp3",   sub: "Tĩnh tâm giữa núi rừng" }
+    { title: "山间静思 (Mountain Study)",      src: "mountain-study.mp3",   sub: "Tĩnh tâm giữa núi rừng" },
+    { title: "孤独患者", src: "gudu-huanzhe.mp3", sub: "Trần Dịch Tấn" },
+    { title: "不用说抱歉", src: "buyong-shuobaoqian.mp3", sub: "Không cần nói xin lỗi" },
+    { title: "h3R3 - 不再需要你", src: "h3R3-buzaixuyaoni.mp3", sub: "Không còn cần em nữa" },
+    { title: "最后的借口", src: "zuihoude-jiekou.mp3", sub: "Lời viện cớ cuối cùng - h3R3" },
+    { title: "忘不掉你", src: "wangbudiaoni.mp3", sub: "Người không thể quên - h3R3" },
+    { title: "xiangweixiaosan", src: "xiangweixiaosan.mp3", sub: "Hương vị tiêu tán - Cao Húc, h3R3" },
+    { title: "亲爱的", src: "qinaide.mp3", sub: "Em thân yêu - h3R3" },
+    { title: "vết gỉ", src: "vet-gi.mp3", sub: "Vết gỉ - h3R3" },
+    { title: "先说谎的人", src: "xianshuohuangderen.mp3", sub: "Người nói dối trước - h3R3" },
+    { title: "回到你身边", src: "huidaonishibian.mp3", sub: "Trở về bên cạnh bạn - h3R3" },
+    { title: "一生所爱 x 爱以为常", src: "yishensuoai-aiyiweichang.mp3", sub: "Mashup Nhất Sinh Đích Ái x Yêu Như Thói Quen" },
+    { title: "瞬", src: "shun.mp3", sub: "Thuấn - Trịnh Nhuận Trạch" },
+    { title: "沉溺", src: "chenni.mp3", sub: "Trầm Nịch - Trâu Phái Phái, Pank" },
+    { title: "安静的稻草人", src: "anjingde-daocaoren.mp3", sub: "Người rơm lặng lẽ - Daven Wu" },
+    { title: "Hỷ cát đông kỳ", src: "hy-cat-dong-ky.mp3", sub: "Hỷ Sắc / Hỷ Hỉ" },
+    { title: "美人鱼", src: "meirenyu.mp3", sub: "Mỹ Nhân Ngư - Lâm Tuấn Kiệt" },
+    { title: "Dập tắt", src: "dap-tat.mp3", sub: "Nhạc Trung" },
+    { title: "Âm thanh của nỗi nhớ anh", src: "am-thanh-noi-nho-anh.mp3", sub: "Deng..." },
+    { title: "苦生恨", src: "kushenhen.mp3", sub: "Khổ Sinh Hận - Lưu Niên" },
+    { title: "雨是神的烟花", src: "yushishendeyanhua.mp3", sub: "Mưa là pháo hoa của thần linh" }
   ];
 
   /* =========================================================
