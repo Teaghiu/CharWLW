@@ -22,7 +22,7 @@
   root.innerHTML=`<style>
     :host{font-family:system-ui,sans-serif}button,a{font:inherit;cursor:pointer}
     .toggle{width:40px;height:38px;border:1px solid #9daccb55;background:#ffffff0c;color:var(--text,#e9edf6);border-radius:10px;font-size:22px}
-    .panel{position:fixed;right:12px;top:65px;width:min(260px,calc(100vw - 24px));padding:10px;background:var(--panel,#191d2d);color:var(--text,#e9edf6);border:1px solid #8895b444;border-radius:15px;box-shadow:0 15px 45px #0004;z-index:9990;max-height:calc(100dvh - 90px);overflow:auto}
+    .panel{position:fixed;right:12px;top:65px;width:min(260px,calc(100vw - 24px));padding:10px;background:#172030;color:#f5f7ff;border:1px solid #8895b444;border-radius:15px;box-shadow:0 15px 45px #0004;z-index:9990;max-height:calc(100dvh - 90px);overflow:auto}
     [hidden]{display:none!important}.panel a,.panel button{display:block;width:100%;box-sizing:border-box;padding:11px;border:0;border-radius:8px;background:transparent;color:inherit;text-decoration:none;text-align:left;font-size:13px;line-height:1.5}.panel a:hover,.panel button:hover{background:#a4b1cf17}.forest{background:#748c6225!important;margin:5px 0}.sep{border-top:1px solid #8191ae33;margin:5px 0}
   </style><button class="toggle" aria-label="Mở điều hướng" aria-expanded="false">☰</button><nav class="panel" hidden aria-label="Điều hướng TeaGhiu"></nav>`;
   const toggle=root.querySelector('.toggle'),panel=root.querySelector('.panel');
