@@ -117,6 +117,104 @@
     border-color: var(--cs-char-accent, #c084fc);
   }
   </style>
+  <style>
+  /* Khung chi tiết trên máy tính:
+     ảnh trái — thông tin phải.
+     Không thay đổi giao diện điện thoại. */
+  @media (min-width: 900px) {
+    #csSheet {
+      left: 50%;
+      right: auto;
+      top: 50%;
+      bottom: auto;
+
+      width: min(1000px, calc(100vw - 48px));
+      max-width: 1000px;
+      max-height: 90vh;
+      max-height: 90dvh;
+      margin: 0;
+
+      border: 1px solid rgba(192, 132, 252, 0.35);
+      border-radius: 20px;
+
+      transform: translate(-50%, -45%) scale(0.98);
+    }
+
+    #csSheet.on {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    #csSheet .cs-topbar {
+      border-radius: 20px 20px 0 0;
+    }
+
+    #csSheet .cs-body {
+      display: grid;
+      grid-template-columns:
+        minmax(0, 0.9fr)
+        minmax(0, 1.1fr);
+
+      gap: 24px;
+      align-items: start;
+      min-height: 0;
+      padding: 4px 24px 24px;
+      overflow-y: auto;
+    }
+
+    #csSheet .cs-photo {
+      min-width: 0;
+      margin: 0;
+      align-self: start;
+      border: 1px solid var(--cs-char-accent, #c084fc);
+      border-radius: 14px;
+    }
+
+    #csSheet .cs-slide img {
+      width: auto;
+      max-width: 100%;
+      max-height: 64vh;
+      max-height: 64dvh;
+      object-fit: contain;
+    }
+
+    #csSheet .cs-info {
+      min-width: 0;
+      padding: 8px 0 0;
+    }
+
+    #csSheet .cs-name {
+      font-size: 28px;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+
+    #csSheet .cs-quote {
+      font-size: 15px;
+      line-height: 1.8;
+      overflow-wrap: anywhere;
+    }
+
+    #csSheet .cs-acts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    #csSheet .cs-acts .btn {
+      min-height: 44px;
+    }
+
+    #csSheet .cs-acts .btn.primary {
+      flex: 1 0 100%;
+      width: 100%;
+    }
+
+    #csSheet .cs-acts .icon-btn {
+      flex: 1 1 0;
+      min-width: 0;
+    }
+  }
+  </style>
 </head>
 <body>
 
