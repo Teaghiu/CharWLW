@@ -97,11 +97,223 @@
     .cs-slide img{max-height:70vh}
     .cs-name{font-size:26px}
     .cs-quote{font-size:15px}
-      /* 🪽 ô mới: 3 ô đều nhau */
+  }
+  /* 🪽 ba ô thống kê trên mọi màn hình */
   .profile-stats{grid-template-columns:repeat(3,minmax(0,1fr))}
   </style>
+<style id="teaghiu-trading-card-style">
+/* TeaGhiu · Character Trading Cards — no flip */
+#grid:not(.list){display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:stretch;padding:10px 4px 24px;overflow:visible}
+#grid:not(.list)>.card-row{display:contents}
+#grid .card.tc-card{--sway-delay:0s;--tilt-x:0deg;--tilt-y:0deg;--image-x:0px;--image-y:0px;min-width:0;width:100%;height:100%;padding:12px;display:flex;flex-direction:column;border-radius:18px;background:rgba(20,30,40,.6);border:1px solid rgba(255,255,255,.2);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 14px 30px #0004,inset 0 1px 0 #ffffff12;opacity:1;animation:none;transform:perspective(1000px) rotateY(0deg) rotateX(0deg);transform-origin:50% 50%;backface-visibility:hidden;touch-action:pan-y;transition:box-shadow .2s,border-color .2s;isolation:isolate;overflow:hidden}
+#grid .tc-card::before{height:2px;background:linear-gradient(90deg,var(--card-accent,#c084fc),#22d3ee88)}
+#grid .tc-card::after{opacity:.12;z-index:-1}
+#grid:not(.list) .tc-card.tc-visible:not(.tc-holding){animation:tc-sway 7s ease-in-out infinite;animation-delay:var(--sway-delay)}
+#grid .tc-card.tc-holding{animation:none!important;transform:perspective(1000px) rotateY(var(--tilt-y)) rotateX(var(--tilt-x))}
+#grid .tc-card:hover{box-shadow:0 16px 34px #0005;border-color:#c084fc66}
+.tc-art{position:relative;display:block;width:100%;aspect-ratio:3/4;border-radius:12px;overflow:hidden;margin-bottom:13px;background:linear-gradient(145deg,#393353,#173440);isolation:isolate}
+.tc-art-mark{position:absolute;inset:0;display:grid;place-items:center;color:#d6c5f8;font:700 32px Georgia,serif;z-index:-1}
+.tc-image{display:block;width:100%;height:100%;object-fit:cover;object-position:center 25%;transform:scale(1.06);transform-origin:center;position:relative}
+.tc-art::after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#ffffff04 50%,#07121b42);border:1px solid #ffffff12;border-radius:inherit}
+#grid:not(.list) .tc-visible:not(.tc-holding) .tc-image{animation:tc-parallax 7s ease-in-out infinite;animation-delay:var(--sway-delay)}
+#grid .tc-holding .tc-image{animation:none;transform:scale(1.06) translate(var(--image-x),var(--image-y))}
+#grid .tc-card .card-top{display:block;gap:0}
+#grid .tc-card .meta{width:100%;min-width:0}
+#grid .tc-card .meta h3{font-size:17px;line-height:1.35;font-weight:800;color:#f5f6ff;overflow-wrap:anywhere;margin:0;letter-spacing:-.02em}
+#grid .tc-card .meta .tag{display:flex;gap:4px;margin-top:9px;max-width:100%}
+#grid .tc-card .meta .tag .t{border-radius:999px;padding:3px 7px;font-size:10px;line-height:1.5;background:#c084fc18;border:1px solid #c084fc38;color:#e2c8ff;white-space:normal;overflow-wrap:anywhere}
+#grid .tc-card .desc{font-size:12.5px;color:#c4cddd;font-style:italic;line-height:1.75;margin:12px 0 0;flex:1;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:4;overflow:hidden}
+#grid .tc-card .desc::before{content:none}
+#grid .tc-card .actions{display:flex;flex-wrap:wrap;gap:6px;padding-top:15px;margin-top:auto}
+#grid .tc-card .actions>.btn{min-height:44px;display:flex;align-items:center;justify-content:center;border-radius:10px;text-decoration:none;font-size:11px;line-height:1.4;text-align:center}
+#grid .tc-card .actions>.btn.primary{flex:1 0 100%;width:100%;padding:10px 5px;font-weight:800;color:#13213b;background:linear-gradient(115deg,#dda2ee,#a6adff 48%,#76e0e9);border:0;box-shadow:0 5px 15px #a6adff24;transform:none}
+#grid .tc-card .actions>.icon-btn{flex:1 1 0;min-width:0;padding:8px 2px;font-size:17px;background:#ffffff09;color:#edf1ff;border:1px solid #ffffff20}
+#grid .tc-card .actions>.heart-btn.liked{background:#ed6b991c;border-color:#ed6b9966;color:#ffafcc}
+#grid .tc-card .actions>.pin-btn.pinned{background:#eab3081a;border-color:#eab30866;color:#f9d97a}
+#grid .tc-card .btn:focus-visible{outline:2px solid #22d3ee;outline-offset:2px}
+#grid.list{display:flex;flex-direction:column}
+#grid.list .tc-card{display:grid;grid-template-columns:95px minmax(0,1fr);gap:10px;animation:none!important;transform:none!important;align-items:start}
+#grid.list .tc-art{grid-row:1/4;margin:0}
+#grid.list .tc-image{animation:none!important;transform:scale(1.06)!important}
+#grid.list .tc-card .card-top,#grid.list .tc-card .desc,#grid.list .tc-card .actions{grid-column:2;min-width:0}
+#grid.list .tc-card .actions{padding-top:5px}
+body.light #grid .tc-card{background:#ffffffc9;border-color:#c0c9d5;box-shadow:0 12px 26px #28375415}
+body.light #grid .tc-card .meta h3{color:#17233a}
+body.light #grid .tc-card .desc{color:#4c5c72}
+body.light #grid .tc-card .meta .tag .t{color:#6d3699;background:#c084fc18;border-color:#b089d94d}
+body.light #grid .tc-card .actions>.icon-btn{background:#22375407;color:#263a51;border-color:#22375424}
+.footer-facebook{display:block;width:fit-content;max-width:100%;margin:20px auto 0;color:#4a9eff!important;font-weight:800;text-align:center;text-decoration:none;line-height:1.6;padding:10px 15px;min-height:44px;border-radius:10px;overflow-wrap:anywhere}
+.footer-facebook:hover{text-decoration:underline;background:#4a9eff0b}
+.footer-facebook:focus-visible{outline:2px solid #4a9eff;outline-offset:3px}
+@keyframes tc-sway{0%,100%{transform:perspective(1000px) rotateY(-2.4deg) rotateX(.8deg)}50%{transform:perspective(1000px) rotateY(2.4deg) rotateX(-.8deg)}}
+@keyframes tc-parallax{0%,100%{transform:scale(1.06) translateX(2px) translateY(-1px)}50%{transform:scale(1.06) translateX(-2px) translateY(1px)}}
+@media(min-width:900px){#grid:not(.list){grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;padding:12px 6px 28px}#grid .card.tc-card{padding:16px;border-radius:20px}#grid .tc-card .meta h3{font-size:21px}#grid .tc-card .desc{font-size:14px}#grid .tc-card .actions>.btn.primary{font-size:13px}}
+@media(max-width:380px){#grid:not(.list){gap:10px;padding-left:2px;padding-right:2px}#grid .card.tc-card{padding:9px}#grid .tc-card .meta h3{font-size:15px}#grid .tc-card .meta .tag .t{font-size:9px;padding:3px 6px}#grid .tc-card .desc{font-size:12px}#grid.list .tc-card{grid-template-columns:75px minmax(0,1fr)}}
+@supports not (backdrop-filter:blur(10px)){#grid .card.tc-card{background:#17212e}body.light #grid .card.tc-card{background:#fff}}
+@media(prefers-reduced-motion:reduce){#grid .card.tc-card,#grid .tc-card.tc-holding,#grid .tc-image{animation:none!important;transform:none!important;transition:none!important}}
+
+</style>
+<style id="teaghiu-card-layout">
+/* TeaGhiu · Bố cục theo phác thảo: 2 cột, không đổi SELECT CHARACTER. */
+@media (min-width:900px) {
+  #grid:not(.list) {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:22px;
   }
-  </style>
+  #grid:not(.list) .card.tc-card {
+    display:grid;
+    grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
+    grid-template-rows:auto 1fr auto;
+    column-gap:16px;
+    row-gap:12px;
+    align-content:start;
+    min-height:330px;
+    padding:15px;
+  }
+  #grid:not(.list) .tc-art {
+    grid-column:1;
+    grid-row:1 / 4;
+    align-self:stretch;
+    aspect-ratio:auto;
+    min-height:280px;
+    height:100%;
+    margin:0;
+  }
+  #grid:not(.list) .tc-card .card-top {
+    grid-column:2;
+    grid-row:1;
+    width:100%;
+    min-width:0;
+  }
+  #grid:not(.list) .tc-card .meta h3 {
+    font-size:20px;
+  }
+  #grid:not(.list) .tc-card .desc {
+    grid-column:2;
+    grid-row:2;
+    align-self:start;
+    margin:0;
+    font-size:13px;
+    -webkit-line-clamp:5;
+  }
+  #grid:not(.list) .tc-card .actions {
+    grid-column:2;
+    grid-row:3;
+    align-self:end;
+    width:100%;
+    padding:0;
+    margin:0;
+  }
+  #grid:not(.list) .tc-card .actions>.btn.primary {
+    font-size:12px;
+  }
+}
+
+/* Khung chi tiết: viền đủ bốn cạnh, không lắc/không lật. */
+.cs-sheet {
+  max-width:min(620px,calc(100vw - 24px));
+  max-height:calc(100dvh - 28px);
+  bottom:12px;
+  border:1px solid rgba(192,132,252,.35);
+  border-radius:20px;
+  box-shadow:0 24px 80px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.035);
+}
+.cs-topbar {
+  border-radius:20px 20px 0 0;
+}
+.cs-body {
+  min-height:0;
+  padding:0 16px calc(18px + env(safe-area-inset-bottom,0px));
+}
+.cs-photo {
+  margin:0;
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:14px;
+  min-width:0;
+}
+.cs-info {
+  min-width:0;
+  padding:16px 0 0;
+}
+.cs-name {
+  font-size:23px;
+  line-height:1.35;
+  overflow-wrap:anywhere;
+}
+.cs-quote {
+  font-size:14px;
+  line-height:1.8;
+  overflow-wrap:anywhere;
+}
+.cs-acts {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.cs-acts .btn {
+  min-height:44px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:11px;
+}
+.cs-acts .btn.primary {
+  flex:1 0 100%;
+  width:100%;
+}
+.cs-acts .btn.icon-btn {
+  flex:1 1 0;
+  min-width:0;
+}
+@media(max-width:899px) {
+  .cs-body {display:block}
+  .cs-slide img {max-height:47vh;max-height:47svh}
+  .cs-photo {margin:0}
+  .cs-info {padding:16px 0 0}
+}
+@media(min-width:900px) {
+  .cs-sheet {
+    left:50%;right:auto;top:50%;bottom:auto;
+    width:min(1000px,calc(100vw - 64px));
+    max-width:1000px;
+    max-height:90vh;max-height:90dvh;
+    margin:0;
+    transform:translate(-50%,-45%) scale(.98);
+  }
+  .cs-sheet.on {
+    transform:translate(-50%,-50%) scale(1);
+  }
+  .cs-body {
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    gap:24px;
+    padding:4px 24px 24px;
+    align-items:start;
+  }
+  .cs-photo {
+    align-self:start;
+    margin:0;
+  }
+  .cs-slide img {
+    width:auto;
+    max-width:100%;
+    max-height:64vh;max-height:64dvh;
+    object-fit:contain;
+  }
+  .cs-info {padding:8px 0 0}
+  .cs-name {font-size:30px}
+  .cs-quote {font-size:15px;line-height:1.85}
+}
+body.light .cs-sheet {
+  background:#f5f6fb;
+  border-color:#b8a5d6;
+  color:#19233b;
+}
+body.light .cs-topbar {background:#f5f6fb}
+body.light .cs-x {background:#e6e9f3;color:#19233b}
+body.light .cs-quote {color:#33425c}
+
+</style>
 </head>
 <body>
 
@@ -290,6 +502,7 @@
           📖 Cách dùng nhanh: gõ từ khoá hoặc chọn chip thể loại để lọc → bấm 🎲 để xem ngẫu nhiên → bấm <b>Mở Character</b> để bắt đầu trò chuyện trên AI Studio. Bấm 📌 để ghim nhân vật yêu thích lên đầu danh sách.
         </div>
         <div>Thư viện WLW by TeaGhiu <span class="heart">♥</span> · Đồng bộ bởi Supabase</div>
+        <a class="footer-facebook" href="https://www.facebook.com/share/1E9hUZXNKs/" target="_blank" rel="noopener noreferrer">Ghé Facebook của TeaGhiu ↗</a>
       </footer>
     </div>
   </div>
@@ -840,18 +1053,24 @@
     let currentPage=1, pageSize=20, cachedRandom=null, lastRandomKey='';
     let activeChipFilters = new Set(['all']);
     function cardHTML(item){
-      const a=item.accent||'#a78bfa', il=likedSet.has(item.name), ip=pinnedLocal.includes(item.name);
-      return `<article class="card" data-idx="${item.__i!=null?item.__i:-1}" style="--card-accent:${a};--card-glow:radial-gradient(circle,${a}33,transparent 70%);">
+      const a=item.accent||'#c084fc', il=likedSet.has(item.name), ip=pinnedLocal.includes(item.name);
+      const idx=item.__i!=null?item.__i:-1;
+      const image=item.__img||('chars/pic'+String(idx+1).padStart(3,'0')+'.jpg');
+      const copyCode='doCopy('+JSON.stringify(item.name)+','+JSON.stringify(item.link)+')';
+      return `<article class="card tc-card" data-idx="${idx}" style="--card-accent:${a};--card-glow:radial-gradient(circle,${a}22,transparent 70%);">
+        <div class="tc-art">
+          <span class="tc-art-mark" aria-hidden="true">${escapeHtml(avatarText(item.name))}</span>
+          <img class="tc-image" src="${escapeHtml(image)}" alt="${escapeHtml(item.name)}" loading="lazy" decoding="async" data-c="${escapeHtml(item.__cands||image)}" data-k="1" onerror="window.__imgStep?__imgStep(this):this.remove()">
+        </div>
         <div class="card-top">
-          <div class="avatar" style="background:linear-gradient(135deg,${a},${a}99);">${item.__img?`<img class="avatar-img" src="${item.__img}" alt="" loading="lazy" decoding="async" data-c="${item.__cands}" data-k="1" onerror="window.__imgStep?__imgStep(this):this.remove()">`:''}${avatarText(item.name)}</div>
           <div class="meta"><h3>${escapeHtml(item.name)}</h3><span class="tag" data-tag="${escapeHtml(item.tag||'')}">${renderTagChips(item.tag,null)}</span></div>
         </div>
         <p class="desc">${escapeHtml(item.summary)}</p>
         <div class="actions">
-          <a class="btn primary" href="${item.link}" target="_blank" rel="noopener">Mở Character ↗</a>
-          <button class="btn icon-btn heart-btn ${il?'liked':''}" data-action="heart" data-name="${escapeHtml(item.name)}" title="Yêu thích">${il?'❤️':'🤍'}</button>
-          <button class="btn icon-btn" onclick='doCopy(${JSON.stringify(item.name)},${JSON.stringify(item.link)})' title="Copy link">📋</button>
-          <button class="btn icon-btn pin-btn ${ip?'pinned':''}" data-action="pin" data-name="${escapeHtml(item.name)}" ${pinnedLocal.length>=3&&!ip?'disabled':''} title="Ghim">📌</button>
+          <a class="btn primary" href="${escapeHtml(item.link)}" target="_blank" rel="noopener noreferrer">Mở Character ↗</a>
+          <button class="btn icon-btn heart-btn ${il?'liked':''}" type="button" data-action="heart" data-name="${escapeHtml(item.name)}" title="Yêu thích" aria-label="Yêu thích ${escapeHtml(item.name)}">${il?'❤️':'🤍'}</button>
+          <button class="btn icon-btn" type="button" onclick="${escapeHtml(copyCode)}" title="Copy link" aria-label="Sao chép link ${escapeHtml(item.name)}">📋</button>
+          <button class="btn icon-btn pin-btn ${ip?'pinned':''}" type="button" data-action="pin" data-name="${escapeHtml(item.name)}" ${pinnedLocal.length>=3&&!ip?'disabled':''} title="Ghim" aria-label="Ghim ${escapeHtml(item.name)}">📌</button>
         </div></article>`;
     }
     function getFiltered(){
@@ -1336,5 +1555,28 @@
     <a href="https://aistudio.google.com/" target="_blank" rel="noopener" class="tab-item"><span class="tab-ico">🚀</span><span>AI Studio</span></a>
   </nav>
 
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a492d67da8fa0959',t:'MTc5MTc3Mzg1NA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a4931e9439c484e4',t:'MTc5MTc3NjgwNw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>
+/* Tilt theo ngón tay: không preventDefault, giữ cuộn dọc và nút bấm. */
+(() => {
+  const grid=document.getElementById('grid');if(!grid)return;
+  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
+  const suppressed=new WeakMap();let current=null,holdTimer=null,raf=0;
+  const observed=new WeakSet();
+  const visible=('IntersectionObserver' in window)?new IntersectionObserver(entries=>{entries.forEach(e=>e.target.classList.toggle('tc-visible',e.isIntersecting));},{rootMargin:'60px'}):null;
+  function observeCards(){grid.querySelectorAll('.tc-card').forEach((card,i)=>{if(observed.has(card))return;observed.add(card);card.style.setProperty('--sway-delay',(-i*.65)+'s');if(visible)visible.observe(card);else card.classList.add('tc-visible');});}
+  const mutations=new MutationObserver(records=>{if(visible)records.forEach(record=>record.removedNodes.forEach(node=>{if(node.nodeType!==1)return;if(node.matches('.tc-card'))visible.unobserve(node);node.querySelectorAll('.tc-card').forEach(card=>visible.unobserve(card));}));if(current&&!current.card.isConnected)release(true);observeCards();});mutations.observe(grid,{childList:true,subtree:true});observeCards();
+  function paint(x,y){if(!current||reduced.matches)return;const r=current.rect;const dx=Math.max(-1,Math.min(1,(x-r.left-r.width/2)/(r.width/2)));const dy=Math.max(-1,Math.min(1,(y-r.top-r.height/2)/(r.height/2)));current.card.classList.add('tc-holding');current.card.style.setProperty('--tilt-y',(dx*3).toFixed(2)+'deg');current.card.style.setProperty('--tilt-x',(-dy*3).toFixed(2)+'deg');current.card.style.setProperty('--image-x',(-dx*3).toFixed(2)+'px');current.card.style.setProperty('--image-y',(-dy*3).toFixed(2)+'px');}
+  function release(cancelled=false){clearTimeout(holdTimer);cancelAnimationFrame(raf);if(!current)return;const c=current;if(c.moved||c.held||cancelled)suppressed.set(c.card,Date.now()+650);c.card.classList.remove('tc-holding');current=null;}
+  grid.addEventListener('pointerdown',e=>{if(reduced.matches||grid.classList.contains('list')||e.isPrimary===false||(e.pointerType==='mouse'&&e.button!==0))return;const card=e.target.closest('.tc-card');if(!card||e.target.closest('a,button,input,select,details,summary'))return;release();current={card,id:e.pointerId,rect:card.getBoundingClientRect(),startX:e.clientX,startY:e.clientY,x:e.clientX,y:e.clientY,moved:false,held:false};holdTimer=setTimeout(()=>{if(!current)return;current.held=true;paint(current.x,current.y);},180);},{passive:true});
+  window.addEventListener('pointermove',e=>{if(!current||e.pointerId!==current.id)return;current.x=e.clientX;current.y=e.clientY;if(Math.hypot(e.clientX-current.startX,e.clientY-current.startY)>8)current.moved=true;cancelAnimationFrame(raf);raf=requestAnimationFrame(()=>paint(e.clientX,e.clientY));},{passive:true});
+  window.addEventListener('pointerup',e=>{if(current&&e.pointerId===current.id)release();},{passive:true});
+  window.addEventListener('pointercancel',e=>{if(current&&e.pointerId===current.id)release(true);},{passive:true});
+  window.addEventListener('blur',()=>release(true));
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)release(true);});
+  grid.addEventListener('click',e=>{const card=e.target.closest('.tc-card');if(!card||e.target.closest('a,button,details,summary'))return;if(Date.now()<(suppressed.get(card)||0)){e.preventDefault();e.stopImmediatePropagation();}},true);
+  const motionChange=()=>release(true);if(reduced.addEventListener)reduced.addEventListener('change',motionChange);
+})();
+
+</script>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a4adbf352a3850a2',t:'MTc5MjA1NjAxNg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
