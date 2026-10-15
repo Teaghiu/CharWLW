@@ -733,3 +733,362 @@ body.light .tabbar { background: rgba(247,248,252,0.92); }
   body.commands-page .isekai-callout > span:nth-of-type(2) { flex: 1 1 100%; }
   body.commands-page .isekai-callout > span:last-child { flex: 1 1 100%; text-align: right; font-weight: 600; }
 }
+/* =========================================
+   TEAGHIU — DEEP DARK + GLASS
+   Dán cuối style.css
+   ========================================= */
+
+/* 1. Bảng màu dark */
+body:not(.light) {
+  --bg: #090e19;
+  --panel: rgba(255, 255, 255, 0.04);
+  --panel-2: rgba(255, 255, 255, 0.07);
+  --text: #f4f6ff;
+  --muted: #bcc5db;
+  --muted-2: #9ba8c2;
+  --line: rgba(255, 255, 255, 0.12);
+
+  --accent: #c084fc;
+  --accent-2: #22d3ee;
+  --accent-3: #f0a6da;
+
+  /* Màu đủ sáng để dùng chữ tối trên nút */
+  --gradient: linear-gradient(
+    115deg,
+    #d5a2f5 0%,
+    #a4a7ff 48%,
+    #6edce9 100%
+  );
+
+  background: #090e19;
+  color: var(--text);
+}
+
+/* 2. Nền nhiều lớp, ít tím hơn */
+body:not(.light)::before {
+  background:
+    radial-gradient(
+      ellipse at 8% 6%,
+      rgba(192, 132, 252, 0.16),
+      transparent 48%
+    ),
+    radial-gradient(
+      ellipse at 96% 28%,
+      rgba(34, 211, 238, 0.11),
+      transparent 45%
+    ),
+    radial-gradient(
+      ellipse at 40% 88%,
+      rgba(240, 166, 218, 0.07),
+      transparent 50%
+    ),
+    linear-gradient(
+      155deg,
+      #0d1424 0%,
+      #090e19 52%,
+      #101522 100%
+    );
+}
+
+body:not(.light)::after {
+  opacity: 0.025;
+}
+
+/* 3. Các hộp glass
+   Không áp dụng cho menu và modal:
+   những phần đó cần nền đặc để dễ đọc. */
+body:not(.light) :is(
+  .card,
+  .profile-hero,
+  .hero-select,
+  .control-panel,
+  .pstat
+) {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* 4. Card rõ ràng, bỏ hiệu ứng bật nảy cũ */
+body:not(.light) .card {
+  padding: 18px;
+  opacity: 1;
+  transform: none;
+  animation: none;
+
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+/* Vệt accent mảnh phía trên card */
+body:not(.light) .card::before {
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--card-accent, #c084fc),
+    rgba(34, 211, 238, 0.55)
+  );
+  opacity: 0.75;
+}
+
+/* Giảm quầng sáng để không bị một màu */
+body:not(.light) .card::after {
+  opacity: 0.18;
+}
+
+/* 5. Hierarchy chữ */
+body:not(.light) .card .meta h3 {
+  color: #f4f6ff;
+  font-size: 18px;
+  line-height: 1.4;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+}
+
+body:not(.light) :is(
+  .card .desc,
+  .card .cmd-preview,
+  .card .more-body
+) {
+  color: #bcc5db;
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+body:not(.light) .card .desc {
+  margin-top: 14px;
+  font-style: normal;
+}
+
+/* Bỏ dấu ngoặc kép trang trí cũ */
+body:not(.light) .card .desc::before {
+  content: none;
+}
+
+body:not(.light) .card .mini-stat {
+  color: #aebbd1;
+}
+
+/* Nội dung lệnh dài không làm tràn card */
+.card .cmd-full {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* 6. Hashtag */
+body:not(.light) :is(
+  .tag-pill,
+  .meta .tag .t
+) {
+  background: rgba(192, 132, 252, 0.10);
+  border: 1px solid rgba(192, 132, 252, 0.23);
+  color: #dec2fc;
+  border-radius: 999px;
+  font-size: 11px;
+  line-height: 1.5;
+  padding: 4px 9px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.card .meta .tag {
+  gap: 5px;
+}
+
+/* 7. Nút thường */
+body:not(.light) .btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 11px;
+  color: #edf2ff;
+  min-height: 44px;
+}
+
+/* Nút chính: Mở Character / Sao chép lệnh */
+body:not(.light) .btn.primary {
+  background: var(--gradient);
+  background-size: 100% 100%;
+  border-color: transparent;
+  color: #142038;
+  font-weight: 800;
+
+  box-shadow:
+    0 6px 18px rgba(164, 167, 255, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+
+  transition:
+    filter 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+/* Giữ màu trạng thái yêu thích / ghim */
+body:not(.light) .heart-btn.liked {
+  background: rgba(244, 114, 182, 0.14);
+  border-color: rgba(244, 114, 182, 0.35);
+  color: #f9a8d4;
+}
+
+body:not(.light) .pin-btn.pinned {
+  background: rgba(251, 191, 36, 0.12);
+  border-color: rgba(251, 191, 36, 0.30);
+  color: #fcd34d;
+}
+
+/* Focus rõ khi dùng bàn phím */
+:is(.btn, .chip, .tag-pill):focus-visible {
+  outline: 2px solid #22d3ee;
+  outline-offset: 3px;
+}
+
+/* Chỉ dùng hover trên máy có chuột */
+@media (hover: hover) and (pointer: fine) {
+  body:not(.light) .card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(192, 132, 252, 0.35);
+    box-shadow: 0 16px 38px rgba(0, 0, 0, 0.30);
+  }
+
+  body:not(.light) .btn.primary:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.06);
+    box-shadow: 0 8px 22px rgba(164, 167, 255, 0.24);
+  }
+}
+
+/* Máy không hỗ trợ blur: dùng nền đặc */
+@supports not (backdrop-filter: blur(16px)) {
+  body:not(.light) :is(
+    .card,
+    .profile-hero,
+    .hero-select,
+    .control-panel,
+    .pstat
+  ) {
+    background: #172033;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .btn {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+/* =========================================
+   GRID — 2 CỘT MOBILE / 3 CỘT TỪ 900PX
+   ========================================= */
+
+.grid:not(.list) {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  align-items: stretch;
+}
+
+/* Bỏ lớp bố cục hàng, không xóa nội dung */
+.grid:not(.list) > .card-row {
+  display: contents;
+}
+
+.grid:not(.list) .card {
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Khoảng cách phần thông tin */
+.grid:not(.list) .card-top {
+  gap: 10px;
+}
+
+.grid:not(.list) .card .actions {
+  margin-top: auto;
+  padding-top: 16px;
+  gap: 6px;
+}
+
+/* Nút mở chiếm một hàng,
+   tim / copy / ghim nằm hàng dưới */
+.grid:not(.list) .card .actions > .btn.primary {
+  flex: 1 0 100%;
+  width: 100%;
+}
+
+.grid:not(.list) .card .actions > .icon-btn {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 44px;
+  padding: 9px 4px;
+}
+
+/* Ảnh lớn: dành cho HTML mẫu bên dưới */
+.card-cover {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 11px;
+  margin-bottom: 14px;
+  background: #172033;
+}
+
+/* Mobile: avatar trên, tên và tag dưới */
+@media (max-width: 599px) {
+  .grid:not(.list) {
+    gap: 10px;
+  }
+
+  .grid:not(.list) .card {
+    padding: 12px;
+  }
+
+  .grid:not(.list) .card-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .grid:not(.list) .card .meta {
+    width: 100%;
+  }
+
+  .grid:not(.list) .card .meta h3 {
+    font-size: 15px;
+    line-height: 1.45;
+  }
+
+  .grid:not(.list) .card .desc,
+  .grid:not(.list) .card .cmd-preview {
+    font-size: 12.5px;
+    line-height: 1.7;
+  }
+
+  .grid:not(.list) .card .btn {
+    font-size: 11.5px;
+  }
+
+  .grid:not(.list) .card .avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+  }
+}
+
+@media (min-width: 900px) {
+  .grid:not(.list) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+  }
+}
