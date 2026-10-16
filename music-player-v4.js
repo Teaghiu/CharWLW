@@ -94,7 +94,7 @@
     if (idx < 0 || idx >= playlist.length) idx = 0;
     currentIndex = idx;
     lsSet("bgm_idx", String(currentIndex));
-    audio.src = playlist[currentIndex].src;
+    audio.src = "music/" + playlist[currentIndex].src;
     if (autoplay) audio.play().catch(function () {});
     updateUI();
   }
