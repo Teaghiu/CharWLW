@@ -1,5 +1,5 @@
 /* ============================================================
-   TeaGhiu · music-player.js  —  HỘP NHẠC (bản 21/10/2026 — UI ĐĨA CD + MODAL 2 CỘT DESKTOP)
+   TeaGhiu · music-player.js  —  HỘP NHẠC (bản 21/10/2026 v2 — DIA CD TO + 2 COT (playlist trai · dia + dieu khien phai))
    ------------------------------------------------------------
    Có gì mới so với bản cũ:
    1. ĐĨA TRÒN KÉO ĐƯỢC như nút Home ảo của iPhone (lên/xuống/trái/phải),
@@ -168,19 +168,20 @@
     "  box-shadow:0 -20px 60px rgba(0,0,0,.6);padding:14px 16px calc(18px + env(safe-area-inset-bottom,0px));",
     "  transition:transform .34s cubic-bezier(.2,.9,.3,1);color:#f4f6ff;font-family:'Inter',system-ui,-apple-system,sans-serif}",
     ".bgm-sheet.on{transform:translate(-50%,0)}",
-    /* ========== DESKTOP (>=768px): HOP NHAC 2 COT ========== */
+    /* ========== DESKTOP (>=768px): TRAI = playlist · PHAI = dia CD (tren) + dieu khien (duoi) ========== */
     "@media (min-width:768px){",
-    "  .bgm-sheet{width:min(960px,94vw);bottom:50%;transform:translate(-50%,50%) scale(.94);opacity:0;pointer-events:none;",
-    "    border-radius:26px;border-bottom:1px solid rgba(255,255,255,.14);max-height:86vh;padding:16px 20px 22px}",
+    "  .bgm-sheet{width:min(1020px,94vw);bottom:50%;transform:translate(-50%,50%) scale(.94);opacity:0;pointer-events:none;",
+    "    border-radius:26px;border-bottom:1px solid rgba(255,255,255,.14);max-height:88vh;padding:16px 20px 22px}",
     "  .bgm-sheet.on{transform:translate(-50%,50%) scale(1);opacity:1;pointer-events:auto}",
-    /* Luoi 2 cot: TRAI = dieu khien + playlist, PHAI = dia CD.
-       MUON DAO BEN? Doi .controls-left thanh grid-column:2 va .disc-right thanh grid-column:1 */
-    "  .player-columns{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.9fr);gap:22px;align-items:start}",
-    "  .controls-left{grid-column:1;grid-row:1;display:flex;flex-direction:column;min-width:0}",
-    "  .disc-right{grid-column:2;grid-row:1;align-self:center;display:flex;align-items:center;justify-content:center}",
-    "  .bgm-vinyl.cd-disc{width:240px;height:240px;margin:0}",
-    "  .bgm-hero{padding:2px 0 4px}",
-    "  .controls-left .bgm-list{max-height:min(46vh,460px)}",
+    /* MUON DAO BEN? Doi .playlist-left thanh grid-column:2 va .stage-right thanh grid-column:1 */
+    "  .player-columns{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);gap:24px;align-items:start}",
+    "  .playlist-left{grid-column:1;grid-row:1;display:flex;flex-direction:column;min-width:0;min-height:0}",
+    "  .stage-right{grid-column:2;grid-row:1;display:flex;flex-direction:column;align-items:center;gap:14px;min-width:0}",
+    "  .playlist-left .bgm-list-head{margin:4px 0 10px}",
+    "  .playlist-left .bgm-list{flex:1 1 auto;min-height:0;max-height:min(66vh,640px)}",
+    "  .bgm-vinyl.cd-disc{width:min(340px,40vh);height:min(340px,40vh);margin:0}",
+    "  .controls-under{width:100%;max-width:470px}",
+    "  .bgm-hero{padding:0 0 2px}",
     "  .bgm-card{margin-top:12px}",
     "}",
 
@@ -336,44 +337,46 @@
       '<div class="bgm-head"><h3>🎧 Hộp nhạc TeaGhiu</h3><button class="bgm-x" id="bgmClose" aria-label="Đóng">✕</button></div>' +
     '</div>' +
     '<div class="player-columns">' +
-      '<div class="disc-right">' +
+      '<div class="stage-right">' +
         '<div class="bgm-vinyl cd-disc">' +
           '<i class="cd-face"></i>' +
           '<i class="cd-gloss"></i>' +
         '</div>' +
+        '<div class="controls-under">' +
+          '<div class="bgm-hero">' +
+            '<h4 id="bgmTitle">—</h4>' +
+            '<p id="bgmSub">Đang ngân vang trong trẻo &amp; êm ái…</p>' +
+            '<div class="bgm-badge" id="bgmBadge"><i class="bgm-dot"></i><span id="bgmBadgeTxt">Nhạc mặc định · Tự động phát</span></div>' +
+          '</div>' +
+          '<div class="bgm-card">' +
+            '<div class="bgm-card-row"><b id="bgmCardName">Hộp nhạc TeaGhiu</b><span class="bgm-tag">Mặc định · Tự động phát</span></div>' +
+            '<p id="bgmCardDesc">37 bài dạo êm — tự phát khi bạn ghé thăm, hết bài tự chuyển.</p>' +
+          '</div>' +
+          '<div class="bgm-prog">' +
+            '<span id="bgmNow">0:00</span>' +
+            '<input type="range" id="bgmSeek" min="0" max="1000" step="1" value="0" aria-label="Tua bài">' +
+            '<span id="bgmDur">0:00</span>' +
+          '</div>' +
+          '<div class="bgm-ctl">' +
+            '<button id="bgmPrev">⏮ Trước</button>' +
+            '<button class="main" id="bgmPlay">⏸ Tạm dừng</button>' +
+            '<button id="bgmNext">Tiếp ⏭</button>' +
+            '<button id="bgmRepeat">↻ Repeat</button>' +
+            '<button id="bgmShuffle">🔀 Shuffle</button>' +
+          '</div>' +
+          '<div class="bgm-vol">' +
+            '<button id="bgmVolIcon" aria-label="Tắt/bật tiếng">🔊</button>' +
+            '<input type="range" id="bgmVolume" min="0" max="1" step="0.05" aria-label="Âm lượng">' +
+            '<span class="bgm-pct" id="bgmVolVal">40%</span>' +
+          '</div>' +
+          '<div class="bgm-quick" id="bgmQuick">' +
+            '<button data-v="0">Tắt tiếng</button><button data-v="0.3">30%</button><button data-v="0.6">60%</button><button data-v="1">100%</button>' +
+          '</div>' +
+          '<button class="bgm-mode" id="bgmMode"><span>🔄 Chế độ: Tự chuyển bài</span><b id="bgmModeTag">TỰ CHUYỂN: BẬT</b></button>' +
+          '<p class="bgm-note">Hết bài sẽ tự chuyển sang bài tiếp theo trong playlist. Tắt đi thì nhạc dừng ở cuối bài.</p>' +
+        '</div>' +
       '</div>' +
-      '<div class="controls-left">' +
-        '<div class="bgm-hero">' +
-          '<h4 id="bgmTitle">—</h4>' +
-          '<p id="bgmSub">Đang ngân vang trong trẻo &amp; êm ái…</p>' +
-          '<div class="bgm-badge" id="bgmBadge"><i class="bgm-dot"></i><span id="bgmBadgeTxt">Nhạc mặc định · Tự động phát</span></div>' +
-        '</div>' +
-        '<div class="bgm-card">' +
-          '<div class="bgm-card-row"><b id="bgmCardName">Hộp nhạc TeaGhiu</b><span class="bgm-tag">Mặc định · Tự động phát</span></div>' +
-          '<p id="bgmCardDesc">37 bài dạo êm — tự phát khi bạn ghé thăm, hết bài tự chuyển.</p>' +
-        '</div>' +
-        '<div class="bgm-prog">' +
-          '<span id="bgmNow">0:00</span>' +
-          '<input type="range" id="bgmSeek" min="0" max="1000" step="1" value="0" aria-label="Tua bài">' +
-          '<span id="bgmDur">0:00</span>' +
-        '</div>' +
-        '<div class="bgm-ctl">' +
-          '<button id="bgmPrev">⏮ Trước</button>' +
-          '<button class="main" id="bgmPlay">⏸ Tạm dừng</button>' +
-          '<button id="bgmNext">Tiếp ⏭</button>' +
-          '<button id="bgmRepeat">↻ Repeat</button>' +
-          '<button id="bgmShuffle">🔀 Shuffle</button>' +
-        '</div>' +
-        '<div class="bgm-vol">' +
-          '<button id="bgmVolIcon" aria-label="Tắt/bật tiếng">🔊</button>' +
-          '<input type="range" id="bgmVolume" min="0" max="1" step="0.05" aria-label="Âm lượng">' +
-          '<span class="bgm-pct" id="bgmVolVal">40%</span>' +
-        '</div>' +
-        '<div class="bgm-quick" id="bgmQuick">' +
-          '<button data-v="0">Tắt tiếng</button><button data-v="0.3">30%</button><button data-v="0.6">60%</button><button data-v="1">100%</button>' +
-        '</div>' +
-        '<button class="bgm-mode" id="bgmMode"><span>🔄 Chế độ: Tự chuyển bài</span><b id="bgmModeTag">TỰ CHUYỂN: BẬT</b></button>' +
-        '<p class="bgm-note">Hết bài sẽ tự chuyển sang bài tiếp theo trong playlist. Tắt đi thì nhạc dừng ở cuối bài.</p>' +
+      '<div class="playlist-left">' +
         '<div class="bgm-list-head"><span>Playlist dịu dàng (' + playlist.length + ' bài)</span><span>Chạm tên bài để nghe</span></div>' +
         '<div class="bgm-list" id="bgmList"></div>' +
       '</div>' +
