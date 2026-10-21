@@ -1,5 +1,5 @@
 /* ============================================================
-   TeaGhiu · music-player.js  —  HỘP NHẠC (bản 11/10/2026)
+   TeaGhiu · music-player.js  —  HỘP NHẠC (bản 21/10/2026 — UI ĐĨA CD + MODAL 2 CỘT DESKTOP)
    ------------------------------------------------------------
    Có gì mới so với bản cũ:
    1. ĐĨA TRÒN KÉO ĐƯỢC như nút Home ảo của iPhone (lên/xuống/trái/phải),
@@ -111,17 +111,26 @@
     /* ---------- ĐĨA TRÒN NỔI (kéo được) ---------- */
     ".bgm-dock.hide{display:none}",
     ".bgm-dock{position:fixed;z-index:9994;right:14px;bottom:calc(92px + var(--bgm-lift) + env(safe-area-inset-bottom,0px));width:56px;height:56px;touch-action:none}",
-    ".bgm-disc{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;cursor:pointer;",
-    "  background:radial-gradient(circle at 32% 28%,rgba(167,139,250,.95),rgba(34,211,238,.85) 62%,rgba(244,114,182,.9));",
-    "  border:2px solid rgba(255,255,255,.35);box-shadow:0 10px 26px rgba(0,0,0,.5),0 0 0 6px rgba(167,139,250,.10);",
-    "  color:#07111a;font-size:24px;line-height:1;-webkit-user-select:none;user-select:none;",
-    "  -webkit-tap-highlight-color:transparent;transition:transform .18s ease,box-shadow .18s ease}",
+    /* ---------- NUT NOI: DIA CD MINI (cham de mo hop nhac) ---------- */
+    ".bgm-disc{width:56px;height:56px;border-radius:50%;position:relative;padding:0;border:none;background:transparent;cursor:pointer;",
+    "  -webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;transition:transform .18s ease}",
     ".bgm-disc:active{transform:scale(.94)}",
-    ".bgm-disc .bgm-ico{display:block;transform:translateY(1px)}",
-    ".bgm-dock.playing .bgm-disc{animation:bgm-pulse 2.4s ease-in-out infinite}",
-    ".bgm-dock.playing .bgm-ico{animation:bgm-spin 4.5s linear infinite}",
+    /* mat dia: ranh vinyl + nhan gradient tim/cyan/hong */
+    ".cd-face{position:absolute;inset:0;border-radius:50%;pointer-events:none;",
+    "  background:",
+    "    radial-gradient(circle at 50% 50%,#05060a 0 5%,transparent 5.5%),",
+    "    radial-gradient(circle at 50% 50%,#a78bfa,#22d3ee 40%,#f472b6 52%,transparent 54%),",
+    "    repeating-radial-gradient(circle at 50% 50%,rgba(255,255,255,.08) 0 1px,transparent 1px 3px),",
+    "    radial-gradient(circle at 50% 50%,#141620 42%,#07080d 78%);",
+    "  border:2px solid rgba(255,255,255,.28);box-shadow:0 10px 26px rgba(0,0,0,.55),0 0 0 5px rgba(167,139,250,.12)}",
+    /* lop bong long nam de (khong xoay) */
+    ".cd-gloss{position:absolute;inset:0;border-radius:50%;pointer-events:none;",
+    "  background:linear-gradient(135deg,rgba(255,255,255,.38) 0%,rgba(255,255,255,.08) 26%,transparent 42%,transparent 60%,rgba(255,255,255,.14) 84%,rgba(255,255,255,.03) 100%)}",
+    /* HIEU UNG XOAY DIA: JS them class cd-spin-animation khi phat, go khi tam dung */
+    "@keyframes cd-spin-animation{to{transform:rotate(360deg)}}",
+    ".cd-face{animation:cd-spin-animation 5s linear infinite;animation-play-state:paused}",
+    ".cd-face.cd-spin-animation{animation-play-state:running}",
     "@keyframes bgm-spin{to{transform:rotate(360deg)}}",
-    "@keyframes bgm-pulse{0%,100%{box-shadow:0 10px 26px rgba(0,0,0,.5),0 0 0 6px rgba(167,139,250,.10)}50%{box-shadow:0 10px 30px rgba(0,0,0,.55),0 0 0 12px rgba(34,211,238,.10)}}",
     ".bgm-hint{position:absolute;top:-8px;left:50%;transform:translate(-50%,-100%);white-space:nowrap;",
     "  background:rgba(20,22,35,.96);border:1px solid rgba(255,255,255,.16);color:#f4f6ff;",
     "  font:600 11px/1 'Inter',system-ui,sans-serif;padding:7px 10px;border-radius:999px;box-shadow:0 8px 20px rgba(0,0,0,.45);",
@@ -159,8 +168,21 @@
     "  box-shadow:0 -20px 60px rgba(0,0,0,.6);padding:14px 16px calc(18px + env(safe-area-inset-bottom,0px));",
     "  transition:transform .34s cubic-bezier(.2,.9,.3,1);color:#f4f6ff;font-family:'Inter',system-ui,-apple-system,sans-serif}",
     ".bgm-sheet.on{transform:translate(-50%,0)}",
-    "@media (min-width:901px){.bgm-sheet{bottom:50%;transform:translate(-50%,50%) scale(.94);opacity:0;pointer-events:none;border-radius:26px;border-bottom:1px solid rgba(255,255,255,.14);max-height:86vh}",
-    "  .bgm-sheet.on{transform:translate(-50%,50%) scale(1);opacity:1;pointer-events:auto}}",
+    /* ========== DESKTOP (>=768px): HOP NHAC 2 COT ========== */
+    "@media (min-width:768px){",
+    "  .bgm-sheet{width:min(960px,94vw);bottom:50%;transform:translate(-50%,50%) scale(.94);opacity:0;pointer-events:none;",
+    "    border-radius:26px;border-bottom:1px solid rgba(255,255,255,.14);max-height:86vh;padding:16px 20px 22px}",
+    "  .bgm-sheet.on{transform:translate(-50%,50%) scale(1);opacity:1;pointer-events:auto}",
+    /* Luoi 2 cot: TRAI = dieu khien + playlist, PHAI = dia CD.
+       MUON DAO BEN? Doi .controls-left thanh grid-column:2 va .disc-right thanh grid-column:1 */
+    "  .player-columns{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.9fr);gap:22px;align-items:start}",
+    "  .controls-left{grid-column:1;grid-row:1;display:flex;flex-direction:column;min-width:0}",
+    "  .disc-right{grid-column:2;grid-row:1;align-self:center;display:flex;align-items:center;justify-content:center}",
+    "  .bgm-vinyl.cd-disc{width:240px;height:240px;margin:0}",
+    "  .bgm-hero{padding:2px 0 4px}",
+    "  .controls-left .bgm-list{max-height:min(46vh,460px)}",
+    "  .bgm-card{margin-top:12px}",
+    "}",
 
     ".bgm-grip{position:relative;width:44px;height:4px;border-radius:99px;background:rgba(255,255,255,.22);margin:6px auto 12px}",
     ".bgm-topbar{position:sticky;top:0;z-index:6;margin:0 -6px;padding:2px 6px 0;",
@@ -171,14 +193,11 @@
     ".bgm-x{width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:#f4f6ff;font-size:15px;display:grid;place-items:center;cursor:pointer}",
 
     /* đĩa than */
+    /* ---------- DIA CD LON (ben trong hop nhac) ---------- */
     ".bgm-hero{text-align:center;padding:16px 0 6px}",
-    ".bgm-vinyl{width:104px;height:104px;margin:0 auto 12px;border-radius:50%;position:relative;display:grid;place-items:center;",
-    "  background:radial-gradient(circle,#2a2246 18%,#171a2e 19%,#0e1020 60%,#1c1836 100%);",
-    "  border:1px solid rgba(255,255,255,.16);box-shadow:0 14px 34px rgba(0,0,0,.55),inset 0 0 0 6px rgba(255,255,255,.03)}",
-    ".bgm-vinyl::after{content:'';position:absolute;inset:10px;border-radius:50%;background:conic-gradient(from 0deg,rgba(167,139,250,.30),rgba(34,211,238,.24),rgba(244,114,182,.30),rgba(167,139,250,.30))}",
-    ".bgm-vinyl span{position:relative;z-index:1;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-size:17px;",
-    "  background:linear-gradient(135deg,#a78bfa,#22d3ee);color:#07111a;box-shadow:0 6px 16px rgba(0,0,0,.45)}",
-    ".bgm-sheet.playing .bgm-vinyl{animation:bgm-spin 7s linear infinite}",
+    ".bgm-vinyl.cd-disc{width:104px;height:104px;margin:0 auto 14px;border-radius:50%;position:relative}",
+    ".bgm-vinyl.cd-disc .cd-face{border-width:3px;box-shadow:0 16px 36px rgba(0,0,0,.55),0 0 0 8px rgba(167,139,250,.10)}",
+    "@media (prefers-reduced-motion:reduce){.cd-face{animation:none!important}}",
     ".bgm-hero h4{margin:0;font:800 19px/1.3 'Inter',sans-serif;color:#f4f6ff;word-break:break-word}",
     ".bgm-hero p{margin:6px 0 0;font:italic 500 12.5px/1.6 'Inter',sans-serif;color:rgba(244,246,255,.66)}",
     ".bgm-badge{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 14px;border-radius:999px;",
@@ -220,7 +239,8 @@
     ".bgm-note{margin:7px 0 0;font:500 11.5px/1.5 'Inter',sans-serif;color:rgba(244,246,255,.55)}",
 
     /* điều khiển */
-    ".bgm-ctl{display:grid;grid-template-columns:1fr 1.5fr 1fr 1fr;gap:8px;margin-top:14px}",
+    /* 5 nut: Truoc · Phat · Tiep · Repeat · Shuffle */
+    ".bgm-ctl{display:grid;grid-template-columns:1.1fr 1.5fr 1fr 1fr 1fr;gap:8px;margin-top:14px}",
     ".bgm-ctl button{padding:12px 6px;border-radius:13px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);",
     "  color:#f4f6ff;font:700 11.5px/1 'Inter',sans-serif;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .12s ease,background .18s ease}",
     ".bgm-ctl button:active{transform:scale(.96)}",
@@ -258,8 +278,7 @@
     "  .bgm-sheet{max-height:88vh;padding:10px 14px calc(16px + env(safe-area-inset-bottom,0px))}",
     "  .bgm-grip{width:40px;margin-bottom:8px}",
     "  .bgm-hero{padding:8px 0 2px}",
-    "  .bgm-vinyl{width:82px;height:82px;margin-bottom:8px}",
-    "  .bgm-vinyl span{width:32px;height:32px;font-size:15px}",
+    "  .bgm-vinyl.cd-disc{width:82px;height:82px;margin-bottom:10px}",
     "  .bgm-hero h4{font-size:17px}",
     "  .bgm-hero p{margin-top:4px;font-size:11.8px}",
     "  .bgm-badge{margin-top:8px;padding:6px 12px;font-size:11px}",
@@ -287,8 +306,9 @@
   var dock = document.createElement("div");
   dock.className = "bgm-dock";
   dock.innerHTML =
-    '<div class="bgm-disc" id="bgmDisc" tabindex="0" aria-label="Hộp nhạc — kéo để di chuyển, chạm để mở">' +
-      '<span class="bgm-ico">🎵</span>' +
+    '<div class="bgm-disc music-toggle-btn" id="bgmDisc" tabindex="0" aria-label="Hộp nhạc — kéo để di chuyển, chạm để mở">' +
+      '<i class="cd-face"></i>' +
+      '<i class="cd-gloss"></i>' +
     '</div>' +
     '<div class="bgm-hint" id="bgmHint">Kéo mình đi chỗ khác được nha • chạm để mở</div>';
 
@@ -315,39 +335,49 @@
       '<div class="bgm-grip" id="bgmGrip" title="Vuốt xuống hoặc chạm để đóng"></div>' +
       '<div class="bgm-head"><h3>🎧 Hộp nhạc TeaGhiu</h3><button class="bgm-x" id="bgmClose" aria-label="Đóng">✕</button></div>' +
     '</div>' +
-    '<div class="bgm-hero">' +
-      '<div class="bgm-vinyl"><span>♥</span></div>' +
-      '<h4 id="bgmTitle">—</h4>' +
-      '<p id="bgmSub">Đang ngân vang trong trẻo &amp; êm ái…</p>' +
-      '<div class="bgm-badge" id="bgmBadge"><i class="bgm-dot"></i><span id="bgmBadgeTxt">Nhạc mặc định · Tự động phát</span></div>' +
+    '<div class="player-columns">' +
+      '<div class="disc-right">' +
+        '<div class="bgm-vinyl cd-disc">' +
+          '<i class="cd-face"></i>' +
+          '<i class="cd-gloss"></i>' +
+        '</div>' +
+      '</div>' +
+      '<div class="controls-left">' +
+        '<div class="bgm-hero">' +
+          '<h4 id="bgmTitle">—</h4>' +
+          '<p id="bgmSub">Đang ngân vang trong trẻo &amp; êm ái…</p>' +
+          '<div class="bgm-badge" id="bgmBadge"><i class="bgm-dot"></i><span id="bgmBadgeTxt">Nhạc mặc định · Tự động phát</span></div>' +
+        '</div>' +
+        '<div class="bgm-card">' +
+          '<div class="bgm-card-row"><b id="bgmCardName">Hộp nhạc TeaGhiu</b><span class="bgm-tag">Mặc định · Tự động phát</span></div>' +
+          '<p id="bgmCardDesc">37 bài dạo êm — tự phát khi bạn ghé thăm, hết bài tự chuyển.</p>' +
+        '</div>' +
+        '<div class="bgm-prog">' +
+          '<span id="bgmNow">0:00</span>' +
+          '<input type="range" id="bgmSeek" min="0" max="1000" step="1" value="0" aria-label="Tua bài">' +
+          '<span id="bgmDur">0:00</span>' +
+        '</div>' +
+        '<div class="bgm-ctl">' +
+          '<button id="bgmPrev">⏮ Trước</button>' +
+          '<button class="main" id="bgmPlay">⏸ Tạm dừng</button>' +
+          '<button id="bgmNext">Tiếp ⏭</button>' +
+          '<button id="bgmRepeat">↻ Repeat</button>' +
+          '<button id="bgmShuffle">🔀 Shuffle</button>' +
+        '</div>' +
+        '<div class="bgm-vol">' +
+          '<button id="bgmVolIcon" aria-label="Tắt/bật tiếng">🔊</button>' +
+          '<input type="range" id="bgmVolume" min="0" max="1" step="0.05" aria-label="Âm lượng">' +
+          '<span class="bgm-pct" id="bgmVolVal">40%</span>' +
+        '</div>' +
+        '<div class="bgm-quick" id="bgmQuick">' +
+          '<button data-v="0">Tắt tiếng</button><button data-v="0.3">30%</button><button data-v="0.6">60%</button><button data-v="1">100%</button>' +
+        '</div>' +
+        '<button class="bgm-mode" id="bgmMode"><span>🔄 Chế độ: Tự chuyển bài</span><b id="bgmModeTag">TỰ CHUYỂN: BẬT</b></button>' +
+        '<p class="bgm-note">Hết bài sẽ tự chuyển sang bài tiếp theo trong playlist. Tắt đi thì nhạc dừng ở cuối bài.</p>' +
+        '<div class="bgm-list-head"><span>Playlist dịu dàng (' + playlist.length + ' bài)</span><span>Chạm tên bài để nghe</span></div>' +
+        '<div class="bgm-list" id="bgmList"></div>' +
+      '</div>' +
     '</div>' +
-    '<div class="bgm-card">' +
-      '<div class="bgm-card-row"><b id="bgmCardName">Hộp nhạc TeaGhiu</b><span class="bgm-tag">Mặc định · Tự động phát</span></div>' +
-      '<p id="bgmCardDesc">17 bài dạo êm — tự phát khi bạn ghé thăm, hết bài tự chuyển.</p>' +
-    '</div>' +
-    '<div class="bgm-vol">' +
-      '<button id="bgmVolIcon" aria-label="Tắt/bật tiếng">🔊</button>' +
-      '<input type="range" id="bgmVolume" min="0" max="1" step="0.05" aria-label="Âm lượng">' +
-      '<span class="bgm-pct" id="bgmVolVal">40%</span>' +
-    '</div>' +
-    '<div class="bgm-quick" id="bgmQuick">' +
-      '<button data-v="0">Tắt tiếng</button><button data-v="0.3">30%</button><button data-v="0.6">60%</button><button data-v="1">100%</button>' +
-    '</div>' +
-    '<div class="bgm-prog">' +
-      '<span id="bgmNow">0:00</span>' +
-      '<input type="range" id="bgmSeek" min="0" max="1000" step="1" value="0" aria-label="Tua bài">' +
-      '<span id="bgmDur">0:00</span>' +
-    '</div>' +
-    '<button class="bgm-mode" id="bgmMode"><span>🔄 Chế độ: Tự chuyển bài</span><b id="bgmModeTag">TỰ CHUYỂN: BẬT</b></button>' +
-    '<p class="bgm-note">Hết bài sẽ tự chuyển sang bài tiếp theo trong playlist. Tắt đi thì nhạc dừng ở cuối bài.</p>' +
-    '<div class="bgm-ctl">' +
-      '<button id="bgmPrev">⏮ Trước</button>' +
-      '<button class="main" id="bgmPlay">⏸ Tạm dừng</button>' +
-      '<button id="bgmRepeat">↻ Repeat</button>' +
-      '<button id="bgmNext">Tiếp ⏭</button>' +
-    '</div>' +
-    '<div class="bgm-list-head"><span>Playlist dịu dàng (' + playlist.length + ' bài)</span><span>Chạm tên bài để nghe</span></div>' +
-    '<div class="bgm-list" id="bgmList"></div>' +
     '<p class="bgm-foot">Hộp nhạc TeaGhiu v3 ♥ kéo đĩa để đổi chỗ · tay nắm trên cùng: vuốt xuống để đóng</p>';
 
   document.body.appendChild(dock);
@@ -404,8 +434,14 @@
     $("bgmBarSub").textContent = (playing ? "Đang phát" : "Tạm dừng") + " · bài " + (currentIndex + 1) + "/" + playlist.length;
     $("bgmBarPlay").textContent = playing ? "⏸" : "▶";
 
-    /* nút lặp / ngẫu nhiên */
+    /* nút lặp / ngẫu nhiên + trạng thái đĩa CD */
     $("bgmRepeat").classList.toggle("on", isRepeatOne);
+    $("bgmShuffle").classList.toggle("on", isShuffle);
+    /* Đĩa CD: thêm class cd-spin-animation khi phát — gỡ khi tạm dừng (đĩa đứng yên tại chỗ) */
+    var cdFaces = document.querySelectorAll(".cd-face");
+    for (var ci = 0; ci < cdFaces.length; ci++) {
+      cdFaces[ci].classList.toggle("cd-spin-animation", playing);
+    }
     $("bgmMode").classList.toggle("off", !isAutoNext);
     $("bgmModeTag").textContent = "TỰ CHUYỂN: " + (isAutoNext ? "BẬT" : "TẮT");
 
@@ -640,6 +676,12 @@
   $("bgmRepeat").addEventListener("click", function () {
     isRepeatOne = !isRepeatOne;
     lsSet("bgm_repeat", String(isRepeatOne));
+    updateUI();
+  });
+  /* Nút Shuffle: bật/tắt phát ngẫu nhiên (biến isShuffle đã có sẵn trong file) */
+  $("bgmShuffle").addEventListener("click", function () {
+    isShuffle = !isShuffle;
+    lsSet("bgm_shuffle", String(isShuffle));
     updateUI();
   });
   $("bgmMode").addEventListener("click", function () {
