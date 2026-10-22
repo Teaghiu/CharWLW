@@ -1094,44 +1094,48 @@ body:not(.light) .pin-btn.pinned {
 }
 
 /* ============================================================
-   22/10 · THẺ NHÂN VẬT
+   22/10 · BẢN 2 · THẺ NHÂN VẬT
    - 2 thẻ / dãy (điện thoại lẫn máy tính)
-   - Ẩn 4 nút trên lưới (nút chỉ còn trong KHUNG LỚN)
-   - Điện thoại: ảnh TRÁI ~1/3 thẻ — tên + tag + summary bên PHẢI
-   - Máy tính : thẻ nằm ngang — ẢNH BÊN PHẢI, chữ bên TRÁI
+   - Ẩn 4 nút trên lưới (nút chỉ còn trong KHUNG LỚN khi bấm thẻ)
+   - Điện thoại: ẢNH Ở TRÊN, chiếm nửa trên thẻ — dưới: tên + tag + summary
+   - Máy tính : thẻ nằm ngang — ẢNH CHIẾM TRỌN BÊN PHẢI, chữ bên trái
    ============================================================ */
 
 /* Ẩn nút Mở Character / Tim / Copy / Ghim trên lưới */
 .grid:not(.list) .card .actions{ display:none !important; }
 
-/* Thẻ: ảnh 1 bên, chữ 1 bên */
+/* ĐIỆN THOẠI — ảnh trên, chữ dưới, khung to hơn */
 .grid:not(.list) .card{
   display:grid;
-  grid-template-columns:33% minmax(0,1fr);
-  grid-template-areas:"cover meta" "cover desc";
-  column-gap:12px;
+  grid-template-columns:100%;
+  grid-template-areas:"cover" "meta" "desc";
+  row-gap:8px;
   align-content:start;
-  padding:12px;
+  padding:10px;
 }
 .grid:not(.list) .card .card-top{ display:contents; }
 .grid:not(.list) .card .avatar{
   grid-area:cover; width:100%; max-width:100%; height:auto;
-  aspect-ratio:3/4; align-self:start; border-radius:12px; font-size:20px;
+  aspect-ratio:3/4; align-self:start; border-radius:14px; font-size:26px;
 }
+.grid:not(.list) .card .avatar img{ object-position:center 18%; }
 .grid:not(.list) .card .meta{ grid-area:meta; min-width:0; }
 .grid:not(.list) .card .meta h3{ margin:0; font-size:15px; }
 .grid:not(.list) .card .desc{
-  grid-area:desc; margin:8px 0 0; font-size:12.5px;
-  -webkit-line-clamp:3; min-height:0;
+  grid-area:desc; margin:0; font-size:12.5px;
+  -webkit-line-clamp:2; min-height:0;
 }
 
-/* MÁY TÍNH: 2 thẻ/dãy, ảnh bên PHẢI */
+/* MÁY TÍNH — 2 thẻ/dãy, ảnh chiếm trọn bên PHẢI */
 @media (min-width:900px){
   .grid:not(.list){ grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }
   .grid:not(.list) .card{
-    grid-template-columns:minmax(0,1fr) 30%;
+    grid-template-columns:minmax(0,1fr) 32%;
     grid-template-areas:"meta cover" "desc cover";
-    column-gap:18px; padding:18px;
+    column-gap:18px; padding:16px;
+  }
+  .grid:not(.list) .card .avatar{
+    aspect-ratio:auto; align-self:stretch; height:auto; min-height:150px;
   }
   .grid:not(.list) .card .meta h3{ font-size:20px; }
   .grid:not(.list) .card .desc{ font-size:14px; -webkit-line-clamp:4; }
