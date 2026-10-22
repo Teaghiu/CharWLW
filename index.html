@@ -93,8 +93,13 @@
   @media (min-width:901px){
     .hs-stage{height:min(58vh,620px)}
     .hs-stage .hero-photo{object-position:center 30%}
-    /* 🪽 ô mới: 3 ô đều nhau */
-    .profile-stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .cs-sheet{max-width:720px;max-height:94vh}
+    .cs-slide img{max-height:70vh}
+    .cs-name{font-size:26px}
+    .cs-quote{font-size:15px}
+      /* 🪽 ô mới: 3 ô đều nhau */
+  .profile-stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+  </style>
   }
   </style>
   <style>
@@ -210,61 +215,77 @@
     }
   }
   </style>
-<style id="cs-fix-2210b">
-/* 22/10 · BẢN 2
-   ĐIỆN THOẠI: KHUNG LỚN to hơn (94dvh), ảnh chiếm trọn nửa trên */
-@media (max-width:900px){
-  .cs-sheet{ max-height:94vh; max-height:94dvh; }
-  .cs-photo{ min-height:46vh; min-height:46dvh;
-    display:flex; align-items:center; justify-content:center; }
-  .cs-slide{ min-height:46vh; min-height:46dvh; }
-  .cs-slide img{ max-height:56vh; max-height:56dvh; }
-}
+  <!-- ═══ SỬA GIAO DIỆN DESKTOP: KHUNG NGANG, ẢNH TRÁI - CHỮ PHẢI ═══ -->
+<style id="desktop-landscape-fix">
+  @media (min-width: 900px) {
+    /* 1. Tổng thể khung: Hình chữ nhật ngang */
+    #csSheet {
+      width: min(1050px, calc(100vw - 40px)) !important;
+      max-width: 1050px !important;
+      height: auto !important;
+      max-height: 85vh !important;
+      top: 50% !important;
+      left: 50% !important;
+      bottom: auto !important;
+      transform: translate(-50%, -50%) scale(1) !important;
+      border-radius: 20px !important;
+      overflow: hidden !important;
+    }
 
-/* MÁY TÍNH THẬT (màn ngang): ẢNH CHIẾM TRỌN BÊN PHẢI —
-   tên + tag + summary + 4 nút (Mở Character / Tim / Ghim / Copy) nằm BÊN TRÁI */
-@media (min-width:900px) and (orientation:landscape){
-  #csSheet{
-    left:50%; right:auto; top:50%; bottom:auto; margin:0;
-    width:min(1180px, calc(100vw - 32px)); max-width:1180px;
-    height:min(90dvh, 900px); max-height:90dvh;
-    border-radius:20px; overflow:hidden;
-    transform:translate(-50%,-47%) scale(.985);
-  }
-  #csSheet.on{ transform:translate(-50%,-50%) scale(1); }
-  #csSheet .cs-topbar{ border-radius:20px 20px 0 0; }
-  #csSheet .cs-body{
-    display:grid; grid-template-columns:minmax(0,1fr) minmax(0,42%);
-    gap:0; align-items:stretch; padding:0 0 0 22px;
-    flex:1 1 0; min-height:0; overflow:hidden;
-  }
-  #csSheet .cs-info{ order:1; min-width:0; padding:16px 22px 18px 0; overflow-y:auto; }
-  #csSheet .cs-photo{ order:2; margin:0; min-width:0; border:0; border-radius:0; overflow:hidden; }
-  #csSheet .cs-slides{ height:100%; min-height:0; }
-  #csSheet .cs-slide{ height:100%; min-height:0; }
-  #csSheet .cs-slide img{
-    width:100%; height:100%; max-width:none; max-height:none;
-    object-fit:cover; object-position:center 18%;
-  }
-  #csSheet .cs-name{ font-size:30px; }
-  #csSheet .cs-quote{ font-size:15.5px; }
-}
+    /* 2. Chia 2 cột: Trái (Ảnh) - Phải (Chữ + Nút) */
+    #csSheet .cs-body {
+      display: grid !important;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr) !important; /* Cột ảnh rộng hơn chữ một chút */
+      gap: 24px !important;
+      padding: 24px !important;
+      align-items: center !important;
+    }
 
-/* ĐIỆN THOẠI bật "Chế độ máy tính" (màn đứng): ảnh trên cùng, to hết cỡ */
-@media (min-width:900px) and (orientation:portrait){
-  #csSheet{
-    left:50%; right:auto; top:50%; bottom:auto; margin:0;
-    width:min(1000px, calc(100vw - 24px)); max-width:1000px;
-    max-height:94dvh; border-radius:20px; overflow:hidden;
-    transform:translate(-50%,-47%) scale(.985);
+    /* 3. Cột Trái: Ảnh nhân vật */
+    #csSheet .cs-photo {
+      order: 1 !important; /* Đưa ảnh sang trái */
+      margin: 0 !important;
+      height: 100% !important;
+      min-height: 450px !important;
+      border-radius: 14px !important;
+      border: 1px solid var(--cs-char-accent, #c084fc) !important;
+    }
+    #csSheet .cs-slide img {
+      max-height: 65vh !important;
+      object-fit: contain !important;
+    }
+
+    /* 4. Cột Phải: Thông tin & Nút */
+    #csSheet .cs-info {
+      order: 2 !important; /* Đưa chữ sang phải */
+      padding: 0 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: center !important;
+    }
+    #csSheet .cs-name { font-size: 32px !important; margin-bottom: 12px !important; }
+    #csSheet .cs-quote { font-size: 16px !important; line-height: 1.7 !important; margin-bottom: 24px !important; }
+
+    /* 5. Căn chỉnh 4 nút bấm (Giống bố cục Ảnh 1: 1 nút to, 3 nút nhỏ dưới) */
+    #csSheet .cs-acts {
+      display: flex !important;
+      flex-wrap: wrap !important;
+      gap: 10px !important;
+    }
+    #csSheet .cs-acts .btn.primary {
+      flex: 1 1 100% !important; /* Nút mở Character full chiều ngang */
+      padding: 14px !important;
+      font-size: 15px !important;
+      font-weight: 600 !important;
+    }
+    #csSheet .cs-acts .icon-btn {
+      flex: 1 1 calc(33.33% - 10px) !important; /* 3 nút chia đều 3 cột */
+      height: 48px !important;
+      display: grid !important;
+      place-items: center !important;
+      font-size: 18px !important;
+    }
   }
-  #csSheet.on{ transform:translate(-50%,-50%) scale(1); }
-  #csSheet .cs-topbar{ border-radius:20px 20px 0 0; }
-  #csSheet .cs-body{ display:block; padding-bottom:18px; }
-  #csSheet .cs-photo{ margin:0 14px; }
-  #csSheet .cs-slide img{ max-height:70dvh; max-width:100%; }
-  #csSheet .cs-name{ font-size:26px; }
-}
 </style>
 </head>
 <body>
