@@ -93,13 +93,8 @@
   @media (min-width:901px){
     .hs-stage{height:min(58vh,620px)}
     .hs-stage .hero-photo{object-position:center 30%}
-    .cs-sheet{max-width:720px;max-height:94vh}
-    .cs-slide img{max-height:70vh}
-    .cs-name{font-size:26px}
-    .cs-quote{font-size:15px}
-      /* 🪽 ô mới: 3 ô đều nhau */
-  .profile-stats{grid-template-columns:repeat(3,minmax(0,1fr))}
-  </style>
+    /* 🪽 ô mới: 3 ô đều nhau */
+    .profile-stats{grid-template-columns:repeat(3,minmax(0,1fr))}
   }
   </style>
   <style>
@@ -215,6 +210,49 @@
     }
   }
   </style>
+<style id="cs-desktop-2210">
+/* 22/10 · KHUNG LỚN chế độ máy tính
+   - Máy tính thật (màn ngang): ẢNH BÊN PHẢI — tên / summary / tag BÊN TRÁI
+   - Điện thoại bật "Chế độ máy tính" (màn đứng): ảnh TRÊN CÙNG, to hết cỡ
+   - Điện thoại thường: giữ nguyên như cũ */
+@media (min-width:900px) and (orientation:landscape){
+  #csSheet{
+    left:50%; right:auto; top:50%; bottom:auto; margin:0;
+    width:min(1180px, calc(100vw - 32px)); max-width:1180px;
+    height:min(88dvh, 860px); max-height:88dvh;
+    border-radius:20px; transform:translate(-50%,-47%) scale(.985);
+  }
+  #csSheet.on{ transform:translate(-50%,-50%) scale(1); }
+  #csSheet .cs-topbar{ border-radius:20px 20px 0 0; }
+  #csSheet .cs-body{
+    display:grid; grid-template-columns:minmax(0,1fr) minmax(0,40%);
+    gap:22px; align-items:stretch; padding:4px 22px 22px;
+    flex:1 1 0; min-height:0; overflow:hidden;
+  }
+  #csSheet .cs-info{ order:1; min-width:0; padding:6px 4px 0 0; overflow-y:auto; }
+  #csSheet .cs-photo{ order:2; margin:0; min-width:0;
+    display:flex; align-items:center; justify-content:center; }
+  #csSheet .cs-slides{ height:100%; min-height:0; }
+  #csSheet .cs-slide{ height:100%; min-height:0; }
+  #csSheet .cs-slide img{ max-height:100%; max-width:100%; width:auto; height:auto; }
+  #csSheet .cs-name{ font-size:30px; }
+  #csSheet .cs-quote{ font-size:15.5px; }
+}
+@media (min-width:900px) and (orientation:portrait){
+  #csSheet{
+    left:50%; right:auto; top:50%; bottom:auto; margin:0;
+    width:min(1000px, calc(100vw - 24px)); max-width:1000px;
+    max-height:94dvh; border-radius:20px;
+    transform:translate(-50%,-47%) scale(.985);
+  }
+  #csSheet.on{ transform:translate(-50%,-50%) scale(1); }
+  #csSheet .cs-topbar{ border-radius:20px 20px 0 0; }
+  #csSheet .cs-body{ display:block; padding-bottom:22px; }
+  #csSheet .cs-photo{ margin:0 14px; }
+  #csSheet .cs-slide img{ max-height:74dvh; max-width:100%; }
+  #csSheet .cs-name{ font-size:26px; }
+}
+</style>
 </head>
 <body>
 
