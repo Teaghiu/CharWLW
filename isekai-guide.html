@@ -256,6 +256,36 @@ body.light .tabbar { background: rgba(247,248,252,0.92); }
   body.commands-page .isekai-callout > span:last-child { flex: 1 1 100%; text-align: right; font-weight: 600; }
 }
   </style>
+<style>
+/* ===== 2 ĐƯỜNG: LEGACY / STATEFUL ===== */
+code{font-family:'SFMono-Regular',Consolas,Menlo,monospace;font-size:12.5px;background:rgba(0,0,0,.28);padding:1px 6px;border-radius:6px;color:var(--text);word-break:break-word}
+.step,.tier-card,.gterm{min-width:0;overflow-wrap:anywhere}
+.step .cmdref{max-width:100%;border-radius:14px;line-height:1.4;margin-right:6px}
+.badge{font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;border:1px solid var(--line-strong);color:var(--muted);vertical-align:middle}
+.badge.st{color:var(--bible);border-color:rgba(52,211,153,.4)}
+#paths{scroll-margin-top:80px}
+.pathtabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:6px;border-radius:18px;background:var(--panel);border:1px solid var(--line);margin-top:16px}
+.pathtab{appearance:none;font:inherit;cursor:pointer;min-height:58px;padding:8px 10px;border-radius:13px;border:1px solid transparent;background:transparent;color:var(--muted);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;-webkit-tap-highlight-color:transparent}
+.pathtab b{font-size:15px;font-weight:800;color:var(--text)}
+.pathtab small{font-size:11.5px;color:var(--muted-2);line-height:1.3;text-align:center}
+.pathtab.active{background:linear-gradient(180deg,rgba(167,139,250,.24),rgba(34,211,238,.10));border-color:rgba(167,139,250,.45)}
+.pathtab:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px}
+.pathpanel[hidden]{display:none}
+.pathpanel>section.block:first-child{margin-top:28px}
+.alert{margin-top:6px;padding:14px 16px;border-radius:14px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.45)}
+.alert b{color:var(--snapshot);font-size:14px}
+.alert p{margin:6px 0 0;color:var(--muted);font-size:13.5px;line-height:1.65}
+.sample-pair{display:grid;gap:14px;grid-template-columns:1fr 1fr;margin-top:20px}
+.sample-pair .sample{margin-top:0;min-width:0}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.note{color:var(--muted);font-size:13.5px;margin:14px 0 0}
+@media(max-width:700px){.sample-pair{grid-template-columns:1fr}}
+@media(max-width:620px){
+  .cmdtable th,.cmdtable td{padding:8px 6px;font-size:12.5px;overflow-wrap:anywhere}
+  .cmdtable th:first-child,.cmdtable td:first-child{width:24%}
+  .step{padding:16px 14px 16px 52px}.step::before{left:12px}
+}
+</style>
 </head>
 <body>
 
@@ -284,10 +314,13 @@ body.light .tabbar { background: rgba(247,248,252,0.92); }
     <section class="hero">
       <p class="kicker">🌀 CẨM NANG CHO NGƯỜI MỚI</p>
       <h1>Chuyển sinh (Isekai) là gì, và làm sao dùng cho đúng?</h1>
-      <p class="lede">Hướng dẫn từng bước để chuyển một cuộc trò chuyện đang chat dở sang link mới mà char không bị "quên chuyện cũ" — kể cả khi bạn đã chuyển sinh nhiều lần.</p>
+      <p class="lede">Hướng dẫn từng bước để chuyển một cuộc trò chuyện đang chat dở sang link mới mà char không bị "quên chuyện cũ". Có 2 đường: bot đời cũ (<b>Legacy</b>) và bot có lưu trạng thái (<b>Stateful</b>) — xem Bước 0 để biết bot của bạn thuộc loại nào.</p>
 
       <div class="tldr">
-        <b>Tóm tắt 1 phút:</b> mỗi link chat trên AI Studio có giới hạn độ dài. Khi gần chạm giới hạn, bạn "chuyển sinh" — tức là tóm tắt lại toàn bộ chuyện đã xảy ra rồi dán sang link mới, để char tiếp tục đúng mạch chứ không bắt đầu lại từ đầu. <b>Lần đầu chuyển sinh</b> thì làm theo 3 bước đơn giản. <b>Từ lần 2 trở đi</b>, thay vì dán chồng nhiều bản tóm tắt cũ (sẽ quá dài), bạn tách thông tin thành 2 phần — một phần ít đổi, một phần hay đổi — rồi chỉ cập nhật phần hay đổi mỗi lần.
+        <b>Tóm tắt 1 phút:</b> mỗi link chat trên AI Studio có giới hạn độ dài. Khi gần chạm giới hạn, bạn "chuyển sinh" — mang câu chuyện sang link mới để char tiếp tục đúng mạch thay vì bắt đầu lại. Có 2 đường:<br>
+        • <b>Legacy</b> (bot đời cũ, không có khối trạng thái): nhờ AI tóm tắt bằng chữ rồi dán sang link mới. Lần đầu 3 bước; từ lần 2 tách thành Bible + Snapshot (4 bước).<br>
+        • <b>Stateful</b> (bot có <code>[AG_STATE]</code>, ví dụ Ninh Chiếu Vi): dùng lệnh <code>[Lưu Trạng Thái]</code> và <code>[Khôi Phục - …]</code> để mang trạng thái truyện, thêm một bản Bible-lite cho sắc thái quan hệ (4 bước).<br>
+        Chưa biết bot thuộc loại nào? Làm Bước 0 bên dưới.
       </div>
     </section>
 
@@ -301,11 +334,51 @@ body.light .tabbar { background: rgba(247,248,252,0.92); }
         <div class="gterm"><dt>Lore</dt><dd>Toàn bộ thông tin nền của câu chuyện: tính cách nhân vật, mối quan hệ, sự kiện đã xảy ra, bí mật, v.v.</dd></div>
         <div class="gterm"><dt>RELATIONSHIP_BIBLE</dt><dd>Bản ghi những thông tin <b style="color:var(--text)">ổn định, hiếm khi đổi</b> — tính cách gốc, các cột mốc quan hệ lớn, bí mật cốt lõi. Chỉ dùng từ lần chuyển sinh thứ 2 trở đi.</dd></div>
         <div class="gterm"><dt>ARC_SNAPSHOT</dt><dd>Bản ghi những thông tin <b style="color:var(--text)">tạm thời, thuộc nhánh truyện hiện tại</b> — cảnh đang diễn ra, tâm trạng lúc này. Mỗi lần chuyển sinh sẽ thay hoàn toàn snapshot cũ bằng snapshot mới.</dd></div>
+        <div class="gterm"><dt>Legacy</dt><dd>Bot đời cũ: không có HUD hay khối trạng thái. Câu chuyện được mang sang link mới bằng bản tóm tắt chữ do bạn dán thủ công.</dd></div>
+        <div class="gterm"><dt>Stateful</dt><dd>Bot đời mới có hệ lệnh lưu/khôi phục trạng thái (<code>[Lưu Trạng Thái]</code>, <code>[Khôi Phục - …]</code>). Cảnh, nhánh truyện, đồng hồ truyện đi qua snapshot thay vì tóm tắt chữ.</dd></div>
+        <div class="gterm"><dt>AG_STATE</dt><dd>Khối trạng thái bot in ở cuối phản hồi (cùng HUD). Thấy khối này nghĩa là bot theo dõi trạng thái truyện, tức là Stateful.</dd></div>
+        <div class="gterm"><dt>STATE_SNAPSHOT_V2</dt><dd>Định dạng bản snapshot do <code>[Lưu Trạng Thái]</code> xuất ra (mở đầu bằng "SNAPSHOT TRẠNG THÁI"). Chỉ gồm điều đã xác nhận và được phép hiển thị; không chứa bí mật chưa lộ. Chỉ là bản mang theo, không chứng minh dữ liệu được lưu bền vững.</dd></div>
+        <div class="gterm"><dt>RELATIONSHIP_BIBLE_LITE</dt><dd>Bản Bible rút gọn cho bot Stateful: chỉ sắc thái quan hệ, xưng hô, giọng văn, cột mốc, lời hứa, NPC dài hạn. Không chứa cảnh, branch, clock hay bí mật vì snapshot đã lo phần đó.</dd></div>
       </dl>
     </section>
 
     <section class="block">
-      <h2>1️⃣ Lần đầu chuyển sinh</h2>
+      <h2>🌀 Bước 0 — Bot của bạn thuộc loại nào?</h2>
+      <p class="sub">Mất khoảng 1 phút. Kết quả quyết định bạn đi đường Legacy hay Stateful.</p>
+      <div class="tier-compare">
+        <div class="tier-card">
+          <h4>Dấu hiệu 1 · chắc nhất</h4>
+          <ul>
+            <li>Phản hồi của bot có khối <code>[AG_STATE …]</code> hoặc 2 header (Char + User) → <b>Stateful</b></li>
+            <li>Chỉ có RP thường → <b>Legacy</b></li>
+          </ul>
+        </div>
+        <div class="tier-card">
+          <h4>Dấu hiệu 2 · thử lệnh</h4>
+          <ul>
+            <li>Gửi riêng <code>[Lưu Trạng Thái]</code>. Bot ra "SNAPSHOT TRẠNG THÁI" → <b>Stateful</b></li>
+            <li>Bot lạc đề hoặc tiếp tục RP → <b>Legacy</b>. Không hỏng gì, đó chỉ là một tin nhắn thường; bạn có thể tạo lại hoặc bỏ qua.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="note">Nếu snapshot ghi <code>VERIFICATION: PARTIAL</code> hoặc <code>STORY_UNVERIFIED</code> thì bot vẫn tính là <b>Stateful</b> — chỉ là một số trường chưa xác minh được.</p>
+      <div class="cta-row">
+        <button class="btn" type="button" data-go="legacy">Bot của tôi là Legacy →</button>
+        <button class="btn primary" type="button" data-go="stateful">Bot của tôi là Stateful →</button>
+      </div>
+    </section>
+
+    <div id="paths">
+      <div class="pathtabs" role="tablist" aria-label="Chọn đường chuyển sinh">
+        <button class="pathtab active" type="button" role="tab" id="tab-legacy" data-path="legacy" aria-selected="true" aria-controls="panel-legacy"><b>Legacy</b><small>bot đời cũ</small></button>
+        <button class="pathtab" type="button" role="tab" id="tab-stateful" data-path="stateful" aria-selected="false" aria-controls="panel-stateful" tabindex="-1"><b>Stateful</b><small>bot có lưu trạng thái</small></button>
+      </div>
+      <noscript><style>.pathpanel[hidden]{display:block!important}</style></noscript>
+
+      <div class="pathpanel" id="panel-legacy" data-path="legacy" role="tabpanel" aria-labelledby="tab-legacy">
+
+    <section class="block">
+      <h2>1️⃣ Lần đầu chuyển sinh <span class="badge">Legacy</span></h2>
       <p class="sub">Dùng khi đây là lần đầu tiên bạn chuyển link cho char này. Làm đúng theo thứ tự 3 bước.</p>
       <div class="steps">
         <div class="step">
@@ -341,7 +414,7 @@ body.light .tabbar { background: rgba(247,248,252,0.92); }
     </section>
 
     <section class="block">
-      <h2>2️⃣ Từ lần chuyển sinh thứ 2 trở đi</h2>
+      <h2>2️⃣ Từ lần chuyển sinh thứ 2 trở đi <span class="badge">Legacy</span></h2>
       <p class="sub">Đừng dán chồng nhiều báo cáo 9-mục vào link mới — sẽ quá dài và làm nhiễu AI. Thay vào đó, tách thông tin thành 2 lớp và chỉ cập nhật lớp hay đổi.</p>
 
       <div class="tier-compare">
@@ -408,23 +481,93 @@ B. Giọng văn: ngắn, ít cảm xúc bề mặt, hay dùng ẩn dụ về mư
       </div>
     </section>
 
+      </div><!-- /panel-legacy -->
+
+      <div class="pathpanel" id="panel-stateful" data-path="stateful" role="tabpanel" aria-labelledby="tab-stateful" hidden>
+    <section class="block">
+      <h2>💾 Chuyển sinh với bot có lưu trạng thái <span class="badge st">Stateful</span></h2>
+      <p class="sub">Trạng thái truyện (cảnh, nhánh, đồng hồ…) đi qua snapshot; sắc thái quan hệ đi qua Bible-lite. Làm đúng thứ tự 4 bước.</p>
+
+      <div class="alert">
+        <b>📌 Lệnh trong ngoặc vuông phải gửi riêng, nguyên tin nhắn.</b>
+        <p><code>[Lưu Trạng Thái]</code> và <code>[Khôi Phục - …]</code> phải là toàn bộ nội dung của một tin nhắn: không dán chung với chữ khác, không thêm lời chào, không kèm Bible-lite. Nếu lẫn với chữ khác, bot có thể coi đó là câu thoại thường thay vì lệnh.</p>
+      </div>
+
+      <div class="steps" style="margin-top:20px;">
+        <div class="step">
+          <h3>Lưu trạng thái <span style="color:var(--muted-2);font-weight:500;">(ở link cũ)</span></h3>
+          <p>Gửi riêng đúng lệnh <code>[Lưu Trạng Thái]</code>. Bot trả về khối "SNAPSHOT TRẠNG THÁI". Sao chép nguyên cả khối và giữ lại. Bước này chỉ xuất bản ghi, không làm đổi truyện.</p>
+          <a class="cmdref" href="commands.html#cat=isekai">📋 Isekai · Stateful — Lưu trạng thái (Bước 1)</a>
+        </div>
+        <div class="step">
+          <h3>Xuất hoặc cập nhật Bible-lite <span style="color:var(--muted-2);font-weight:500;">(cũng ở link cũ)</span></h3>
+          <p>Lần đầu: dùng lệnh Xuất. Từ lần 2: dán Bible-lite đang có vào lệnh Cập nhật, bot chỉ sửa mục đã đổi. Nếu bản xuất còn thiếu tình tiết, dùng lệnh "Bổ sung tóm tắt" (thẻ Legacy có tag "Cả hai").</p>
+          <a class="cmdref" href="commands.html#cat=isekai">📋 Isekai · Stateful — Xuất Bible-lite (Bước 2 · Lần đầu)</a>
+          <a class="cmdref" href="commands.html#cat=isekai">📋 Isekai · Stateful — Cập nhật Bible-lite (Lần 2+)</a>
+          <a class="cmdref" href="commands.html#cat=isekai">📋 Isekai — OOC bổ sung tóm tắt (Bước 2 · Lần đầu, nếu cần)</a>
+        </div>
+        <div class="step">
+          <h3>Khôi phục ở link mới <span style="color:var(--muted-2);font-weight:500;">(gửi một mình)</span></h3>
+          <p>Mở link mới với cùng bot. Thay chữ <code>ĐẶT SNAPSHOT Ở ĐÂY</code> bằng toàn bộ snapshot, giữ ngoặc vuông, không dùng ngoặc nhọn, rồi gửi như một tin riêng. Bot sẽ báo cáo phần nhận, phần bị loại hoặc xung đột, phần còn thiếu. Đợi báo cáo xong mới sang bước 4.</p>
+          <a class="cmdref" href="commands.html#cat=isekai">📋 Isekai · Stateful — Khôi phục trạng thái ở link mới</a>
+        </div>
+        <div class="step">
+          <h3>Nạp Bible-lite <span style="color:var(--muted-2);font-weight:500;">(tin nhắn thứ hai)</span></h3>
+          <p>Sau khi bot báo cáo khôi phục, gửi lệnh này như tin THỨ HAI và dán Bible-lite vào chỗ đánh dấu. Bot xác nhận 3 điểm rồi tiếp tục từ cảnh trong snapshot, không chạy lại Opening hay đặt lại trạng thái đầu truyện.</p>
+          <a class="cmdref" href="commands.html#cat=isekai">📋 Isekai · Stateful — OOC nạp Bible-lite (Bước sau [Khôi Phục])</a>
+        </div>
+      </div>
+
+      <div class="sample-pair">
+        <div class="sample bible">
+          <div class="sample-head">📖 VÍ DỤ — Bible-lite điền sẵn</div>
+          <pre>1. Sắc thái & xưng hô: tin tưởng nhưng còn dè dặt; {{char}} gọi {{user}} là "cậu"
+2. Giọng văn: "Đi đi. Tôi ở đây." / "Đừng nhìn tôi như thế."
+   Hay ngừng giữa câu, ít dùng từ cảm thán
+3. Cột mốc: đã cứu {{user}} ở chương 3 → quan hệ từ xa lạ sang tin tưởng
+4. Lời hứa chưa xong: sẽ kể cho {{user}} nghe về quá khứ của mình
+5. NPC dài hạn: bà chủ quán (người {{user}} đã gặp), quen biết {{char}} từ lâu</pre>
+        </div>
+        <div class="sample snapshot">
+          <div class="sample-head">🎬 VÍ DỤ — Snapshot (rút gọn)</div>
+          <pre>=== SNAPSHOT TRẠNG THÁI ===
+FORMAT_VERSION: STATE_SNAPSHOT_V2
+VERIFICATION: PARTIAL
+SNAPSHOT_SCOPE: PORTABLE_USER_VISIBLE
+CURRENT_SCENE: căn phòng nhỏ sau trận chiến;
+  {{char}} và {{user}} đang ở cùng nhau
+BRANCH: NONE
+HIDDEN_GM_TRUTH: EXCLUDED</pre>
+        </div>
+      </div>
+    </section>
+      </div><!-- /panel-stateful -->
+    </div><!-- /paths -->
+
     <section class="block">
       <h2>📋 Toàn bộ lệnh cần dùng</h2>
       <p class="sub">Bấm vào tên lệnh để mở đúng mục Isekai trong Thư viện Lệnh và sao chép.</p>
+      <div class="tablewrap">
       <table class="cmdtable">
         <thead><tr><th>Bước</th><th>Tên lệnh</th><th>Dùng khi nào</th></tr></thead>
         <tbody>
-          <tr class="rowgroup"><td colspan="3">Lần đầu chuyển sinh</td></tr>
-          <tr><td>Bước 1</td><td><a href="commands.html#cat=isekai"><b>Báo cáo trích xuất lore thủ công</b></a></td><td>Ở link cũ, ngay trước khi chuyển sinh</td></tr>
-          <tr><td>Bước 2</td><td><a href="commands.html#cat=isekai"><b>OOC bổ sung tóm tắt</b></a></td><td>Chỉ khi báo cáo Bước 1 còn thiếu</td></tr>
-          <tr><td>Bước 3</td><td><a href="commands.html#cat=isekai"><b>OOC setup chat mới</b></a></td><td>Ở link mới, dán kèm báo cáo</td></tr>
-          <tr class="rowgroup"><td colspan="3">Từ lần 2 trở đi</td></tr>
-          <tr><td>Bước 0</td><td><a href="commands.html#cat=isekai"><b>Tách Bible + Snapshot</b></a></td><td>Chỉ 1 lần duy nhất, trước lần chuyển sinh thứ 2</td></tr>
-          <tr><td>Cập nhật</td><td><a href="commands.html#cat=isekai"><b>Cập nhật RELATIONSHIP_BIBLE</b></a></td><td>Ở link cũ, ngay trước khi chuyển sinh</td></tr>
-          <tr><td>Snapshot</td><td><a href="commands.html#cat=isekai"><b>Tạo ARC_SNAPSHOT mới</b></a></td><td>Ở link cũ, cùng lúc với cập nhật Bible</td></tr>
-          <tr><td>Setup</td><td><a href="commands.html#cat=isekai"><b>OOC setup chat mới (Two-Tier)</b></a></td><td>Ở link mới, dán Bible + Snapshot</td></tr>
+          <tr class="rowgroup"><td colspan="3">Legacy — bot đời cũ (7 lệnh)</td></tr>
+          <tr><td>Lần đầu · 1</td><td><a href="commands.html#cat=isekai"><b>Báo cáo trích xuất lore thủ công</b></a></td><td>Ở link cũ, ngay trước khi chuyển sinh</td></tr>
+          <tr><td>Lần đầu · 2</td><td><a href="commands.html#cat=isekai"><b>OOC bổ sung tóm tắt</b></a></td><td>Chỉ khi bản xuất còn thiếu (dùng được cả cho Bible-lite)</td></tr>
+          <tr><td>Lần đầu · 3</td><td><a href="commands.html#cat=isekai"><b>OOC setup chat mới</b></a></td><td>Ở link mới, dán kèm báo cáo</td></tr>
+          <tr><td>Lần 2+ · 0</td><td><a href="commands.html#cat=isekai"><b>Tách Bible + Snapshot</b></a></td><td>Chỉ 1 lần duy nhất, trước lần chuyển sinh thứ 2</td></tr>
+          <tr><td>Lần 2+ · Bible</td><td><a href="commands.html#cat=isekai"><b>Cập nhật RELATIONSHIP_BIBLE</b></a></td><td>Ở link cũ, ngay trước khi chuyển sinh</td></tr>
+          <tr><td>Lần 2+ · Snapshot</td><td><a href="commands.html#cat=isekai"><b>Tạo ARC_SNAPSHOT mới</b></a></td><td>Ở link cũ, cùng lúc với cập nhật Bible</td></tr>
+          <tr><td>Lần 2+ · Setup</td><td><a href="commands.html#cat=isekai"><b>OOC setup chat mới (Two-Tier)</b></a></td><td>Ở link mới, dán Bible + Snapshot</td></tr>
+          <tr class="rowgroup"><td colspan="3">Stateful — bot có lưu trạng thái (5 lệnh)</td></tr>
+          <tr><td>Bước 1</td><td><a href="commands.html#cat=isekai"><b>Lưu trạng thái</b></a></td><td>Ở link cũ, gửi riêng một tin</td></tr>
+          <tr><td>Bước 2 · Lần đầu</td><td><a href="commands.html#cat=isekai"><b>Xuất Bible-lite</b></a></td><td>Ở link cũ, lần chuyển sinh đầu</td></tr>
+          <tr><td>Bước 2 · Lần 2+</td><td><a href="commands.html#cat=isekai"><b>Cập nhật Bible-lite</b></a></td><td>Ở link cũ, dán Bible-lite hiện có</td></tr>
+          <tr><td>Bước 3</td><td><a href="commands.html#cat=isekai"><b>Khôi phục trạng thái ở link mới</b></a></td><td>Ở link mới, gửi riêng kèm snapshot</td></tr>
+          <tr><td>Bước 4</td><td><a href="commands.html#cat=isekai"><b>OOC nạp Bible-lite</b></a></td><td>Tin thứ hai, sau khi bot báo cáo khôi phục</td></tr>
         </tbody>
       </table>
+      </div>
       <div class="cta-row">
         <a class="btn primary" href="commands.html#cat=isekai">🌀 Mở mục lệnh Isekai</a>
       </div>
@@ -444,6 +587,18 @@ B. Giọng văn: ngắn, ít cảm xúc bề mặt, hay dùng ẩn dụ về mư
         <details>
           <summary>Bible và Snapshot khác gì nhau, sao phải tách?</summary>
           <p>Bible là những gì gần như không đổi — nếu viết lại mỗi lần sẽ tốn chỗ và dễ mâu thuẫn với bản cũ. Snapshot là những gì chỉ đúng cho khoảnh khắc hiện tại — nếu giữ lại các Snapshot cũ, chúng chồng chất và không còn đúng nữa. Tách riêng để mỗi phần được xử lý đúng cách: Bible cập nhật nhẹ nhàng, Snapshot thay mới hoàn toàn.</p>
+        </details>
+        <details>
+          <summary>(Stateful) Bí mật hoặc giai đoạn ẩn chưa lộ có mang sang link mới được không?</summary>
+          <p>Không. Snapshot cố ý loại phần bí mật chưa tiết lộ nên link mới không nhận được nó. Bot sẽ suy lại từ những bằng chứng đã được xác nhận. Đây là giới hạn đúng thiết kế, không phải lỗi: nếu bí mật được mang sang, người chơi cũng có thể vô tình đọc được nó.</p>
+        </details>
+        <details>
+          <summary>(Stateful) Bot báo [Khôi Phục] xong có nghĩa là dữ liệu đã được lưu vĩnh viễn?</summary>
+          <p>Không. Khôi phục chỉ cho thấy những trường hợp lệ trong snapshot được nhận lại làm nền tiếp nối. Nó không chứng minh nền tảng đã lưu bền vững hay tự đồng bộ. Nếu bot ghi <code>STORY_UNVERIFIED</code>, snapshot chỉ là nền tạm thời, vì vậy hãy giữ bản snapshot và Bible-lite của bạn ở nơi riêng.</p>
+        </details>
+        <details>
+          <summary>(Stateful) Vì sao Bible-lite không chứa cảnh, branch, clock?</summary>
+          <p>Những thứ đó snapshot đã giữ. Nếu Bible-lite ghi lại, link mới sẽ có hai nguồn cho cùng một sự thật và dễ mâu thuẫn, bản nào cũ hơn sẽ gây lệch. Bible-lite chỉ bổ sung sắc thái và không ghi đè canon hay trạng thái đã khôi phục.</p>
         </details>
       </div>
     </section>
@@ -466,5 +621,32 @@ B. Giọng văn: ngắn, ít cảm xúc bề mặt, hay dùng ẩn dụ về mư
     <a href="https://aistudio.google.com/" target="_blank" rel="noopener" class="tab-item"><span class="tab-ico">🚀</span><span>AI Studio</span></a>
   </nav>
 
+<script>
+(function(){
+  var KEY='isekaiPath', tabs=[].slice.call(document.querySelectorAll('.pathtab')), panels=[].slice.call(document.querySelectorAll('.pathpanel'));
+  if(!tabs.length) return;
+  function sel(p,save){
+    tabs.forEach(function(t){var on=t.getAttribute('data-path')===p; t.classList.toggle('active',on); t.setAttribute('aria-selected',on?'true':'false'); t.tabIndex=on?0:-1;});
+    panels.forEach(function(x){x.hidden=x.getAttribute('data-path')!==p;});
+    if(save){try{localStorage.setItem(KEY,p);}catch(e){}}
+  }
+  var init='legacy';
+  try{var s=localStorage.getItem(KEY); if(s==='legacy'||s==='stateful') init=s;}catch(e){}
+  var hs=(location.hash||'').replace('#',''); if(hs==='legacy'||hs==='stateful') init=hs;
+  sel(init,false);
+  tabs.forEach(function(t,i){
+    t.addEventListener('click',function(){sel(t.getAttribute('data-path'),true);});
+    t.addEventListener('keydown',function(e){
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){var n=tabs[(i+1)%tabs.length]; sel(n.getAttribute('data-path'),true); n.focus(); e.preventDefault();}
+    });
+  });
+  [].forEach.call(document.querySelectorAll('[data-go]'),function(b){
+    b.addEventListener('click',function(){
+      sel(b.getAttribute('data-go'),true);
+      var el=document.getElementById('paths'); if(el&&el.scrollIntoView) el.scrollIntoView({behavior:'smooth',block:'start'});
+    });
+  });
+})();
+</script>
 <script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a48d6c8f2e6dddca',t:'MTc5MTcxNzA4Ng=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>

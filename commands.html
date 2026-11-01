@@ -57,7 +57,7 @@
         <span style="font-size:22px;">🌀</span>
         <span style="flex:1;">
           <strong style="font-size:14px;">Lần đầu dùng lệnh Chuyển sinh (Isekai)?</strong>
-          <span style="display:block;color:var(--muted);font-size:12.5px;margin-top:2px;">Xem Cẩm nang Isekai — giải thích thuật ngữ, mẫu điền sẵn, cách dùng cho lần đầu và các lần sau.</span>
+          <span style="display:block;color:var(--muted);font-size:12.5px;margin-top:2px;">Xem Cẩm nang Isekai — thuật ngữ, mẫu điền sẵn, gồm 2 đường: bot đời cũ và bot có lưu trạng thái.</span>
         </span>
         <span style="color:var(--muted);font-size:13px;">Xem cẩm nang →</span>
       </a>
@@ -364,12 +364,13 @@
     "platform": "AI Studio / General RP",
     "tags": [
       "Isekai",
+      "Legacy",
       "Bước 1",
       "Lần đầu",
       "Manual Lore Extraction",
       "Comprehensive"
     ],
-    "command": "[OOC: Tạm dừng roleplay. Tôi cần bạn xuất một\n\nBÁO CÁO TRẠNG THÁI HOÀN CHỈNH của cuộc truyện\n\nđể lưu trữ. Hãy liệt kê CHÍNH XÁC và CHI TIẾT\n\ntheo đúng format sau, KHÔNG được bỏ mục nào:]\n\n═══════════════════════════════════\n\n📂 BÁO CÁO TRÍCH XUẤT LORE\n\n═══════════════════════════════════\n\n【A. NHÂN VẬT CHÍNH --- {{char}}】\n\n• Tên đầy đủ:\n\n• Ngoại hình (mô tả ngắn):\n\n• Tính cách GỐC (từ đầu truyện):\n\n• Tính cách HIỆN TẠI (đã phát triển):\n\n• Điểm khác biệt lớn nhất so với ban đầu:\n\n• Đang giấu/kìm nén điều gì:\n\n• Thái độ cụ thể với {{user}} lúc này:\n\n• Cách xưng hô với {{user}}:\n\n【B. THÔNG TIN {{user}}】\n\n• Tên/biệt danh {{char}} gọi:\n\n• Những gì đã biết về {{user}}:\n\n• {{user}} đang ở đâu, làm gì (cảnh cuối):\n\n【C. MỐI QUAN HỆ】\n\n• Mức độ quan hệ (xa lạ/quen/thân/yêu/...):\n\n• Sự kiện khiến quan hệ thay đổi lớn nhất:\n\n• Có xung đột/hiểu lầm nào đang treo:\n\n• Lời hứa đã nói với nhau:\n\n• Khoảnh khắc quan trọng nhất (1-3 cái):\n\n【D. CÁC NPC ĐÃ XUẤT HIỆN】\n\n(Mỗi NPC ghi: Tên --- Vai trò --- Quan hệ với\n\n{{char}} --- Quan hệ với {{user}} --- Lần cuối\n\nxuất hiện đang làm gì)\n\n•\n\n•\n\n•\n\n【E. DÒNG THỜI GIAN SỰ KIỆN CHÍNH】\n\n(Liệt kê theo thứ tự, mỗi sự kiện 1-2 câu)\n\n1.\n\n2.\n\n3.\n\n...\n\n【F. BỐI CẢNH HIỆN TẠI】\n\n• Địa điểm:\n\n• Thời gian (ngày/đêm, mùa):\n\n• Đang xảy ra gì:\n\n• Tâm trạng {{char}}:\n\n• Tâm trạng {{user}} (theo góc nhìn {{char}}):\n\n【G. VẬT PHẨM / ĐỊA ĐIỂM QUAN TRỌNG】\n\n•\n\n•\n\n【H. BÍ MẬT / THÔNG TIN CHƯA TIẾT LỘ】\n\n(Những gì {{char}} biết mà {{user}} chưa biết,\n\nhoặc ngược lại)\n\n•\n\n【I. GIỌNG VĂN & PHONG CÁCH】\n\n• {{char}} thường nói kiểu gì\n\n(ví dụ nguyên văn 2-3 câu thoại đặc trưng):\n\n• Thói quen hành vi đặc trưng\n\n(ví dụ: hay nhíu mày, hay đặt tay lên vai):\n\n• Tone miêu tả đang dùng\n\n(thơ mộng/thô ráp/lạnh lùng/...):\n\n═══════════════════════════════════\n\n```"
+    "command": "[OOC: Tạm dừng roleplay. Tôi cần bạn xuất một\n\nBÁO CÁO TRẠNG THÁI HOÀN CHỈNH của cuộc truyện\n\nđể lưu trữ. Hãy liệt kê CHÍNH XÁC và CHI TIẾT\n\ntheo đúng format sau, KHÔNG được bỏ mục nào:]\n\n═══════════════════════════════════\n\n📂 BÁO CÁO TRÍCH XUẤT LORE\n\n═══════════════════════════════════\n\n【A. NHÂN VẬT CHÍNH --- {{char}}】\n\n• Tên đầy đủ:\n\n• Ngoại hình (mô tả ngắn):\n\n• Tính cách GỐC (từ đầu truyện):\n\n• Tính cách HIỆN TẠI (đã phát triển):\n\n• Điểm khác biệt lớn nhất so với ban đầu:\n\n• Đang giấu/kìm nén điều gì:\n\n• Thái độ cụ thể với {{user}} lúc này:\n\n• Cách xưng hô với {{user}}:\n\n【B. THÔNG TIN {{user}}】\n\n• Tên/biệt danh {{char}} gọi:\n\n• Những gì đã biết về {{user}}:\n\n• {{user}} đang ở đâu, làm gì (cảnh cuối):\n\n【C. MỐI QUAN HỆ】\n\n• Mức độ quan hệ (xa lạ/quen/thân/yêu/...):\n\n• Sự kiện khiến quan hệ thay đổi lớn nhất:\n\n• Có xung đột/hiểu lầm nào đang treo:\n\n• Lời hứa đã nói với nhau:\n\n• Khoảnh khắc quan trọng nhất (1-3 cái):\n\n【D. CÁC NPC ĐÃ XUẤT HIỆN】\n\n(Mỗi NPC ghi: Tên --- Vai trò --- Quan hệ với\n\n{{char}} --- Quan hệ với {{user}} --- Lần cuối\n\nxuất hiện đang làm gì)\n\n•\n\n•\n\n•\n\n【E. DÒNG THỜI GIAN SỰ KIỆN CHÍNH】\n\n(Liệt kê theo thứ tự, mỗi sự kiện 1-2 câu)\n\n1.\n\n2.\n\n3.\n\n...\n\n【F. BỐI CẢNH HIỆN TẠI】\n\n• Địa điểm:\n\n• Thời gian (ngày/đêm, mùa):\n\n• Đang xảy ra gì:\n\n• Tâm trạng {{char}}:\n\n• Điều {{user}} đã thể hiện/nói trong chat (chỉ ghi điều đã viết):\n\n【G. VẬT PHẨM / ĐỊA ĐIỂM QUAN TRỌNG】\n\n•\n\n•\n\n【H. BÍ MẬT / THÔNG TIN CHƯA TIẾT LỘ】\n\n(Những gì {{char}} biết mà {{user}} chưa biết,\n\nhoặc ngược lại)\n\n•\n\n【I. GIỌNG VĂN & PHONG CÁCH】\n\n• {{char}} thường nói kiểu gì\n\n(ví dụ nguyên văn 2-3 câu thoại đặc trưng):\n\n• Thói quen hành vi đặc trưng\n\n(ví dụ: hay nhíu mày, hay đặt tay lên vai):\n\n• Tone miêu tả đang dùng\n\n(thơ mộng/thô ráp/lạnh lùng/...):\n\n═══════════════════════════════════"
   },
   {
     "id": "cmd-017b-cap-b-ooc",
@@ -378,12 +379,14 @@
     "platform": "AI Studio / General RP",
     "tags": [
       "Isekai",
+      "Legacy",
+      "Cả hai",
       "Bước 2",
       "Lần đầu",
       "OOC",
       "Summary Expansion"
     ],
-    "command": "[OOC: Bản tóm tắt vừa rồi chưa đủ chi tiết.\n\nHãy bổ sung thêm các mục sau, giữ nguyên\n\nđịnh dạng bullet point:]\n\n1. TÍNH CÁCH HIỆN TẠI của {{char}}:\n\n- So với ban đầu đã thay đổi gì?\n\n- Thái độ cụ thể với {{user}} lúc này?\n\n- Có đang giấu/kìm nén điều gì?\n\n2. CÁC SỰ KIỆN THEN CHỐT (theo thứ tự):\n\n- Sự kiện nào thay đổi mối quan hệ?\n\n- Sự kiện nào thay đổi tính cách?\n\n- Bí mật nào đã được tiết lộ?\n\n3. TẤT CẢ NPC đã xuất hiện:\n\n- Tên, vai trò, thái độ với {{user}}\n\n- Lần cuối xuất hiện đang làm gì?\n\n4. TRẠNG THÁI VẬT LÝ/CẢM XÚC hiện tại:\n\n- {{char}} đang ở đâu, làm gì?\n\n- Tâm trạng, sức khỏe?\n\n- {{user}} đang ở đâu, làm gì?\n\n5. NHỮNG THỨ KHÔNG ĐƯỢC QUÊN:\n\n- Lời hứa đã nói\n\n- Vật phẩm quan trọng\n\n- Địa điểm có ý nghĩa\n\n- Chi tiết nhỏ nhưng quan trọng với\n\nquan hệ 2 người\n\n```"
+    "command": "[OOC: Bản vừa xuất (báo cáo hoặc Bible-lite) chưa đủ chi tiết.\n\nHãy bổ sung thêm các mục sau, giữ nguyên\n\nđịnh dạng bullet point:]\n\n1. TÍNH CÁCH HIỆN TẠI của {{char}}:\n\n- So với ban đầu đã thay đổi gì?\n\n- Thái độ cụ thể với {{user}} lúc này?\n\n- Có đang giấu/kìm nén điều gì?\n\n2. CÁC SỰ KIỆN THEN CHỐT (theo thứ tự):\n\n- Sự kiện nào thay đổi mối quan hệ?\n\n- Sự kiện nào thay đổi tính cách?\n\n- Bí mật nào đã được tiết lộ?\n\n3. TẤT CẢ NPC đã xuất hiện:\n\n- Tên, vai trò, thái độ với {{user}}\n\n- Lần cuối xuất hiện đang làm gì?\n\n4. TRẠNG THÁI VẬT LÝ/CẢM XÚC hiện tại:\n\n- {{char}} đang ở đâu, làm gì?\n\n- Tâm trạng, sức khỏe?\n\n- {{user}} đang ở đâu, làm gì?\n\n5. NHỮNG THỨ KHÔNG ĐƯỢC QUÊN:\n\n- Lời hứa đã nói\n\n- Vật phẩm quan trọng\n\n- Địa điểm có ý nghĩa\n\n- Chi tiết nhỏ nhưng quan trọng với\n\nquan hệ 2 người"
   },
   {
     "id": "cmd-017c-cach2-ooc-setup",
@@ -392,13 +395,14 @@
     "platform": "AI Studio / General RP",
     "tags": [
       "Isekai",
+      "Legacy",
       "Bước 3",
       "Lần đầu",
       "Setup Chat Mới",
       "OOC Template",
       "First Message"
     ],
-    "command": "[OOC: Đây là phiên tiếp nối từ cuộc trò chuyện\n\ntrước. Dưới đây là TOÀN BỘ thông tin bạn cần\n\nnhớ và tuân thủ như thể chúng ta đã trải qua\n\ntất cả những điều này. KHÔNG được coi đây là\n\nkhởi đầu mới. Hãy hành xử, phản ứng, và duy\n\ntrì tính cách ĐÚNG NHƯ đã phát triển trong\n\nbáo cáo dưới đây:]\n\n═══════════════════════════════════\n\n{DÁN TOÀN BỘ BÁO CÁO TRÍCH XUẤT LORE VÀO ĐÂY}\n\n═══════════════════════════════════\n\n[OOC: Xác nhận bạn đã tiếp nhận toàn bộ thông\n\ntin trên bằng cách liệt kê nhanh 3 điểm:]\n\n1. Mối quan hệ hiện tại giữa {{char}} và {{user}}\n\n2. Sự kiện quan trọng nhất đã xảy ra\n\n3. Tâm trạng/trạng thái hiện tại của {{char}}\n\n[Sau khi xác nhận, hãy tiếp tục câu chuyện từ\n\nbối cảnh: {mô tả cảnh cuối, 2-3 câu}]"
+    "command": "[OOC: Đây là phiên tiếp nối từ cuộc trò chuyện\n\ntrước. Dưới đây là TOÀN BỘ thông tin bạn cần\n\nnhớ và tuân thủ. Hãy ghi nhớ đúng những gì có trong báo cáo, không thêm chi tiết ngoài báo cáo. KHÔNG được coi đây là\n\nkhởi đầu mới. Hãy hành xử, phản ứng, và duy\n\ntrì tính cách ĐÚNG NHƯ đã phát triển trong\n\nbáo cáo dưới đây:]\n\n═══════════════════════════════════\n\n{DÁN TOÀN BỘ BÁO CÁO TRÍCH XUẤT LORE VÀO ĐÂY}\n\n═══════════════════════════════════\n\n[OOC: Xác nhận bạn đã tiếp nhận toàn bộ thông\n\ntin trên bằng cách liệt kê nhanh 3 điểm:]\n\n1. Mối quan hệ hiện tại giữa {{char}} và {{user}}\n\n2. Sự kiện quan trọng nhất đã xảy ra\n\n3. Tâm trạng/trạng thái hiện tại của {{char}}\n\n[Sau khi xác nhận, hãy tiếp tục câu chuyện từ\n\nbối cảnh: {mô tả cảnh cuối, 2-3 câu}]"
   },
   {
     "id": "cmd-017d-buoc0-tach-bible-snapshot",
@@ -407,6 +411,7 @@
     "platform": "AI Studio / General RP",
     "tags": [
       "Isekai",
+      "Legacy",
       "Bước 0",
       "Lần 2+",
       "RELATIONSHIP_BIBLE",
@@ -422,12 +427,13 @@
     "platform": "AI Studio / General RP",
     "tags": [
       "Isekai",
+      "Legacy",
       "Lần 2+",
       "RELATIONSHIP_BIBLE",
       "Living Document",
       "Cập nhật"
     ],
-    "command": "[OOC: Tạm dừng roleplay. Đây là bản\n\nRELATIONSHIP_BIBLE hiện tại của {{char}}, dán\n\nbên dưới:]\n\n{DÁN RELATIONSHIP_BIBLE HIỆN CÓ VÀO ĐÂY}\n\n[Dựa trên toàn bộ cuộc trò chuyện vừa diễn ra\n\n(link sắp kết thúc), hãy CẬP NHẬT bản Bible\n\ntrên theo đúng nguyên tắc:]\n\n1. CHỈ ghi đè những mục đã thực sự thay đổi\n\ntrong link này (tính cách phát triển thêm, có\n\ncột mốc quan hệ mới, bí mật đã được tiết lộ).\n\n2. GIỮ NGUYÊN 100% những mục chưa có gì thay\n\nđổi --- không viết lại, không diễn giải khác\n\nđi, không \\\"làm mới\\\" câu chữ nếu nội dung vẫn\n\nđúng.\n\n3. XÓA khỏi Bible những gì không còn là thông\n\ntin dài hạn nữa (một xung đột đã giải quyết\n\ndứt điểm thì không còn thuộc Bible --- nó đã\n\nkết thúc, không cần nhớ mãi).\n\n4. KHÔNG thêm bất kỳ thông tin nào thuộc phạm\n\nvi ARC_SNAPSHOT (cảnh hiện tại, tâm trạng tức\n\nthời, địa điểm lúc này) --- những thứ đó xử lý\n\nở lệnh Snapshot riêng.\n\nXuất bản Bible đã cập nhật theo đúng format\n\ngốc (giữ nguyên các mục A--F), không thêm lời\n\ndẫn hay giải thích trước/sau. Đây sẽ là bản\n\nBible lưu lại để dùng cho lần chuyển sinh tiếp\n\ntheo.]"
+    "command": "[OOC: Tạm dừng roleplay. Đây là bản\n\nRELATIONSHIP_BIBLE hiện tại của {{char}}, dán\n\nbên dưới:]\n\n{DÁN RELATIONSHIP_BIBLE HIỆN CÓ VÀO ĐÂY}\n\n[Dựa trên toàn bộ cuộc trò chuyện vừa diễn ra\n\n(link sắp kết thúc), hãy CẬP NHẬT bản Bible\n\ntrên theo đúng nguyên tắc:]\n\n1. CHỈ ghi đè những mục đã thực sự thay đổi\n\ntrong link này (tính cách phát triển thêm, có\n\ncột mốc quan hệ mới, bí mật đã được tiết lộ).\n\n2. GIỮ NGUYÊN 100% những mục chưa có gì thay\n\nđổi --- không viết lại, không diễn giải khác\n\nđi, không \"làm mới\" câu chữ nếu nội dung vẫn\n\nđúng.\n\n3. XÓA khỏi Bible những gì không còn là thông\n\ntin dài hạn nữa (một xung đột đã giải quyết\n\ndứt điểm thì không còn thuộc Bible --- nó đã\n\nkết thúc, không cần nhớ mãi).\n\n4. KHÔNG thêm bất kỳ thông tin nào thuộc phạm\n\nvi ARC_SNAPSHOT (cảnh hiện tại, tâm trạng tức\n\nthời, địa điểm lúc này) --- những thứ đó xử lý\n\nở lệnh Snapshot riêng.\n\nXuất bản Bible đã cập nhật theo đúng format\n\ngốc (giữ nguyên các mục A--F), không thêm lời\n\ndẫn hay giải thích trước/sau. Đây sẽ là bản\n\nBible lưu lại để dùng cho lần chuyển sinh tiếp\n\ntheo."
   },
   {
     "id": "cmd-017f-tao-snapshot",
@@ -436,6 +442,7 @@
     "platform": "AI Studio / General RP",
     "tags": [
       "Isekai",
+      "Legacy",
       "Lần 2+",
       "ARC_SNAPSHOT",
       "Snapshot"
@@ -449,12 +456,83 @@
     "platform": "AI Studio / General RP",
     "tags": [
       "Isekai",
+      "Legacy",
       "Lần 2+",
       "Setup Chat Mới",
       "Two-Tier",
       "OOC Template"
     ],
     "command": "[OOC: Đây là phiên tiếp nối từ những link\n\ntrước --- KHÔNG phải khởi đầu mới. Dưới đây là\n\n2 khối thông tin bạn phải tuân thủ tuyệt đối:]\n\n═══════════════════════════════════\n\n📖 RELATIONSHIP_BIBLE (ổn định --- áp dụng\n\nxuyên suốt)\n\n═══════════════════════════════════\n\n{DÁN RELATIONSHIP_BIBLE MỚI NHẤT VÀO ĐÂY}\n\n═══════════════════════════════════\n\n🎬 ARC_SNAPSHOT (nhánh hiện tại --- THAY THẾ\n\nHOÀN TOÀN mọi snapshot trước đó)\n\n═══════════════════════════════════\n\n{DÁN ARC_SNAPSHOT MỚI VÀO ĐÂY}\n\n[OOC: Xác nhận bạn đã tiếp nhận bằng cách liệt\n\nkê nhanh 3 điểm:]\n\n1. Mối quan hệ hiện tại giữa {{char}} và {{user}}\n\n2. Điều quan trọng nhất từ Bible cần nhớ xuyên suốt\n\n3. Tình huống mở đầu từ Snapshot\n\n[Sau khi xác nhận, hãy tiếp tục câu chuyện đúng\n\ntừ cảnh cuối trong ARC_SNAPSHOT. Không tóm tắt\n\nlại, không hỏi lại thông tin đã có, không coi\n\nđây là màn chào hỏi đầu tiên.]"
+  },
+  {
+    "id": "cmd-017h-state-luu",
+    "name": "Isekai · Stateful — Lưu trạng thái (Bước 1)",
+    "category": "Isekai & Migration Guide",
+    "platform": "AI Studio / General RP",
+    "tags": [
+      "Isekai",
+      "Stateful",
+      "Bước 1",
+      "Lưu Trạng Thái",
+      "STATE_SNAPSHOT_V2"
+    ],
+    "command": "[Lưu Trạng Thái]"
+  },
+  {
+    "id": "cmd-017i-bible-lite-xuat",
+    "name": "Isekai · Stateful — Xuất Bible-lite (Bước 2 · Lần đầu)",
+    "category": "Isekai & Migration Guide",
+    "platform": "AI Studio / General RP",
+    "tags": [
+      "Isekai",
+      "Stateful",
+      "Bước 2",
+      "Lần đầu",
+      "RELATIONSHIP_BIBLE_LITE"
+    ],
+    "command": "[OOC: Tạm dừng roleplay. Trạng thái truyện đã được lưu bằng lệnh lưu trạng thái riêng, nên KHÔNG cần ghi lại cảnh hiện tại hay diễn biến hệ thống. Hãy xuất cho tôi một RELATIONSHIP_BIBLE_LITE: bản ghi ngắn gọn về sắc thái quan hệ, chỉ dựa trên những gì ĐÃ xuất hiện trong cuộc trò chuyện này.]\n\n═══════════════════════════════════\n📖 RELATIONSHIP_BIBLE_LITE\n═══════════════════════════════════\n\n1. Sắc thái quan hệ & cách xưng hô:\n- Sắc thái quan hệ giữa {{char}} và {{user}} (theo những gì đã thể hiện trong chat):\n- Cách {{char}} xưng hô/gọi {{user}}, và ngược lại:\n\n2. Giọng văn & thói quen:\n- 2-3 câu thoại đặc trưng của {{char}}, chép NGUYÊN VĂN từ chat:\n- Thói quen hành vi lặp lại (chỉ ghi điều đã xuất hiện trong chat):\n\n3. Cột mốc quan hệ đã xảy ra trong RP (theo thứ tự thời gian, mỗi cột mốc 1 câu):\n\n4. Lời hứa/cam kết chưa hoàn thành (chỉ những gì đã nói ra trong chat):\n\n5. NPC dài hạn (chỉ phần {{user}} đã biết: tên, vai trò, quan hệ):\n\n═══════════════════════════════════\n\n[QUY TẮC:\n- CẤM ghi: cảnh hiện tại, branch, clock/thời gian truyện, hệ quả (consequences), evidence/ID, chỉ số, bí mật chưa tiết lộ. Những thứ này đã nằm trong snapshot hoặc không được mang qua link mới.\n- Chỉ ghi điều có trong chat. Không suy đoán, không bổ sung, không \"làm đẹp\" câu chữ. Mục nào chưa có dữ liệu thì ghi \"Chưa có trong chat\".\n- Chỉ xuất đúng khối trên, không lời dẫn, không giải thích, không tiếp tục RP.]"
+  },
+  {
+    "id": "cmd-017j-bible-lite-cap-nhat",
+    "name": "Isekai · Stateful — Cập nhật Bible-lite (Lần 2+)",
+    "category": "Isekai & Migration Guide",
+    "platform": "AI Studio / General RP",
+    "tags": [
+      "Isekai",
+      "Stateful",
+      "Lần 2+",
+      "RELATIONSHIP_BIBLE_LITE",
+      "Living Document"
+    ],
+    "command": "[OOC: Tạm dừng roleplay. Đây là RELATIONSHIP_BIBLE_LITE hiện tại của {{char}}, dán bên dưới:]\n\n{DÁN RELATIONSHIP_BIBLE_LITE HIỆN CÓ VÀO ĐÂY}\n\n[Dựa trên toàn bộ cuộc trò chuyện vừa diễn ra (link sắp kết thúc), hãy CẬP NHẬT bản Bible-lite trên theo đúng nguyên tắc:]\n\n1. CHỈ ghi đè những mục đã thực sự thay đổi trong link này (sắc thái quan hệ/xưng hô đổi, có cột mốc mới, lời hứa mới, NPC mới mà {{user}} đã biết).\n2. GIỮ NGUYÊN 100% những mục chưa có gì thay đổi, không viết lại, không diễn giải khác đi, không \"làm mới\" câu chữ nếu nội dung vẫn đúng.\n3. XÓA những mục đã hết hiệu lực (lời hứa đã thực hiện xong, NPC không còn liên quan).\n4. KHÔNG thêm: cảnh hiện tại, branch, clock, hệ quả, evidence/ID, chỉ số, bí mật chưa tiết lộ. Chỉ ghi điều có trong chat, không suy đoán.\n\n[Xuất bản Bible-lite đã cập nhật theo đúng format gốc (giữ nguyên 5 mục), không thêm lời dẫn hay giải thích trước/sau. Đây sẽ là bản lưu lại để dùng cho lần chuyển sinh tiếp theo.]"
+  },
+  {
+    "id": "cmd-017k-state-khoi-phuc",
+    "name": "Isekai · Stateful — Khôi phục trạng thái ở link mới",
+    "category": "Isekai & Migration Guide",
+    "platform": "AI Studio / General RP",
+    "tags": [
+      "Isekai",
+      "Stateful",
+      "Bước 3",
+      "Khôi Phục",
+      "Gửi riêng"
+    ],
+    "command": "[Khôi Phục - ĐẶT SNAPSHOT Ở ĐÂY]"
+  },
+  {
+    "id": "cmd-017l-ooc-nap-bible-lite",
+    "name": "Isekai · Stateful — OOC nạp Bible-lite (Bước sau [Khôi Phục])",
+    "category": "Isekai & Migration Guide",
+    "platform": "AI Studio / General RP",
+    "tags": [
+      "Isekai",
+      "Stateful",
+      "Bước 4",
+      "OOC Template",
+      "RELATIONSHIP_BIBLE_LITE"
+    ],
+    "command": "[OOC: Đây là phiên tiếp nối từ link trước, KHÔNG phải khởi đầu mới. Trạng thái truyện đã được khôi phục ở tin nhắn trước.\n\n- KHÔNG chạy lại Opening/Prelude, KHÔNG reset trạng thái đầu truyện.\n- Bible-lite dưới đây chỉ BỔ SUNG sắc thái (xưng hô, giọng văn, cột mốc, lời hứa, NPC). Nó KHÔNG ghi đè canon hay state đã khôi phục; nếu có chỗ mâu thuẫn, giữ state/canon đã khôi phục.]\n\n═══════════════════════════════════\n📖 RELATIONSHIP_BIBLE_LITE\n═══════════════════════════════════\n\n{DÁN RELATIONSHIP_BIBLE_LITE MỚI NHẤT VÀO ĐÂY}\n\n═══════════════════════════════════\n\n[OOC: Xác nhận bạn đã tiếp nhận bằng cách liệt kê nhanh 3 điểm:]\n\n1. Sắc thái quan hệ hiện tại giữa {{char}} và {{user}}\n2. Điều quan trọng nhất từ Bible-lite cần nhớ xuyên suốt\n3. Cảnh đang mở trong snapshot đã khôi phục\n\n[Sau khi xác nhận, hãy tiếp tục câu chuyện đúng từ cảnh trong snapshot. Không tóm tắt lại, không hỏi lại thông tin đã có, không coi đây là màn chào hỏi đầu tiên.]"
   },
   {
   "id": "cmd-018a-content-filter-bypass",
