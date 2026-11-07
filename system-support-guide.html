@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Cẩm nang Hỗ trợ Hệ thống · TeaGhiu</title>
+<link rel="icon" type="image/jpeg" href="icon.jpg">
+<link rel="apple-touch-icon" href="icon.jpg">
+<meta name="description" content="Cẩm nang lệnh Hỗ trợ Hệ thống: dán một lần vào đầu System, kiểm tra Prompt Char so với bản mới nhất, dựng Story Engine + AG_STATE cơ bản hoặc xuất bản vá lỗi." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0e0d14; --panel:#171622; --panel2:#1e1c2b; --line:#2b2940;
+    --text:#ecebf5; --muted:#9a98b3; --accent:#a78bfa; --accent2:#22d3ee;
+    --ok:#34d399; --warn:#fbbf24; --bad:#f87171; --pink:#f472b6;
+    --nav:rgba(14,13,20,.82); --code:#12111b;
+  }
+  body.light{
+    --bg:#f6f5fb; --panel:#ffffff; --panel2:#f0eefa; --line:#dedbf0;
+    --text:#1d1b2e; --muted:#6a6786; --accent:#7c5cf0; --accent2:#0891b2;
+    --ok:#059669; --warn:#b45309; --bad:#dc2626; --pink:#db2777;
+    --nav:rgba(246,245,251,.85); --code:#f3f1fc;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:70px}
+  body{
+    font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    background:var(--bg);color:var(--text);line-height:1.65;font-size:15px;
+    padding-bottom:calc(76px + env(safe-area-inset-bottom,0px));
+    -webkit-text-size-adjust:100%;
+  }
+  a{color:var(--accent);text-decoration:none}
+  .wrap{max-width:860px;margin:0 auto;padding:0 18px}
+
+  /* nav */
+  .navbar{position:sticky;top:0;z-index:50;background:var(--nav);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+  .navbar-inner{max-width:1000px;margin:0 auto;padding:10px 18px;display:flex;align-items:center;gap:14px}
+  .nav-brand{display:flex;align-items:center;gap:9px;font-weight:800;color:var(--text);font-size:16px}
+  .nav-mark{width:30px;height:30px;border-radius:9px;overflow:hidden;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--pink));color:#fff;font-weight:800;font-size:15px}
+  .nav-mark img{width:100%;height:100%;object-fit:cover}
+  .nav-links{display:none;gap:4px;margin-left:auto;align-items:center}
+  .nav-link{padding:7px 12px;border-radius:10px;color:var(--muted);font-size:13.5px;font-weight:500}
+  .nav-link:hover{background:var(--panel);color:var(--text)}
+  .nav-link.active{background:var(--panel);color:var(--text)}
+  .theme-btn{margin-left:auto;background:var(--panel);border:1px solid var(--line);color:var(--text);width:38px;height:38px;border-radius:11px;font-size:16px;cursor:pointer}
+  @media(min-width:820px){.nav-links{display:flex}.theme-btn{margin-left:0}}
+
+  /* hero */
+  .hero{padding:34px 0 10px}
+  .eyebrow{display:inline-flex;gap:7px;align-items:center;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:color-mix(in srgb,var(--accent) 14%,transparent);padding:5px 11px;border-radius:99px}
+  h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(28px,6.4vw,42px);line-height:1.15;margin:14px 0 12px;letter-spacing:-.01em}
+  .lead{color:var(--muted);font-size:16px;max-width:640px}
+  .hero-cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+  .btn{display:inline-flex;align-items:center;gap:7px;padding:11px 16px;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--text);font:600 14px 'Inter',sans-serif;cursor:pointer;min-height:44px}
+  .btn:hover{border-color:var(--accent)}
+  .btn.primary{background:linear-gradient(135deg,var(--accent),var(--pink));color:#fff;border-color:transparent}
+
+  section{padding:30px 0 6px}
+  h2{font-size:21px;line-height:1.3;margin-bottom:6px;display:flex;gap:9px;align-items:center}
+  h2 .n{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:9px;background:var(--accent);color:#fff;font-size:14px;flex:none}
+  .sub{color:var(--muted);margin-bottom:16px}
+  h3{font-size:16px;margin-bottom:6px}
+  p+p{margin-top:8px}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+  .grid{display:grid;gap:12px}
+  @media(min-width:700px){.grid.c2{grid-template-columns:1fr 1fr}.grid.c3{grid-template-columns:repeat(3,1fr)}}
+  .pill{display:inline-block;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:99px;background:var(--panel2);color:var(--muted);border:1px solid var(--line)}
+  .pill.ok{color:var(--ok)} .pill.warn{color:var(--warn)} .pill.bad{color:var(--bad)}
+  ul.clean{list-style:none}
+  ul.clean li{padding-left:18px;position:relative;margin:5px 0}
+  ul.clean li::before{content:'';position:absolute;left:3px;top:.72em;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+
+  /* problem quotes */
+  .quote{border-left:3px solid var(--pink);padding:10px 14px;background:var(--panel);border-radius:0 12px 12px 0;color:var(--muted);font-size:14px;margin:8px 0}
+  .quote b{color:var(--text)}
+
+  /* stack diagram */
+  .stack{display:grid;gap:8px;margin:6px 0 4px}
+  .slot{border-radius:14px;padding:13px 16px;border:1px dashed var(--line);background:var(--panel);display:flex;gap:12px;align-items:flex-start}
+  .slot .no{flex:none;width:28px;height:28px;border-radius:9px;display:grid;place-items:center;font-weight:800;font-size:13px;background:var(--panel2);color:var(--muted)}
+  .slot b{display:block;font-size:14.5px}
+  .slot span.d{color:var(--muted);font-size:13px}
+  .slot.hot{border:1.5px solid var(--accent);background:color-mix(in srgb,var(--accent) 10%,var(--panel))}
+  .slot.hot .no{background:var(--accent);color:#fff}
+  .slot.out{border:1.5px solid var(--accent2);background:color-mix(in srgb,var(--accent2) 9%,var(--panel))}
+  .slot.out .no{background:var(--accent2);color:#06222a}
+
+  /* commands table */
+  .cmd{display:flex;align-items:center;gap:10px;background:var(--code);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:8px 0}
+  .cmd code{flex:1;font:600 13.5px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;word-break:break-word;color:var(--text)}
+  .cmd small{display:block;font:500 12px 'Inter',sans-serif;color:var(--muted);margin-top:2px}
+  .copy{flex:none;border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:9px;padding:8px 11px;font:600 12.5px 'Inter',sans-serif;cursor:pointer;min-height:38px}
+  .copy:active{transform:scale(.97)}
+
+  /* steps */
+  .steps{counter-reset:s;display:grid;gap:10px}
+  .step{counter-increment:s;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:13px 16px 13px 52px;position:relative}
+  .step::before{content:counter(s);position:absolute;left:14px;top:13px;width:27px;height:27px;border-radius:50%;background:var(--accent);color:#fff;font-weight:800;font-size:13px;display:grid;place-items:center}
+  .step b{display:block;margin-bottom:2px}
+  .step span{color:var(--muted);font-size:13.5px}
+
+  /* chat mock */
+  .chat{display:grid;gap:8px;background:var(--code);border:1px solid var(--line);border-radius:16px;padding:14px}
+  .msg{max-width:92%;padding:9px 13px;border-radius:14px;font-size:13.5px;line-height:1.55;white-space:pre-wrap}
+  .msg.u{justify-self:end;background:var(--accent);color:#fff;border-bottom-right-radius:4px}
+  .msg.b{justify-self:start;background:var(--panel);border:1px solid var(--line);border-bottom-left-radius:4px}
+  .cap{font-size:12px;color:var(--muted);margin-top:6px}
+
+  /* mode compare */
+  .mode h3{display:flex;gap:8px;align-items:center}
+  .mode .tag{font:800 12px 'Inter',sans-serif;padding:3px 9px;border-radius:8px;background:var(--accent);color:#fff}
+  .mode.u .tag{background:var(--accent2);color:#06222a}
+
+  /* tables */
+  .tbl{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+  table{border-collapse:collapse;width:100%;min-width:520px;font-size:13.5px}
+  th,td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);background:var(--panel2)}
+  tr:last-child td{border-bottom:0}
+  td b{color:var(--text)}
+
+  /* notes */
+  .note{border-radius:14px;padding:13px 16px;border:1px solid var(--line);background:var(--panel);font-size:14px}
+  .note.warn{border-color:color-mix(in srgb,var(--warn) 55%,var(--line));background:color-mix(in srgb,var(--warn) 8%,var(--panel))}
+  .note.ok{border-color:color-mix(in srgb,var(--ok) 55%,var(--line));background:color-mix(in srgb,var(--ok) 8%,var(--panel))}
+  .note b{color:var(--text)}
+
+  details{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:0 16px;margin:8px 0}
+  summary{cursor:pointer;font-weight:600;padding:13px 0;list-style:none;display:flex;justify-content:space-between;gap:10px}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:'+';color:var(--accent);font-weight:800}
+  details[open] summary::after{content:'–'}
+  details .a{padding:0 0 14px;color:var(--muted);font-size:14px}
+
+  footer{margin-top:38px;padding:24px 0 10px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;text-align:center}
+  footer a{margin:0 8px}
+
+  /* tabbar */
+  .tabbar{position:fixed;left:0;right:0;bottom:0;z-index:60;display:flex;background:var(--nav);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}
+  .tab-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--muted);padding:5px 2px;border-radius:10px;font-weight:600}
+  .tab-item.active{color:var(--accent)}
+  .tab-ico{font-size:18px}
+  @media(min-width:820px){.tabbar{display:none}body{padding-bottom:20px}}
+
+  .toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(12px);background:var(--text);color:var(--bg);padding:10px 16px;border-radius:12px;font-weight:600;font-size:13.5px;opacity:0;pointer-events:none;transition:.25s;z-index:80;max-width:90vw;text-align:center}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="nav-brand">
+      <span class="nav-mark"><img src="icon.jpg" alt="TeaGhiu" onerror="this.style.display='none';this.parentElement.textContent='T';"></span>
+      <span>TeaGhiu</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Thư viện</a>
+      <a href="index.html#featured" class="nav-link">Nhân vật</a>
+      <a href="commands.html" class="nav-link">Hỗ trợ lệnh</a>
+      <a href="isekai-guide.html" class="nav-link">📖 Cẩm nang Isekai</a>
+      <a href="system-support-guide.html" class="nav-link active">🛠️ Hỗ trợ hệ thống</a>
+    </div>
+    <button id="themeToggle" class="theme-btn" aria-label="Chuyển theme">🌙</button>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <!-- HERO -->
+  <header class="hero">
+    <span class="eyebrow">🛠️ Lệnh đầu tiên · dán vào ĐẦU System</span>
+    <h1>Hỗ trợ Hệ thống: kiểm tra &amp; nâng cấp Char của bạn</h1>
+    <p class="lead">Dán một lần vào đầu System. Khi cần, chỉ gõ một dòng lệnh ngắn: bot sẽ <b>đọc Prompt Char hiện có</b>, chấm so với bản mới nhất, rồi giúp bạn dựng Story Engine hoặc vá đúng lỗi bạn đang gặp. Không cần dán file, không cần prompt mẫu cũ.</p>
+    <div class="hero-cta">
+      <a class="btn primary" href="commands.html#cmd-000-ho-tro-he-thong">📋 Lấy lệnh (Thư viện Lệnh)</a>
+      <a class="btn" href="#cach-dung">Xem cách dùng ↓</a>
+    </div>
+  </header>
+
+  <!-- 1. VÌ SAO -->
+  <section id="vi-sao">
+    <h2><span class="n">1</span>Lệnh này sinh ra để làm gì?</h2>
+    <p class="sub">Các Char đời cũ thường thiếu bộ khung vận hành. Người chơi hay gặp những lỗi giống nhau:</p>
+    <div class="quote"><b>Thời gian bị đẩy nhanh</b>, cốt truyện chạy nhanh nên chưa kịp cảm nhận slow-burn.</div>
+    <div class="quote"><b>Quên thoại</b> khi chat dài, có Char chỉ mới khoảng 200k chữ đã bắt đầu quên.</div>
+    <div class="quote"><b>Sai logic</b> thời gian và sự việc, lẫn thứ tự nhân quả.</div>
+    <p style="margin-top:12px">Char mới nhất đã giải quyết phần lớn nhờ <b>Story Engine</b>, <b>AG_STATE</b> (một nguồn trạng thái duy nhất), đồng hồ, khóa tri thức và các prompt phụ P1–P5B. Lệnh này giúp <b>mang phần cốt lõi đó sang Char cũ</b> mà không phải viết lại từng Char.</p>
+  </section>
+
+  <!-- 2. VỊ TRÍ DÁN -->
+  <section id="vi-tri">
+    <h2><span class="n">2</span>Dán ở đâu?</h2>
+    <p class="sub">Trong ô System Instructions của Google AI Studio, thứ tự từ trên xuống:</p>
+    <div class="stack">
+      <div class="slot hot"><div class="no">1</div><div><b>Lệnh Hỗ trợ Hệ thống</b><span class="d">Lệnh trong trang này. Dán ĐẦU TIÊN, chỉ "thức" khi bạn gõ đúng lệnh kích hoạt.</span></div></div>
+      <div class="slot"><div class="no">2</div><div><b>Prompt hệ thống</b><span class="d">Phần System sẵn có của bạn (nếu có).</span></div></div>
+      <div class="slot out"><div class="no">3</div><div><b>Prompt hỗ trợ / Bản vá do bot xuất</b><span class="d">Bot tạo ra ở Nhánh A hoặc B. Bạn copy rồi dán vào đúng vị trí này.</span></div></div>
+      <div class="slot"><div class="no">4</div><div><b>Prompt Char</b><span class="d">Prompt của nhân vật, nằm cuối. Bot đọc trực tiếp phần này để kiểm tra.</span></div></div>
+    </div>
+    <div class="note ok" style="margin-top:12px"><b>Nhẹ context:</b> lệnh ở ô 1 khá nặng vì chứa bản tham chiếu nén. Phần bot xuất ra ở ô 3 thì gọn. Dán xong, bạn có thể <b>xóa ô 1</b> để tiết kiệm token, khi nào cần kiểm tra lại thì dán lại.</div>
+  </section>
+
+  <!-- 3. BA CHỨC NĂNG -->
+  <section id="chuc-nang">
+    <h2><span class="n">3</span>Ba chức năng</h2>
+    <p class="sub">Gõ lệnh mở menu rồi chọn 1, 2 hoặc 3.</p>
+    <div class="grid c3">
+      <div class="card">
+        <span class="pill ok">Chỉ đọc</span>
+        <h3 style="margin-top:8px">1️⃣ Kiểm tra</h3>
+        <p style="color:var(--muted);font-size:14px">Đối chiếu Prompt Char với bản mới nhất, chấm 13 hạng mục (✅ ⚠️ ❌ ❓) và xếp hạng <b>Đời cũ / Trung gian / Mới</b>. Không đổi gì, không spoil.</p>
+      </div>
+      <div class="card">
+        <span class="pill warn">Bạn phải trả lời</span>
+        <h3 style="margin-top:8px">2️⃣ Dựng Story Engine</h3>
+        <p style="color:var(--muted);font-size:14px">Cho Char chưa có hoặc chỉ có bản sơ sài, kể cả <b>chat đã dài mà quan hệ/NPC đã khác setup đầu</b>. Xuất prompt Story Engine + AG_STATE cơ bản <b>theo yêu cầu của bạn</b>. Bot không tự bịa cốt truyện.</p>
+      </div>
+      <div class="card">
+        <span class="pill">Theo lỗi</span>
+        <h3 style="margin-top:8px">3️⃣ Báo lỗi</h3>
+        <p style="color:var(--muted);font-size:14px">Bạn kể lỗi đang gặp (thời gian, slow-burn, quên ngữ cảnh…). Bot xuất <b>bản vá chỉ chứa module cần thiết</b>.</p>
+      </div>
+    </div>
+    <p style="margin-top:12px;color:var(--muted);font-size:14px">Cả chức năng 2 và 3 đều cho ra một đoạn prompt để dán vào <b>ô 3</b> (giữa System và Prompt Char).</p>
+  </section>
+
+  <!-- 4. LỆNH KÍCH HOẠT -->
+  <section id="lenh">
+    <h2><span class="n">4</span>Lệnh kích hoạt</h2>
+    <p class="sub">Gõ <b>nguyên cả tin nhắn</b> đúng như dưới đây (đúng chữ, đúng ngoặc). Một tin chỉ một lệnh. Nằm trong câu RP thì không có tác dụng.</p>
+    <div class="cmd"><code>[OOC: Hỗ Trợ Hệ Thống]<small>Mở menu 3 lựa chọn</small></code><button class="copy" data-c="[OOC: Hỗ Trợ Hệ Thống]">Copy</button></div>
+    <div class="cmd"><code>[OOC: Kiểm Tra Hệ Thống]<small>Vào thẳng chức năng 1</small></code><button class="copy" data-c="[OOC: Kiểm Tra Hệ Thống]">Copy</button></div>
+    <div class="cmd"><code>[OOC: Dựng Story Engine]<small>Vào thẳng chức năng 2</small></code><button class="copy" data-c="[OOC: Dựng Story Engine]">Copy</button></div>
+    <div class="cmd"><code>[OOC: Báo Lỗi]<small>Vào thẳng chức năng 3</small></code><button class="copy" data-c="[OOC: Báo Lỗi]">Copy</button></div>
+    <div class="cmd"><code>[OOC: Thoát Hỗ Trợ]<small>Thoát, quay lại RP đúng điểm đang dừng</small></code><button class="copy" data-c="[OOC: Thoát Hỗ Trợ]">Copy</button></div>
+    <div class="note" style="margin-top:10px">Trong lúc ở chế độ hỗ trợ, bot <b>không nhập vai, không đẩy thời gian, không tính lượt vào cốt truyện</b>. Thoát ra là tiếp tục như chưa có gì xảy ra.</div>
+  </section>
+
+  <!-- 5. CÁCH DÙNG -->
+  <section id="cach-dung">
+    <h2><span class="n">5</span>Cách dùng từng bước</h2>
+    <div class="steps">
+      <div class="step"><b>Dán lệnh vào đầu System</b><span>Vào Thư viện Lệnh, bấm Sao chép ở lệnh 🛠️ đầu tiên, dán vào ô 1 trong System.</span></div>
+      <div class="step"><b>Gõ lệnh mở menu</b><span>Trong khung chat, gửi <code>[OOC: Hỗ Trợ Hệ Thống]</code> rồi gõ 1, 2 hoặc 3.</span></div>
+      <div class="step"><b>Làm theo bot hỏi</b><span>Chức năng 1 tự chạy. Chức năng 2 và 3 sẽ hỏi bạn một lượt câu hỏi, bạn trả lời gộp một tin.</span></div>
+      <div class="step"><b>Copy phần bot xuất</b><span>Đoạn nằm trong khung code, bắt đầu bằng dòng "=== PROMPT HỖ TRỢ" hoặc "=== BẢN VÁ".</span></div>
+      <div class="step"><b>Dán vào ô 3 và thử</b><span>Dán sau Prompt hệ thống, trước Prompt Char. Gửi <code>[OOC: Thoát Hỗ Trợ]</code>, chơi thử 3–5 lượt rồi so với lỗi ban đầu.</span></div>
+    </div>
+
+    <h3 style="margin:22px 0 8px">Ví dụ cuộc trò chuyện (Báo lỗi)</h3>
+    <div class="chat">
+      <div class="msg u">[OOC: Báo Lỗi]</div>
+      <div class="msg b">Bạn gặp lỗi nào? Chọn mã hoặc tả bằng lời…
+F1 Thời gian bị đẩy nhanh
+F2 Cốt truyện quá nhanh, mất slow-burn
+F3 Quên ngữ cảnh khi chat dài
+…</div>
+      <div class="msg u">F1, F2, F3. Khoảng 200k chữ là bắt đầu quên thoại.</div>
+      <div class="msg b">=== BẢN VÁ (dán SAU prompt hệ thống, TRƯỚC prompt Char) ===
+[khung code: V1 + V2 + V3 + V0]
+📌 Thứ tự trong System: …</div>
+    </div>
+    <p class="cap">Minh họa rút gọn. Nội dung thật do bot soạn từ thư viện module vá trong lệnh.</p>
+  </section>
+
+  <!-- 6. NHÁNH A -->
+  <section id="nhanh-a">
+    <h2><span class="n">6</span>Chức năng 2: bạn quyết định, bot không tự làm</h2>
+    <p class="sub">Có người muốn bot dựng sẵn tuyến truyện. Có người muốn tự dẫn truyện, chat dài, không skip. Lệnh này tôn trọng cả hai, nên <b>bắt buộc nhắc bạn đưa yêu cầu</b> trước khi xuất prompt.</p>
+    <div class="grid c2">
+      <div class="card mode">
+        <h3><span class="tag">L</span> Tuyến tuần tự</h3>
+        <p style="color:var(--muted);font-size:14px">Bạn đưa danh sách giai đoạn (tên · sự kiện bắt buộc · điều kiện qua). Bot dựng cổng chuyển giai đoạn và tiến từng beat một. Có bản <b>L+</b>: bạn đưa ý tưởng thô, bot đề xuất khung, bạn duyệt từng giai đoạn.</p>
+      </div>
+      <div class="card mode u">
+        <h3><span class="tag">U</span> User-Led</h3>
+        <p style="color:var(--muted);font-size:14px">Không có tuyến bắt buộc. Bot chỉ theo dõi state, khóa nhịp và thời gian, <b>không tự tạo biến cố hay bí mật mới</b>. Hợp với người tự triển cốt truyện và chat dài không skip.</p>
+      </div>
+    </div>
+    <h3 style="margin:20px 0 8px">Bot sẽ hỏi bạn</h3>
+    <div class="tbl"><table>
+      <tr><th>Câu</th><th>Nội dung</th><th>Bắt buộc</th></tr>
+      <tr><td><b>Q0</b></td><td>Tình trạng chat: <b>N</b> (mới/ngắn, vẫn như setup đầu) hoặc <b>C</b> (đã dài, quan hệ/NPC đã khác setup đầu)</td><td><span class="pill bad">Có</span></td></tr>
+      <tr><td><b>Q1</b></td><td>Chế độ cốt truyện: L / L+ / U</td><td><span class="pill bad">Có</span></td></tr>
+      <tr><td><b>Q2</b></td><td>Time-skip: không bao giờ / chỉ khi bạn yêu cầu; trần thời gian mỗi phản hồi</td><td><span class="pill bad">Có</span></td></tr>
+      <tr><td><b>Q3</b></td><td>Tốc độ quan hệ (rất chậm / chậm / vừa) và mốc hiện tại</td><td><span class="pill bad">Có</span></td></tr>
+      <tr><td><b>Q4</b></td><td>Ending: không có / bạn đưa danh sách / chưa muốn</td><td><span class="pill">Không</span></td></tr>
+      <tr><td><b>Q5</b></td><td>Hiển thị state: ẩn / compact khi đổi / chỉ khi gọi</td><td><span class="pill">Không</span></td></tr>
+      <tr><td><b>Q6</b></td><td>Biến số riêng muốn theo dõi (tối đa 4)</td><td><span class="pill">Không</span></td></tr>
+      <tr><td><b>Q7</b></td><td>Điều tuyệt đối không được đổi</td><td><span class="pill">Không</span></td></tr>
+      <tr><td><b>Q8</b></td><td>Chỉ khi Q0 = C: bạn bổ sung hiện trạng (quan hệ hiện tại, NPC đã đổi, mốc đã xảy ra, vị trí/thời điểm, việc dang dở). Bỏ trống thì bot tự đọc chat dựng nháp</td><td><span class="pill warn">Nếu chọn C</span></td></tr>
+    </table></div>
+    <h3 style="margin:22px 0 8px">Chat đã dài, quan hệ/NPC đã khác setup đầu thì sao?</h3>
+    <p style="color:var(--muted);font-size:14px">Đây là trường hợp dễ sai nhất: nếu bot dựng AG_STATE theo mốc đầu của Prompt Char, nhân vật có thể bị "reset" về thái độ ban đầu, hoặc diễn lại cảnh đã qua. Vì vậy khi bạn chọn <b>Q0 = C</b>, lệnh chạy thêm một bước:</p>
+    <div class="steps" style="margin-top:10px">
+      <div class="step"><b>Bạn trả lời Q0–Q3 (và Q8 nếu muốn)</b><span>Q8 gồm 5 ô nhỏ: quan hệ hiện tại, NPC đã đổi, mốc đã xảy ra, vị trí/thời điểm, việc dang dở. Điền ô nào hay ô đó.</span></div>
+      <div class="step"><b>Bot đọc chat, gửi "Bản nháp hiện trạng"</b><span>Mỗi dòng gắn nhãn [ĐỀ XUẤT – chờ duyệt] và nguồn ngắn (ví dụ "đoạn đêm mưa ở nhà kho"). Chỗ không thấy thì ghi ❓, không đoán.</span></div>
+      <div class="step"><b>Bạn duyệt: gõ OK hoặc sửa từng dòng</b><span>Chưa duyệt thì bot không xuất prompt. Ưu tiên: điều bạn điền hoặc sửa &gt; diễn biến gần nhất trong chat &gt; diễn biến cũ &gt; setup đầu.</span></div>
+      <div class="step"><b>Prompt xuất ra có thêm Mục 0 "Điểm xuất phát"</b><span>Hiện trạng đã duyệt trở thành nền: AG_STATE khởi tạo từ đây, các mốc đã xảy ra không bị phát lại, quan hệ tiếp tục từ mức hiện tại.</span></div>
+    </div>
+    <div class="chat" style="margin-top:12px">
+      <div class="msg u">[OOC: Dựng Story Engine]</div>
+      <div class="msg b">Story Engine và AG_STATE chỉ là khung theo dõi… (nhắc bắt buộc)
+Q0* Tình trạng chat: N / C
+Q1* … Q3* … Q8 (nếu C) …</div>
+      <div class="msg u">Q0 C. Q1 U. Q2 chỉ skip khi mình yêu cầu. Q3 chậm. Q8: hai người đã tin nhau hơn lúc đầu, NPC A giờ đứng về phía mình.</div>
+      <div class="msg b">📋 BẢN NHÁP HIỆN TRẠNG
+• REL: [ĐỀ XUẤT – chờ duyệt] ĐÃ ĐỔI: trước → nay (nguồn: …)
+• NPC A: [ĐỀ XUẤT – chờ duyệt] …
+• MỐC ĐÃ XẢY RA: E-01 … E-02 …
+• T/LOC: ❓ không thấy rõ trong chat
+Đúng thì gõ OK, sai/thiếu thì sửa từng dòng. Mình chỉ xuất sau khi bạn duyệt.</div>
+    </div>
+    <p class="cap">Minh họa rút gọn. Nội dung thật do bot soạn từ chính chat của bạn.</p>
+    <div class="note warn" style="margin-top:12px"><b>Giới hạn:</b> bot chỉ đọc được phần chat còn nằm trong ngữ cảnh. Chat quá dài thì mốc cũ có thể sót, bot sẽ nói rõ chỗ không đọc được. Khi đó hãy điền Q8, hoặc dán bản tóm tắt/snapshot <b>[Lưu Trạng Thái]</b> cũ vào. Bot cũng chỉ ghi điều <b>đã diễn ra</b>, không suy diễn động cơ ẩn và không đưa bí mật Hidden của Char vào bảng.</div>
+    
+    <div class="note warn" style="margin-top:12px"><b>Nếu bạn nói "bot tự làm đi":</b> bot không tự quyết. Nó đưa tối đa 3 phương án khung trung tính (không thêm lore) để bạn chọn, hoặc gợi ý chế độ U, rồi chờ bạn xác nhận mới xuất.</div>
+    <p style="margin-top:12px;color:var(--muted);font-size:14px">Prompt xuất ra gồm: (nếu chat cũ) Mục 0 Điểm xuất phát, Story Engine, Thời gian, AG_STATE cơ bản (T, LOC, giai đoạn, flag, quan hệ, việc dang dở, 5 sự kiện gần nhất), User Agency &amp; Tri thức, Ending, Thứ tự ưu tiên. State tương thích với lệnh <b>[Lưu Trạng Thái]</b> và <b>[Khôi Phục - …]</b> trong Thư viện Lệnh.</p>
+  </section>
+
+  <!-- 7. NHÁNH B -->
+  <section id="nhanh-b">
+    <h2><span class="n">7</span>Chức năng 3: mã lỗi → bản vá</h2>
+    <p class="sub">Chọn mã lỗi hoặc tả bằng lời. Bot chỉ chép các module khớp lỗi, luôn kèm quy tắc ưu tiên cuối bản vá.</p>
+    <div class="tbl"><table>
+      <tr><th>Mã</th><th>Lỗi</th><th>Module vá</th></tr>
+      <tr><td><b>F1</b></td><td>Thời gian bị đẩy nhanh, tự nhảy "vài ngày sau"</td><td>V1 Khóa thời gian</td></tr>
+      <tr><td><b>F2</b></td><td>Quá nhanh, mất slow-burn, đổi thái độ sớm</td><td>V2 Slow-burn + V1</td></tr>
+      <tr><td><b>F3</b></td><td>Quên ngữ cảnh/thoại khi chat dài</td><td>V3 Chống trôi ngữ cảnh</td></tr>
+      <tr><td><b>F4</b></td><td>Sai logic thời gian, lẫn sự việc</td><td>V4 Nhân quả &amp; sự việc</td></tr>
+      <tr><td><b>F5</b></td><td>Bot nói/hành động thay User</td><td>V5 Quyền User</td></tr>
+      <tr><td><b>F6</b></td><td>NPC biết điều không nên biết, lộ bí mật sớm</td><td>V6 Tri thức &amp; bí mật</td></tr>
+      <tr><td><b>F7</b></td><td>Lặp khung phản hồi</td><td>V7 Phá lặp khung</td></tr>
+      <tr><td><b>F8</b></td><td>Lỗi khác</td><td>1–3 dòng vá gắn nhãn [ĐỀ XUẤT]</td></tr>
+    </table></div>
+    <p style="margin-top:12px;color:var(--muted);font-size:14px">Nếu Char đã có cơ chế tương ứng (ví dụ đã có đồng hồ), bản vá chỉ <b>bổ sung chỗ thiếu</b> và không tạo đồng hồ hay sổ thứ hai. Cung cấp càng cụ thể (lỗi bắt đầu từ khoảng bao nhiêu chữ, một đoạn mẫu bị sai) thì bản vá càng đúng.</p>
+  </section>
+
+  <!-- 8. GIỚI HẠN -->
+  <section id="gioi-han">
+    <h2><span class="n">8</span>Nói thật về giới hạn</h2>
+    <div class="grid">
+      <div class="note warn"><b>Quên thoại không "chữa dứt" được bằng prompt.</b> Bản vá V3 chỉ giảm trôi ngữ cảnh bằng cách buộc bot đối chiếu và ghi anchor định kỳ. Chat quá dài vẫn nên dùng <a href="commands.html">[Lưu Trạng Thái] hoặc lệnh tóm tắt</a> rồi mở chat mới (xem thêm <a href="isekai-guide.html">Cẩm nang Isekai</a>).</div>
+      <div class="note"><b>Bản chấm là của bot, không phải của máy kiểm.</b> Prompt Char rất dài có thể bị đọc sót; khi đó bot ghi ❓ thay vì đoán. Nếu nghi ngờ, hãy hỏi lại hạng mục cụ thể.</div>
+      <div class="note"><b>Chat cũ: bot đọc chat để dựng nháp, bạn là người chốt.</b> Hiện trạng chỉ được xuất sau khi bạn duyệt. Phần nào bot không chắc sẽ để ❓ thay vì đoán.</div>
+      <div class="note"><b>Không spoil.</b> Lệnh cấm bot trích hay ám chỉ bí mật/GM-only/Ending của Char khi báo cáo; chỉ nêu tên hạng mục và có/thiếu.</div>
+      <div class="note"><b>Bản vá không đổi nhân vật.</b> Chỉ ràng buộc hành vi và nhịp; không thêm lore, không sửa tính cách hay canon.</div>
+    </div>
+  </section>
+
+  <!-- 9. FAQ -->
+  <section id="faq">
+    <h2><span class="n">9</span>Hỏi nhanh</h2>
+    <details><summary>Phải dán lại prompt mẫu mới nhất không?</summary><div class="a">Không. Lệnh đã chứa sẵn bản tham chiếu nén (REF 2026-11) của kiến trúc prompt mới nhất. Bot chỉ cần đọc Prompt Char đang nằm trong System.</div></details>
+    <details><summary>Có dùng được cho mọi Char (hơn 100 Char) không?</summary><div class="a">Có. Bản tham chiếu chỉ kiểm <b>cấu trúc</b> (Story Engine, state, đồng hồ, tri thức, agency…), không chứa cốt truyện hay lore của Char nào, nên không áp nhầm sang Char khác.</div></details>
+    <details><summary>Lệnh có làm hỏng các lệnh sẵn có của Char không?</summary><div class="a">Không. Chỉ năm lệnh [OOC: …] ở trên được xử lý trước; mọi lệnh khác của Char giữ nguyên. Các khóa trong prompt xuất ra không ghi đè canon của Char.</div></details>
+    <details><summary>Khi nào nên chọn U thay vì L?</summary><div class="a">Chọn U nếu bạn muốn tự dẫn cốt truyện, chat dài, không muốn bot đẩy biến cố hay skip. Chọn L/L+ nếu bạn muốn có tuyến giai đoạn rõ ràng và cổng chuyển giai đoạn.</div></details>
+    <details><summary>Char cũ, chat đã dài, quan hệ đã khác setup đầu: bot có tự biết dựng không?</summary><div class="a">Bot đọc được phần chat nằm trong ngữ cảnh nên có thể dựng bản nháp hiện trạng, nhưng nó không tự quyết. Bạn chọn <b>Q0 = C</b>, điền Q8 nếu muốn (hoặc để trống cho bot tự đọc), rồi duyệt Bản nháp hiện trạng. Chỉ sau đó prompt mới được xuất, và có thêm Mục 0 để Char không bị reset về thái độ ban đầu.</div></details>
+    <details><summary>Dán rồi phải làm lại chat không?</summary><div class="a">Thường không. System được gửi kèm mỗi lượt nên bản vá có hiệu lực từ lượt kế tiếp. Hãy thử 3–5 lượt; nếu bot vẫn lệch, báo lỗi lại kèm đoạn mẫu cụ thể.</div></details>
+    <details><summary>Prompt xuất ra có nặng không?</summary><div class="a">Gọn: Chức năng 3 chỉ chứa module cần dùng; Chức năng 2 xuất một khung cơ bản. Phần nặng nhất là lệnh ở ô 1 và bạn có thể xóa nó sau khi dán xong.</div></details>
+  </section>
+
+  <footer>
+    <div><a href="index.html">Thư viện Character</a><a href="commands.html">Thư viện Lệnh</a><a href="isekai-guide.html">Cẩm nang Isekai</a></div>
+    <div style="margin-top:8px">TeaGhiu · Cẩm nang Hỗ trợ Hệ thống · REF 2026-11</div>
+  </footer>
+</main>
+
+<nav class="tabbar" aria-label="Điều hướng nhanh">
+  <a href="index.html" class="tab-item"><span class="tab-ico">📚</span><span>Thư viện</span></a>
+  <a href="commands.html" class="tab-item"><span class="tab-ico">📜</span><span>Lệnh</span></a>
+  <a href="system-support-guide.html" class="tab-item active"><span class="tab-ico">🛠️</span><span>Hệ thống</span></a>
+  <a href="isekai-guide.html" class="tab-item"><span class="tab-ico">🌀</span><span>Isekai</span></a>
+  <a href="https://aistudio.google.com/" target="_blank" rel="noopener" class="tab-item"><span class="tab-ico">🚀</span><span>AI Studio</span></a>
+</nav>
+
+<div id="toast" class="toast"></div>
+
+<script>
+  function safeGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  function safeSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+  var tt = document.getElementById('themeToggle');
+  if ((safeGet('theme') || 'dark') === 'light') { document.body.classList.add('light'); tt.textContent = '☀️'; }
+  tt.addEventListener('click', function(){
+    document.body.classList.toggle('light');
+    var l = document.body.classList.contains('light');
+    safeSet('theme', l ? 'light' : 'dark');
+    tt.textContent = l ? '☀️' : '🌙';
+  });
+
+  var toast = document.getElementById('toast'), tm;
+  function showToast(msg){
+    toast.textContent = msg; toast.classList.add('show');
+    clearTimeout(tm); tm = setTimeout(function(){ toast.classList.remove('show'); }, 1800);
+  }
+  function copyText(text){
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text);
+    }
+    return new Promise(function(res, rej){
+      try{
+        var ta = document.createElement('textarea');
+        ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        var ok = document.execCommand('copy'); document.body.removeChild(ta);
+        ok ? res() : rej();
+      }catch(e){ rej(e); }
+    });
+  }
+  document.querySelectorAll('.copy').forEach(function(b){
+    b.addEventListener('click', function(){
+      var t = b.getAttribute('data-c');
+      copyText(t).then(function(){ showToast('✅ Đã copy: ' + t); }, function(){ showToast('❌ Không copy được'); });
+    });
+  });
+</script>
+<script src="click-sound.js"></script>
+<script src="music-player-v4.js"></script>
+</body>
+</html>
