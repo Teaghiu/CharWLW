@@ -751,7 +751,7 @@ async function rpc(fn, args = {}) {
       headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' },
       body: JSON.stringify(args)
     });
-    if (!r.ok) throw new Error('HTTP ' + r.status);
+    if (!r.ok) { let m = ''; try { m = (await r.text()).slice(0, 300); } catch {} throw new Error('HTTP ' + r.status + ' ' + m); }
     return await r.json();
   } finally { clearTimeout(t); }
 }
@@ -798,7 +798,7 @@ async function adminLoad(silent) {
     Srv.status = r.status; Srv.ok = true;
     Adm.requests = r.requests.map(mapReq); Adm.waitlist = r.waitlist || [];
     return true;
-  } catch { if (!silent) toast('Không kết nối được máy chủ.', 'err'); return false; }
+  } catch (e) { if (!silent) toast('Lỗi quản trị: ' + (e && e.message ? e.message : e), 'err'); return false; }
 }
 
 async function refresh() {
@@ -827,7 +827,7 @@ function toast(msg, kind = '') {
   t.textContent = msg;
   t.className = 'toast on ' + kind;
   clearTimeout(t._x);
-  t._x = setTimeout(() => (t.className = 'toast ' + kind), 3500);
+  t._x = setTimeout(() => (t.className = 'toast ' + kind), kind === 'err' ? 12000 : 3500);
 }
 
 function fmtLeft(ms) {
