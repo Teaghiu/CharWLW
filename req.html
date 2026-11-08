@@ -914,10 +914,10 @@ function renderChip() {
   const left = slotsLeft();
   if (mineNow) {
     chip.className = 'chip busy';
-    $('#lockChipTxt').textContent = 'Bạn đã đặt · ' + shortCode(mineNow.code);
+    $('#lockChipTxt').textContent = 'Vé của bạn · ' + shortCode(mineNow.code);
   } else if (left <= 0) {
     chip.className = 'chip busy';
-    $('#lockChipTxt').textContent = 'Hết slot ' + label;
+    $('#lockChipTxt').textContent = 'Người khác đã đặt';
   } else {
     chip.className = 'chip on';
     $('#lockChipTxt').textContent = 'Còn ' + left + ' slot';
