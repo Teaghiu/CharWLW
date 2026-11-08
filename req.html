@@ -145,6 +145,8 @@ body{
 .select-wrap::after{content:"";position:absolute;right:13px;top:50%;width:7px;height:7px;margin-top:-5px;
   border-right:2px solid #9c8fbe;border-bottom:2px solid #9b8fbd;transform:rotate(45deg);pointer-events:none}
 .select-wrap select{padding-right:32px}
+.field select optgroup{font-weight:700;color:#8a72cc;background:#faf8ff}
+.field select option{font-weight:400;color:#403a55;background:#fff;padding:6px}
 
 /* ---------- footer ---------- */
 .form-ft{display:flex;gap:10px;justify-content:flex-end;align-items:center;
@@ -451,15 +453,40 @@ body{
               <div class="field" data-k="genre">
                 <label class="lbl" for="f-genre">
                   <span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2 2 0 0 1 6 3.5h4.2l9 9a2 2 0 0 1 0 2.8l-3.9 3.9a2 2 0 0 1-2.8 0l-9-9Z"/><circle cx="8.4" cy="7.9" r="1.2" fill="currentColor" stroke="none"/></svg></span>
-                  Thể loại <span class="req">*</span>
+                  Thể loại <span style="font-weight:600;color:#a49cbd">· WLW (Nữ × Nữ)</span> <span class="req">*</span>
                 </label>
                 <div class="select-wrap">
                   <select id="f-genre" name="genre">
-                    <option value="">Chọn thể loại...</option>
-                    <option>Ngôn tình</option><option>Cổ trang</option><option>ABO</option>
-                    <option>Tu tiên</option><option>Yandere</option><option>Ngọt sủng</option>
-                    <option>Hài hước</option><option>Kinh dị</option><option>Hệ thống</option>
-                    <option>Isekai</option><option>Hiện đại</option><option>Khác</option>
+                    <option value="">Chọn thể loại (WLW)...</option>
+                    <optgroup label="Bối cảnh">
+                      <option>Hiện đại</option>
+                      <option>Học đường</option>
+                      <option>Đô thị</option>
+                      <option>Cổ trang</option>
+                      <option>Cung đấu</option>
+                      <option>Tiên hiệp / Tu tiên</option>
+                      <option>Huyền huyễn</option>
+                      <option>Dị giới (Isekai)</option>
+                    </optgroup>
+                    <optgroup label="Sắc thái">
+                      <option>Ngọt sủng</option>
+                      <option>Ngược · BE</option>
+                      <option>Hài hước</option>
+                      <option>Yandere</option>
+                      <option>Kinh dị</option>
+                      <option>Trinh thám</option>
+                      <option>Hiền dai</option>
+                    </optgroup>
+                    <optgroup label="Đặc thù">
+                      <option>ABO</option>
+                      <option>Hệ thống</option>
+                      <option>Huyết tộc</option>
+                      <option>Nữ tôn</option>
+                      <option>Xuyên không / Trọng sinh</option>
+                    </optgroup>
+                    <optgroup label="Khác">
+                      <option>Khác</option>
+                    </optgroup>
                   </select>
                 </div>
                 <span class="msg">Chọn một thể loại.</span>
