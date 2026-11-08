@@ -1,0 +1,1225 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#cdbdf1" />
+<title>REQ — Gửi yêu cầu · Character WLW</title>
+<style>
+/* ============================================================
+   CHARWLW · REQ  — bản test giao diện
+   Responsive: desktop 2 cột / mobile 1 cột (đồng bộ điện thoại & máy tính)
+   ============================================================ */
+:root{
+  --lav-1:#cbbaf0; --lav-2:#e2d7f8; --lav-3:#f4efff;
+  --purple:#7c5cbf; --purple-d:#6a4bab; --purple-l:#9d86d6;
+  --ink:#403a55; --ink-2:#6d658a; --ink-3:#9b93b5;
+  --line:#e6ddf7; --line-2:#efe8fb;
+  --white:#fff; --ok:#4aa96c; --warn:#e8a33d; --bad:#d9607a;
+  --r-lg:22px; --r-md:14px; --r-sm:10px;
+  --sh:0 18px 50px rgba(104,74,166,.20), 0 2px 8px rgba(104,74,166,.08);
+  --sh-sm:0 6px 18px rgba(104,74,166,.14);
+  --ff:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:var(--ff); color:var(--ink); min-height:100vh;
+  background:
+    radial-gradient(900px 500px at 12% -5%, #efe6ff 0%, rgba(239,230,255,0) 60%),
+    radial-gradient(800px 520px at 92% 8%, #f0e7ff 0%, rgba(240,231,255,0) 55%),
+    linear-gradient(165deg, var(--lav-1) 0%, #d8cbee 45%, var(--lav-2) 100%);
+  background-attachment:fixed;
+  padding:18px 14px 56px;
+  -webkit-text-size-adjust:100%;
+}
+.sakura{position:fixed;pointer-events:none;opacity:.55;z-index:0}
+.sakura.tl{top:-26px;left:-30px;width:170px;transform:rotate(-14deg)}
+.sakura.br{bottom:-40px;right:-34px;width:200px;transform:rotate(18deg)}
+@media(max-width:640px){.sakura.tl{width:120px}.sakura.br{width:140px;opacity:.4}}
+
+.stage{position:relative;z-index:1;max-width:1000px;margin:0 auto}
+
+/* ---------- mini top bar (echo site) ---------- */
+.topbar{
+  display:flex;align-items:center;gap:10px;justify-content:space-between;
+  background:rgba(255,255,255,.72);backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.9);border-radius:var(--r-md);
+  padding:9px 13px;box-shadow:var(--sh-sm);margin-bottom:20px;
+}
+.topbar .brand{display:flex;align-items:center;gap:9px;min-width:0}
+.topbar .mark{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,#a08be0,#7c5cbf);
+  display:grid;place-items:center;color:#fff;font-size:12px;font-weight:800;flex:0 0 auto}
+.topbar .t{font-size:12.5px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topbar .t b{color:var(--ink)}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;white-space:nowrap;flex:0 0 auto;
+  padding:5px 10px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--ink-2);cursor:pointer}
+.chip.on{background:#e8f7ee;border-color:#bfe6cf;color:#2f7b4e}
+.chip.busy{background:#fdeef1;border-color:#f6ccd6;color:#b8455f}
+.chip:active{transform:scale(.98)}
+.chip .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+
+/* ---------- heading ---------- */
+.head{text-align:center;margin:6px 0 22px}
+.head .kicker{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#8b7db0;font-weight:700}
+.head h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(22px,4.6vw,34px);margin:6px 0 4px;color:#413a5c}
+.head p{margin:0;font-size:13px;color:#6f6788}
+
+/* ---------- entry card (mockup 1) ---------- */
+.entry{display:flex;flex-direction:column;align-items:center;gap:16px;margin:34px auto 0;max-width:420px}
+.req-tile{
+  position:relative;width:170px;height:170px;border:0;cursor:pointer;
+  border-radius:34px;color:#fff;
+  background:linear-gradient(150deg,#9b83dd 0%,#7c5cbf 60%,#6b4dab 100%);
+  box-shadow:0 20px 40px rgba(108,76,171,.38), inset 0 1px 0 rgba(255,255,255,.35);
+  display:grid;place-items:center;transition:transform .18s, box-shadow .18s;
+}
+.req-tile:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 26px 50px rgba(108,76,171,.45)}
+.req-tile:active{transform:scale(.98)}
+.req-tile .badge{position:absolute;top:-6px;right:-6px;width:20px;height:20px;border-radius:50%;
+  background:#f38fb0;border:3px solid #efe6ff}
+.req-tile .spark{position:absolute;right:20px;bottom:22px;opacity:.85}
+.tooltip{
+  position:relative;background:#fff;border:1px solid #efe9fb;border-radius:14px;padding:11px 16px;
+  box-shadow:var(--sh-sm);font-size:13.5px;color:#4d4666;text-align:center;max-width:260px;line-height:1.45;
+}
+.tooltip::before{content:"";position:absolute;top:-7px;left:50%;margin-left:-7px;width:14px;height:14px;
+  background:#fff;border-left:1px solid #efe9fb;border-top:1px solid #efe9fb;transform:rotate(45deg)}
+.entry .note{font-size:12px;color:#7d7498;text-align:center;line-height:1.6}
+.entry .note b{color:#5f5580}
+
+/* ---------- generic card ---------- */
+.card{
+  background:var(--white);border:1px solid rgba(255,255,255,.9);border-radius:var(--r-lg);
+  box-shadow:var(--sh);overflow:hidden;animation:pop .26s ease-out;
+}
+@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.99)}to{opacity:1;transform:none}}
+.card-hd{
+  display:flex;align-items:center;gap:10px;padding:13px 16px;color:#fff;
+  background:linear-gradient(100deg,#9c8ac9 0%,#8a76bc 55%,#7f6ab3 100%);
+}
+.card-hd .ttl{font-size:14.5px;font-weight:700;letter-spacing:.2px;display:flex;align-items:center;gap:8px;min-width:0}
+.card-hd .ttl span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.icon-btn{width:30px;height:30px;border-radius:9px;border:0;background:rgba(255,255,255,.16);color:#fff;
+  display:grid;place-items:center;cursor:pointer;flex:0 0 auto;transition:.15s}
+.icon-btn:hover{background:rgba(255,255,255,.28)}
+.card-hd .right{margin-left:auto;display:flex;gap:8px;align-items:center}
+
+/* ---------- tabs ---------- */
+.tabs{display:flex;gap:8px;padding:12px 16px 0;border-bottom:1px solid var(--line-2)}
+.tab{
+  display:inline-flex;align-items:center;gap:7px;border:0;cursor:pointer;font:inherit;font-size:13.5px;font-weight:700;
+  padding:9px 18px;border-radius:11px 11px 0 0;color:#8d84a8;background:transparent;position:relative;top:1px;
+  border-bottom:2px solid transparent;transition:.15s;
+}
+.tab.on{color:var(--purple);background:linear-gradient(180deg,#fff,#faf7ff);border-bottom-color:var(--purple)}
+.tab:not(.on):hover{color:#6f6690}
+
+/* ---------- form grid ---------- */
+.form-body{padding:16px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 26px;align-items:start}
+.col{display:flex;flex-direction:column;gap:14px;min-width:0}
+.col.right{border-left:1px dashed #e9e0f9;padding-left:26px}
+@media(max-width:860px){
+  .grid{grid-template-columns:1fr}
+  .col.right{border-left:0;border-top:1px dashed #e9e0f9;padding-left:0;padding-top:14px}
+}
+.field{display:grid;grid-template-columns:1fr;gap:6px;min-width:0}
+.field .lbl{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:#5b5376;min-height:20px}
+.field .lbl .ic{width:22px;height:22px;border-radius:7px;background:#f2ecfe;color:#8a72cc;display:grid;place-items:center;flex:0 0 auto}
+.field .req{color:var(--bad);font-weight:700}
+.field input,.field select,.field textarea{
+  width:100%;font:inherit;font-size:13.5px;color:var(--ink);background:#faf8ff;
+  border:1px solid var(--line);border-radius:var(--r-sm);padding:10.5px 12px;outline:none;
+  transition:border-color .15s, box-shadow .15s, background .15s;appearance:none;
+}
+.field textarea{resize:vertical;min-height:78px;line-height:1.5}
+.field.tall textarea{min-height:150px}
+.field input::placeholder,.field textarea::placeholder{color:#b0a8c8}
+.field input:focus,.field select:focus,.field textarea:focus{
+  border-color:#a98fe0;background:#fff;box-shadow:0 0 0 3px rgba(150,120,215,.16)}
+.field.err input,.field.err select,.field.err textarea{border-color:#e9a5b6;background:#fff8fa}
+.field .msg{font-size:11.5px;color:#c65a75;display:none}
+.field.err .msg{display:block}
+.select-wrap{position:relative}
+.select-wrap::after{content:"";position:absolute;right:13px;top:50%;width:7px;height:7px;margin-top:-5px;
+  border-right:2px solid #9c8fbe;border-bottom:2px solid #9b8fbd;transform:rotate(45deg);pointer-events:none}
+.select-wrap select{padding-right:32px}
+
+/* ---------- footer ---------- */
+.form-ft{display:flex;gap:10px;justify-content:flex-end;align-items:center;
+  padding:14px 16px;border-top:1px solid var(--line-2);background:linear-gradient(180deg,#fff,#fbf9ff)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:inherit;font-size:13.5px;
+  font-weight:700;padding:10px 20px;border-radius:11px;cursor:pointer;border:1px solid transparent;transition:.15s;white-space:nowrap}
+.btn.primary{background:linear-gradient(180deg,#9b7fe0,#7f5fc7);color:#fff;box-shadow:0 8px 20px rgba(124,92,191,.32)}
+.btn.primary:hover{filter:brightness(1.05)}
+.btn.primary:active{transform:translateY(1px)}
+.btn.ghost{background:#fff;border-color:var(--line);color:#6b6488}
+.btn.ghost:hover{border-color:#d3c6ef;color:#4f4770}
+.btn.soft{background:#f3edfd;color:#6a4bab;border-color:#e8dffa}
+.btn.soft:hover{background:#ece2fb}
+.btn.ok{background:linear-gradient(180deg,#5cb87e,#3f9b62);color:#fff;box-shadow:0 8px 20px rgba(63,155,98,.3)}
+.btn.danger{background:#fdeef1;color:#b8455f;border-color:#f6ccd6}
+.btn[disabled]{opacity:.55;cursor:not-allowed;filter:none}
+.form-ft .hint{font-size:11.5px;color:#a49cbd;margin-right:auto}
+@media(max-width:560px){
+  .form-ft{flex-wrap:wrap-reverse;position:sticky;bottom:0;z-index:4}
+  .form-ft .btn{flex:1 1 auto;padding:12px 16px}
+  .form-ft .hint{flex:1 0 100%;order:3;text-align:center;margin:2px 0 0}
+}
+
+/* ---------- centered single cards (mockup 2 & 3) ---------- */
+.narrow{max-width:620px;margin:22px auto 0}
+.center-body{padding:24px 20px;text-align:center}
+.center-body h2{margin:6px 0 8px;font-size:19px;color:#4a4166}
+.center-body p{margin:0 0 6px;font-size:13.5px;color:#6f6788;line-height:1.6}
+.center-body .art{width:min(300px,72%);margin:0 auto 8px;display:block}
+.center-body .btn{margin-top:14px}
+.sent-row{display:flex;align-items:center;gap:14px;text-align:left;padding:14px;border:1px solid #e6f3ea;
+  background:linear-gradient(180deg,#f4fcf7,#f0faf4);border-radius:14px;margin-bottom:16px}
+@media(max-width:520px){.sent-row{flex-direction:column;text-align:center}}
+.sent-row .ck{width:44px;height:44px;border-radius:50%;background:#e2f6ea;color:#3f9b62;display:grid;place-items:center;flex:0 0 auto}
+.sent-row .txt{min-width:0}
+.sent-row .txt b{display:block;font-size:14.5px;color:#347a52}
+.sent-row .txt small{font-size:12.5px;color:#6f8a79;line-height:1.5;display:block;margin-top:2px}
+.sent-row .act{margin-left:auto}
+@media(max-width:520px){.sent-row .act{margin:6px auto 0}}
+.list-hd{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#5b5376;margin:0 0 10px;padding:0 2px}
+.list{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fdfcff}
+.list .empty{display:flex;flex-direction:column;align-items:center;gap:2px;padding:18px 12px 16px;color:#a49cbd;font-size:13px}
+.list .empty img{width:140px;margin-bottom:2px}
+.row{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-bottom:1px solid var(--line-2);text-align:left}
+.row:last-child{border-bottom:0}
+.row .st{width:8px;height:8px;border-radius:50%;margin-top:6px;flex:0 0 auto}
+.row .st.wait{background:var(--warn)} .row .st.done{background:var(--ok)} .row .st.lock{background:var(--purple)}
+.row .b{min-width:0;flex:1}
+.row .b b{font-size:13.5px;color:#4a4166;display:block}
+.row .b small{font-size:11.5px;color:#9b93b5;display:block;margin-top:2px}
+.row .tag{font-size:10.5px;font-weight:800;padding:3px 8px;border-radius:999px;white-space:nowrap;align-self:center}
+.tag.wait{background:#fdf1de;color:#a8731f}.tag.done{background:#e8f7ee;color:#2f7b4e}.tag.lock{background:#f0e9fd;color:#6a4bab}
+
+/* ---------- locked view ---------- */
+.locked-body{padding:22px 20px}
+.lockbox{border:1px solid #f2d9e0;background:linear-gradient(180deg,#fff6f8,#fff);border-radius:14px;padding:16px;margin-bottom:14px}
+.lockbox h3{margin:0 0 6px;font-size:15px;color:#a8415a;display:flex;align-items:center;gap:8px}
+.lockbox p{margin:0;font-size:13px;color:#8c6b74;line-height:1.6}
+.lockbox code{background:#fff;border:1px solid #f2d9e0;border-radius:6px;padding:1px 6px;font-size:12px;color:#a8415a}
+.timer{font-variant-numeric:tabular-nums;font-weight:800;color:#c1556f}
+.wl{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.wl input{flex:1 1 150px;min-width:0;font:inherit;font-size:13.5px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;outline:none}
+.wl input:focus{border-color:#a98fe0;box-shadow:0 0 0 3px rgba(150,120,215,.16)}
+
+/* ---------- admin sheet ---------- */
+.sheet{position:fixed;inset:0;z-index:50;display:none}
+.sheet.on{display:block}
+.sheet .scrim{position:absolute;inset:0;background:rgba(50,40,80,.42);backdrop-filter:blur(2px);animation:fade .2s}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.sheet .panel{position:absolute;right:0;top:0;bottom:0;width:min(440px,100%);background:#fff;
+  box-shadow:-20px 0 60px rgba(60,40,100,.3);display:flex;flex-direction:column;animation:slide .24s ease-out}
+@keyframes slide{from{transform:translateX(30px);opacity:.6}to{transform:none;opacity:1}}
+.sheet .hd{padding:14px 16px;background:linear-gradient(100deg,#9c8ac9,#7f6ab3);color:#fff;display:flex;align-items:center;gap:10px}
+.sheet .hd b{font-size:14.5px}.sheet .hd .x{margin-left:auto;background:rgba(255,255,255,.16);border:0;color:#fff;width:30px;height:30px;border-radius:9px;cursor:pointer}
+.sheet .bd{padding:14px 16px;overflow:auto;flex:1;font-size:13px;color:#5b5376}
+.sheet .bd h4{margin:16px 0 8px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#9b93b5}
+.kv{display:grid;grid-template-columns:118px 1fr;gap:6px 12px;font-size:13px;margin:0}
+.kv dt{color:#9b93b5;font-size:12px}.kv dd{margin:0;color:#4a4166;word-break:break-word;white-space:pre-wrap}
+.sheet .ft{padding:12px 16px;border-top:1px solid var(--line-2);display:flex;gap:8px;flex-wrap:wrap}
+.sheet .ft .btn{flex:1 1 auto}
+.note{border:1px dashed #dfd4f6;background:#faf7ff;border-radius:12px;padding:12px 14px;font-size:12.5px;color:#6c6488;line-height:1.6;margin-top:14px}
+.note b{color:#4a4166}
+
+
+/* ---------- mục lục (nav) ---------- */
+.nav{display:flex;align-items:center;gap:3px;flex-wrap:wrap;margin-left:auto;justify-content:flex-end}
+.navitem{display:inline-flex;align-items:center;gap:7px;font:inherit;font-size:12.5px;font-weight:650;
+  color:#6d658a;text-decoration:none;background:transparent;border:0;padding:7px 10px;border-radius:10px;
+  cursor:pointer;transition:.15s;line-height:1}
+.navitem:hover{background:#f3edfd;color:#5b4f86}
+.navitem.req{position:relative;padding:4px 12px 4px 4px;color:#fff;
+  background:linear-gradient(180deg,#a48ce0,#8a6ecb);box-shadow:0 6px 16px rgba(124,92,191,.30)}
+.navitem.req:hover{filter:brightness(1.06);color:#fff;background:linear-gradient(180deg,#a48ce0,#8a6ecb)}
+.navitem.req .cat{width:28px;height:28px;border-radius:50%;overflow:hidden;background:#fff;
+  display:grid;place-items:center;flex:0 0 auto}
+.navitem.req .cat img{width:100%;height:100%;object-fit:cover;object-position:center 42%}
+.navitem.req .badge{position:absolute;top:-7px;right:-7px;min-width:21px;height:21px;padding:0 6px;
+  border-radius:999px;background:#f38fb0;color:#fff;font-size:10.5px;font-weight:800;letter-spacing:.02em;
+  display:grid;place-items:center;border:2px solid #fff;font-variant-numeric:tabular-nums;
+  box-shadow:0 2px 6px rgba(200,80,120,.35)}
+.navitem.req .badge[hidden]{display:none}
+@media(max-width:820px){.navitem.soon{display:none}}
+@media(max-width:380px){.navitem.req .ntxt{display:none}.navitem.req{padding:4px}}
+
+/* ---------- vé / mã yêu cầu (chỉ người gửi thấy) ---------- */
+.ticket{display:inline-flex;align-items:center;gap:10px;margin:2px auto 4px;padding:9px 14px;
+  border:1px dashed #cdb9f0;background:linear-gradient(180deg,#faf7ff,#f5efff);border-radius:12px;flex-wrap:wrap;justify-content:center}
+.ticket[hidden]{display:none}
+.ticket .tlabel{font-size:11.5px;color:#8b7db0;font-weight:650}
+.ticket .tnum{font-size:19px;font-weight:800;color:#6a4bab;font-variant-numeric:tabular-nums;letter-spacing:.06em}
+.ticket .tstate{font-size:11px;font-weight:800;padding:3px 9px;border-radius:999px;background:#f0e9fd;color:#6a4bab}
+.ticket .tstate.done{background:#e8f7ee;color:#2f7b4e}
+.ticket .tstate.off{background:#f1eef8;color:#8b84a6}
+.tiny{font-size:11.5px;color:#a49cbd;margin:10px 0 0;line-height:1.6}
+.center-body .art.cat{width:min(210px,58%)}
+.locked-body .art.sm{display:block;width:150px;margin:0 auto 8px}
+
+
+/* ---------- slot theo tháng ---------- */
+.nextopen{margin:12px auto 0;display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;
+  font-size:12.5px;color:#6f6788;background:#f7f3ff;border:1px solid #e8def9;border-radius:11px;padding:8px 14px}
+.nextopen[hidden]{display:none}
+.nextopen b{color:#5b4f86}
+.cd{font-variant-numeric:tabular-nums;font-weight:800;color:#7c5cbf;letter-spacing:.02em}
+.slotbar{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
+.slot{font-size:11.5px;font-weight:800;padding:5px 11px;border-radius:999px;background:#eef8f2;color:#2f7b4e;border:1px solid #cfeadd}
+.slot.used{background:#fdeef1;color:#b8455f;border-color:#f6ccd6}
+.slot.extra{background:#f0e9fd;color:#6a4bab;border-color:#e2d6f8}
+/* ---------- toast ---------- */
+.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,16px);z-index:80;
+  background:#3f3559;color:#fff;font-size:13.5px;font-weight:600;padding:11px 18px;border-radius:12px;
+  box-shadow:0 14px 34px rgba(40,25,70,.35);opacity:0;pointer-events:none;transition:.22s;max-width:88vw;text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.toast.err{background:#a83e56}
+.toast.ok{background:#3f8f61}
+
+/* ---------- view switching ---------- */
+.view{display:none}
+.view.on{display:block}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+</head>
+<body>
+
+<!-- sakura decorations (inline SVG, no external assets) -->
+<svg class="sakura tl" viewBox="0 0 200 200" fill="none" aria-hidden="true">
+  <g opacity=".9">
+    <g transform="translate(58,54) scale(1.15)" fill="#fff">
+      <ellipse rx="13" ry="24" transform="rotate(0) translate(0,-18)"/>
+      <ellipse rx="13" ry="24" transform="rotate(72) translate(0,-18)"/>
+      <ellipse rx="13" ry="24" transform="rotate(144) translate(0,-18)"/>
+      <ellipse rx="13" ry="24" transform="rotate(216) translate(0,-18)"/>
+      <ellipse rx="13" ry="24" transform="rotate(288) translate(0,-18)"/>
+      <circle r="7" fill="#f6dced"/>
+    </g>
+    <g transform="translate(140,120) scale(.62) rotate(20)" fill="#fff">
+      <ellipse rx="13" ry="24" transform="rotate(0) translate(0,-18)"/>
+      <ellipse rx="13" ry="24" transform="rotate(72) translate(0,-18)"/>
+      <ellipse rx="13" ry="24" transform="rotate(144) translate(0,-18)"/>
+      <ellipse rx="13" ry="24" transform="rotate(216) translate(0,-18)"/>
+      <ellipse rx="13" ry="24" transform="rotate(288) translate(0,-18)"/>
+      <circle r="7" fill="#f6dced"/>
+    </g>
+  </g>
+</svg>
+<svg class="sakura br" viewBox="0 0 200 200" fill="none" aria-hidden="true">
+  <g transform="translate(110,100) scale(1.25) rotate(-12)" fill="#fff">
+    <ellipse rx="13" ry="24" transform="rotate(0) translate(0,-18)"/>
+    <ellipse rx="13" ry="24" transform="rotate(72) translate(0,-18)"/>
+    <ellipse rx="13" ry="24" transform="rotate(144) translate(0,-18)"/>
+    <ellipse rx="13" ry="24" transform="rotate(216) translate(0,-18)"/>
+    <ellipse rx="13" ry="24" transform="rotate(288) translate(0,-18)"/>
+    <circle r="7" fill="#f6dced"/>
+  </g>
+  <g transform="translate(52,150) scale(.7) rotate(28)" fill="#fff">
+    <ellipse rx="13" ry="24" transform="rotate(0) translate(0,-18)"/>
+    <ellipse rx="13" ry="24" transform="rotate(72) translate(0,-18)"/>
+    <ellipse rx="13" ry="24" transform="rotate(144) translate(0,-18)"/>
+    <ellipse rx="13" ry="24" transform="rotate(216) translate(0,-18)"/>
+    <ellipse rx="13" ry="24" transform="rotate(288) translate(0,-18)"/>
+    <circle r="7" fill="#f6dced"/>
+  </g>
+</svg>
+
+<div class="stage">
+
+  <div class="topbar">
+    <div class="brand">
+      <div class="mark">Tea</div>
+      <div class="t"><b>Character WLW</b></div>
+    </div>
+    <nav class="nav" aria-label="Mục lục">
+      <a class="navitem soon" href="index.html">Thư viện</a>
+      <a class="navitem soon" href="index.html#featured">Nhân vật</a>
+      <a class="navitem soon" href="commands.html">Hỗ trợ lệnh</a>
+      <a class="navitem soon" href="https://aistudio.google.com/" target="_blank" rel="noopener">AI Studio</a>
+      <button class="navitem req" id="navReq" title="Gửi yêu cầu character">
+        <span class="cat"><img data-img="icon" alt="" /></span>
+        <span class="ntxt">REQ</span>
+        <span class="badge" id="navBadge" hidden>001</span>
+      </button>
+    </nav>
+    <button class="chip" id="lockChip"><span class="dot"></span><span id="lockChipTxt">Đang mở</span></button>
+  </div>
+
+  <!-- ============ VIEW: entry (mockup 1) ============ -->
+  <section class="view on" id="v-entry">
+    <div class="head">
+      <div class="kicker">Gửi yêu cầu</div>
+      <h1 id="entryTitle">Yêu cầu character của bạn</h1>
+      <p id="entrySub">Điền form một lần — mình nhận đủ thông tin và làm luôn, không hỏi lại.</p>
+    </div>
+
+    <div class="card narrow">
+      <div class="center-body">
+        <img class="art cat" data-img="art" alt="" />
+        <h2 id="cardTitle">Chưa có yêu cầu nào</h2>
+        <p id="cardDesc">Bấm <b>REQ</b> trên mục lục để gửi yêu cầu đầu tiên.</p>
+
+        <div class="ticket" id="myTicket" hidden>
+          <span class="tlabel">Mã yêu cầu</span>
+          <span class="tnum" id="myCodeNum">001</span>
+          <span class="tstate" id="myState">Đang xử lý</span>
+        </div>
+
+        <div class="nextopen" id="nextOpenRow" hidden>
+          Slot tháng sau mở <b id="nextOpenDate">01/12</b> · còn <span class="cd" data-countdown>--</span>
+        </div>
+
+        <div>
+          <button class="btn primary" id="openReq">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M21 3 10.5 13.5M21 3l-6.6 18-3.9-7.5L3 9.6 21 3Z"/></svg>
+            <span id="openReqLbl">Gửi yêu cầu</span>
+          </button>
+        </div>
+
+        <p class="tiny" id="privacyNote">
+          Mã yêu cầu và nội dung chỉ hiện trên máy bạn và trong trang quản trị của chủ trang.<br>
+          Người khác mở trang này không thấy nội dung, cũng không thấy mã.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VIEW: form (mockup 1 - modal) ============ -->
+  <section class="view" id="v-form">
+    <div class="card">
+      <div class="card-hd">
+        <div class="ttl">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 3.5h8a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2Z"/><path d="M9.5 8h5M9.5 11.5h5M9.5 15h3"/>
+          </svg>
+          <span>REQ — Gửi yêu cầu mới</span>
+        </div>
+        <div class="right">
+          <button class="icon-btn" id="closeForm" title="Đóng" aria-label="Đóng">
+            <svg width="16" height="16" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="tabs" role="tablist">
+        <button class="tab on" id="tabDetail" role="tab" aria-selected="true">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.6 6.2 6.7.5-5.1 4.4 1.6 6.6L12 16.8 6.2 20.3l1.6-6.6L2.7 9.3l6.7-.5z"/></svg>
+          Chi tiết
+        </button>
+        <button class="tab" id="tabGeneral" role="tab" aria-selected="false">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+          Chung chung
+        </button>
+      </div>
+
+      <form id="reqForm" novalidate>
+        <!-- ---------- TAB CHI TIẾT ---------- -->
+        <div class="form-body" id="paneDetail">
+          <div class="grid">
+            <div class="col">
+              <div class="field" data-k="email">
+                <label class="lbl" for="f-email">
+                  <span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5.5" width="18" height="13" rx="2.4"/><path d="M3.6 7l8.4 6 8.4-6"/></svg></span>
+                  Email nhận mã yêu cầu <span class="req">*</span>
+                </label>
+                <input id="f-email" name="email" type="email" inputmode="email" placeholder="ban@email.com" autocomplete="email" />
+                <span class="msg">Email chưa đúng — mã vé sẽ gửi về đây.</span>
+              </div>
+
+              <div class="field" data-k="char">
+                <label class="lbl" for="f-char">
+                  <span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6"/></svg></span>
+                  Thông tin Char <span class="req">*</span>
+                </label>
+                <input id="f-char" name="char" placeholder="Nhập tên, mô tả nhân vật chính..." autocomplete="off" />
+                <span class="msg">Cần điền tên hoặc mô tả char.</span>
+              </div>
+
+              <div class="field" data-k="context">
+                <label class="lbl" for="f-context">
+                  <span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v16H5.5A1.5 1.5 0 0 1 4 18.5Z"/><path d="M20 5.5A1.5 1.5 0 0 0 18.5 4H13v16h5.5A1.5 1.5 0 0 0 20 18.5Z"/></svg></span>
+                  Bối cảnh cốt truyện
+                </label>
+                <input id="f-context" name="context" placeholder="Nhập bối cảnh, thế giới..." autocomplete="off" />
+              </div>
+
+              <div class="field" data-k="genre">
+                <label class="lbl" for="f-genre">
+                  <span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2 2 0 0 1 6 3.5h4.2l9 9a2 2 0 0 1 0 2.8l-3.9 3.9a2 2 0 0 1-2.8 0l-9-9Z"/><circle cx="8.4" cy="7.9" r="1.2" fill="currentColor" stroke="none"/></svg></span>
+                  Thể loại <span class="req">*</span>
+                </label>
+                <div class="select-wrap">
+                  <select id="f-genre" name="genre">
+                    <option value="">Chọn thể loại...</option>
+                    <option>Ngôn tình</option><option>Cổ trang</option><option>ABO</option>
+                    <option>Tu tiên</option><option>Yandere</option><option>Ngọt sủng</option>
+                    <option>Hài hước</option><option>Kinh dị</option><option>Hệ thống</option>
+                    <option>Isekai</option><option>Hiện đại</option><option>Khác</option>
+                  </select>
+                </div>
+                <span class="msg">Chọn một thể loại.</span>
+              </div>
+
+              <div class="field" data-k="user">
+                <label class="lbl" for="f-user">
+                  <span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="3.2"/><path d="M4.5 20c.6-3.4 3.6-5.5 7.5-5.5s6.9 2.1 7.5 5.5"/></svg></span>
+                  User
+                </label>
+                <input id="f-user" name="user" placeholder="Nhập vai trò / đặc điểm của bạn..." autocomplete="off" />
+              </div>
+
+              <div class="field" data-k="npc">
+                <label class="lbl" for="f-npc">
+                  <span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="9" r="3"/><path d="M2.8 19c.5-3 2.9-4.8 6.2-4.8s5.7 1.8 6.2 4.8"/><circle cx="17" cy="9.5" r="2.4"/><path d="M15.6 14.4c2.7.2 4.6 1.8 5 4.4"/></svg></span>
+                  NPC mong muốn
+                </label>
+                <input id="f-npc" name="npc" placeholder="Nhập tên hoặc mô tả NPC..." autocomplete="off" />
+              </div>
+
+              <div class="field" data-k="opening">
+                <label class="lbl" for="f-opening">
+                  <span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+                  Cảnh mở đầu
+                </label>
+                <input id="f-opening" name="opening" placeholder="Nhập tình huống mở đầu..." autocomplete="off" />
+              </div>
+            </div>
+
+            <div class="col right">
+              <div class="field" data-k="rel">
+                <label class="lbl" for="f-rel">
+                  <span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 20s-7.3-4.6-7.3-9.2A4.2 4.2 0 0 1 12 8a4.2 4.2 0 0 1 7.3 2.8C19.3 15.4 12 20 12 20Z"/></svg></span>
+                  Mối quan hệ Giữa Char – User
+                </label>
+                <textarea id="f-rel" name="rel" placeholder="Nhập mối quan hệ..."></textarea>
+              </div>
+
+              <div class="field" data-k="story">
+                <label class="lbl" for="f-story">
+                  <span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.6 6.2 6.7.5-5.1 4.4 1.6 6.6L12 16.8 6.2 20.3l1.6-6.6L2.7 9.3l6.7-.5z"/></svg></span>
+                  Story mong muốn
+                </label>
+                <textarea id="f-story" name="story" placeholder="Nhập diễn biến, kết thúc mong muốn..."></textarea>
+              </div>
+
+              <div class="field tall" data-k="extra">
+                <label class="lbl" for="f-extra">
+                  <span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+                  Yêu cầu thêm
+                </label>
+                <textarea id="f-extra" name="extra" placeholder="Nhập yêu cầu khác (nếu có)..."></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ---------- TAB CHUNG CHUNG ---------- -->
+        <div class="form-body" id="paneGeneral" style="display:none">
+          <div class="grid">
+            <div class="col">
+              <div class="field" data-k="g-title">
+                <label class="lbl" for="g-title">
+                  <span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h11M4 17h7"/></svg></span>
+                  Tiêu đề yêu cầu <span class="req">*</span>
+                </label>
+                <input id="g-title" name="gTitle" placeholder="VD: Cần char nam phản diện cho truyện ABO..." autocomplete="off" />
+                <span class="msg">Cần có tiêu đề ngắn gọn.</span>
+              </div>
+              <div class="field" data-k="g-priority">
+                <label class="lbl" for="g-priority">
+                  <span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 4v9M12 17h.01"/><path d="M4.5 12a7.5 7.5 0 1 0 15 0 7.5 7.5 0 0 0-15 0"/></svg></span>
+                  Mức ưu tiên
+                </label>
+                <div class="select-wrap">
+                  <select id="g-priority" name="gPriority">
+                    <option>Bình thường</option><option>Gấp</option><option>Không gấp</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field" data-k="g-deadline">
+                <label class="lbl" for="g-deadline">
+                  <span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="5.5" width="16" height="14" rx="2"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/></svg></span>
+                  Hạn mong muốn
+                </label>
+                <input id="g-deadline" name="gDeadline" type="date" />
+              </div>
+            </div>
+            <div class="col right">
+              <div class="field" data-k="g-desc">
+                <label class="lbl" for="g-desc">
+                  <span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5h16M4 12h16M4 17.5h10"/></svg></span>
+                  Mô tả chung <span class="req">*</span>
+                </label>
+                <textarea id="g-desc" name="gDesc" placeholder="Không cần theo char cụ thể — cứ mô tả điều bạn muốn..." style="min-height:120px"></textarea>
+                <span class="msg">Mô tả vài dòng để mình hiểu ý bạn.</span>
+              </div>
+              <div class="field tall" data-k="g-note">
+                <label class="lbl" for="g-note">
+                  <span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+                  Ghi chú thêm
+                </label>
+                <textarea id="g-note" name="gNote" placeholder="Thông tin liên hệ, link tham khảo..."></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-ft">
+          <span class="hint">Đang gửi ở tab: <b id="ftTab">Chi tiết</b></span>
+          <button type="button" class="btn ghost" id="btnCancel">Huỷ</button>
+          <button type="submit" class="btn primary" id="btnSend">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M21 3 10.5 13.5M21 3l-6.6 18-3.9-7.5L3 9.6 21 3Z"/></svg>
+            Gửi yêu cầu
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- ============ VIEW: chưa xong (mockup 2) ============ -->
+  <section class="view" id="v-incomplete">
+    <div class="card narrow">
+      <div class="card-hd">
+        <div class="ttl">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3.5h8a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2Z"/><path d="M9.5 8h5M9.5 11.5h5M9.5 15h3"/></svg>
+          <span>REQ — Yêu cầu của bạn</span>
+        </div>
+        <div class="right">
+          <button class="icon-btn" data-close-all title="Đóng" aria-label="Đóng">
+            <svg width="16" height="16" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="center-body">
+        <img class="art cat" data-img="art" alt="" />
+        <h2>Chưa xong!</h2>
+        <p>Bạn vẫn cần hoàn thiện yêu cầu này.</p>
+        <p>Vui lòng quay lại và nhấn <b>“Đã xong”</b> khi đã điền đầy đủ nhé!</p>
+        <button class="btn soft" id="btnBackForm">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6l-6 6 6 6"/><path d="M4 12h16"/></svg>
+          Quay lại
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VIEW: đã gửi (mockup 3) ============ -->
+  <section class="view" id="v-sent">
+    <div class="card narrow">
+      <div class="card-hd">
+        <div class="ttl">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3.5h8a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2Z"/><path d="M9.5 8h5M9.5 11.5h5M9.5 15h3"/></svg>
+          <span>REQ</span>
+        </div>
+        <div class="right">
+          <button class="icon-btn" data-close-all title="Đóng" aria-label="Đóng">
+            <svg width="16" height="16" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="form-body">
+        <div class="sent-row">
+          <div class="ck">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+          </div>
+          <div class="txt">
+            <b>Yêu cầu đã được gửi!</b>
+            <small>Mã <span id="sentCode">REQ-001</span> · đã gửi tới <b id="sentEmail">email của bạn</b></small>
+            <small id="sentNotify" style="margin-top:4px">Khi chủ trang làm xong, bạn sẽ nhận email báo.</small>
+          </div>
+          <div class="act">
+            <button class="btn soft" id="btnEditSent">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4l10-10-4-4L4 16Z"/><path d="M13.5 5.5l4 4"/></svg>
+              Đã xong
+            </button>
+          </div>
+        </div>
+
+        <div class="list-hd">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+          Danh sách yêu cầu
+        </div>
+        <div class="list" id="reqList"></div>
+
+        <div class="note">
+          <b>Mỗi tháng chỉ nhận 1 yêu cầu.</b> Tháng này slot đã thuộc về <span id="sentOwner">bạn</span> —
+          slot tiếp theo mở <b id="sentNext">01/12</b> lúc 00:00.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VIEW: đang khoá (người khác giữ chỗ) ============ -->
+  <section class="view" id="v-locked">
+    <div class="card narrow">
+      <div class="card-hd">
+        <div class="ttl"><span>REQ — Tạm đóng nhận yêu cầu</span></div>
+        <div class="right">
+          <button class="icon-btn" data-close-all title="Đóng" aria-label="Đóng">
+            <svg width="16" height="16" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="locked-body">
+        <img class="art sm" data-img="art" alt="" />
+        <div class="lockbox">
+          <h3>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="10.5" width="14" height="9.5" rx="2.2"/><path d="M8.2 10.5V8a3.8 3.8 0 0 1 7.6 0v2.5"/></svg>
+            Đang xử lý một yêu cầu khác
+          </h3>
+          <p>
+            <b id="lkMonth">Tháng này</b> đã nhận đủ <b id="lkQuota">1</b> yêu cầu — nội dung và mã yêu cầu đó là riêng tư.
+          </p>
+          <div class="nextopen" style="margin:10px 0 0">
+            Slot tiếp theo mở lúc <b id="lkNext">01/12</b> · còn <span class="cd" data-countdown>--</span>
+          </div>
+          <div class="wl">
+            <input id="wlEmail" type="email" placeholder="Email để báo khi mở slot tháng sau" />
+            <button class="btn soft" id="wlBtn">Báo tôi khi mở slot</button>
+          </div>
+        </div>
+        <p style="font-size:12.5px;color:#9b93b5;margin:0">
+          Đang có <b id="wlCount">0</b> người chờ. Không cần tải lại trang — trạng thái tự cập nhật.
+        </p>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /stage -->
+
+<!-- ============ ADMIN SHEET ============ -->
+<div class="sheet" id="sheet">
+  <div class="scrim" data-close-sheet></div>
+  <div class="panel">
+    <div class="hd">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><rect x="5" y="10.5" width="14" height="9.5" rx="2.2"/><path d="M8.2 10.5V8a3.8 3.8 0 0 1 7.6 0v2.5"/></svg>
+      <b>Quản trị — chỉ mình bạn thấy</b>
+      <button class="x" data-close-sheet aria-label="Đóng">
+        <svg width="15" height="15" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="bd" id="sheetBody"></div>
+    <div class="ft">
+      <button class="btn ok" id="btnAdminDone" disabled>✓ ĐÃ XONG — báo mail cho người đặt</button>
+      <button class="btn ghost" id="btnReturnSlot" disabled>↩ Trả slot (huỷ đơn)</button>
+      <button class="btn soft" id="btnAddSlot">＋ Mở thêm 1 slot tháng này</button>
+      <button class="btn ghost" id="btnSimulate">Giả lập người khác đặt</button>
+      <button class="btn danger" id="btnResetAll">Xoá dữ liệu test</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ==========================================================================
+   BẢN TEST — dữ liệu nằm trong localStorage của trình duyệt này.
+   LUẬT: mỗi tháng hệ thống chỉ nhận DUY NHẤT 1 yêu cầu (reset 00:00 ngày 1).
+   (Bản thật: thay lớp Store bằng Supabase + RLS — xem SUPABASE-RLS.sql)
+   ========================================================================== */
+const $  = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+const KEY = 'charwlw_req_month_v2';
+const ART  = 'data:image/webp;base64,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';
+const ICON = 'data:image/webp;base64,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';
+const QUOTA = 1;                       // số yêu cầu / tháng
+const TZ = 'Asia/Ho_Chi_Minh';
+const VN_OFFSET = 7 * 3600 * 1000;     // VN = UTC+7, không có DST
+
+const LS = {
+  get(k) { try { return localStorage.getItem(k); } catch { return memStore[k] ?? null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch { memStore[k] = v; } },
+  del(k) { try { localStorage.removeItem(k); } catch { delete memStore[k]; } }
+};
+const memStore = {};
+
+/* vé của "tôi" — để trong sessionStorage: mỗi TAB là một người khác nhau,
+   reload vẫn nhớ, nhưng tab khác (người khác) không thấy. */
+const SS = (() => {
+  const mem = {};
+  return {
+    get(k) { try { return sessionStorage.getItem(k); } catch { return mem[k] ?? null; } },
+    set(k, v) { try { sessionStorage.setItem(k, v); } catch { mem[k] = v; } },
+    del(k) { try { sessionStorage.removeItem(k); } catch { delete mem[k]; } }
+  };
+})();
+const MYKEY = 'charwlw_my_ticket';
+const getMine = () => { try { return JSON.parse(SS.get(MYKEY) || 'null'); } catch { return null; } };
+const setMine = v => v ? SS.set(MYKEY, JSON.stringify(v)) : SS.del(MYKEY);
+
+const Store = {
+  data: { requests: [], waitlist: [], seq: 0, mine: null, extra: {} },
+  load() {
+    try { Object.assign(this.data, JSON.parse(LS.get(KEY)) || {}); } catch {}
+    if (!this.data.extra) this.data.extra = {};
+    return this.data;
+  },
+  save() { LS.set(KEY, JSON.stringify(this.data)); },
+  nextCode() { this.data.seq = (this.data.seq || 0) + 1; return 'REQ-' + String(this.data.seq).padStart(3, '0'); }
+};
+
+/* ------------------------------------------------ tháng / slot */
+const periodOf = (d = new Date()) =>
+  new Intl.DateTimeFormat('en-CA', { timeZone: TZ, year: 'numeric', month: '2-digit' })
+    .format(d).slice(0, 7);                                   // 'YYYY-MM'
+
+function periodInfo() {
+  const period = periodOf();
+  const [y, m] = period.split('-').map(Number);
+  const nextUtc = Date.UTC(m === 12 ? y + 1 : y, m === 12 ? 0 : m, 1) - VN_OFFSET;
+  const nm = m === 12 ? 1 : m + 1, ny = m === 12 ? y + 1 : y;
+  return {
+    period, year: y, month: m,
+    label: `tháng ${m}/${y}`,
+    nextOpen: new Date(nextUtc),
+    nextLabel: `01/${String(nm).padStart(2, '0')}/${ny}`
+  };
+}
+
+const inPeriod  = (r, p) => r.period === p && (r.status === 'lock' || r.status === 'done');
+const quotaOf   = p => QUOTA + (Store.data.extra[p] || 0);
+const usedCount = p => Store.data.requests.filter(r => inPeriod(r, p)).length;
+const slotsLeft = p => Math.max(0, quotaOf(p) - usedCount(p));
+const shortCode = c => String(c || '').replace(/^REQ-/i, '');
+const myReqIn = p => (mine && Store.data.requests.find(r => r.id === mine.id && inPeriod(r, p))) || null;
+
+/* ------------------------------------------------ state */
+let tab = 'detail';
+let mine = null;
+let tick = null;
+
+function toast(msg, kind = '') {
+  const t = $('#toast');
+  t.textContent = msg;
+  t.className = 'toast on ' + kind;
+  clearTimeout(t._x);
+  t._x = setTimeout(() => (t.className = 'toast ' + kind), 3000);
+}
+
+function fmtLeft(ms) {
+  if (ms <= 0) return '00:00:00';
+  const s = Math.floor(ms / 1000);
+  const d = Math.floor(s / 86400), h = Math.floor((s % 86400) / 3600),
+        mi = Math.floor((s % 3600) / 60), se = s % 60, pad = n => String(n).padStart(2, '0');
+  return (d > 0 ? `${d} ngày ` : '') + `${pad(h)}:${pad(mi)}:${pad(se)}`;
+}
+
+/** Đếm ngược tới 00:00 ngày 1 tháng sau — chỉ chạy khi tháng này đã hết slot. */
+function startCountdown() {
+  stopTick();
+  const target = periodInfo().nextOpen.getTime();
+  const paint = () => {
+    const left = target - Date.now();
+    $$('[data-countdown]').forEach(el => (el.textContent = fmtLeft(left)));
+    if (left <= 0) { stopTick(); boot(); }                      // sang tháng mới
+  };
+  paint();
+  tick = setInterval(paint, 1000);
+}
+function stopTick() { if (tick) clearInterval(tick); tick = null; }
+
+/* ------------------------------------------------ view */
+function view(name) {
+  $$('.view').forEach(v => v.classList.toggle('on', v.id === 'v-' + name));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (name === 'entry') renderEntry();
+}
+
+/* ------------------------------------------------ tabs */
+function setTab(which) {
+  tab = which;
+  const d = which === 'detail';
+  $('#tabDetail').classList.toggle('on', d);
+  $('#tabGeneral').classList.toggle('on', !d);
+  $('#tabDetail').setAttribute('aria-selected', d);
+  $('#tabGeneral').setAttribute('aria-selected', !d);
+  $('#paneDetail').style.display = d ? 'block' : 'none';
+  $('#paneGeneral').style.display = d ? 'none' : 'block';
+  $('#ftTab').textContent = d ? 'Chi tiết' : 'Chung chung';
+}
+$('#tabDetail').onclick = () => setTab('detail');
+$('#tabGeneral').onclick = () => setTab('general');
+
+/* ------------------------------------------------ chip trạng thái */
+function renderChip() {
+  const { period, label } = periodInfo();
+  const mineNow = myReqIn(period);
+  const left = slotsLeft(period);
+  const chip = $('#lockChip');
+  if (mineNow) {
+    chip.className = 'chip busy';
+    $('#lockChipTxt').textContent = 'Bạn đã đặt · ' + shortCode(mineNow.code);
+  } else if (left <= 0) {
+    chip.className = 'chip busy';
+    $('#lockChipTxt').textContent = 'Hết slot ' + label;
+  } else {
+    chip.className = 'chip on';
+    $('#lockChipTxt').textContent = 'Còn ' + left + ' slot';
+  }
+}
+
+/* ------------------------------------------------ thẻ ở trang chủ (entry) */
+function renderEntry() {
+  const info = periodInfo();
+  const left = slotsLeft(info.period);
+  const mineNow = myReqIn(info.period);
+  const badge = $('#navBadge');
+  const ticket = $('#myTicket');
+  const row = $('#nextOpenRow');
+
+  $('#nextOpenDate').textContent = info.nextLabel;
+
+  if (mineNow) {
+    const num = shortCode(mineNow.code);
+    const state = mineNow.status === 'lock' ? 'Đang xử lý' : 'Đã xong';
+    ticket.hidden = false;
+    $('#myCodeNum').textContent = num;
+    $('#myState').textContent = state;
+    $('#myState').className = 'tstate' + (mineNow.status === 'done' ? ' done' : '');
+    $('#cardTitle').textContent = mineNow.status === 'done' ? 'Yêu cầu của bạn đã xong' : 'Yêu cầu của bạn đang được xử lý';
+    $('#cardDesc').innerHTML = 'Mã đã gửi tới <b>' + esc(mineNow.email || 'email của bạn') + '</b>. Giữ mã để trao đổi với chủ trang.';
+    $('#openReqLbl').textContent = 'Xem lại yêu cầu';
+    badge.hidden = false;
+    badge.textContent = num;
+  } else if (left <= 0) {
+    ticket.hidden = true;
+    badge.hidden = true;
+    $('#cardTitle').textContent = 'Tháng này đã nhận đủ yêu cầu';
+    $('#cardDesc').innerHTML = 'Slot duy nhất của <b>' + info.label + '</b> đã có người đặt — chúc mừng người đó nhé!';
+    $('#openReqLbl').textContent = 'Xem trạng thái';
+  } else {
+    ticket.hidden = true;
+    badge.hidden = true;
+    $('#cardTitle').textContent = 'Tháng này còn ' + left + ' slot';
+    $('#cardDesc').innerHTML = 'Mỗi tháng hệ thống chỉ nhận <b>' + QUOTA + ' yêu cầu</b>. Điền đủ một lần — mình làm luôn, không hỏi lại.';
+    $('#openReqLbl').textContent = 'Gửi yêu cầu';
+  }
+
+  const showCd = left <= 0 && !mineNow;
+  row.hidden = !showCd;
+  if (showCd) startCountdown(); else stopTick();
+
+  $('#entrySub').textContent = left > 0
+    ? 'Slot ' + info.label + ' đang mở — ai gửi trước, người đó được.'
+    : 'Hẹn gặp lại vào ' + info.nextLabel + '.';
+}
+
+/* ------------------------------------------------ mở form */
+function openForm() {
+  const { period } = periodInfo();
+  if (myReqIn(period)) { renderSent(); return view('sent'); }
+  if (slotsLeft(period) <= 0) { renderLocked(); return view('locked'); }
+  setTab('detail');
+  view('form');
+}
+$('#openReq').onclick = openForm;
+$('#navReq').onclick = openForm;
+
+$('#btnBackForm').onclick = () => {
+  const { period } = periodInfo();
+  if (slotsLeft(period) <= 0 && !myReqIn(period)) { renderLocked(); return view('locked'); }
+  view('form');
+};
+
+/* ------------------------------------------------ đóng form */
+function closeForm() { view(isDirty() ? 'incomplete' : 'entry'); }
+$('#closeForm').onclick = closeForm;
+$('#btnCancel').onclick = closeForm;
+$$('[data-close-all]').forEach(b => b.onclick = () => view('entry'));
+
+function isDirty() {
+  return $$('#reqForm input, #reqForm textarea').some(i => i.value.trim()) ||
+         [...$$('#reqForm select')].some(s => s.selectedIndex > 0);
+}
+
+/* ------------------------------------------------ gửi yêu cầu */
+function clearErrors() { $$('.field').forEach(f => f.classList.remove('err')); }
+function err(k) { const f = $(`.field[data-k="${k}"]`); if (f) f.classList.add('err'); }
+
+$('#reqForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  clearErrors();
+  const info = periodInfo();
+  const email = $('#f-email').value.trim();
+  const okEmail = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
+  if (!okEmail) err('email');
+
+  if (tab === 'detail') {
+    const char = $('#f-char').value.trim(), genre = $('#f-genre').value;
+    if (!char) err('char');
+    if (!genre) err('genre');
+    if (!char || !genre || !okEmail) return toast('Còn thiếu thông tin bắt buộc.', 'err');
+  } else {
+    const title = $('#g-title').value.trim(), desc = $('#g-desc').value.trim();
+    if (!title) err('g-title');
+    if (!desc) err('g-desc');
+    if (!title || !desc || !okEmail) return toast('Còn thiếu thông tin bắt buộc.', 'err');
+  }
+
+  // ---- kiểm tra slot của tháng (bản thật: partial unique index làm việc này) ----
+  if (myReqIn(info.period)) { toast('Bạn đã đặt 1 yêu cầu trong ' + info.label + ' rồi.', 'err'); renderSent(); return view('sent'); }
+  if (slotsLeft(info.period) <= 0) {
+    toast('Ai đó vừa đặt trước — ' + info.label + ' đã hết slot.', 'err');
+    renderLocked(); return view('locked');
+  }
+
+  const code = Store.nextCode();
+  const req = {
+    id: 'r' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+    code, period: info.period, tab,
+    email,
+    title: tab === 'detail' ? ($('#f-char').value.trim() || 'Yêu cầu char') : $('#g-title').value.trim(),
+    status: 'lock',
+    submittedAt: Date.now(),
+    fields: collectFields(),
+    notifiedSubmitterAt: null, notifiedOwnerAt: null
+  };
+  Store.data.requests.unshift(req);
+  mine = { id: req.id, code };
+  setMine(mine);
+  Store.save();
+
+  renderChip(); renderSent(); view('sent');
+  toast('Đã gửi ' + code + ' · mã vé đã gửi tới ' + email, 'ok');
+});
+
+function collectFields() {
+  const o = {};
+  $$('#reqForm input, #reqForm select, #reqForm textarea')
+    .forEach(i => { if (i.value.trim()) o[i.name] = i.value.trim(); });
+  return o;
+}
+
+/* ------------------------------------------------ màn "đã gửi" */
+function renderSent() {
+  const info = periodInfo();
+  const r = myReqIn(info.period) || Store.data.requests.find(x => x.id === (mine && mine.id));
+  if (r) {
+    $('#sentCode').textContent = r.code;
+    $('#sentEmail').textContent = r.email || 'email của bạn';
+    $('#sentOwner').textContent = 'bạn';
+    $('#sentNotify').textContent = r.status === 'done'
+      ? 'Chủ trang đã đánh dấu xong — email báo đã được gửi.'
+      : 'Khi chủ trang làm xong, bạn sẽ nhận email báo.';
+  }
+  $('#sentNext').textContent = info.nextLabel;
+
+  const list = $('#reqList');
+  const rows = Store.data.requests.filter(x => x.id === (mine && mine.id));
+  if (!rows.length) {
+    list.innerHTML = `<div class="empty"><img src="${ART}" alt="" />Chưa có yêu cầu nào khác</div>`;
+    return;
+  }
+  list.innerHTML = rows.map(r => {
+    const cls = r.status === 'done' ? 'done' : r.status === 'lock' ? 'lock' : 'wait';
+    const tag = r.status === 'done' ? 'Đã xong' : r.status === 'lock' ? 'Đang xử lý' : 'Đã huỷ';
+    return `<div class="row">
+      <span class="st ${cls}"></span>
+      <div class="b"><b>${esc(r.title)}</b><small>${r.code} · ${r.period} · ${new Date(r.submittedAt).toLocaleString('vi-VN')}</small></div>
+      <span class="tag ${cls}">${tag}</span>
+    </div>`;
+  }).join('');
+}
+
+$('#btnEditSent').onclick = () => { toast('Nội dung đã chốt. Muốn sửa, nhắn chủ trang kèm mã vé.', 'ok'); };
+
+/* ------------------------------------------------ màn "hết slot tháng" */
+function renderLocked() {
+  const info = periodInfo();
+  $('#lkMonth').textContent = info.label.charAt(0).toUpperCase() + info.label.slice(1);
+  $('#lkQuota').textContent = QUOTA;
+  $('#lkNext').textContent = info.nextLabel;
+  $('#wlCount').textContent = Store.data.waitlist.length;
+  startCountdown();
+}
+
+$('#wlBtn').onclick = () => {
+  const v = $('#wlEmail').value.trim();
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)) return toast('Email chưa hợp lệ.', 'err');
+  if (!Store.data.waitlist.includes(v)) Store.data.waitlist.push(v);
+  Store.save();
+  $('#wlEmail').value = '';
+  $('#wlCount').textContent = Store.data.waitlist.length;
+  toast('Đã ghi nhận — sẽ báo khi mở slot tháng sau.', 'ok');
+};
+
+/* ------------------------------------------------ bảng quản trị */
+$('#lockChip').onclick = () => { renderSheet(); $('#sheet').classList.add('on'); };
+$$('[data-close-sheet]').forEach(b => b.onclick = () => $('#sheet').classList.remove('on'));
+
+const LABELS = {
+  email: 'Email', char: 'Thông tin Char', context: 'Bối cảnh cốt truyện', genre: 'Thể loại', user: 'User',
+  npc: 'NPC mong muốn', opening: 'Cảnh mở đầu', rel: 'Mối quan hệ Char – User',
+  story: 'Story mong muốn', extra: 'Yêu cầu thêm',
+  gTitle: 'Tiêu đề yêu cầu', gPriority: 'Mức ưu tiên', gDeadline: 'Hạn mong muốn',
+  gDesc: 'Mô tả chung', gNote: 'Ghi chú thêm'
+};
+
+function renderSheet() {
+  const info = periodInfo();
+  const used = usedCount(info.period), quota = quotaOf(info.period);
+  const active = Store.data.requests.find(r => r.period === info.period && r.status === 'lock');
+  const extraN = Store.data.extra[info.period] || 0;
+
+  $('#btnAdminDone').disabled = !active;
+  $('#btnReturnSlot').disabled = !active;
+  $('#btnSimulate').disabled = slotsLeft(info.period) <= 0;
+  $('#btnAddSlot').disabled = false;
+
+  const slotBar = `<div class="slotbar">
+      <span class="slot ${used >= quota ? 'used' : ''}">Slot ${info.label}: ${used}/${quota} đã dùng</span>
+      ${extraN ? `<span class="slot extra">+${extraN} slot thêm</span>` : ''}
+      <span class="slot ${slotsLeft(info.period) ? '' : 'used'}">Còn lại: ${slotsLeft(info.period)}</span>
+      <span class="slot extra">Reset: 00:00 ${info.nextLabel}</span>
+    </div>`;
+
+  const body = $('#sheetBody');
+
+  if (active) {
+    const rows = Object.entries(active.fields).map(([k, v]) => `<dt>${LABELS[k] || k}</dt><dd>${esc(v)}</dd>`).join('');
+    body.innerHTML = slotBar + `
+      <div class="note" style="margin-top:0">
+        <b>Chỉ mình bạn đọc được nội dung này.</b> Trong bản thật, người ngoài chỉ <code>INSERT</code> được —
+        RLS chặn <code>SELECT</code>; mã vé chỉ người gửi giữ + bạn thấy.
+      </div>
+      <h4>Đơn ${active.code} · ${info.label}</h4>
+      <dl class="kv">
+        <dt>Gửi lúc</dt><dd>${new Date(active.submittedAt).toLocaleString('vi-VN')}</dd>
+        <dt>Email người đặt</dt><dd>${esc(active.email)}</dd>
+        ${rows}
+      </dl>
+      <h4>Thông báo</h4>
+      <div style="font-size:12.5px;color:#6f6788;line-height:1.6">
+        ✉️ Mail báo "có đơn mới" cho bạn: <b>đã gửi</b> (bản thật: Supabase → Resend)<br>
+        ✉️ Mail mã vé cho người đặt: <b>đã gửi</b><br>
+        ✉️ Mail "đã xong" cho người đặt: <b>sẽ gửi khi bạn bấm ĐÃ XONG</b>
+      </div>
+      <h4>Hàng chờ slot tháng sau (${Store.data.waitlist.length})</h4>
+      ${Store.data.waitlist.length
+        ? '<ul style="margin:0;padding-left:18px">' + Store.data.waitlist.map(e => `<li>${esc(e)}</li>`).join('') + '</ul>'
+        : '<div style="color:#a49cbd">Chưa có ai đăng ký.</div>'}`;
+  } else {
+    body.innerHTML = slotBar + `
+      <div class="note" style="margin-top:0">
+        <b>${info.label} ${slotsLeft(info.period) > 0 ? 'còn slot — form đang mở.' : 'đã hết slot.'}</b>
+        ${slotsLeft(info.period) > 0 ? 'Ai vào trước, người đó được.' : 'Slot tự mở lại lúc 00:00 ngày ' + info.nextLabel + '.'}
+      </div>
+      <h4>Lịch sử (${Store.data.requests.length})</h4>
+      ${Store.data.requests.length
+        ? '<dl class="kv">' + Store.data.requests.map(r =>
+            `<dt>${r.code} · ${r.period}</dt><dd>${esc(r.title)} — <b>${r.status}</b></dd>`).join('') + '</dl>'
+        : '<div style="color:#a49cbd">Chưa có yêu cầu nào.</div>'}
+      <h4>Hàng chờ slot tháng sau (${Store.data.waitlist.length})</h4>
+      ${Store.data.waitlist.length
+        ? '<ul style="margin:0;padding-left:18px">' + Store.data.waitlist.map(e => `<li>${esc(e)}</li>`).join('') + '</ul>'
+        : '<div style="color:#a49cbd">Chưa có ai đăng ký.</div>'}`;
+  }
+}
+
+/* [ĐÃ XONG] — đóng đơn + báo mail người đặt; slot tháng KHÔNG mở lại */
+$('#btnAdminDone').onclick = () => {
+  const info = periodInfo();
+  const r = Store.data.requests.find(x => x.period === info.period && x.status === 'lock');
+  if (!r) return toast('Không có đơn nào đang xử lý.', 'err');
+  r.status = 'done';
+  r.closedAt = Date.now();
+  r.closeReason = 'Admin xác nhận xong';
+  r.notifiedSubmitterAt = Date.now();
+  Store.save();
+  renderChip(); renderEntry(); renderSheet();
+  toast('Đã xong ' + r.code + ' · mail báo đã gửi tới ' + r.email, 'ok');
+  if ($('#v-locked').classList.contains('on')) view('entry');
+  if ($('#v-sent').classList.contains('on')) { renderSent(); }
+};
+
+/* Trả slot — huỷ đơn, form mở lại ngay trong tháng */
+$('#btnReturnSlot').onclick = () => {
+  const info = periodInfo();
+  const r = Store.data.requests.find(x => x.period === info.period && x.status === 'lock');
+  if (!r) return toast('Không có đơn nào để huỷ.', 'err');
+  if (!confirm('Huỷ đơn ' + r.code + ' và trả lại slot ' + info.label + '?')) return;
+  r.status = 'cancelled';
+  r.closedAt = Date.now();
+  r.closeReason = 'Admin trả slot';
+  Store.save();
+  renderChip(); renderEntry(); renderSheet();
+  toast('Đã trả slot ' + info.label + ' — form mở lại.', 'ok');
+  if ($('#v-locked').classList.contains('on')) view('entry');
+};
+
+/* Mở thêm slot cho tháng này (nếu muốn nhận thêm ngoại lệ) */
+$('#btnAddSlot').onclick = () => {
+  const info = periodInfo();
+  Store.data.extra[info.period] = (Store.data.extra[info.period] || 0) + 1;
+  Store.save();
+  renderChip(); renderEntry(); renderSheet();
+  toast('Đã mở thêm 1 slot cho ' + info.label + '.', 'ok');
+};
+
+$('#btnSimulate').onclick = () => {
+  const info = periodInfo();
+  if (slotsLeft(info.period) <= 0) return toast('Tháng này hết slot rồi.', 'err');
+  const code = Store.nextCode();
+  Store.data.requests.unshift({
+    id: 'sim' + Date.now(), code, period: info.period, tab: 'detail',
+    email: 'nguoikhac@example.com',
+    title: 'Đơn giả lập (người khác)', status: 'lock', submittedAt: Date.now(),
+    fields: { email: 'nguoikhac@example.com', char: 'Nữ chính lạnh lùng, tóc đen, mắt vàng', genre: 'Cổ trang', rel: 'Sư phụ – đệ tử' },
+    notifiedOwnerAt: Date.now(), notifiedSubmitterAt: null
+  });
+  Store.save(); renderChip(); renderEntry(); renderSheet();
+  toast('Đã giả lập 1 người đặt — thử bấm REQ xem trang bị chặn.', 'ok');
+};
+
+$('#btnResetAll').onclick = () => {
+  if (!confirm('Xoá toàn bộ dữ liệu test trên trình duyệt này?')) return;
+  LS.del(KEY); setMine(null);
+  Store.data = { requests: [], waitlist: [], seq: 0, mine: null, extra: {} };
+  mine = null;
+  $('#sheet').classList.remove('on');
+  $('#reqForm').reset(); clearErrors(); setTab('detail');
+  renderChip(); renderEntry(); view('entry');
+  toast('Đã xoá dữ liệu test.', 'ok');
+};
+
+/* ------------------------------------------------ mục lục */
+$$('.navitem.soon').forEach(a => a.addEventListener('click', (e) => {
+  e.preventDefault();
+  toast('Bản test — chỉ mục REQ hoạt động.');
+}));
+
+/* ------------------------------------------------ helpers */
+function esc(s) {
+  return String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+}
+
+/* đồng bộ giữa các TAB của cùng máy (bản thật: Supabase realtime / poll) */
+window.addEventListener('storage', (e) => {
+  if (e.key !== KEY) return;
+  Store.load();
+  renderChip(); renderEntry();
+  if ($('#v-sent').classList.contains('on')) renderSent();
+  if ($('#sheet').classList.contains('on')) renderSheet();
+});
+
+/* ------------------------------------------------ boot */
+function boot() {
+  $$('img[data-img]').forEach(img => {
+    img.src = img.dataset.img === 'icon' ? ICON : ART;
+  });
+  Store.load();
+  mine = getMine();
+  renderChip(); renderEntry(); renderSent();
+  setTab('detail');
+  setInterval(renderChip, 15000);
+}
+boot();
+</script>
+</body>
+</html>
