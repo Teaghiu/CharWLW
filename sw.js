@@ -27,7 +27,7 @@ self.addEventListener('fetch', e => {
     e.respondWith(
       fetch(req).then(res => {
         const copy = res.clone();
-        caches.open(CACHE).then(c => c.put('./index.html', copy));
+        if (/\/(index\.html)?$/.test(new URL(req.url).pathname)) caches.open(CACHE).then(c => c.put('./index.html', copy));
         return res;
       }).catch(() => caches.match('./index.html'))
     );
