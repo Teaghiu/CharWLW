@@ -141,6 +141,7 @@ body{
 .field.err input,.field.err select,.field.err textarea{border-color:#e9a5b6;background:#fff8fa}
 .field .msg{font-size:11.5px;color:#c65a75;display:none}
 .field.err .msg{display:block}
+.field .dl-note{display:block;margin-top:7px;font-size:11.5px;color:#a49cbd;line-height:1.5}
 .select-wrap{position:relative}
 .select-wrap::after{content:"";position:absolute;right:13px;top:50%;width:7px;height:7px;margin-top:-5px;
   border-right:2px solid #9c8fbe;border-bottom:2px solid #9b8fbd;transform:rotate(45deg);pointer-events:none}
@@ -564,7 +565,7 @@ body{
                 </label>
                 <div class="select-wrap">
                   <select id="g-priority" name="gPriority">
-                    <option>Bình thường</option><option>Gấp</option><option>Không gấp</option>
+                    <option value="Bình thường">Bình thường</option><option value="Gấp">Gấp</option><option value="Rất gấp">Rất gấp</option><option value="Không cần">Không cần</option>
                   </select>
                 </div>
               </div>
@@ -574,6 +575,7 @@ body{
                   Hạn mong muốn
                 </label>
                 <input id="g-deadline" name="gDeadline" type="date" />
+                <span class="dl-note" id="g-dl-note">⚙️ thường 1 char cần ít nhất 3 ngày</span>
               </div>
             </div>
             <div class="col right">
@@ -1222,6 +1224,31 @@ function esc(s) {
   else if (location.hash === '#admin') openSheet();
   setInterval(() => { if (!document.hidden) refresh(); }, 20000);
   document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(); });
+})();
+
+/* ------------------------------------------------ HẠN MONG MUỐN ↔ MỨC ƯU TIÊN (08/11/2026) --------- */
+(function () {
+  const sel = $('#g-priority'), dl = $('#g-deadline'), note = $('#g-dl-note');
+  if (!sel || !dl) return;
+  const DAY = 86400000;
+  const isoVN = n => new Date(Date.now() + VN_OFFSET + n * DAY).toISOString().slice(0, 10);
+  const vnStr = iso => { const p = iso.split('-'); return p[2] + '/' + p[1] + '/' + p[0]; };
+  const SUGGEST = { 'Bình thường': 7, 'Gấp': 4, 'Rất gấp': 3, 'Không cần': 0 };
+  function sync(fill) {
+    const min = isoVN(3);                                  /* 1 char cần ít nhất 3 ngày */
+    dl.min = min;
+    const p = sel.value, n = (SUGGEST[p] != null ? SUGGEST[p] : 3);
+    if (n === 0) {                                         /* Không cần → thôi hạn */
+      dl.value = ''; dl.disabled = true; dl.style.opacity = '.45';
+      if (note) note.textContent = '⚙️ thường 1 char cần ít nhất 3 ngày · bạn chọn “Không cần” nên không bắt buộc chọn ngày';
+    } else {
+      dl.disabled = false; dl.style.opacity = '';
+      if (fill || !dl.value || dl.value < min) dl.value = isoVN(n);
+      if (note) note.textContent = '⚙️ thường 1 char cần ít nhất 3 ngày · sớm nhất: ' + vnStr(min);
+    }
+  }
+  sel.addEventListener('change', () => sync(true));
+  sync(false);
 })();
 </script>
 </body>
