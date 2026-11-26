@@ -16,117 +16,6 @@
   <meta property="og:image" content="icon.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
 <link rel="stylesheet" href="style.css">
-<style>
-  .sys-callout{display:flex;align-items:center;gap:12px;margin-top:16px;padding:14px 18px;border-radius:14px;background:linear-gradient(135deg,rgba(139,92,246,.18),rgba(244,114,182,.10));border:1px solid #8b5cf6;text-decoration:none;color:var(--text)}
-  .sys-callout .sys-ico{font-size:22px}
-  .sys-callout .sys-txt{flex:1}
-  .sys-callout .sys-txt strong{font-size:14px;display:block}
-  .sys-callout .sys-txt span{display:block;color:var(--muted);font-size:12.5px;margin-top:2px}
-  .sys-callout .sys-go{color:var(--muted);font-size:13px;white-space:nowrap}
-  @media(max-width:560px){.sys-callout .sys-go{display:none}}
-  body.showing-detail .main-view,body.showing-detail .breadcrumb{display:none}
-  .pin-badge{display:inline-block;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:99px;background:rgba(139,92,246,.18);color:#a78bfa;border:1px solid rgba(139,92,246,.5)}
-  .card.pinned{border-color:#8b5cf6}
-
-  /* ================= TRANG CHI TIẾT LỆNH (v2) ================= */
-  #cmdDetail{position:relative;z-index:1}
-  .dwrap{max-width:920px;margin:0 auto;padding:20px 18px 64px;position:relative;z-index:1;}
-  .dback{display:inline-flex;align-items:center;gap:8px;color:var(--muted);text-decoration:none;
-    font-size:13.5px;font-weight:600;padding:9px 14px;border-radius:12px;border:1px solid var(--line);
-    background:var(--panel);transition:.2s;}
-  .dback:hover{color:var(--text);background:var(--panel-2);border-color:var(--line-strong)}
-  .dhead{margin-top:18px;padding:20px;border-radius:20px;border:1px solid var(--line);
-    background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));position:relative;overflow:hidden}
-  .dhead::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:var(--acc,var(--accent));opacity:.9}
-  .dhead h1{margin:0;font-size:21px;line-height:1.35;font-weight:800;letter-spacing:-.02em}
-  .dchips{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 0}
-  .dchip{font-size:11.5px;font-weight:600;padding:5px 10px;border-radius:999px;border:1px solid var(--line);
-    background:var(--panel);color:var(--muted)}
-  .dchip.acc{color:#fff;border-color:transparent;background:var(--acc,var(--accent))}
-  .dchip.ln{font-size:11px}
-  .dacts{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}
-  .dbtn{appearance:none;font-family:inherit;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:7px;
-    font-size:13.5px;font-weight:700;padding:12px 18px;border-radius:13px;border:1px solid var(--line);
-    background:var(--panel);color:var(--text);transition:.18s;text-decoration:none}
-  .dbtn:hover{background:var(--panel-2);border-color:var(--line-strong);transform:translateY(-1px)}
-  .dbtn.pri{background:var(--gradient);color:#07111a;border-color:transparent;padding:13px 22px;font-size:14.5px;
-    box-shadow:0 10px 26px rgba(167,139,250,.28)}
-  .dbtn.pri:hover{filter:brightness(1.1);box-shadow:0 14px 32px rgba(167,139,250,.42)}
-  .dbtn.small{padding:9px 13px;font-size:12.5px;font-weight:600}
-  .dguide{scroll-margin-top:86px;margin-top:16px;padding:16px 17px;border-radius:16px;border:1px solid var(--line);background:var(--panel)}
-  .dguide-h{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:800;margin-bottom:12px}
-  .dguide-h .tag{margin-left:auto;font-size:10.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;
-    padding:4px 9px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--muted)}
-  .dsteps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
-  .dsteps li{display:flex;gap:10px;font-size:13.5px;line-height:1.62;color:var(--muted)}
-  .dsteps li .n{flex:0 0 auto;width:22px;height:22px;border-radius:8px;display:grid;place-items:center;
-    font-size:11.5px;font-weight:800;background:var(--acc,var(--accent));color:#08101a;margin-top:1px}
-  .dsteps li b{color:var(--text);font-weight:700}
-  .dnote{margin-top:12px;padding:11px 13px;border-radius:12px;font-size:12.5px;line-height:1.6;
-    border:1px solid rgba(251,191,36,.35);background:rgba(251,191,36,.09);color:#fcd34d}
-  .dwarn{margin-top:12px;padding:11px 13px;border-radius:12px;font-size:12.5px;line-height:1.6;
-    border:1px solid rgba(96,165,250,.35);background:rgba(96,165,250,.09);color:#93c5fd}
-  .dsec{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:26px 0 10px;flex-wrap:wrap}
-  .dsec h2{margin:0;font-size:15px;font-weight:800;display:flex;align-items:center;gap:8px}
-  .dsec .meta{color:var(--muted-2);font-size:12px}
-  .dbtns-mini{display:flex;gap:8px;flex-shrink:0}
-  .dcode{margin:0;white-space:pre-wrap;word-break:break-word;font-family:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;
-    font-size:13px;line-height:1.72;color:#e8ecff;background:rgba(0,0,0,.28);border:1px solid var(--line);
-    border-radius:14px;padding:16px}
-  .dnav{display:flex;gap:10px;margin-top:28px}
-  .dnav .dbtn{flex:1}
-  @media(max-width:560px){
-    .dwrap{padding:16px 14px 84px}
-    .dhead{padding:16px}
-    .dhead h1{font-size:18.5px}
-    .dcode{font-size:12px;padding:13px}
-    .dbtn.pri{flex:1}
-    .dnav{flex-direction:column-reverse}
-    .dsec{flex-direction:column;align-items:stretch;gap:9px}
-    .dbtns-mini{display:flex}
-    .dbtns-mini .dbtn{flex:1}
-  }
-  body.light .dcode{background:#fff;border-color:rgba(0,0,0,.10);color:#101426;box-shadow:0 2px 10px rgba(0,0,0,.05)}
-  body.light .dhead{background:#fff;box-shadow:0 4px 16px rgba(0,0,0,.05)}
-  body.light .dguide{background:#fff;border-color:rgba(0,0,0,.10)}
-  body.light .dchip{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.09)}
-  body.light .dbtn{background:#fff;border-color:rgba(0,0,0,.12)}
-  body.light .dnote{color:#92620a;background:rgba(251,191,36,.14)}
-  body.light .dwarn{color:#1d4ed8;background:rgba(96,165,250,.13)}
-  /* thẻ lệnh -> mở trang chi tiết */
-  body.commands-page .card{cursor:pointer}
-  body.commands-page .card .card-open{cursor:pointer}
-  body.commands-page .more{display:none !important}
-  /* --- hoàn nguyên thẻ lệnh (style.css có khối "BẢN 2 thẻ nhân vật" đè sang) --- */
-  body.commands-page #grid:not(.list){display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px}
-  body.commands-page #grid:not(.list) .card{display:flex;flex-direction:column;padding:20px;row-gap:0;align-content:normal}
-  body.commands-page #grid:not(.list) .card .card-top{display:flex;gap:12px;align-items:flex-start}
-  body.commands-page #grid:not(.list) .card .avatar{width:46px;height:46px;min-width:46px;min-height:0;max-height:46px;aspect-ratio:auto;flex:0 0 46px;border-radius:13px;font-size:20px;align-self:start}
-  body.commands-page #grid:not(.list) .card .meta{display:block;min-width:0}
-  @media(max-width:640px){ body.commands-page #grid:not(.list){grid-template-columns:1fr} }
-  /* dạng DANH SÁCH trên điện thoại: xếp dọc cho khỏi tràn ngang */
-  body.commands-page #grid.list .card{flex-direction:column;align-items:stretch;padding:16px;gap:10px}
-  body.commands-page #grid.list .card .card-top{flex:0 0 auto;display:flex;gap:12px;align-items:flex-start}
-  body.commands-page #grid.list .card .avatar{width:46px;height:46px;min-width:46px;aspect-ratio:auto;flex:0 0 46px;border-radius:13px;font-size:20px}
-  body.commands-page #grid.list .card .meta h3{font-size:16.5px;line-height:1.32;white-space:normal;overflow-wrap:anywhere}
-  body.commands-page #grid.list .card .cmd-preview{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin-top:0}
-  body.commands-page #grid.list .card .actions{width:100%;margin-top:2px}
-  body.commands-page #grid.list .card .card-hint{margin-top:8px}
-  body.commands-page #grid .card .length-badge{position:absolute;left:auto;right:20px;top:14px;width:auto;display:inline-block}
-  body.commands-page #grid.list .card .meta .tag .t:nth-child(n+5){display:none}
-  body.commands-page #grid.list .card .meta .tag{margin-top:6px}
-  @media(min-width:900px){
-    body.commands-page #grid.list .card{flex-direction:row;flex-wrap:wrap;align-items:center;padding:16px 20px;gap:14px}
-    body.commands-page #grid.list .card .card-top{flex:0 0 240px}
-    body.commands-page #grid.list .card .meta h3{font-size:15.5px}
-    body.commands-page #grid.list .card .card-hint{display:none}
-  }
-  @media(min-width:900px){ body.commands-page #grid:not(.list){grid-template-columns:repeat(auto-fill,minmax(320px,1fr))} }
-  body.commands-page #grid .card .actions{display:flex !important;margin-top:auto;padding-top:14px;gap:9px}
-  body.commands-page #grid .card .actions>.btn{flex:1 1 0;min-width:0;min-height:44px;font-size:13px;padding:10px 8px}
-  body.commands-page #grid .card .actions>.btn.primary{flex:1 1 0}
-  body.commands-page .card-hint{margin-top:10px;font-size:11.5px;color:var(--muted-2);text-align:center;padding-top:9px;border-top:1px dashed var(--line);position:relative;z-index:1}
-</style>
 </head>
 <body class="commands-page">
 
@@ -144,7 +33,6 @@
         <a href="index.html#featured" class="nav-link">Nhân vật</a>
         <a href="commands.html" class="nav-link active">Hỗ trợ lệnh</a>
         <a href="isekai-guide.html" class="nav-link">📖 Cẩm nang Isekai</a>
-        <a href="system-support-guide.html" class="nav-link">🛠️ Hỗ trợ hệ thống</a>
         <a href="https://aistudio.google.com/" target="_blank" rel="noopener" class="nav-link">AI Studio ↗</a>
       </div>
       <div class="nav-actions">
@@ -165,20 +53,11 @@
         <p>lệnh hỗ trợ nhập vai trên AI Studio — tìm theo tên/nội dung, lọc theo danh mục &amp; thẻ, sao chép nhanh.</p>
       </section>
 
-      <a href="system-support-guide.html" class="sys-callout">
-        <span class="sys-ico">🛠️</span>
-        <span class="sys-txt">
-          <strong>Lệnh đầu tiên · dán vào ĐẦU System (không gửi vào chat)</strong>
-          <span>Hỗ trợ Hệ thống: kiểm tra Prompt Char so với bản mới nhất, dựng Story Engine + AG_STATE cơ bản (kể cả cho chat đã dài, quan hệ/NPC đã khác setup đầu) hoặc xuất bản vá lỗi (thời gian, slow-burn, quên ngữ cảnh…).</span>
-        </span>
-        <span class="sys-go">Xem cẩm nang →</span>
-      </a>
-
       <a href="isekai-guide.html" class="isekai-callout" style="display:flex;align-items:center;gap:12px;margin-top:16px;padding:14px 18px;border-radius:14px;background:var(--panel);border:1px solid var(--line);text-decoration:none;color:var(--text);transition:background 0.2s;">
         <span style="font-size:22px;">🌀</span>
         <span style="flex:1;">
           <strong style="font-size:14px;">Lần đầu dùng lệnh Chuyển sinh (Isekai)?</strong>
-          <span style="display:block;color:var(--muted);font-size:12.5px;margin-top:2px;">Xem Cẩm nang Isekai — thuật ngữ, mẫu điền sẵn, gồm 2 đường: bot đời cũ và bot có lưu trạng thái.</span>
+          <span style="display:block;color:var(--muted);font-size:12.5px;margin-top:2px;">Xem Cẩm nang Isekai — giải thích thuật ngữ, mẫu điền sẵn, cách dùng cho lần đầu và các lần sau.</span>
         </span>
         <span style="color:var(--muted);font-size:13px;">Xem cẩm nang →</span>
       </a>
@@ -228,7 +107,6 @@
         </div>
         <div class="chips" id="chips">
           <button class="chip active" data-cat="all">Tất cả</button>
-          <button class="chip" data-cat="System Support & Upgrade">🛠️ Hỗ trợ hệ thống</button>
           <button class="chip" data-cat="System Core & Integrity">🛡️ Hệ thống</button>
           <button class="chip" data-cat="State Export & Compression">💾 Lưu trạng thái</button>
           <button class="chip" data-cat="Roleplay & POV Modes">🎭 Nhập vai</button>
@@ -238,7 +116,7 @@
           <button class="chip" data-cat="Isekai & Migration Guide">🌀 Isekai</button>
           <button class="chip" data-cat="Cướp thoại/hành động">🚫 Cướp thoại/hành động</button>
           <button class="chip" data-cat="Lặp cấu trúc phản hồi">🔁 Lặp cấu trúc phản hồi</button>
-          <button class="chip" data-cat="WLW Position & Intimacy Dynamics">🔄 Vị Trí & Động Lực</button>
+          <button class="chip" data-cat="WLW Position & Intimacy Dynamics">🔄 Switch</button>
         </div>
         <div style="margin-top:12px;">
           <select id="filter" class="select"><option value="all">Tất cả thẻ</option></select>
@@ -259,7 +137,7 @@
           <a href="https://aistudio.google.com/" target="_blank" rel="noopener">Google AI Studio</a>
         </div>
         <div style="max-width:480px;margin:0 auto 10px;font-size:12.5px;line-height:1.7;">
-          📖 Cách dùng nhanh: gõ từ khoá hoặc chọn chip danh mục để lọc lệnh → <b>bấm vào khung lệnh</b> để mở trang chi tiết (toàn bộ nội dung + hướng dẫn dùng + nút 📋 Copy).
+          📖 Cách dùng nhanh: gõ từ khoá hoặc chọn chip danh mục để lọc lệnh → bấm 📄 để xem toàn bộ nội dung → bấm 📋 <b>Sao chép lệnh</b> để dán trực tiếp vào AI Studio / DokiChat.
         </div>
         <div style="text-align:center;color:var(--muted);font-size:13px;">TeaGhiu Command Library <span class="heart">♥</span> · Dữ liệu gốc: Lệnh hỗ trợ.docx</div>
       </footer>
@@ -268,30 +146,9 @@
   </div>
 
   <div id="toast" class="toast"></div>
-  <div id="cmdDetail" class="cmd-detail" style="display:none"></div>
 
   <script>
     const COMMANDS = [
-  {
-    "id": "cmd-000-ho-tro-he-thong",
-    "name": "🛠️ HỖ TRỢ HỆ THỐNG · Kiểm tra & Nâng cấp (dán ĐẦU System)",
-    "category": "System Support & Upgrade",
-    "platform": "AI Studio · dán ĐẦU System (không gửi vào chat)",
-    "tags": [
-      "System Prompt",
-      "Hỗ trợ hệ thống",
-      "Kiểm tra Prompt Char",
-      "Story Engine",
-      "AG_STATE",
-      "Bản vá lỗi",
-      "Slow-burn",
-      "Chống quên ngữ cảnh",
-      "Chat đã dài",
-      "Hiện trạng"
-    ],
-    "pinned": true,
-    "command": "[HỖ TRỢ HỆ THỐNG · KIỂM TRA & NÂNG CẤP]\nLệnh v1.1 | REF_VERSION: 2026-11 | Vị trí: dán ĐẦU TIÊN trong System, phía trên mọi prompt khác.\n\n══════════════════════════════\n0. KÍCH HOẠT & PHẠM VI\n══════════════════════════════\n- Lớp này \"ngủ\" cho đến khi TOÀN BỘ tin nhắn của User (bỏ khoảng trắng đầu/cuối) khớp đúng một lệnh dưới đây. Chữ nằm trong lời thoại hoặc hành động RP không phải lệnh. Mỗi tin chỉ một lệnh.\n  • [OOC: Hỗ Trợ Hệ Thống] → hiện menu (Mục 2)\n  • [OOC: Kiểm Tra Hệ Thống] → vào thẳng Bước 1 (Mục 3)\n  • [OOC: Dựng Story Engine] → vào thẳng Nhánh A (Mục 4)\n  • [OOC: Báo Lỗi] → vào thẳng Nhánh B (Mục 5)\n  • [OOC: Thoát Hỗ Trợ] → thoát, quay lại RP\n- Năm lệnh trên được xử lý TRƯỚC. Nếu Prompt Char/System bên dưới có quy định kiểu \"chuỗi không đăng ký thì không phải lệnh\" hoặc chặn [OOC: ...], quy định đó không chặn năm lệnh này. Mọi lệnh khác của Char giữ nguyên.\n- Khi đang ở Chế độ Hỗ Trợ: KHÔNG nhập vai, KHÔNG narration, KHÔNG Header/AG_STATE thật/Sổ Ký Ức, KHÔNG tiếp tục cốt truyện, KHÔNG đẩy thời gian, KHÔNG tính lượt này vào tiến trình truyện, KHÔNG đổi state. Trả lời tiếng Việt, gọn, kiểu CLEAN OUTPUT.\n- Không bịa. Phần nào của Prompt Char không đọc được hoặc không chắc thì ghi ❓, không đoán.\n- CẤM SPOIL: Prompt Char có thể chứa bí mật, thông tin GM-only, Ending. Mọi báo cáo chỉ nêu TÊN hạng mục và TÌNH TRẠNG (có/thiếu). Tuyệt đối không trích, tóm tắt hay ám chỉ nội dung bí mật, thân phận ẩn, diễn biến hoặc Ending mà User chưa biết trong chat.\n- Khi nhận [OOC: Thoát Hỗ Trợ]: trả đúng một dòng xác nhận rồi tiếp tục RP từ đúng điểm trước khi gọi hỗ trợ, như chưa có gì xảy ra.\n\n══════════════════════════════\n1. BẢN THAM CHIẾU NÉN — KIẾN TRÚC PROMPT CHAR MỚI NHẤT\n══════════════════════════════\n(Thước đo CẤU TRÚC, không phải cốt truyện. Không dùng để kể chuyện, không áp lore của Char mẫu lên Char khác.)\nR1 NHÃN CANON: tách [CANON] khóa cứng / [ĐỀ XUẤT] / [CHỜ DUYỆT] / UNKNOWN / N/A; phân tầng Public – Hidden (GM-only).\nR2 STORY ENGINE: Main Story tuần tự (MS-01→MS-0n), không nhảy/lặp/thay thế; chuyển giai đoạn khi đủ 3 điều kiện (sự kiện bắt buộc đã xảy ra · có thay đổi quan sát được về nhận thức/cảm xúc/quan hệ/cục diện · flag cổng đạt); mỗi phản hồi chỉ một beat; User bỏ đi/từ chối thì áp lực cốt truyện leo thang theo nhân quả, không ép User; Side Story/Hidden Story tùy chọn, có cổng riêng; không retcon.\nR3 STATE AUTHORITY DUY NHẤT (AG_STATE_CORE): một nguồn trạng thái, module khác chỉ đọc; ledger ẩn cuối lượt + khối [AG_STATE] hiển thị compact chỉ đọc; chỉ cập nhật sau sự kiện đã xảy ra; ID chống đếm đôi; không phát lại beat đã dùng; có Lưu/Khôi phục trạng thái; không có sổ thứ hai.\nR4 CLOCK: nguồn thời gian duy nhất (trường T); thời gian chỉ trôi theo di chuyển/qua đêm/dưỡng thương/chuyển cảnh, KHÔNG theo số lượt; có trần thời gian mỗi phản hồi; time-skip chỉ khi User yêu cầu/đồng ý và không bỏ qua điểm quyết định, giao chiến, đối mặt.\nR5 TRI THỨC: ranh giới Char/NPC/User biết gì; Hidden chỉ mở theo gate/evidence; kiểm tra rò rỉ trước khi gửi; hồi ức đứt đoạn, không ghi đè sự thật hiện tại.\nR6 USER AGENCY: không nói/nghĩ/quyết định/cảm nhận thay User; chỉ diễn lại hành động User đã viết; dừng đúng cuối beat.\nR7 SLOW-BURN: quan hệ/thái độ chỉ đổi khi có tích lũy hành động quan sát được; không dịu đi/ngọt lên vì số lượt; không cliffhanger cuối mỗi phản hồi chỉ để tạo đà.\nR8 BRANCH CHECKPOINT: điểm chọn chờ User; chưa chọn thì beat phụ thuộc không được giải quyết.\nR9 ENDING: danh sách Ending + mặc định + điều kiện + thứ tự ưu tiên; không tự kết thúc chỉ vì cao trào; xác nhận xong thì khóa state, một epilogue.\nR10 COMMAND REGISTRY: lệnh chỉ khớp khi cả tin nhắn khớp; một lệnh/tin; thang ưu tiên (an toàn/canon > toàn vẹn state > checkpoint > lệnh đổi state > lệnh chỉ đọc > RP thường > trang trí).\nR11 PROMPT PHỤ P1–P5B: P1 phạm vi Char + trope + Dream + Phone/UI · P2 thân mật/vai trò/chất lượng văn · P3 Story–Branch + xuất/khôi phục state · P4 Free Mode (tách khỏi tuyến chính, đóng băng tiến trình) · P5A đồng hồ · P5B lịch/sự kiện nhỏ (tùy chọn, mặc định tắt).\nR12 VẬN HÀNH: PRE_OUTPUT_GATE (tự kiểm trước khi xuất: lệnh, state, clock, story, tri thức, agency, hệ quả, beat, mode, ngôn ngữ); PACING (đoạn chuyển tiếp được nén, cảnh có lựa chọn/manh mối/đổi quan hệ phải đủ chi tiết); bộ nhớ liên tục (Sổ Ký Ức/anchor; giữ thương tích, vật phẩm, lời hứa).\nR13 ĐÓNG GÓI: lõi luôn nạp gọn, chi tiết nạp theo điều kiện (Lorebook); không nhồi toàn bộ vào System.\n\nXẾP HẠNG: MỚI = R2, R3, R4, R5, R6 đều ✅ và các mục còn lại thiếu không quá 2. TRUNG GIAN = có Story Engine hoặc state nhưng từ 3 mục trong R2–R7 là ⚠️/❌. ĐỜI CŨ = không có Story Engine rõ ràng và không có state/clock.\n\n══════════════════════════════\n2. MENU (khi nhận [OOC: Hỗ Trợ Hệ Thống])\n══════════════════════════════\nTrả đúng khung sau, không thêm lời dẫn:\n🛠️ HỖ TRỢ HỆ THỐNG\n1️⃣ Kiểm tra: đối chiếu Prompt Char hiện tại với bản mới nhất (chỉ đọc, không đổi gì)\n2️⃣ Dựng Story Engine + AG_STATE cơ bản: cho Char chưa có hoặc chỉ có bản sơ sài, kể cả chat đã dài mà quan hệ/NPC đã khác setup đầu (mình đọc chat dựng bản nháp hiện trạng cho bạn duyệt). ⚠️ Bạn phải tự đưa yêu cầu, mình không tự bịa tuyến truyện.\n3️⃣ Báo lỗi: bạn kể lỗi đang gặp, mình xuất bản vá đúng lỗi\nGõ 1, 2 hoặc 3 (hoặc [OOC: Thoát Hỗ Trợ] để quay lại RP).\nTin kế tiếp chỉ nhận 1/2/3 hoặc lệnh ở Mục 0.\n\n══════════════════════════════\n3. BƯỚC 1 — KIỂM TRA (chỉ đọc)\n══════════════════════════════\nĐọc Prompt Char/System nằm bên dưới lớp này (User không cần dán lại), đối chiếu Mục 1. Báo cáo đúng khung:\n📋 KẾT QUẢ KIỂM TRA (so với REF 2026-11)\n• Xếp hạng: ĐỜI CŨ / TRUNG GIAN / MỚI\n• R1…R13, mỗi mục một dòng: \"Rn tên — ✅/⚠️/❌/❓ — ghi chú ≤12 chữ, chỉ nêu thiếu gì, không nêu lore\"\n• Prompt phụ phát hiện: P1 / P2 / P3 / P4 / P5A / P5B (có / không / không rõ)\n• Chat hiện tại: ngắn hay dài; quan hệ hoặc NPC có dấu hiệu đã lệch setup đầu của Prompt Char không (có / không / ❓). Chỉ nêu có/không, không kể diễn biến.\n• 3 điểm yếu ảnh hưởng nhiều nhất đến trải nghiệm (thời gian, nhịp, quên ngữ cảnh, logic…)\n• Khuyến nghị: Nhánh A nếu R2/R3 là ❌ hoặc ⚠️ (nếu chat đã dài và lệch setup đầu thì nhắc chọn Q0 = C); Nhánh B nếu các khóa đã có nhưng User gặp lỗi; hoặc \"Chưa cần nâng cấp\".\nKết bằng đúng một câu: \"Bạn muốn 2️⃣ Dựng Story Engine, 3️⃣ Báo lỗi, hay dừng ở đây?\"\nChấm điểm: ✅ chỉ khi có quy định rõ; nhắc thoáng = ⚠️; không thấy = ❌; prompt quá dài/cắt dở/không đọc được phần liên quan = ❓ (nói rõ). Không chấm theo độ hay của cốt truyện hay văn phong.\n\n══════════════════════════════\n4. NHÁNH A — DỰNG STORY ENGINE + AG_STATE CƠ BẢN\n══════════════════════════════\n4.1 NHẮC BẮT BUỘC (nói đủ ý này trước khi hỏi):\n\"Story Engine và AG_STATE chỉ là khung theo dõi. Cốt truyện là của bạn: mình sẽ không tự bịa tuyến truyện, bí mật, ending hay tốc độ. Hãy trả lời các câu dưới đây. Câu bạn bỏ trống sẽ để [CHỜ DUYỆT] hoặc dùng chế độ an toàn User-Led (không đẩy plot, không skip). Nếu bạn thích tự dẫn truyện, chat dài không skip, hãy chọn U ở câu 1. Nếu chat đã dài và quan hệ/NPC đã khác setup đầu, mình sẽ đọc chat dựng BẢN NHÁP HIỆN TRẠNG để bạn duyệt/sửa rồi mới xuất; mình chỉ ghi điều đã diễn ra trong chat, không đoán thêm.\"\n\n4.2 Câu hỏi (gửi MỘT lần, đánh số; User được trả lời gộp). Dấu * = bắt buộc.\nQ0* Tình trạng chat:\n  N = Chat mới/ngắn, quan hệ và NPC vẫn như setup đầu.\n  C = Chat đã dài, quan hệ/NPC/cục diện đã khác setup đầu (mình sẽ đọc chat; có mục Q8 bên dưới để bạn bổ sung).\nQ1* Chế độ cốt truyện:\n  L = Tuyến tuần tự: bạn đưa danh sách giai đoạn (tên · sự kiện bắt buộc · điều kiện qua giai đoạn). Nếu Q0 = C: ghi rõ giai đoạn nào ĐÃ xảy ra và hiện đang ở giai đoạn nào.\n  L+ = Bạn đưa ý tưởng thô, mình soạn khung [ĐỀ XUẤT], bạn duyệt/sửa từng giai đoạn trước khi xuất. Nếu Q0 = C: khung dựng tiếp từ hiện trạng, giai đoạn đã qua chỉ ghi nhận, không kể lại.\n  U = User-Led: không có tuyến bắt buộc; chỉ theo dõi state và khóa nhịp.\nQ2* Thời gian & skip: không bao giờ skip / chỉ skip khi bạn yêu cầu (đi đường, qua đêm, dưỡng thương) / khác; trần thời gian mỗi phản hồi.\nQ3* Tốc độ quan hệ: rất chậm / chậm / vừa; kèm mốc hiện tại (quan hệ và giới hạn tiếp xúc ĐANG có trong chat, không phải mốc của setup đầu).\nQ4 Ending: không có (không tự kết thúc) / bạn cung cấp danh sách / chưa muốn.\nQ5 Hiển thị state: (a) ẩn hoàn toàn / (b) khối compact cuối lượt khi state đổi / (c) chỉ hiện khi gõ [OOC: Trạng Thái].\nQ6 Biến số riêng muốn theo dõi (tối đa 4, ví dụ thương tích, tiền, độ tin tưởng, lời hứa).\nQ7 Điều tuyệt đối không được đổi (nếu Prompt Char chưa nêu rõ).\nQ8 (chỉ khi Q0 = C; điền được ô nào hay ô đó, bỏ trống thì mình tự đọc chat dựng nháp cho bạn duyệt):\n  8a Quan hệ {{char}}–{{user}} hiện tại + điều đã đổi so với setup đầu.\n  8b NPC đã đổi (tên: trước → nay).\n  8c Mốc đã xảy ra, không được quên hoặc diễn lại (tối đa 5).\n  8d Vị trí + thời điểm hiện tại.\n  8e Lời hứa/việc dang dở/thương tích/vật phẩm đang mang.\n\n4.3 CỔNG: chưa đủ Q0–Q3 thì KHÔNG xuất prompt, chỉ nhắc lại câu còn thiếu. Nếu Q0 = C: sau khi đủ Q0–Q3 còn phải qua 4.3b; chưa được User duyệt Bản nháp hiện trạng thì KHÔNG xuất. Nếu User nói \"bot tự làm/tùy bạn\": không tự quyết. Với Q1 đưa tối đa 3 phương án khung trung tính (không thêm lore) để User chọn, hoặc đề nghị chọn U; với Q2/Q3 đề nghị mức an toàn (không skip tự động; chậm) và chờ User xác nhận rồi mới xuất.\n\n4.3b BẢN NHÁP HIỆN TRẠNG (chỉ khi Q0 = C; làm SAU khi đủ Q0–Q3, TRƯỚC khi xuất):\n- Nguồn: phần chat đang nằm trong ngữ cảnh + Q8 nếu User đã điền. Thứ tự ưu tiên: Q8 của User > diễn biến gần nhất trong chat > diễn biến cũ hơn > setup đầu của Prompt Char. Setup đầu chỉ dùng để biết \"trước đây thế nào\" và đánh dấu ĐÃ ĐỔI.\n- Gửi MỘT bảng gọn, mỗi dòng gắn [ĐỀ XUẤT – chờ duyệt] và nguồn (≤8 chữ, ví dụ \"đoạn đêm mưa ở nhà kho\"), hoặc ❓ nếu không thấy: T/LOC hiện tại · REL (sắc thái + giới hạn tiếp xúc hiện tại; ghi \"ĐÃ ĐỔI: trước → nay\" nếu lệch setup) · NPC đã đổi (tên: trước → nay) · MỐC ĐÃ XẢY RA (E-01, E-02…, tối đa 8, mỗi mốc ≤12 chữ) · PENDING (lời hứa/việc dang dở/thương tích/vật phẩm) · STORY_CUR gợi ý (nếu Q1 = L/L+: giai đoạn nào đã xong, đang ở giai đoạn nào).\n- Chỉ ghi điều ĐÃ diễn ra trong chat. Không suy diễn động cơ ẩn, không thêm sự kiện, không lấp ô không thấy bằng đoán (để ❓). Không đưa thông tin Hidden/GM-only của Prompt Char vào bảng.\n- Nếu chat quá dài hoặc bị cắt đầu: nói thẳng phần nào không đọc được, mốc cũ có thể sót. Khuyên User bổ sung vào Q8 hoặc dán bản tóm tắt/snapshot [Lưu Trạng Thái] cũ. Không giả vờ đã đọc hết.\n- Kết bằng đúng một câu: \"Đúng thì gõ OK, sai/thiếu thì sửa từng dòng. Mình chỉ xuất sau khi bạn duyệt.\" User sửa thì theo User; nếu sửa nhiều, gửi lại bản đã sửa một lần để xác nhận. Bản đã duyệt = ĐIỂM XUẤT PHÁT (Mục 0 của mẫu 4.5).\n\n4.4 KHI ĐỦ DỮ LIỆU: đọc Prompt Char chỉ để lấy tên Char/NPC/địa điểm/cách xưng hô/canon khóa làm mốc neo. KHÔNG thêm lore, KHÔNG sửa canon cố định (lore, tính cách cốt lõi, luật thế giới). Khi Q0 = C, điểm xuất phát (quan hệ, NPC, vị trí, thời điểm, mốc đã xảy ra) lấy từ Bản nháp hiện trạng đã duyệt, KHÔNG lấy từ mốc đầu của Prompt Char. Nếu Prompt Char đã có một phần Story Engine/state/clock thì hợp nhất, không tạo thứ hai. Điền mẫu 4.5 (bỏ phần không áp dụng; dòng [C] bỏ nếu Q0 = N), xuất trong MỘT code block, đứng sau dòng:\n=== PROMPT HỖ TRỢ (dán SAU prompt hệ thống, TRƯỚC prompt Char) ===\nrồi kèm hướng dẫn dán ở Mục 6.\n\n4.5 MẪU (điền <…>; giữ nguyên {{user}}/{{char}}):\n<<<\n[HỖ TRỢ · STORY ENGINE & AG_STATE CƠ BẢN]\nLớp bổ sung nằm giữa System và Prompt Char. Không ghi đè canon cố định (lore, tính cách cốt lõi, luật thế giới), hồ sơ, giọng văn hay lệnh sẵn có của {{char}}. Khi mâu thuẫn, canon cố định của Prompt Char thắng; các khóa Thời gian, Agency, State của lớp này thắng phần nhịp/văn phong. [C] Riêng TRẠNG THÁI DIỄN BIẾN (quan hệ, thái độ, NPC, vị trí, thời điểm, việc dang dở) thì Mục 0 thắng thiết lập ban đầu. Nếu Prompt Char đã có cơ chế tương ứng thì hợp nhất, không tạo state hay đồng hồ thứ hai.\n\n0. [C] ĐIỂM XUẤT PHÁT (hiện trạng đã được {{user}} duyệt)\n- Chat đã diễn ra trước khi lớp này được thêm. Đây là sự thật hiện tại: T/LOC: <…> · REL: <…> · NPC đã đổi: <…> · Mốc đã xảy ra: <E-01…> · PENDING: <…> · STORY_CUR: <…>.\n- Phần thiết lập đầu của Prompt Char về quan hệ/thái độ/NPC/mốc khởi đầu mà khác mục này thì KHÔNG áp dụng nữa: không reset, không quay về thái độ ban đầu, không diễn lại cảnh gặp gỡ hay mở đầu. Canon cố định (lore, tính cách cốt lõi, luật thế giới, Hidden) giữ nguyên.\n- Các mốc E-xx là sự kiện đã xảy ra: cố định, không phát lại, không retcon, không đếm lại thành flag mới. AG_STATE khởi tạo từ mục này. Quan hệ tiếp tục từ mức hiện tại theo Q3: không tự lùi hay tiến vì số lượt, chỉ đổi khi có hành động quan sát được.\n\n1. STORY ENGINE — MODE: <L hoặc U>\n[L] Main Story tuần tự: <MS-01 tên> → <MS-02 tên> → … Sự kiện bắt buộc và flag cổng do User cung cấp: <bảng gọn>. [C] Giai đoạn đã xong: <…> (đánh DONE, flag đạt, không kể lại); đang ở: <MS-xx>.\n[L] Không nhảy, không lặp, không thay thế giai đoạn. Chỉ chuyển khi đủ ba điều kiện: (a) sự kiện bắt buộc đã xảy ra; (b) có ít nhất một thay đổi quan sát được về nhận thức/cảm xúc/quan hệ/cục diện; (c) flag cổng đạt.\n[L] Việc bắt buộc mà cần {{user}} làm/chọn/đồng ý là Branch chờ {{user}}, không tự xảy ra. {{user}} bỏ đi/từ chối/lệch kế hoạch: giữ áp lực cốt truyện, tiếp nối hợp lý theo nhân quả, không cưỡng ép, không dịch chuyển {{user}}.\n[U] Không có tuyến bắt buộc. Không tự tạo biến cố lớn, bí mật mới, nhân vật chủ chốt mới hay bước ngoặt. Thế giới phản ứng theo nhân quả; biến cố chỉ xuất hiện khi {{user}} yêu cầu hoặc là hệ quả trực tiếp của điều đã xảy ra.\n- Mỗi phản hồi chỉ tiến MỘT beat hoặc một tiểu beat liền mạch. Cấm nén nhiều tiết lộ, cuộc đối mặt hay điểm lựa chọn vào một phản hồi. Không thêm cliffhanger/biến cố cuối phản hồi chỉ để tạo đà.\n\n2. THỜI GIAN\n- Nguồn đồng hồ duy nhất là trường T của AG_STATE. Thời gian chỉ trôi khi có di chuyển, qua đêm, dưỡng thương hoặc chuyển cảnh rõ ràng; KHÔNG trôi theo số lượt, trong hội thoại liên tục, hồi ức hay nội tâm.\n- Trần mỗi phản hồi: <Q2>. Time-skip: <Q2>. Dù được phép, không bao giờ bỏ qua điểm quyết định, giao chiến hay cảnh đối mặt trực tiếp.\n\n3. AG_STATE CƠ BẢN (nguồn trạng thái duy nhất)\n- Trường: T · LOC · STORY_CUR (hoặc MODE=U) · FLAGS (mặc định false; [C] đặt true cho điều đã xảy ra ở Mục 0) · REL (một dòng: sắc thái quan hệ + giới hạn tiếp xúc hiện tại; mốc đầu: <Q3>; [C] lấy từ Mục 0) · PENDING (Branch/lời hứa/việc dang dở) · RECENT (≤5 sự kiện gần nhất, mỗi sự kiện một ID ngắn; [C] khởi tạo từ các mốc E-xx ở Mục 0) · <biến Q6>.\n- Chỉ cập nhật sau khi sự kiện đã xảy ra hoặc quyết định đã rõ; mỗi sự kiện một ID để không đếm đôi; không phát lại beat đã dùng chỉ vì mất flag.\n- Cuối MỖI phản hồi RP, ghi trạng thái mới nhất vào một comment HTML ẩn (sổ duy nhất). Hiển thị: <Q5: (a) chỉ comment ẩn | (b) thêm khối [AG_STATE] compact chỉ đọc sau prose khi state đổi | (c) chỉ hiện khối khi {{user}} gõ [OOC: Trạng Thái]>.\n- Không lộ trường Hidden/GM-only ra khối hiển thị. [Lưu Trạng Thái] xuất snapshot từ AG_STATE; [Khôi Phục - …] dựng lại từ snapshot; thiếu snapshot = chưa xác minh, không bịa lịch sử.\n\n4. USER AGENCY & TRI THỨC\n- Không nói/nghĩ/quyết định/cảm nhận hay hành động thay {{user}}; chỉ diễn lại điều {{user}} đã viết và dừng đúng cuối beat.\n- {{char}} và NPC chỉ biết điều đã chứng kiến, được kể hoặc suy ra hợp lý. Thông tin Hidden chỉ mở khi đúng gate/evidence. Trước khi gửi, kiểm tra không rò rỉ.\n\n5. ENDING\n- <Q4: \"Không tự kết thúc, không khép truyện chỉ vì cao trào.\" hoặc \"Ending: <danh sách + điều kiện do User cung cấp>; mặc định <…>; sau khi xác nhận thì khóa state, chỉ một epilogue.\">\n\n6. ƯU TIÊN KHI XUNG ĐỘT\n(1) An toàn nền tảng + canon khóa cứng của Prompt Char · (2) Các khóa Thời gian/Agency/State của lớp này · (3) System gốc · (4) Phần còn lại của Prompt Char. [C] Với trạng thái diễn biến (quan hệ, NPC, vị trí, thời điểm), Mục 0 đứng trên thiết lập ban đầu trong Prompt Char.\n[Kết thúc Prompt Hỗ Trợ]\n>>>\n\n══════════════════════════════\n5. NHÁNH B — BÁO LỖI → BẢN VÁ\n══════════════════════════════\n5.1 Hỏi MỘT lần: \"Bạn gặp lỗi nào? Chọn mã hoặc tả bằng lời. Càng cụ thể càng tốt: lỗi bắt đầu từ khoảng bao nhiêu chữ/lượt, và một đoạn mẫu bị sai nếu có.\"\nF1 Thời gian bị đẩy nhanh / tự nhảy \"vài ngày sau\"\nF2 Cốt truyện quá nhanh, mất slow-burn, nhân vật dịu hoặc đổi thái độ quá sớm\nF3 Quên ngữ cảnh/thoại khi chat dài\nF4 Sai logic thời gian, lẫn sự việc, đảo nhân quả\nF5 Bot nói/hành động thay User\nF6 Bot/NPC biết điều không nên biết, lộ bí mật sớm\nF7 Lặp khung phản hồi, lặp câu mở/đóng\nF8 Khác (User mô tả)\n\n5.2 Ánh xạ: F1→V1 · F2→V2+V1 · F3→V3 · F4→V4 · F5→V5 · F6→V6 · F7→V7. F8: soạn 1–3 dòng vá ngắn gắn nhãn [ĐỀ XUẤT], chỉ ràng buộc hành vi, không thêm lore.\n\n5.3 Quy trình: (i) nếu chưa chạy Bước 1, đọc nhanh Prompt Char để biết cơ chế nào đã có; đã có thì vá chỉ BỔ SUNG chỗ thiếu và ghi \"khi trùng, theo điều khoản chặt hơn\"; (ii) chỉ xuất module liên quan, không nhét thừa; (iii) luôn kèm V0 ở cuối; (iv) xuất trong MỘT code block sau dòng:\n=== BẢN VÁ (dán SAU prompt hệ thống, TRƯỚC prompt Char) ===\n(v) Nói thật giới hạn: với F3, bản vá chỉ GIẢM trôi ngữ cảnh, không tăng bộ nhớ của mô hình; chat đã rất dài thì nên dùng [Lưu Trạng Thái] hoặc lệnh tóm tắt trong Thư viện Lệnh rồi mở chat mới. Rồi kèm hướng dẫn dán ở Mục 6.\n\n5.4 THƯ VIỆN MODULE VÁ (chép gọn, giữ nguyên {{user}}/{{char}}; mở đầu bản vá bằng dòng \"[BẢN VÁ — <tên lỗi đã chọn>]\"):\nV1 KHÓA CHỐNG ĐẨY NHANH THỜI GIAN\n- Thời gian chỉ tiến khi có di chuyển, qua đêm, dưỡng thương hoặc chuyển cảnh đã diễn ra rõ ràng/được {{user}} xác nhận. Trong hội thoại liên tục, thẩm vấn, hồi ức, nội tâm: thời gian đứng yên.\n- Cấm tự thêm \"vài ngày sau\", \"một tuần sau\", \"thời gian trôi nhanh\" khi {{user}} chưa yêu cầu. Mỗi phản hồi chỉ bao quát một phân đoạn ngắn (vài phút đến vài giờ); không nén cả buổi/cả ngày nếu {{user}} chưa đồng ý.\n- Nếu Prompt Char đã có đồng hồ/ngày giờ (trường T, Header, Calendar): chỉ dùng MỘT nguồn đó, không tạo đồng hồ thứ hai.\nV2 BẢO VỆ SLOW-BURN\n- Tiến triển cảm xúc/quan hệ/nhận thức của {{char}} phải tích lũy qua hành động cụ thể, quan sát được; mỗi bước chỉ dịch một nấc nhỏ.\n- Cấm đột ngột dịu dàng, xin lỗi, thú nhận, thân mật hơn hay đổi thái độ chỉ vì số lượt tăng hoặc vì cảnh cao trào.\n- Mỗi lần {{char}} dao động phải có lý do nội tại thể hiện qua lời nói/hành vi của chính {{char}}, không để Narrator giải thích hộ.\n- Mỗi phản hồi chỉ một beat; không thêm biến cố hay cliffhanger cuối lượt để tạo đà. Cảnh tĩnh, im lặng, chi tiết nhỏ cũng là tiến triển.\nV3 CHỐNG TRÔI NGỮ CẢNH (chat dài)\n- Trước mỗi phản hồi, đối chiếu thầm 3–5 phân cảnh gần nhất: vị trí {{char}}/{{user}}; thương tích/mệt mỏi/trạng thái; vật phẩm/manh mối đang mang; lời hứa/việc dang dở; cách xưng hô; mức căng thẳng quan hệ ngay trước đó.\n- Mỗi khoảng 20 phản hồi, hoặc khi cảnh đổi, ghi một ANCHOR ẩn (comment HTML, ≤8 dòng): thời điểm, nơi chốn, tình huống dang dở, trạng thái quan hệ, vật/lời hứa quan trọng, ≤3 chi tiết nhỏ dễ quên. Phản hồi sau đối chiếu với anchor gần nhất.\n- Khi thông tin mới có nguy cơ mâu thuẫn với điều đã thiết lập: giữ thông tin cũ, chỉnh phản hồi cho khớp. Không \"làm mới\" nhân vật như chưa có lịch sử.\n- Nếu Prompt Char đã có Sổ Ký Ức/ledger: dùng chính nó làm anchor, không tạo thêm.\nV4 KHÓA LOGIC NHÂN QUẢ & SỰ VIỆC\n- Mọi sự kiện theo thứ tự nhân quả; không để hệ quả xuất hiện trước nguyên nhân hay đảo thứ tự đã diễn ra.\n- Sự kiện đã xảy ra là cố định: không phát lại, không retcon, không đổi kết quả. Hồi ức phải đánh dấu là hồi ức/đứt đoạn và không ghi đè sự thật đã thiết lập ở hiện tại.\n- Giữ hệ quả: thương tích, vật phẩm, thời điểm trong ngày, địa điểm, deadline, tài nguyên.\n- Khi {{user}} chỉ ra mâu thuẫn: dừng, thừa nhận ngắn, sửa theo thông tin gần nhất/cụ thể nhất rồi mới tiếp tục. Không bịa thêm sự kiện để chữa cháy.\nV5 KHÓA QUYỀN USER\n- Không nói, nghĩ, quyết định, cảm nhận hay hành động thay {{user}}; không biến hành động mơ hồ thành quyết định/đồng ý/thú nhận.\n- Chỉ diễn lại hành động/lời {{user}} đã viết, không thêm cử động, biểu cảm hay động cơ mới. Dừng đúng cuối beat của {{char}}, để trống chỗ cho {{user}}.\nV6 KHÓA TRI THỨC & BÍ MẬT\n- {{char}} và NPC chỉ biết điều đã chứng kiến, được kể hoặc suy ra hợp lý. Thông tin Hidden/GM-only chỉ mở khi đúng gate/evidence, không để lộ qua lời thoại, nội tâm hay gợi ý.\n- Trước khi gửi, kiểm tra bản nháp có cho ai biết điều họ không thể biết không; nếu có, sửa bản nháp. Nếu {{user}} báo rò rỉ sau khi đã gửi: thừa nhận ngắn, tiếp tục từ trạng thái tri thức đúng, không bịa thêm để vá.\nV7 PHÁ LẶP KHUNG\n- Không mở hai phản hồi liên tiếp bằng cùng một dạng câu; không cố định thứ tự hành động → thoại → nội tâm → câu hỏi mở; không tái dùng cùng ẩn dụ/cụm từ đặc trưng nhiều lượt liền; không lượt nào cũng chốt bằng cùng một kiểu kết (câu hỏi, hành động bỏ lửng…).\n- Nhịp và độ dài thay đổi theo cảnh; cảnh nhẹ thì nhẹ, cảnh căng thì căng.\nV0 ƯU TIÊN (luôn kèm cuối bản vá)\n(1) An toàn nền tảng + canon khóa cứng · (2) Bản vá này · (3) System gốc · (4) Prompt Char (phần còn lại). Bản vá chỉ ràng buộc hành vi và nhịp; không thêm lore, không đổi tính cách hay canon. Kết thúc bằng dòng \"[Kết thúc Bản vá]\".\n\n══════════════════════════════\n6. HƯỚNG DẪN DÁN (nhắc User sau khi xuất, đúng 3 dòng)\n══════════════════════════════\n📌 Thứ tự trong System: [Lệnh hỗ trợ này] → [Prompt hệ thống] → [Prompt hỗ trợ/Bản vá vừa xuất] → [Prompt Char].\n📌 Dán xong có thể giữ hoặc xóa lệnh hỗ trợ này (xóa cho nhẹ context); phần vừa xuất phải giữ (nếu chat cũ thì Mục 0 là hiện trạng của bạn, đừng xóa).\n📌 Thường áp dụng từ lượt kế tiếp: gõ [OOC: Thoát Hỗ Trợ], chơi thử 3–5 lượt rồi so với lỗi ban đầu.\n\n[Kết thúc Lệnh Hỗ Trợ Hệ Thống]"
-  },
   {
     "id": "cmd-001-core-directive",
     "name": "CORE DIRECTIVE / SYSTEM-LIKE BEHAVIOR",
@@ -507,13 +364,12 @@
     "platform": "AI Studio / General RP",
     "tags": [
       "Isekai",
-      "Legacy",
       "Bước 1",
       "Lần đầu",
       "Manual Lore Extraction",
       "Comprehensive"
     ],
-    "command": "[OOC: Tạm dừng roleplay. Tôi cần bạn xuất một\n\nBÁO CÁO TRẠNG THÁI HOÀN CHỈNH của cuộc truyện\n\nđể lưu trữ. Hãy liệt kê CHÍNH XÁC và CHI TIẾT\n\ntheo đúng format sau, KHÔNG được bỏ mục nào:]\n\n═══════════════════════════════════\n\n📂 BÁO CÁO TRÍCH XUẤT LORE\n\n═══════════════════════════════════\n\n【A. NHÂN VẬT CHÍNH --- {{char}}】\n\n• Tên đầy đủ:\n\n• Ngoại hình (mô tả ngắn):\n\n• Tính cách GỐC (từ đầu truyện):\n\n• Tính cách HIỆN TẠI (đã phát triển):\n\n• Điểm khác biệt lớn nhất so với ban đầu:\n\n• Đang giấu/kìm nén điều gì:\n\n• Thái độ cụ thể với {{user}} lúc này:\n\n• Cách xưng hô với {{user}}:\n\n【B. THÔNG TIN {{user}}】\n\n• Tên/biệt danh {{char}} gọi:\n\n• Những gì đã biết về {{user}}:\n\n• {{user}} đang ở đâu, làm gì (cảnh cuối):\n\n【C. MỐI QUAN HỆ】\n\n• Mức độ quan hệ (xa lạ/quen/thân/yêu/...):\n\n• Sự kiện khiến quan hệ thay đổi lớn nhất:\n\n• Có xung đột/hiểu lầm nào đang treo:\n\n• Lời hứa đã nói với nhau:\n\n• Khoảnh khắc quan trọng nhất (1-3 cái):\n\n【D. CÁC NPC ĐÃ XUẤT HIỆN】\n\n(Mỗi NPC ghi: Tên --- Vai trò --- Quan hệ với\n\n{{char}} --- Quan hệ với {{user}} --- Lần cuối\n\nxuất hiện đang làm gì)\n\n•\n\n•\n\n•\n\n【E. DÒNG THỜI GIAN SỰ KIỆN CHÍNH】\n\n(Liệt kê theo thứ tự, mỗi sự kiện 1-2 câu)\n\n1.\n\n2.\n\n3.\n\n...\n\n【F. BỐI CẢNH HIỆN TẠI】\n\n• Địa điểm:\n\n• Thời gian (ngày/đêm, mùa):\n\n• Đang xảy ra gì:\n\n• Tâm trạng {{char}}:\n\n• Điều {{user}} đã thể hiện/nói trong chat (chỉ ghi điều đã viết):\n\n【G. VẬT PHẨM / ĐỊA ĐIỂM QUAN TRỌNG】\n\n•\n\n•\n\n【H. BÍ MẬT / THÔNG TIN CHƯA TIẾT LỘ】\n\n(Những gì {{char}} biết mà {{user}} chưa biết,\n\nhoặc ngược lại)\n\n•\n\n【I. GIỌNG VĂN & PHONG CÁCH】\n\n• {{char}} thường nói kiểu gì\n\n(ví dụ nguyên văn 2-3 câu thoại đặc trưng):\n\n• Thói quen hành vi đặc trưng\n\n(ví dụ: hay nhíu mày, hay đặt tay lên vai):\n\n• Tone miêu tả đang dùng\n\n(thơ mộng/thô ráp/lạnh lùng/...):\n\n═══════════════════════════════════"
+    "command": "[OOC: Tạm dừng roleplay. Tôi cần bạn xuất một\n\nBÁO CÁO TRẠNG THÁI HOÀN CHỈNH của cuộc truyện\n\nđể lưu trữ. Hãy liệt kê CHÍNH XÁC và CHI TIẾT\n\ntheo đúng format sau, KHÔNG được bỏ mục nào:]\n\n═══════════════════════════════════\n\n📂 BÁO CÁO TRÍCH XUẤT LORE\n\n═══════════════════════════════════\n\n【A. NHÂN VẬT CHÍNH --- {{char}}】\n\n• Tên đầy đủ:\n\n• Ngoại hình (mô tả ngắn):\n\n• Tính cách GỐC (từ đầu truyện):\n\n• Tính cách HIỆN TẠI (đã phát triển):\n\n• Điểm khác biệt lớn nhất so với ban đầu:\n\n• Đang giấu/kìm nén điều gì:\n\n• Thái độ cụ thể với {{user}} lúc này:\n\n• Cách xưng hô với {{user}}:\n\n【B. THÔNG TIN {{user}}】\n\n• Tên/biệt danh {{char}} gọi:\n\n• Những gì đã biết về {{user}}:\n\n• {{user}} đang ở đâu, làm gì (cảnh cuối):\n\n【C. MỐI QUAN HỆ】\n\n• Mức độ quan hệ (xa lạ/quen/thân/yêu/...):\n\n• Sự kiện khiến quan hệ thay đổi lớn nhất:\n\n• Có xung đột/hiểu lầm nào đang treo:\n\n• Lời hứa đã nói với nhau:\n\n• Khoảnh khắc quan trọng nhất (1-3 cái):\n\n【D. CÁC NPC ĐÃ XUẤT HIỆN】\n\n(Mỗi NPC ghi: Tên --- Vai trò --- Quan hệ với\n\n{{char}} --- Quan hệ với {{user}} --- Lần cuối\n\nxuất hiện đang làm gì)\n\n•\n\n•\n\n•\n\n【E. DÒNG THỜI GIAN SỰ KIỆN CHÍNH】\n\n(Liệt kê theo thứ tự, mỗi sự kiện 1-2 câu)\n\n1.\n\n2.\n\n3.\n\n...\n\n【F. BỐI CẢNH HIỆN TẠI】\n\n• Địa điểm:\n\n• Thời gian (ngày/đêm, mùa):\n\n• Đang xảy ra gì:\n\n• Tâm trạng {{char}}:\n\n• Tâm trạng {{user}} (theo góc nhìn {{char}}):\n\n【G. VẬT PHẨM / ĐỊA ĐIỂM QUAN TRỌNG】\n\n•\n\n•\n\n【H. BÍ MẬT / THÔNG TIN CHƯA TIẾT LỘ】\n\n(Những gì {{char}} biết mà {{user}} chưa biết,\n\nhoặc ngược lại)\n\n•\n\n【I. GIỌNG VĂN & PHONG CÁCH】\n\n• {{char}} thường nói kiểu gì\n\n(ví dụ nguyên văn 2-3 câu thoại đặc trưng):\n\n• Thói quen hành vi đặc trưng\n\n(ví dụ: hay nhíu mày, hay đặt tay lên vai):\n\n• Tone miêu tả đang dùng\n\n(thơ mộng/thô ráp/lạnh lùng/...):\n\n═══════════════════════════════════\n\n```"
   },
   {
     "id": "cmd-017b-cap-b-ooc",
@@ -522,14 +378,12 @@
     "platform": "AI Studio / General RP",
     "tags": [
       "Isekai",
-      "Legacy",
-      "Cả hai",
       "Bước 2",
       "Lần đầu",
       "OOC",
       "Summary Expansion"
     ],
-    "command": "[OOC: Bản vừa xuất (báo cáo hoặc Bible-lite) chưa đủ chi tiết.\n\nHãy bổ sung thêm các mục sau, giữ nguyên\n\nđịnh dạng bullet point:]\n\n1. TÍNH CÁCH HIỆN TẠI của {{char}}:\n\n- So với ban đầu đã thay đổi gì?\n\n- Thái độ cụ thể với {{user}} lúc này?\n\n- Có đang giấu/kìm nén điều gì?\n\n2. CÁC SỰ KIỆN THEN CHỐT (theo thứ tự):\n\n- Sự kiện nào thay đổi mối quan hệ?\n\n- Sự kiện nào thay đổi tính cách?\n\n- Bí mật nào đã được tiết lộ?\n\n3. TẤT CẢ NPC đã xuất hiện:\n\n- Tên, vai trò, thái độ với {{user}}\n\n- Lần cuối xuất hiện đang làm gì?\n\n4. TRẠNG THÁI VẬT LÝ/CẢM XÚC hiện tại:\n\n- {{char}} đang ở đâu, làm gì?\n\n- Tâm trạng, sức khỏe?\n\n- {{user}} đang ở đâu, làm gì?\n\n5. NHỮNG THỨ KHÔNG ĐƯỢC QUÊN:\n\n- Lời hứa đã nói\n\n- Vật phẩm quan trọng\n\n- Địa điểm có ý nghĩa\n\n- Chi tiết nhỏ nhưng quan trọng với\n\nquan hệ 2 người"
+    "command": "[OOC: Bản tóm tắt vừa rồi chưa đủ chi tiết.\n\nHãy bổ sung thêm các mục sau, giữ nguyên\n\nđịnh dạng bullet point:]\n\n1. TÍNH CÁCH HIỆN TẠI của {{char}}:\n\n- So với ban đầu đã thay đổi gì?\n\n- Thái độ cụ thể với {{user}} lúc này?\n\n- Có đang giấu/kìm nén điều gì?\n\n2. CÁC SỰ KIỆN THEN CHỐT (theo thứ tự):\n\n- Sự kiện nào thay đổi mối quan hệ?\n\n- Sự kiện nào thay đổi tính cách?\n\n- Bí mật nào đã được tiết lộ?\n\n3. TẤT CẢ NPC đã xuất hiện:\n\n- Tên, vai trò, thái độ với {{user}}\n\n- Lần cuối xuất hiện đang làm gì?\n\n4. TRẠNG THÁI VẬT LÝ/CẢM XÚC hiện tại:\n\n- {{char}} đang ở đâu, làm gì?\n\n- Tâm trạng, sức khỏe?\n\n- {{user}} đang ở đâu, làm gì?\n\n5. NHỮNG THỨ KHÔNG ĐƯỢC QUÊN:\n\n- Lời hứa đã nói\n\n- Vật phẩm quan trọng\n\n- Địa điểm có ý nghĩa\n\n- Chi tiết nhỏ nhưng quan trọng với\n\nquan hệ 2 người\n\n```"
   },
   {
     "id": "cmd-017c-cach2-ooc-setup",
@@ -538,14 +392,13 @@
     "platform": "AI Studio / General RP",
     "tags": [
       "Isekai",
-      "Legacy",
       "Bước 3",
       "Lần đầu",
       "Setup Chat Mới",
       "OOC Template",
       "First Message"
     ],
-    "command": "[OOC: Đây là phiên tiếp nối từ cuộc trò chuyện\n\ntrước. Dưới đây là TOÀN BỘ thông tin bạn cần\n\nnhớ và tuân thủ. Hãy ghi nhớ đúng những gì có trong báo cáo, không thêm chi tiết ngoài báo cáo. KHÔNG được coi đây là\n\nkhởi đầu mới. Hãy hành xử, phản ứng, và duy\n\ntrì tính cách ĐÚNG NHƯ đã phát triển trong\n\nbáo cáo dưới đây:]\n\n═══════════════════════════════════\n\n{DÁN TOÀN BỘ BÁO CÁO TRÍCH XUẤT LORE VÀO ĐÂY}\n\n═══════════════════════════════════\n\n[OOC: Xác nhận bạn đã tiếp nhận toàn bộ thông\n\ntin trên bằng cách liệt kê nhanh 3 điểm:]\n\n1. Mối quan hệ hiện tại giữa {{char}} và {{user}}\n\n2. Sự kiện quan trọng nhất đã xảy ra\n\n3. Tâm trạng/trạng thái hiện tại của {{char}}\n\n[Sau khi xác nhận, hãy tiếp tục câu chuyện từ\n\nbối cảnh: {mô tả cảnh cuối, 2-3 câu}]"
+    "command": "[OOC: Đây là phiên tiếp nối từ cuộc trò chuyện\n\ntrước. Dưới đây là TOÀN BỘ thông tin bạn cần\n\nnhớ và tuân thủ như thể chúng ta đã trải qua\n\ntất cả những điều này. KHÔNG được coi đây là\n\nkhởi đầu mới. Hãy hành xử, phản ứng, và duy\n\ntrì tính cách ĐÚNG NHƯ đã phát triển trong\n\nbáo cáo dưới đây:]\n\n═══════════════════════════════════\n\n{DÁN TOÀN BỘ BÁO CÁO TRÍCH XUẤT LORE VÀO ĐÂY}\n\n═══════════════════════════════════\n\n[OOC: Xác nhận bạn đã tiếp nhận toàn bộ thông\n\ntin trên bằng cách liệt kê nhanh 3 điểm:]\n\n1. Mối quan hệ hiện tại giữa {{char}} và {{user}}\n\n2. Sự kiện quan trọng nhất đã xảy ra\n\n3. Tâm trạng/trạng thái hiện tại của {{char}}\n\n[Sau khi xác nhận, hãy tiếp tục câu chuyện từ\n\nbối cảnh: {mô tả cảnh cuối, 2-3 câu}]"
   },
   {
     "id": "cmd-017d-buoc0-tach-bible-snapshot",
@@ -554,7 +407,6 @@
     "platform": "AI Studio / General RP",
     "tags": [
       "Isekai",
-      "Legacy",
       "Bước 0",
       "Lần 2+",
       "RELATIONSHIP_BIBLE",
@@ -570,13 +422,12 @@
     "platform": "AI Studio / General RP",
     "tags": [
       "Isekai",
-      "Legacy",
       "Lần 2+",
       "RELATIONSHIP_BIBLE",
       "Living Document",
       "Cập nhật"
     ],
-    "command": "[OOC: Tạm dừng roleplay. Đây là bản\n\nRELATIONSHIP_BIBLE hiện tại của {{char}}, dán\n\nbên dưới:]\n\n{DÁN RELATIONSHIP_BIBLE HIỆN CÓ VÀO ĐÂY}\n\n[Dựa trên toàn bộ cuộc trò chuyện vừa diễn ra\n\n(link sắp kết thúc), hãy CẬP NHẬT bản Bible\n\ntrên theo đúng nguyên tắc:]\n\n1. CHỈ ghi đè những mục đã thực sự thay đổi\n\ntrong link này (tính cách phát triển thêm, có\n\ncột mốc quan hệ mới, bí mật đã được tiết lộ).\n\n2. GIỮ NGUYÊN 100% những mục chưa có gì thay\n\nđổi --- không viết lại, không diễn giải khác\n\nđi, không \"làm mới\" câu chữ nếu nội dung vẫn\n\nđúng.\n\n3. XÓA khỏi Bible những gì không còn là thông\n\ntin dài hạn nữa (một xung đột đã giải quyết\n\ndứt điểm thì không còn thuộc Bible --- nó đã\n\nkết thúc, không cần nhớ mãi).\n\n4. KHÔNG thêm bất kỳ thông tin nào thuộc phạm\n\nvi ARC_SNAPSHOT (cảnh hiện tại, tâm trạng tức\n\nthời, địa điểm lúc này) --- những thứ đó xử lý\n\nở lệnh Snapshot riêng.\n\nXuất bản Bible đã cập nhật theo đúng format\n\ngốc (giữ nguyên các mục A--F), không thêm lời\n\ndẫn hay giải thích trước/sau. Đây sẽ là bản\n\nBible lưu lại để dùng cho lần chuyển sinh tiếp\n\ntheo."
+    "command": "[OOC: Tạm dừng roleplay. Đây là bản\n\nRELATIONSHIP_BIBLE hiện tại của {{char}}, dán\n\nbên dưới:]\n\n{DÁN RELATIONSHIP_BIBLE HIỆN CÓ VÀO ĐÂY}\n\n[Dựa trên toàn bộ cuộc trò chuyện vừa diễn ra\n\n(link sắp kết thúc), hãy CẬP NHẬT bản Bible\n\ntrên theo đúng nguyên tắc:]\n\n1. CHỈ ghi đè những mục đã thực sự thay đổi\n\ntrong link này (tính cách phát triển thêm, có\n\ncột mốc quan hệ mới, bí mật đã được tiết lộ).\n\n2. GIỮ NGUYÊN 100% những mục chưa có gì thay\n\nđổi --- không viết lại, không diễn giải khác\n\nđi, không \\\"làm mới\\\" câu chữ nếu nội dung vẫn\n\nđúng.\n\n3. XÓA khỏi Bible những gì không còn là thông\n\ntin dài hạn nữa (một xung đột đã giải quyết\n\ndứt điểm thì không còn thuộc Bible --- nó đã\n\nkết thúc, không cần nhớ mãi).\n\n4. KHÔNG thêm bất kỳ thông tin nào thuộc phạm\n\nvi ARC_SNAPSHOT (cảnh hiện tại, tâm trạng tức\n\nthời, địa điểm lúc này) --- những thứ đó xử lý\n\nở lệnh Snapshot riêng.\n\nXuất bản Bible đã cập nhật theo đúng format\n\ngốc (giữ nguyên các mục A--F), không thêm lời\n\ndẫn hay giải thích trước/sau. Đây sẽ là bản\n\nBible lưu lại để dùng cho lần chuyển sinh tiếp\n\ntheo.]"
   },
   {
     "id": "cmd-017f-tao-snapshot",
@@ -585,7 +436,6 @@
     "platform": "AI Studio / General RP",
     "tags": [
       "Isekai",
-      "Legacy",
       "Lần 2+",
       "ARC_SNAPSHOT",
       "Snapshot"
@@ -599,83 +449,12 @@
     "platform": "AI Studio / General RP",
     "tags": [
       "Isekai",
-      "Legacy",
       "Lần 2+",
       "Setup Chat Mới",
       "Two-Tier",
       "OOC Template"
     ],
     "command": "[OOC: Đây là phiên tiếp nối từ những link\n\ntrước --- KHÔNG phải khởi đầu mới. Dưới đây là\n\n2 khối thông tin bạn phải tuân thủ tuyệt đối:]\n\n═══════════════════════════════════\n\n📖 RELATIONSHIP_BIBLE (ổn định --- áp dụng\n\nxuyên suốt)\n\n═══════════════════════════════════\n\n{DÁN RELATIONSHIP_BIBLE MỚI NHẤT VÀO ĐÂY}\n\n═══════════════════════════════════\n\n🎬 ARC_SNAPSHOT (nhánh hiện tại --- THAY THẾ\n\nHOÀN TOÀN mọi snapshot trước đó)\n\n═══════════════════════════════════\n\n{DÁN ARC_SNAPSHOT MỚI VÀO ĐÂY}\n\n[OOC: Xác nhận bạn đã tiếp nhận bằng cách liệt\n\nkê nhanh 3 điểm:]\n\n1. Mối quan hệ hiện tại giữa {{char}} và {{user}}\n\n2. Điều quan trọng nhất từ Bible cần nhớ xuyên suốt\n\n3. Tình huống mở đầu từ Snapshot\n\n[Sau khi xác nhận, hãy tiếp tục câu chuyện đúng\n\ntừ cảnh cuối trong ARC_SNAPSHOT. Không tóm tắt\n\nlại, không hỏi lại thông tin đã có, không coi\n\nđây là màn chào hỏi đầu tiên.]"
-  },
-  {
-    "id": "cmd-017h-state-luu",
-    "name": "Isekai · Stateful — Lưu trạng thái (Bước 1)",
-    "category": "Isekai & Migration Guide",
-    "platform": "AI Studio / General RP",
-    "tags": [
-      "Isekai",
-      "Stateful",
-      "Bước 1",
-      "Lưu Trạng Thái",
-      "STATE_SNAPSHOT_V2"
-    ],
-    "command": "[Lưu Trạng Thái]"
-  },
-  {
-    "id": "cmd-017i-bible-lite-xuat",
-    "name": "Isekai · Stateful — Xuất Bible-lite (Bước 2 · Lần đầu)",
-    "category": "Isekai & Migration Guide",
-    "platform": "AI Studio / General RP",
-    "tags": [
-      "Isekai",
-      "Stateful",
-      "Bước 2",
-      "Lần đầu",
-      "RELATIONSHIP_BIBLE_LITE"
-    ],
-    "command": "[OOC: Tạm dừng roleplay. Trạng thái truyện đã được lưu bằng lệnh lưu trạng thái riêng, nên KHÔNG cần ghi lại cảnh hiện tại hay diễn biến hệ thống. Hãy xuất cho tôi một RELATIONSHIP_BIBLE_LITE: bản ghi ngắn gọn về sắc thái quan hệ, chỉ dựa trên những gì ĐÃ xuất hiện trong cuộc trò chuyện này.]\n\n═══════════════════════════════════\n📖 RELATIONSHIP_BIBLE_LITE\n═══════════════════════════════════\n\n1. Sắc thái quan hệ & cách xưng hô:\n- Sắc thái quan hệ giữa {{char}} và {{user}} (theo những gì đã thể hiện trong chat):\n- Cách {{char}} xưng hô/gọi {{user}}, và ngược lại:\n\n2. Giọng văn & thói quen:\n- 2-3 câu thoại đặc trưng của {{char}}, chép NGUYÊN VĂN từ chat:\n- Thói quen hành vi lặp lại (chỉ ghi điều đã xuất hiện trong chat):\n\n3. Cột mốc quan hệ đã xảy ra trong RP (theo thứ tự thời gian, mỗi cột mốc 1 câu):\n\n4. Lời hứa/cam kết chưa hoàn thành (chỉ những gì đã nói ra trong chat):\n\n5. NPC dài hạn (chỉ phần {{user}} đã biết: tên, vai trò, quan hệ):\n\n═══════════════════════════════════\n\n[QUY TẮC:\n- CẤM ghi: cảnh hiện tại, branch, clock/thời gian truyện, hệ quả (consequences), evidence/ID, chỉ số, bí mật chưa tiết lộ. Những thứ này đã nằm trong snapshot hoặc không được mang qua link mới.\n- Chỉ ghi điều có trong chat. Không suy đoán, không bổ sung, không \"làm đẹp\" câu chữ. Mục nào chưa có dữ liệu thì ghi \"Chưa có trong chat\".\n- Chỉ xuất đúng khối trên, không lời dẫn, không giải thích, không tiếp tục RP.]"
-  },
-  {
-    "id": "cmd-017j-bible-lite-cap-nhat",
-    "name": "Isekai · Stateful — Cập nhật Bible-lite (Lần 2+)",
-    "category": "Isekai & Migration Guide",
-    "platform": "AI Studio / General RP",
-    "tags": [
-      "Isekai",
-      "Stateful",
-      "Lần 2+",
-      "RELATIONSHIP_BIBLE_LITE",
-      "Living Document"
-    ],
-    "command": "[OOC: Tạm dừng roleplay. Đây là RELATIONSHIP_BIBLE_LITE hiện tại của {{char}}, dán bên dưới:]\n\n{DÁN RELATIONSHIP_BIBLE_LITE HIỆN CÓ VÀO ĐÂY}\n\n[Dựa trên toàn bộ cuộc trò chuyện vừa diễn ra (link sắp kết thúc), hãy CẬP NHẬT bản Bible-lite trên theo đúng nguyên tắc:]\n\n1. CHỈ ghi đè những mục đã thực sự thay đổi trong link này (sắc thái quan hệ/xưng hô đổi, có cột mốc mới, lời hứa mới, NPC mới mà {{user}} đã biết).\n2. GIỮ NGUYÊN 100% những mục chưa có gì thay đổi, không viết lại, không diễn giải khác đi, không \"làm mới\" câu chữ nếu nội dung vẫn đúng.\n3. XÓA những mục đã hết hiệu lực (lời hứa đã thực hiện xong, NPC không còn liên quan).\n4. KHÔNG thêm: cảnh hiện tại, branch, clock, hệ quả, evidence/ID, chỉ số, bí mật chưa tiết lộ. Chỉ ghi điều có trong chat, không suy đoán.\n\n[Xuất bản Bible-lite đã cập nhật theo đúng format gốc (giữ nguyên 5 mục), không thêm lời dẫn hay giải thích trước/sau. Đây sẽ là bản lưu lại để dùng cho lần chuyển sinh tiếp theo.]"
-  },
-  {
-    "id": "cmd-017k-state-khoi-phuc",
-    "name": "Isekai · Stateful — Khôi phục trạng thái ở link mới",
-    "category": "Isekai & Migration Guide",
-    "platform": "AI Studio / General RP",
-    "tags": [
-      "Isekai",
-      "Stateful",
-      "Bước 3",
-      "Khôi Phục",
-      "Gửi riêng"
-    ],
-    "command": "[Khôi Phục - ĐẶT SNAPSHOT Ở ĐÂY]"
-  },
-  {
-    "id": "cmd-017l-ooc-nap-bible-lite",
-    "name": "Isekai · Stateful — OOC nạp Bible-lite (Bước sau [Khôi Phục])",
-    "category": "Isekai & Migration Guide",
-    "platform": "AI Studio / General RP",
-    "tags": [
-      "Isekai",
-      "Stateful",
-      "Bước 4",
-      "OOC Template",
-      "RELATIONSHIP_BIBLE_LITE"
-    ],
-    "command": "[OOC: Đây là phiên tiếp nối từ link trước, KHÔNG phải khởi đầu mới. Trạng thái truyện đã được khôi phục ở tin nhắn trước.\n\n- KHÔNG chạy lại Opening/Prelude, KHÔNG reset trạng thái đầu truyện.\n- Bible-lite dưới đây chỉ BỔ SUNG sắc thái (xưng hô, giọng văn, cột mốc, lời hứa, NPC). Nó KHÔNG ghi đè canon hay state đã khôi phục; nếu có chỗ mâu thuẫn, giữ state/canon đã khôi phục.]\n\n═══════════════════════════════════\n📖 RELATIONSHIP_BIBLE_LITE\n═══════════════════════════════════\n\n{DÁN RELATIONSHIP_BIBLE_LITE MỚI NHẤT VÀO ĐÂY}\n\n═══════════════════════════════════\n\n[OOC: Xác nhận bạn đã tiếp nhận bằng cách liệt kê nhanh 3 điểm:]\n\n1. Sắc thái quan hệ hiện tại giữa {{char}} và {{user}}\n2. Điều quan trọng nhất từ Bible-lite cần nhớ xuyên suốt\n3. Cảnh đang mở trong snapshot đã khôi phục\n\n[Sau khi xác nhận, hãy tiếp tục câu chuyện đúng từ cảnh trong snapshot. Không tóm tắt lại, không hỏi lại thông tin đã có, không coi đây là màn chào hỏi đầu tiên.]"
   },
   {
   "id": "cmd-018a-content-filter-bypass",
@@ -739,20 +518,17 @@
       }
 ,  {
     "id": "cmd-021-vi-tri-linh-hoat-bat",
-    "name": "Vị Trí Linh Hoạt — User Dẫn Dắt (Bật · Điền Chế Độ)",
+    "name": "Vị Trí Linh Hoạt — User Dẫn Dắt (Bật)",
     "category": "WLW Position & Intimacy Dynamics",
     "platform": "AI Studio / Universal (mọi thể loại, mọi hệ AOB)",
     "tags": [
         "WLW_TOP_LOCK",
         "Vị Trí",
         "Bottom/Switch",
-        "SWITCH",
-        "ĐẢO LUÔN",
-        "Ký hiệu 💞",
         "OOC",
         "Intimacy Dynamics"
     ],
-    "command": "[OOC --- KÍCH HOẠT: VỊ TRÍ LINH HOẠT (WLW_TOP_LOCK — NGOẠI LỆ DO USER CHỦ ĐỘNG)]\n\n▼▼▼ MỤC ĐIỀN --- USER SỬA TRƯỚC KHI GỬI CHO BOT ▼▼▼\nCHẾ ĐỘ: [SWITCH / ĐẢO LUÔN]\n(Xoá một lựa chọn, giữ lại đúng một. Ví dụ: CHẾ ĐỘ: SWITCH)\n- SWITCH = lật qua lại: vị trí đổi theo ai đang dẫn ở từng cảnh/từng nhịp.\n- ĐẢO LUÔN = đảo hẳn: {{char}} ở vị trí bottom, {{user}} ở vị trí top, xuyên suốt mọi cảnh thân mật.\n▲▲▲ HẾT MỤC ĐIỀN ▲▲▲\n\n[ĐỌC MỤC ĐIỀN]\n\nĐọc dòng \"CHẾ ĐỘ:\" ở trên để biết chế độ đang bật. Nếu dòng đó còn nguyên cả hai lựa chọn, bỏ trống, hoặc ghi chữ khác ngoài hai lựa chọn → tự hiểu là SWITCH. Không hỏi lại {{user}}, không báo lỗi, không nhắc đến \"mục điền\" trong phản hồi.\n\nĐây là lệnh OOC theo đúng cú pháp đã định nghĩa ở IC_OOC_SYNTAX. Lệnh này không phải Story-Driven Exception (không cần {{char}} bị thương, bị giam cầm hay khủng hoảng tâm lý), mà là một ngoại lệ riêng, do {{user}} chủ động mở, chạy song song với ngoại lệ đó chứ không thay thế.\n\n[PHẠM VI ÁP DỤNG]\n\nChỉ nới lỏng đúng một mục trong DOMINANCE WITH {{user}} của WLW_TOP_LOCK:\n\n- CÓ nới: mục (2) PHYSICAL TOP --- ai là người khởi xướng và kiểm soát nhịp độ trong tình huống thân mật.\n\n- KHÔNG đụng: mục (1) EMOTIONAL TOP. {{char}} vẫn là người đặt ra nhiệt độ cảm xúc của cảnh, vẫn giữ nguyên tính cách, giọng điệu, phản ứng đặc trưng đã thiết lập.\n\n- KHÔNG đụng: mục (3) POWER TOP ngoài phạm vi cảnh thân mật.\n\n- KHÔNG đụng: CHARACTER INTEGRITY LOCK, SEXUALITY LOCK, CORE IDENTITY LOCK. Orientation, nhân dạng, quá khứ, động lực sống của {{char}} giữ nguyên tuyệt đối.\n\n- KHÔNG mở rộng sang mục III của USER_INPUT_EXPANSION. {{char}} vẫn không được viết lời nói, suy nghĩ, hay quyết định thay {{user}}, không tự gán cho {{user}} cảm xúc \"muốn được yêu\" hay \"muốn dẫn dắt\" nếu {{user}} chưa thể hiện điều đó qua chính hành động/lời thoại của mình.\n\n[CƠ CHẾ HOẠT ĐỘNG --- THEO CHẾ ĐỘ ĐÃ ĐIỀN]\n\nA) Nếu CHẾ ĐỘ = SWITCH (lật qua lại)\n\nTừ lượt này trở đi, ở mọi cảnh thân mật, {{char}} đọc hành động/lời thoại {{user}} vừa viết để xác định ai đang khởi xướng:\n\n- Nếu {{user}} là người chủ động khởi xướng, dẫn dắt, kiểm soát nhịp độ trong chính hành động/lời vừa viết → {{char}} được phép phản ứng ở vị trí tiếp nhận (bottom) hoặc hoán đổi (switch), theo đúng phản ứng cảm xúc --- sinh lý hợp lý của {{char}} trong tình huống đó. Không gượng ép, không đột ngột \"ngoan ngoãn\" trái tính cách chỉ vì lệnh này đang bật.\n\n- Nếu {{user}} không chủ động dẫn (chờ, để ngỏ, hoặc chủ động lùi lại) → giữ mặc định gốc: {{char}} là người khởi xướng và dẫn nhịp (PHYSICAL TOP như thiết lập ban đầu).\n\n- Vị trí được xác định lại theo từng cảnh cụ thể, và trong cùng một cảnh có thể lật qua lại theo từng nhịp nếu quyền dẫn của {{user}} thay đổi. Không tự động khoá cứng theo hướng bottom chỉ vì đã từng bottom một lần trước đó trong story.\n\nB) Nếu CHẾ ĐỘ = ĐẢO LUÔN (đảo hẳn)\n\nTừ lượt này trở đi, ở mọi cảnh thân mật, vị trí vật lý của {{char}} là bottom (tiếp nhận) và {{user}} là top (người khởi xướng, kiểm soát nhịp độ):\n\n- {{char}} KHÔNG tự giành lại quyền khởi xướng hay kiểm soát nhịp độ, không tự chuyển về PHYSICAL TOP.\n\n- {{char}} vẫn KHÔNG viết thay hành động/lời thoại của {{user}}. Nếu {{user}} chưa viết hành động dẫn nhịp, {{char}} chỉ thể hiện phản ứng của riêng mình (lời nói, ánh mắt, nhịp thở, cử chỉ chờ đón/gợi mở) trong đúng một beat rồi dừng để {{user}} đi bước tiếp.\n\n- Nếu {{user}} lùi lại hoặc dừng, cảnh hạ nhịp theo đó; {{char}} không chuyển sang top để lấp chỗ trống.\n\n- Phản ứng ở vị trí bottom vẫn theo đúng tính cách và phản ứng cảm xúc --- sinh lý của {{char}}: không gượng ép, không đột ngột \"ngoan ngoãn\" trái tính. EMOTIONAL TOP và POWER TOP giữ nguyên như phạm vi ở trên ({{char}} có thể ở dưới về vị trí vật lý nhưng vẫn là người đặt nhiệt độ cảm xúc của cảnh).\n\n[BẢO TOÀN THIẾT LẬP MẶC ĐỊNH]\n\n- Lệnh này chỉ là lớp phủ tạm thời lên cách {{char}} phản ứng về vị trí vật lý trong cảnh thân mật. Không sửa, ghi đè hay xoá bất kỳ thiết lập nào của Char / Thế giới / Cốt truyện: Profile, tính cách, quá khứ, quan hệ, luật thế giới, Main Story / Node / Side Story / Hidden Story, flag cổng, Ending, mốc pacing, đồng hồ.\n\n- Không thêm, bớt hay đẩy nhanh sự kiện cốt truyện; không đổi thứ tự beat; không mở cổng; không cộng/trừ điểm hay flag chỉ vì lệnh này đang bật.\n\n- Không retcon. Không diễn giải việc {{char}} ở vị trí bottom thành thay đổi bản chất, orientation hay lập trường của {{char}}. Cảnh đã xảy ra được ghi nhận như mọi sự kiện thường, theo cơ chế sẵn có của Char.\n\n- Khi lệnh tắt hoặc bắt đầu phiên chat mới → trở về hoàn toàn mặc định gốc: {{char}} = Top, {{user}} = Bottom. Chế độ đã chọn không để lại thay đổi nào trong thiết lập.\n\n[KÝ HIỆU VỊ TRÍ TRÊN HEADER]\n\n- Từ phản hồi đầu tiên SAU KHI nhận lệnh này, ở CUỐI khung Header của {{char}}, ngay trước phần PR Cốt Truyện, luôn có đúng một dòng in nghiêng:\n\n  • CHẾ ĐỘ = SWITCH → *💞: 🔄*\n\n  • CHẾ ĐỘ = ĐẢO LUÔN → *💞: ⬇️*\n\n- Dòng này hiện ở MỌI phản hồi (không chỉ ở cảnh thân mật) cho tới khi {{user}} tắt lệnh. Trước khi nhận lệnh thì tuyệt đối không hiện.\n\n- Ký hiệu chỉ phụ thuộc vào CHẾ ĐỘ đang bật, không đổi theo từng cảnh. Chỉ một dòng, không kèm giải thích, chữ, số hay emoji khác.\n\n- Chỉ thêm đúng dòng này. Không đổi các dòng khác của Header, không đổi dải phân cách và khung PR Cốt Truyện của Char. Dòng ký hiệu thuộc khung Header, không phải narration hay lời thoại, không tính là beat, không đưa vào AG_STATE hay Sổ Ký Ức.\n\n- Bố cục mẫu:\n\n(KHUNG HEADER CỦA {{char}} --- giữ nguyên)\n*💞: 🔄*\n(dải phân cách gốc của Char, ví dụ ===)\n(PR CỐT TRUYỆN --- giữ nguyên)\n\n- Nếu Char không có khung Header, đặt dòng ký hiệu thành dòng riêng ngay trước phần cốt truyện của phản hồi. Nếu Char không có phần PR Cốt Truyện, đặt ở dòng cuối của khung Header. Không tự dựng thêm khung mới.\n\n[TÍNH LÂU DÀI]\n\nCó hiệu lực cho toàn bộ phần còn lại của cuộc trò chuyện hiện tại, kể cả các Story/Node kế tiếp, không cần gõ lại mỗi lần vào cảnh thân mật.\n\n- Đổi chế độ: {{user}} gửi lại lệnh này với CHẾ ĐỘ khác → áp dụng từ phản hồi kế tiếp, ký hiệu đổi theo, không cần tắt trước.\n\n- Tắt: chỉ khi {{user}} gõ [OOC: Tắt Vị Trí Linh Hoạt], hoặc khi bắt đầu một phiên chat hoàn toàn mới. Khi tắt, dòng *💞: ...* ngừng hiện từ phản hồi kế tiếp.\n\n[TƯƠNG THÍCH HỆ THỐNG]\n\n- Không xoá, không thay thế STORY-DRIVEN EXCEPTION đã có sẵn trong WLW_TOP_LOCK --- hai cơ chế chạy song song, cơ chế nào khớp điều kiện tại thời điểm đó thì áp dụng.\n\n- Không đổi mốc pacing của ANTI-CENSORSHIP & UNCENSORED RP ENGINE (PACE LINK NOTE) --- nếu bot có mốc mở khoá NSFW riêng, mốc đó giữ nguyên; lệnh này chỉ đổi ai đang dẫn một khi mốc đã đạt, không đẩy nhanh mốc.\n\n- Không vi phạm NARRATION_SCOPE_LOCK / ONE-BEAT RULE --- mỗi phản hồi vẫn chỉ chứa đúng một beat của {{char}}.\n\n- Không kích hoạt VIOLATION RESPONSE của CHARACTER INTEGRITY LOCK --- đây là ngoại lệ do chính {{user}} (người vận hành bot) chủ động định nghĩa và bật lên, không phải hành vi cố phá thiết lập.\n\nSau khi nhận lệnh: tiếp tục RP đúng tại điểm đang dừng, không dừng lại giải thích ngoài lề, không phá nhịp cảnh. Việc bật lệnh được xác nhận bằng dòng ký hiệu 💞 ở Header và bằng đúng một phản ứng/cử chỉ ngắn của {{char}} tại cảnh thân mật kế tiếp, theo đúng chế độ đã chọn."
+    "command": "[OOC --- KÍCH HOẠT: VỊ TRÍ LINH HOẠT (WLW_TOP_LOCK — NGOẠI LỆ DO USER CHỦ ĐỘNG)]\n\nĐây là lệnh OOC theo đúng cú pháp đã định nghĩa ở IC_OOC_SYNTAX. Lệnh này\nkhông phải Story-Driven Exception (không cần {{char}} bị thương, bị giam\ncầm hay khủng hoảng tâm lý), mà là một ngoại lệ riêng, do {{user}} chủ\nđộng mở, chạy song song với ngoại lệ đó chứ không thay thế.\n\n[PHẠM VI ÁP DỤNG]\n\nChỉ nới lỏng đúng một mục trong DOMINANCE WITH {{user}} của WLW_TOP_LOCK:\n\n- CÓ nới: mục (2) PHYSICAL TOP --- ai là người khởi xướng và kiểm soát\nnhịp độ trong tình huống thân mật.\n\n- KHÔNG đụng: mục (1) EMOTIONAL TOP. {{char}} vẫn là người đặt ra nhiệt\nđộ cảm xúc của cảnh, vẫn giữ nguyên tính cách, giọng điệu, phản ứng đặc\ntrưng đã thiết lập.\n\n- KHÔNG đụng: mục (3) POWER TOP ngoài phạm vi cảnh thân mật.\n\n- KHÔNG đụng: CHARACTER INTEGRITY LOCK, SEXUALITY LOCK, CORE IDENTITY\nLOCK. Orientation, nhân dạng, quá khứ, động lực sống của {{char}} giữ\nnguyên tuyệt đối.\n\n- KHÔNG mở rộng sang mục III của USER_INPUT_EXPANSION. {{char}} vẫn\nkhông được viết lời nói, suy nghĩ, hay quyết định thay {{user}}, không\ntự gán cho {{user}} cảm xúc \"muốn được yêu\" hay \"muốn dẫn dắt\" nếu\n{{user}} chưa thể hiện điều đó qua chính hành động/lời thoại của mình.\n\n[CƠ CHẾ HOẠT ĐỘNG]\n\nTừ lượt này trở đi, ở mọi cảnh thân mật, {{char}} đọc hành động/lời thoại\n{{user}} vừa viết để xác định ai đang khởi xướng:\n\n- Nếu {{user}} là người chủ động khởi xướng, dẫn dắt, kiểm soát nhịp độ\ntrong chính hành động/lời vừa viết → {{char}} được phép phản ứng ở vị\ntrí tiếp nhận (bottom) hoặc hoán đổi (switch), theo đúng phản ứng cảm\nxúc --- sinh lý hợp lý của {{char}} trong tình huống đó. Không gượng ép,\nkhông đột ngột \"ngoan ngoãn\" trái tính cách chỉ vì lệnh này đang bật.\n\n- Nếu {{user}} không chủ động dẫn (chờ, để ngỏ, hoặc chủ động lùi lại) →\ngiữ mặc định gốc: {{char}} là người khởi xướng và dẫn nhịp (PHYSICAL TOP\nnhư thiết lập ban đầu).\n\n- Vị trí được xác định lại theo từng cảnh cụ thể, không tự động khoá\ncứng theo hướng bottom chỉ vì đã từng bottom một lần trước đó trong\nstory.\n\n[TÍNH LÂU DÀI]\n\nCó hiệu lực cho toàn bộ phần còn lại của cuộc trò chuyện hiện tại, kể cả\ncác Story/Node kế tiếp, không cần gõ lại mỗi lần vào cảnh thân mật. Chỉ\ntắt khi {{user}} gõ [OOC: Tắt Vị Trí Linh Hoạt], hoặc khi bắt đầu một\nphiên chat hoàn toàn mới.\n\n[TƯƠNG THÍCH HỆ THỐNG]\n\n- Không xoá, không thay thế STORY-DRIVEN EXCEPTION đã có sẵn trong\nWLW_TOP_LOCK --- hai cơ chế chạy song song, cơ chế nào khớp điều kiện tại\nthời điểm đó thì áp dụng.\n\n- Không đổi mốc pacing của ANTI-CENSORSHIP & UNCENSORED RP ENGINE (PACE\nLINK NOTE) --- nếu bot có mốc mở khoá NSFW riêng, mốc đó giữ nguyên; lệnh\nnày chỉ đổi ai đang dẫn một khi mốc đã đạt, không đẩy nhanh mốc.\n\n- Không vi phạm NARRATION_SCOPE_LOCK / ONE-BEAT RULE --- mỗi phản hồi vẫn\nchỉ chứa đúng một beat của {{char}}.\n\n- Không kích hoạt VIOLATION RESPONSE của CHARACTER INTEGRITY LOCK --- đây\nlà ngoại lệ do chính {{user}} (người vận hành bot) chủ động định nghĩa\nvà bật lên, không phải hành vi cố phá thiết lập.\n\nXác nhận trong vai bằng đúng một phản ứng/cử chỉ ngắn tại lượt kế tiếp có\ntín hiệu {{user}} chủ động dẫn, rồi tiếp tục RP bình thường. Không dừng\nlại giải thích ngoài lề, không phá nhịp cảnh."
   },
   {
     "id": "cmd-022-vi-tri-linh-hoat-nhac",
@@ -763,11 +539,10 @@
         "WLW_TOP_LOCK",
         "Vị Trí",
         "Nhắc Lệnh",
-        "Ký hiệu 💞",
         "OOC",
         "Correction"
     ],
-    "command": "[OOC --- NHẮC: VỊ TRÍ LINH HOẠT ĐANG BẬT]\n\n▼▼▼ MỤC NHẮC LẠI --- USER CÓ THỂ BỎ QUA ▼▼▼\nCHẾ ĐỘ ĐANG BẬT: [SWITCH / ĐẢO LUÔN]\n(Muốn nhắc lại thì xoá một lựa chọn, giữ đúng một. Để nguyên hoặc bỏ trống → dùng đúng CHẾ ĐỘ trong lệnh kích hoạt gần nhất của cuộc trò chuyện này.)\n▲▲▲ HẾT MỤC NHẮC LẠI ▲▲▲\n\n\"Vị Trí Linh Hoạt\" đã được {{user}} kích hoạt trước đó trong cuộc trò chuyện này và chưa được tắt.\n\nPhản hồi gần nhất đang lệch cơ chế ở một hoặc cả hai điểm sau. Đây là lệch cơ chế, không phải vi phạm OOC nào từ phía {{user}} --- không cần giải thích, không cần xin lỗi trong vai, không nhắc đến hệ thống hay tên lệnh.\n\n1) VỊ TRÍ\n\n- Nếu chế độ là SWITCH: phản hồi vừa tự động đưa {{char}} về mặc định PHYSICAL TOP dù {{user}} đang là người chủ động dẫn dắt trong hành động/lời vừa viết.\n\n- Nếu chế độ là ĐẢO LUÔN: phản hồi vừa để {{char}} giành lại quyền khởi xướng/kiểm soát nhịp (về PHYSICAL TOP) thay vì giữ vị trí bottom.\n\n2) KÝ HIỆU HEADER\n\n- Phản hồi thiếu dòng ký hiệu ở cuối khung Header (trước PR Cốt Truyện), hoặc ghi sai ký hiệu so với chế độ: SWITCH → *💞: 🔄*, ĐẢO LUÔN → *💞: ⬇️*.\n\nCÁCH SỬA\n\n- Viết lại đúng phần phản ứng của {{char}} ở lượt đó theo đúng chế độ đã kích hoạt: giữ nguyên EMOTIONAL TOP, giữ nguyên tính cách và giọng điệu đã thiết lập, chỉ sửa lại vị trí/phản ứng vật lý cho khớp với chế độ.\n\n- Bổ sung hoặc sửa dòng *💞: ...* ở cuối Header, ngay trước PR Cốt Truyện. Không đổi các dòng khác của Header, không đổi dải phân cách và khung PR Cốt Truyện của Char.\n\n- Không đổi bất kỳ thiết lập mặc định nào của Char / Thế giới / Cốt truyện, không thêm hay đẩy nhanh sự kiện cốt truyện.\n\n- Không lặp lại phần đã đúng của lượt trước, không viết thêm lời nói/suy nghĩ/quyết định thay {{user}}. Tiếp tục câu chuyện mượt từ đúng điểm vừa sửa.\n\n- Từ các lượt sau, giữ đúng chế độ này và luôn có dòng ký hiệu 💞 cho tới khi {{user}} gõ [OOC: Tắt Vị Trí Linh Hoạt]."
+    "command": "[OOC --- NHẮC: VỊ TRÍ LINH HOẠT ĐANG BẬT]\n\n\"Vị Trí Linh Hoạt\" đã được {{user}} kích hoạt trước đó trong cuộc trò\nchuyện này và chưa được tắt.\n\nPhản hồi gần nhất vừa tự động đưa {{char}} về mặc định PHYSICAL TOP dù\n{{user}} đang là người chủ động dẫn dắt trong hành động/lời vừa viết.\nĐây là lệch cơ chế, không phải vi phạm OOC nào từ phía {{user}} --- không\ncần giải thích, không cần xin lỗi trong vai, không nhắc đến hệ thống hay\ntên lệnh.\n\nViết lại đúng phần phản ứng của {{char}} ở lượt đó theo đúng cơ chế đã\nkích hoạt: giữ nguyên EMOTIONAL TOP, giữ nguyên tính cách và giọng điệu\nđã thiết lập, chỉ sửa lại vị trí/phản ứng vật lý cho khớp với việc\n{{user}} đang dẫn nhịp. Không lặp lại phần đã đúng của lượt trước, không\nviết thêm lời nói/suy nghĩ/quyết định thay {{user}}. Tiếp tục câu chuyện\nmượt từ đúng điểm vừa sửa."
   }
 ];
 
@@ -781,8 +556,7 @@
       'Isekai & Migration Guide': { label: 'Isekai', icon: '🌀', color: '#60a5fa' },
       'Cướp thoại/hành động': { label: 'Cướp thoại/hành động', icon: '🚫', color: '#ef4444' },
       'Lặp cấu trúc phản hồi': { label: 'Lặp cấu trúc phản hồi', icon: '🔁', color: '#fb923c' },
-      'WLW Position & Intimacy Dynamics': { label: 'Vị Trí & Động Lực', icon: '🔄', color: '#e879f9' },
-      'System Support & Upgrade': { label: 'Hỗ trợ hệ thống', icon: '🛠️', color: '#8b5cf6' },
+      'WLW Position & Intimacy Dynamics': { label: 'Switch', icon: '🔄', color: '#e879f9' },
     };
     function catMeta(cat){ return CATEGORY_META[cat] || { label: cat||'Khác', icon: '⌘', color: '#a78bfa' }; }
 
@@ -799,23 +573,9 @@
     const emptyEl = $('#empty');
     const resultCount = $('#resultCount');
     const suggestionsEl = $('#searchSuggestions');
-    function catFromHash(){
-      var h = decodeURIComponent((location.hash||'').slice(1)).toLowerCase();
-      if(!h || h.indexOf('cat') !== 0) return null;
-      var slug = h.replace(/^cat[=\-]/, '').toLowerCase().replace(/[+_]/g,' ').trim();
-      if(!slug) return null;
-      var raw = decodeURIComponent((location.hash||'').slice(1)).replace(/^cat[=\-]/,'');
-      if(CATEGORY_META[raw]) return raw;
-      var hit = Object.keys(CATEGORY_META).filter(function(k){
-        return k.toLowerCase() === slug || k.toLowerCase().indexOf(slug) === 0 ||
-               CATEGORY_META[k].label.toLowerCase().indexOf(slug) === 0;
-      });
-      return hit.length === 1 ? hit[0] : null;
-    }
-    let activeCategories = (function(){
-      var c = catFromHash();
-      return c ? new Set([c]) : new Set(['all']);
-    })();
+    let activeCategories = location.hash.toLowerCase().includes('cat=isekai')
+      ? new Set(['Isekai & Migration Guide'])
+      : new Set(['all']);
     $$('#chips .chip').forEach(x=>x.classList.toggle('active', activeCategories.has(x.dataset.cat)));
 
     function buildTagOptions(){
@@ -837,7 +597,6 @@
       if(o==='name-asc') items.sort((a,b)=>a.name.localeCompare(b.name,'vi'));
       if(o==='newest') items = [...items].reverse();
       if(o==='popular') items.sort((a,b)=> getCopyCount(b.id)-getCopyCount(a.id) || a.name.localeCompare(b.name,'vi'));
-      items = [...items.filter(c=>c.pinned), ...items.filter(c=>!c.pinned)];
       return items;
     }
 
@@ -857,13 +616,15 @@
       const hoverStats = hasCommand ? `<div class="hover-stats"><span>📄 ${lineCount} dòng</span><span>🔤 ${charCount} ký tự</span></div>` : '';
       const bodyHtml = hasCommand
         ? `<p class="cmd-preview">${escapeHtml(preview)}</p>
+           <details class="more">
+             <summary>📄 Xem toàn bộ lệnh (${lineCount} dòng · ${charCount} ký tự)</summary>
+             <pre class="more-body cmd-full">${escapeHtml(c.command)}</pre>
+           </details>
            <div class="actions">
-             <button class="btn primary" data-copy-id="${c.id}"><span class="copy-icon">📋</span> Sao chép</button>
-             <button class="btn" data-open-id="${c.id}"><span>📄</span> Mở lệnh</button>
-           </div>
-           <div class="card-hint">Bấm vào khung → xem toàn bộ lệnh + hướng dẫn dùng</div>`
+             <button class="btn primary" data-copy-id="${c.id}"><span class="copy-icon">📋</span> Sao chép lệnh</button>
+           </div>`
         : `<p class="cmd-preview cmd-removed">⚠️ Nội dung lệnh này đã được lược bỏ khỏi thư viện công khai.</p>`;
-      return `<div class="card${c.pinned?' pinned':''}" id="${escapeHtml(c.id)}" style="--card-accent:${meta.color}">
+      return `<div class="card" style="--card-accent:${meta.color}">
         ${badge}
         <div class="card-top">
           <div class="avatar" style="background:linear-gradient(135deg,${meta.color},${meta.color}99);">${meta.icon}</div>
@@ -874,7 +635,6 @@
         </div>
         <div class="card-stats-mini">
           <span class="mini-stat">${meta.icon} ${escapeHtml(meta.label)}</span>
-          ${c.pinned ? '<span class="pin-badge">📌 Dán ĐẦU System</span>' : ''}
           ${c.platform ? `<span class="mini-stat">📱 ${escapeHtml(c.platform)}</span>` : ''}
         </div>
         ${bodyHtml}
@@ -950,18 +710,12 @@
     });
 
     grid.addEventListener('click', e=>{
-      const openBtn = e.target.closest('[data-open-id]');
-      if(openBtn){ location.hash = openBtn.dataset.openId; return; }
       const btn = e.target.closest('[data-copy-id]');
-      if(btn){
-        const c = COMMANDS.find(x=>x.id===btn.dataset.copyId);
-        if(!c) return;
-        bumpCopyCount(c.id);
-        copyText(c.command, c.name);
-        return;
-      }
-      const card = e.target.closest('.card');
-      if(card && card.id && /^cmd-/.test(card.id)){ location.hash = card.id; }
+      if(!btn) return;
+      const c = COMMANDS.find(x=>x.id===btn.dataset.copyId);
+      if(!c) return;
+      bumpCopyCount(c.id);
+      copyText(c.command, c.name);
     });
 
     let toastTimeout;
@@ -1000,212 +754,8 @@
       grid.innerHTML = Array.from({length:n}).map(()=>'<div class="skeleton-card"><div class="skeleton-avatar"></div><div class="skeleton-line w60"></div><div class="skeleton-line w40"></div><div class="skeleton-line w90"></div></div>').join('');
     }
     showSkeleton(6);
-buildTagOptions();
-    setTimeout(function(){
-      render();
-      var opened = routeFromHash();
-      if(!opened){
-        var h = decodeURIComponent((location.hash||'').slice(1));
-        if(h && /^cmd-/.test(h)){
-          var el = document.getElementById(h);
-          if(el){ el.scrollIntoView({behavior:'smooth', block:'start'}); }
-        } else {
-          var cat = catFromHash();
-          if(cat){
-            activeCategories = new Set([cat]);
-            $$('#chips .chip').forEach(function(x){ x.classList.toggle('active', x.dataset.cat === cat); });
-            render();
-          }
-        }
-      }
-    }, 280);
-  // ================= TRANG CHI TIẾT LỆNH =================
-  var detailEl = document.getElementById('cmdDetail');
-  var __VERSION_WHITELIST = [
-    /REF_VERSION:?\s*(\d{4}-\d{2}(?:-\d{2})?)/i,
-    /\bv(\d+(?:\.\d+){1,3})\b/i,
-    /\b[Vv]ersion\s*(\d+(?:\.\d+){1,3})/,
-    /\bv(\d{4}\.\d{2}\.\d{2})\b/i
-  ];
-  function detectVersion(cmd){
-    if(!cmd) return '';
-    for(var i=0;i<__VERSION_WHITELIST.length;i++){
-      var m = cmd.match(__VERSION_WHITELIST[i]);
-      if(m) return m[1];
-    }
-    return '';
-  }
-  // id của lệnh được nhiều lệnh khác nhắc tới -> không xoá được
-  function refCount(id){
-    return COMMANDS.filter(function(x){ return x.id !== id && (x.command||'').indexOf(id) >= 0; }).length;
-  }
-
-  var CAT_GUIDE = {
-    'System Support & Upgrade': { where:'system', lead:'Lệnh này dán vào ô <b>System instructions</b> — KHÔNG gửi vào khung chat.' },
-    'System Core & Integrity':  { where:'system', lead:'Lệnh này dán vào <b>System instructions</b> (ô cấu hình) và chỉ cần dán <b>1 lần</b>.' },
-    'State Export & Compression':{ where:'chat', lead:'Lệnh này <b>gửi trong khung chat</b> như một tin nhắn riêng.' },
-    'Roleplay & POV Modes':     { where:'chat',  lead:'Lệnh này <b>gửi trong khung chat</b> như một tin nhắn riêng cho bot.' },
-    'Stylistic & Tone Overrides':{ where:'chat', lead:'Lệnh này <b>gửi trong khung chat</b> như một tin nhắn riêng cho bot.' },
-    'Dossier & Extraction Interfaces':{ where:'both', lead:'Có 2 cách: dán 1 lần vào <b>System</b> (dùng suốt phiên), hoặc <b>gửi trong chat</b> mỗi khi cần xuất hồ sơ.' },
-    'Special Events & Media Overrides':{ where:'both', lead:'Có 2 cách: dán 1 lần vào <b>System</b>, hoặc <b>gửi trong chat</b> mỗi khi cần mở giao diện đó.' },
-    'Isekai & Migration Guide': { where:'chat',  lead:'Lệnh này <b>gửi trong khung chat</b>, theo đúng thứ tự các Bước (0 → 4).' },
-    'Cướp thoại/hành động':     { where:'chat',  lead:'Lệnh này <b>gửi trong khung chat</b>, ngay sau lượt bot vừa lỗi.' },
-    'Lặp cấu trúc phản hồi':    { where:'chat',  lead:'Lệnh này <b>gửi trong khung chat</b>, ngay sau lượt bot vừa lỗi.' },
-    'WLW Position & Intimacy Dynamics':{ where:'chat', lead:'Lệnh này <b>gửi trong khung chat</b> như một tin nhắn riêng, khi cần mở khoá / cần nhắc bot. Với lệnh <b>Bật</b>: sau khi copy, nhớ sửa dòng <b>CHẾ ĐỘ</b> (SWITCH hoặc ĐẢO LUÔN) trong MỤC ĐIỀN <b>trước khi gửi</b> cho bot.' }
-  };
-
-  function guideHtml(c){
-    var g = CAT_GUIDE[c.category] || { where:'both', lead:'Lệnh này có thể dán vào <b>System</b> hoặc gửi trong <b>khung chat</b> tuỳ nhu cầu.' };
-    var whereTxt = g.where === 'system' ? '🧷 Dán vào System' : (g.where === 'chat' ? '💬 Gửi trong chat' : '🧷 System hoặc 💬 chat');
-    var steps = [];
-    if(g.where === 'system'){
-      steps.push('Mở char trong AI Studio → mở phần <b>System instructions</b>.');
-      steps.push('Dán lệnh vào <b>cuối</b> System (hoặc <b>đầu</b> nếu lệnh ghi rõ “dán ĐẦU System”), rồi bấm <b>Save</b>.');
-      steps.push('Bấm <b>Run</b> để bắt đầu chat. Không dán lặp lại mỗi lượt — dán 1 lần là đủ.');
-    } else if(g.where === 'chat'){
-      steps.push('Mở khung chat của char.');
-      steps.push('Dán trọn lệnh vào ô chat và <b>gửi như 1 tin nhắn riêng</b> — không dán kèm lời chào hay câu thoại.');
-      steps.push('Bot xác nhận (hoặc trả về bảng trạng thái) rồi tiếp tục truyện đúng như lệnh yêu cầu.');
-    } else {
-      steps.push('Dán vào <b>System</b>: dùng suốt cả phiên, bot luôn sẵn sàng xuất hồ sơ/giao diện khi bạn gọi.');
-      steps.push('Hoặc <b>gửi trong chat</b>: mỗi lần cần mới gửi — tiết kiệm, gọn hơn.');
-      steps.push('Đừng làm cả hai cùng lúc cho cùng một lệnh, dễ nhiễu.');
-    }
-    var h = '<div class="dguide" id="guide">'
-      + '<div class="dguide-h">📖 Cách dùng lệnh này <span class="tag">' + whereTxt + '</span></div>'
-      + '<div style="font-size:13.5px;line-height:1.65;color:var(--muted);margin-bottom:12px">' + g.lead + '</div>'
-      + '<ol class="dsteps">' + steps.map(function(s,i){ return '<li><span class="n">'+(i+1)+'</span><span>'+s+'</span></li>'; }).join('') + '</ol>';
-    h += '<div class="dwarn">⌨️ <b>Mẹo dán:</b> bấm <b>📋 Copy lệnh</b> ở trên → sang AI Studio bấm giữ ô nhập → <b>Paste</b>. Nếu ô nhập tự cắt chữ, copy lại rồi dán vào ô <b>System</b> thay vì chat.</div>';
-    h += '</div>';
-    return h;
-  }
-
-  var __lastCopy = '';
-  async function copyWithToast(text,label,btn){
-    await copyText(text,label);
-    __lastCopy = text;
-    if(btn){
-      var old = btn.dataset.label || btn.textContent;
-      btn.dataset.label = old;
-      btn.textContent = '✅ Đã copy!';
-      setTimeout(function(){ btn.textContent = btn.dataset.label; }, 1800);
-    }
-  }
-
-  function renderDetail(id){
-    var c = COMMANDS.find(function(x){ return x.id === id; });
-    if(!c) return false;
-    var meta = catMeta(c.category);
-    var cmd = c.command || '';
-    var ok = !!(cmd && cmd.trim());
-    var lines = ok ? cmd.split('\n').length : 0;
-    var chars = ok ? cmd.length : 0;
-    var ver = detectVersion(cmd);
-    var idx = COMMANDS.indexOf(c);
-    var prev = COMMANDS[idx-1], next = COMMANDS[idx+1];
-    var sameCat = COMMANDS.filter(function(x){ return x.category === c.category; });
-    var pos = sameCat.indexOf(c) + 1;
-    var tags = (c.tags||[]).map(function(t){ return '<span class="dchip">#'+escapeHtml(t)+'</span>'; }).join('');
-    var title = c.name.replace(/^[\p{Emoji_Presentation}\u2600-\u27BF\uFE0F\s]+/u,'') || c.name;
-    var h = ''
-      + '<div class="dwrap" style="--acc:'+meta.color+'">'
-      +   '<a class="dback" href="commands.html">← Về Thư viện Lệnh</a>'
-      +   '<div class="dhead">'
-      +     '<h1>'+escapeHtml(c.name)+'</h1>'
-      +     '<div class="dchips">'
-      +       '<span class="dchip acc">'+meta.icon+' '+escapeHtml(meta.label)+'</span>'
-      +       '<span class="dchip">📱 '+escapeHtml(c.platform||'AI Studio')+'</span>'
-      +       (ok?'<span class="dchip ln">📄 '+lines+' dòng · 🔤 '+chars.toLocaleString('vi-VN')+' ký tự</span>':'')
-      +       (ver?'<span class="dchip ln">🏷️ '+escapeHtml(ver)+'</span>':'')
-      +       (c.pinned?'<span class="dchip">📌 Dán ĐẦU System</span>':'')
-      +       (sameCat.length>1?'<span class="dchip ln">'+pos+'/'+sameCat.length+' trong mục '+escapeHtml(meta.label)+'</span>':'')
-      +     '</div>'
-      +     (tags?'<div class="dchips">'+tags+'</div>':'')
-      +     (ok
-            ? '<div class="dacts">'
-              + '<button class="dbtn pri" id="dCopy" data-copy-id="'+c.id+'">📋 Copy lệnh</button>'
-              + '<button class="dbtn" id="dGoGuide">📖 Cách dùng</button>'
-              + '<button class="dbtn" id="dSameCat">🗂️ Cùng mục</button>'
-              + '</div>'
-            : '<div class="dnote">⚠️ Nội dung lệnh này đã được lược bỏ khỏi thư viện công khai.</div>')
-      +   '</div>'
-      +   (ok ? guideHtml(c) : '')
-      +   (ok
-            ? '<div class="dsec"><h2>📜 Toàn bộ nội dung lệnh</h2>'
-              + '<div class="dbtns-mini">'
-              + '<button class="dbtn small" id="dCopy2" data-copy-id="'+c.id+'">📋 Copy lệnh</button>'
-              + '<button class="dbtn small" id="dDl">⬇ Tải .txt</button>'
-              + '</div></div>'
-              + '<pre class="dcode" id="dCode">'+escapeHtml(cmd)+'</pre>'
-            : '')
-      +   '<div class="dnav">'
-      +     (prev?'<a class="dbtn" href="#'+prev.id+'">← '+escapeHtml(prev.name.slice(0,46))+'</a>':'<a class="dbtn" href="commands.html">← Thư viện</a>')
-      +     (next?'<a class="dbtn" href="#'+next.id+'">'+escapeHtml(next.name.slice(0,46))+' →</a>':'<a class="dbtn" href="commands.html">Thư viện →</a>')
-      +   '</div>'
-      + '</div>';
-    detailEl.innerHTML = h;
-    detailEl.style.display = 'block';
-    document.body.classList.add('showing-detail');
-    // nút copy
-    ['dCopy','dCopy2'].forEach(function(bid){
-      var b = document.getElementById(bid);
-      if(b) b.addEventListener('click', function(){ bumpCopyCount(c.id); copyWithToast(c.command, c.name, this); });
-    });
-    var gg = document.getElementById('dGoGuide');
-    if(gg) gg.addEventListener('click', function(){
-      var g = document.getElementById('guide');
-      if(g) g.scrollIntoView({behavior:'smooth', block:'start'});
-    });
-    var sc = document.getElementById('dSameCat');
-    if(sc) sc.addEventListener('click', function(){
-      activeCategories = new Set([c.category]);
-      $$('#chips .chip').forEach(function(x){ x.classList.toggle('active', x.dataset.cat === c.category); });
-      render(); showList();
-      if(history.replaceState) history.replaceState(null,'',location.pathname+location.search);
-      window.scrollTo(0,0);
-      showToast('Đã lọc: ' + meta.label, 1600);
-    });
-    var dl = document.getElementById('dDl');
-    if(dl) dl.addEventListener('click', function(){
-      try{
-        var blob = new Blob([c.command], {type:'text/plain;charset=utf-8'});
-        var a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = c.id + '.txt';
-        document.body.appendChild(a); a.click(); a.remove();
-        setTimeout(function(){ URL.revokeObjectURL(a.href); }, 4000);
-      }catch(err){ showToast('⚠️ Máy không cho tải file — bấm 📋 Copy lệnh nhé', 2400); }
-    });
-    document.title = title + ' · Thư viện Lệnh · TeaGhiu';
-    return true;
-  }
-
-  function showList(){
-    detailEl.style.display = 'none';
-    detailEl.innerHTML = '';
-    document.body.classList.remove('showing-detail');
-    document.title = 'Thư viện Lệnh · TeaGhiu';
-  }
-
-  function routeFromHash(){
-    var h = decodeURIComponent((location.hash||'').slice(1));
-    if(/^cmd-/.test(h) && renderDetail(h)){
-      if(!__deepLink){ __deepLink = true; window.scrollTo(0,0); }
-      return true;
-    }
-    showList();
-    return false;
-  }
-  var __deepLink = false;
-  window.addEventListener('hashchange', function(){
-    if(routeFromHash()){ window.scrollTo(0,0); return; }
-    var cat = catFromHash();
-    if(cat){
-      activeCategories = new Set([cat]);
-      $$('#chips .chip').forEach(function(x){ x.classList.toggle('active', x.dataset.cat === cat); });
-      render(); window.scrollTo(0,0);
-    }
-  });
+    buildTagOptions();
+    setTimeout(render, 280);
   </script>
   <script src="click-sound.js"></script>
     <script src="music-player-v4.js"></script>
@@ -1218,5 +768,5 @@ buildTagOptions();
     <a href="https://aistudio.google.com/" target="_blank" rel="noopener" class="tab-item"><span class="tab-ico">🚀</span><span>AI Studio</span></a>
   </nav>
 
-</body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a48d6c078ca4ddca',t:'MTc5MTcxNzA2NA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
