@@ -16,6 +16,23 @@
   <meta property="og:image" content="icon.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
 <link rel="stylesheet" href="style.css">
+<style>
+  /* ===== Modal xem/sao chép lệnh (thêm thủ công) ===== */
+  .cmd-modal{display:none;position:fixed;inset:0;z-index:2000;overflow:auto;padding:16px;-webkit-overflow-scrolling:touch;}
+  .cmd-modal.open{display:flex;align-items:center;justify-content:center;}
+  .cmd-modal-overlay{position:absolute;inset:0;background:rgba(0,0,0,.6);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);}
+  .cmd-modal-box{position:relative;width:100%;max-width:680px;max-height:90vh;margin:auto;display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5);}
+  .cmd-modal-head{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line);}
+  .cmd-modal-head h3{margin:0;font-size:15px;line-height:1.4;word-break:break-word;}
+  .cmd-modal-close{background:none;border:none;color:var(--text);font-size:18px;cursor:pointer;line-height:1;padding:4px 8px;border-radius:8px;}
+  .cmd-modal-body{flex:1 1 auto;min-height:0;overflow:auto;-webkit-overflow-scrolling:touch;margin:0;padding:16px 18px;white-space:pre-wrap;overflow-wrap:anywhere;word-break:normal;font-family:'Playfair Display',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13.5px;line-height:1.6;color:var(--text);}
+  .cmd-modal-foot{flex:0 0 auto;display:flex;gap:8px;justify-content:flex-end;padding:12px 18px;border-top:1px solid var(--line);}
+  @media (max-width:520px){
+    .cmd-modal-box{border-radius:14px;}
+    .cmd-modal-foot{flex-direction:column;}
+    .cmd-modal-foot .btn{width:100%;}
+  }
+</style>
 </head>
 <body class="commands-page">
 
@@ -146,6 +163,22 @@
   </div>
 
   <div id="toast" class="toast"></div>
+
+  <!-- Modal xem & sao chép lệnh (thêm thủ công) -->
+  <div id="cmdModal" class="cmd-modal" aria-hidden="true">
+    <div class="cmd-modal-overlay" data-close></div>
+    <div class="cmd-modal-box" role="dialog" aria-modal="true">
+      <div class="cmd-modal-head">
+        <h3 id="cmdModalTitle">Lệnh</h3>
+        <button class="cmd-modal-close" data-close aria-label="Đóng">✕</button>
+      </div>
+      <pre id="cmdModalBody" class="cmd-modal-body"></pre>
+      <div class="cmd-modal-foot">
+        <button class="btn" id="cmdModalCopy"><span class="copy-icon">📋</span> Sao chép</button>
+        <button class="btn primary" data-close>Đóng</button>
+      </div>
+    </div>
+  </div>
 
   <script>
     const COMMANDS = [
@@ -634,6 +667,7 @@
              <pre class="more-body cmd-full">${escapeHtml(c.command)}</pre>
            </details>
            <div class="actions">
+             <button class="btn" data-open-id="${c.id}"><span class="copy-icon">🔓</span> Mở lệnh</button>
              <button class="btn primary" data-copy-id="${c.id}"><span class="copy-icon">📋</span> Sao chép lệnh</button>
            </div>`
         : `<p class="cmd-preview cmd-removed">⚠️ Nội dung lệnh này đã được lược bỏ khỏi thư viện công khai.</p>`;
@@ -723,6 +757,12 @@
     });
 
     grid.addEventListener('click', e=>{
+      const openBtn = e.target.closest('[data-open-id]');
+      if(openBtn){
+        const c = COMMANDS.find(x=>x.id===openBtn.dataset.openId);
+        if(c) openCmdModal(c);
+        return;
+      }
       const btn = e.target.closest('[data-copy-id]');
       if(!btn) return;
       const c = COMMANDS.find(x=>x.id===btn.dataset.copyId);
@@ -755,6 +795,31 @@
           showToast('❌ Không copy được',2500);
         }
       }
+    }
+
+    /* ===== Modal xem lệnh (thêm thủ công) ===== */
+    const cmdModal = $('#cmdModal');
+    const cmdModalTitle = $('#cmdModalTitle');
+    const cmdModalBody = $('#cmdModalBody');
+    const cmdModalCopy = $('#cmdModalCopy');
+    let cmdModalCurrent = null;
+    function openCmdModal(c){
+      cmdModalCurrent = c;
+      cmdModalTitle.textContent = c.name;
+      cmdModalBody.textContent = c.command;
+      cmdModal.classList.add('open');
+      cmdModal.setAttribute('aria-hidden','false');
+      cmdModalBody.scrollTop = 0;
+    }
+    function closeCmdModal(){
+      cmdModal.classList.remove('open');
+      cmdModal.setAttribute('aria-hidden','true');
+      cmdModalCurrent = null;
+    }
+    if(cmdModal){
+      cmdModal.addEventListener('click', e=>{ if(e.target.closest('[data-close]')) closeCmdModal(); });
+      if(cmdModalCopy) cmdModalCopy.addEventListener('click', ()=>{ if(cmdModalCurrent) copyText(cmdModalCurrent.command, cmdModalCurrent.name); });
+      document.addEventListener('keydown', e=>{ if(e.key==='Escape' && cmdModal.classList.contains('open')) closeCmdModal(); });
     }
 
     function safeGet(k){ try{ return localStorage.getItem(k); }catch{ return null; } }
