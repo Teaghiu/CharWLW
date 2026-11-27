@@ -33,6 +33,53 @@
     .cmd-modal-foot .btn{width:100%;}
   }
 </style>
+
+<style id="layout-fix">
+  /* ===== FIX hiển thị thẻ lệnh: màn hình dọc, chế độ máy tính, dạng lưới & danh sách ===== */
+  .commands-page .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:16px;align-items:start;}
+  .commands-page .grid.list{grid-template-columns:minmax(0,1fr);}
+  .commands-page .grid > *{min-width:0;}
+
+  /* Thẻ luôn xếp dọc, không để phần tử con làm giãn thẻ */
+  .commands-page .card{display:flex !important;flex-direction:column !important;flex-wrap:nowrap !important;align-items:stretch !important;gap:0;min-width:0;max-width:100%;overflow:hidden;}
+  .commands-page .card > *{min-width:0;max-width:100%;}
+
+  /* Hàng đầu: avatar + tiêu đề + thẻ tag */
+  .commands-page .card-top{display:flex !important;align-items:flex-start;gap:12px;width:100%;min-width:0;}
+  .commands-page .card-top .avatar{flex:0 0 auto;}
+  .commands-page .card-top .meta{flex:1 1 0;min-width:0;}
+  .commands-page .card .meta h3{white-space:normal;overflow-wrap:anywhere;word-break:break-word;line-height:1.35;}
+  .commands-page .card .meta .tag{display:flex;flex-wrap:wrap;gap:6px;white-space:normal;overflow:visible;margin-top:8px;}
+  .commands-page .card .meta .tag .t{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+  /* Hàng nhãn: badge độ dài + danh mục + nền tảng (badge không còn lơ lửng/tách hàng) */
+  .commands-page .card-stats-mini{display:flex;flex-wrap:wrap;align-items:center;gap:6px;}
+  .commands-page .card-stats-mini .mini-stat{white-space:normal;overflow-wrap:anywhere;}
+  .commands-page .card-stats-mini .length-badge{position:static !important;float:none !important;transform:none !important;margin:0;display:inline-flex;align-items:center;flex:0 0 auto;}
+
+  /* Nội dung lệnh */
+  .commands-page .cmd-preview{overflow-wrap:anywhere;word-break:break-word;}
+  .commands-page details.more{width:100%;min-width:0;}
+  .commands-page details.more summary{white-space:normal;overflow-wrap:anywhere;}
+  .commands-page .more-body.cmd-full{white-space:pre-wrap;overflow-wrap:anywhere;word-break:normal;max-width:100%;max-height:60vh;overflow:auto;-webkit-overflow-scrolling:touch;}
+
+  /* Nút thao tác */
+  .commands-page .card .actions{display:flex;flex-wrap:wrap;gap:8px;width:100%;}
+  .commands-page .card .actions .btn{flex:1 1 140px;justify-content:center;text-align:center;}
+
+  /* Thanh lọc */
+  .commands-page .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .commands-page .toolbar > *{min-width:0;}
+
+  /* Modal: tránh bị cắt trên trình duyệt di động (thanh địa chỉ co giãn) */
+  .cmd-modal-box{max-height:90vh;max-height:90dvh;}
+
+  /* Điện thoại: chừa chỗ cho thanh tab dưới đáy */
+  @media (max-width:768px){
+    .commands-page .main-view{padding-bottom:calc(88px + env(safe-area-inset-bottom,0px));}
+    .commands-page .card{padding-left:14px;padding-right:14px;}
+  }
+</style>
 </head>
 <body class="commands-page">
 
@@ -672,7 +719,6 @@
            </div>`
         : `<p class="cmd-preview cmd-removed">⚠️ Nội dung lệnh này đã được lược bỏ khỏi thư viện công khai.</p>`;
       return `<div class="card" style="--card-accent:${meta.color}">
-        ${badge}
         <div class="card-top">
           <div class="avatar" style="background:linear-gradient(135deg,${meta.color},${meta.color}99);">${meta.icon}</div>
           <div class="meta">
@@ -681,6 +727,7 @@
           </div>
         </div>
         <div class="card-stats-mini">
+          ${badge}
           <span class="mini-stat">${meta.icon} ${escapeHtml(meta.label)}</span>
           ${c.platform ? `<span class="mini-stat">📱 ${escapeHtml(c.platform)}</span>` : ''}
         </div>
