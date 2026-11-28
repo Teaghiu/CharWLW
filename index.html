@@ -2,19 +2,19 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Thư viện WLW · TeaGhiu</title>
   <link rel="icon" type="image/jpeg" href="icon.jpg">
     <link rel="apple-touch-icon" href="icon-192.png">
   <link rel="manifest" href="manifest.webmanifest">
-  <meta name="theme-color" content="#0e0c1c">
+  <meta name="theme-color" content="#DFF1FB">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="TeaGhiu">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Nunito:wght@600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <meta name="description" content="Thư viện Character WLW by TeaGhiu — tìm kiếm, lọc, tim, ghim và khám phá hàng trăm nhân vật WLW cho Google AI Studio." />
   <meta property="og:title" content="Thư viện WLW · TeaGhiu" />
@@ -22,7 +22,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:image" content="icon.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-<link rel="stylesheet" href="style.css?v=glass1">
+<link rel="stylesheet" href="style.css?v=sky1">
   <!-- ═══ ẢNH NHÂN VẬT + KHUNG LỚN · thêm 11/10/2026 ═══ -->
   <style id="char-photo-style">
   /* ảnh thay ô chữ cái trên thẻ */
@@ -287,18 +287,22 @@
   }
 </style>
 </head>
-<body>
+<body class="sky sp-open">
+<script>try{if(localStorage.getItem('skyNight')==='1')document.body.classList.add('night')}catch(e){}</script>
 
-  <!-- Splash -->
-  <div id="splash" onclick="this.classList.add('hide'); this.style.pointerEvents='none'; setTimeout(()=>this.style.display='none',550);" ontouchstart="this.classList.add('hide'); this.style.pointerEvents='none'; setTimeout(()=>this.style.display='none',550);">
-    <div class="splash-content">
-      <div class="splash-icon" id="splashIcon">
-        <img src="icon.jpg" alt="TeaGhiu" onerror="this.style.display='none';this.parentElement.classList.add('fb');this.parentElement.innerHTML+='<span class=\'fb-text\'>T</span>';">
-      </div>
-      <h1 class="splash-title">TeaGhiu</h1>
-      <p class="splash-desc">Thư viện WLW · Character Hub</p>
-      <div class="splash-arrow">👆</div>
+  <!-- MÀN 1 · Splash -->
+  <div id="splash" role="dialog" aria-label="TeaGhiu · Thư viện Character">
+    <div class="sp-sky" aria-hidden="true">
+      <i class="cl c1"></i><i class="cl c2"></i><i class="cl c3"></i>
+      <span class="bd b1">🕊️</span><span class="bd b2">🐦</span><span class="bd b3">🐦</span>
     </div>
+    <div class="splash-content">
+      <div class="splash-icon" id="splashIcon" aria-hidden="true">🕊️</div>
+      <h1 class="splash-title">TeaGhiu</h1>
+      <p class="splash-desc">THƯ VIỆN CHARACTER</p>
+      <button type="button" class="sp-go" id="splashGo">🌤️ GHÉ VÔ</button>
+    </div>
+    <div class="sp-load" aria-hidden="true"><span class="sp-bird">🕊️</span><div class="sp-bar"><i></i></div></div>
   </div>
 
   <!-- Navbar -->
@@ -371,24 +375,39 @@
         </div>
       </section>
 
-      <!-- Select Character -->
+      <!-- MÀN 2 · Select Character (thẻ vuốt dọc) -->
       <section class="section" id="featured">
         <div class="hero-select">
-          <p class="hs-label">Select <span class="hs-label-accent">Character</span></p>
-          <p class="hs-counter" id="heroCounter"></p>
-          <div class="hs-nav">
-            <button type="button" class="hs-arrow" id="heroPrev" aria-label="Nhân vật trước">‹</button>
-            <h3 class="hs-name" id="heroName">—</h3>
-            <button type="button" class="hs-arrow" id="heroNext" aria-label="Nhân vật sau">›</button>
+          <div class="sel-top">
+            <p class="hs-label">Select Character</p>
+            <p class="hs-counter" id="heroCounter"></p>
           </div>
-          <div class="hs-stage" id="heroStage">
-            <span class="hs-stage-bgmark" id="heroMarkBg" aria-hidden="true">?</span>
-            <span class="hs-stage-mark" id="heroMark">?</span>
+          <div class="sel-deck" id="selDeck" tabindex="0" role="group" aria-label="Chọn nhân vật: vuốt lên hoặc xuống, hoặc dùng phím mũi tên">
+            <div class="sel-back" id="selBack" aria-hidden="true"></div>
+            <article class="sel-card" id="selCard">
+              <div class="hs-stage" id="heroStage">
+                <span class="hs-stage-bgmark" id="heroMarkBg" aria-hidden="true">?</span>
+                <span class="hs-stage-mark" id="heroMark">?</span>
+              </div>
+              <div class="sel-info">
+                <h3 class="hs-name" id="heroName">—</h3>
+                <div class="sel-chips" id="selChips"></div>
+                <p class="sel-slogan" id="selSlogan"></p>
+              </div>
+            </article>
+            <div class="sel-aux">
+              <button type="button" class="hs-arrow" id="heroNext" aria-label="Nhân vật kế tiếp">⤴</button>
+              <button type="button" class="hs-arrow" id="heroPrev" aria-label="Nhân vật trước">⤵</button>
+            </div>
           </div>
-          <p class="hs-hint" id="heroHint">👆 chạm vào ảnh (hoặc thẻ) để mở khung lớn</p>
-          <p class="hs-tags" id="heroTags"></p>
+          <a class="btn primary hs-open" id="heroOpenBtn" href="#" target="_blank" rel="noopener">💬 Hãy trò chuyện với họ</a>
+          <div class="sel-foot">
+            <div class="sel-dots" id="selDots" aria-hidden="true"><i></i><i></i><i></i></div>
+            <p class="hs-hint" id="heroHint">⌄ vuốt lên/xuống để đổi nhân vật</p>
+            <button type="button" class="sel-lib" id="selToLib">Thư viện ⌄</button>
+          </div>
+          <p class="hs-tags" id="heroTags" hidden></p>
           <p class="hs-wish" id="heroWish"></p>
-          <a class="btn primary hs-open" id="heroOpenBtn" href="#" target="_blank" rel="noopener">Mở Character ↗</a>
           <div class="hs-peek" id="heroPeek"></div>
         </div>
       </section>
@@ -402,17 +421,29 @@
           </div>
         </div>
 
+        <div class="sk-sticky">
+          <div class="search-wrap">
+            <span class="search-icon" aria-hidden="true">🔍</span>
+            <input id="search" class="field" type="text" aria-label="Tìm nhân vật" placeholder="Tìm nhân vật theo tên, tag, mô tả..." />
+            <button id="clearSearch" class="clear-btn" type="button" style="display:none;" aria-label="Xóa tìm kiếm">✖</button>
+            <button id="skyMoon" class="sk-moon" type="button" aria-label="Chuyển sang ban đêm">🌙</button>
+            <div id="searchHistoryDropdown"></div>
+            <div id="searchSuggestions"></div>
+          </div>
+          <div class="chips" id="chips">
+            <button class="chip active" data-filter="all">Tất cả</button>
+            <button class="chip" data-filter="#WLW">WLW</button>
+            <button class="chip" data-filter="genre:hiện đại">Hiện đại</button>
+            <button class="chip" data-filter="genre:cổ trang">Cổ trang</button>
+            <button class="chip" data-filter="genre:aob">AOB</button>
+            <button class="chip" data-filter="genre:khác">Khác</button>
+            <button class="chip" data-filter="liked">❤️ Yêu thích</button>
+            <button class="chip" data-filter="pinned">📌 Đã ghim</button>
+          </div>
+        </div>
+
         <div class="control-panel">
           <div class="toolbar">
-            <div class="search-row">
-              <div class="search-wrap">
-                <span class="search-icon">🔍</span>
-                <input id="search" class="field" type="text" placeholder="Tìm nhân vật theo tên, tag, mô tả..." />
-                <button id="clearSearch" class="clear-btn" type="button" style="display:none;">✖</button>
-                <div id="searchHistoryDropdown"></div>
-                <div id="searchSuggestions"></div>
-              </div>
-            </div>
             <select id="filter" class="select">
               <option value="all">Tất cả nhóm</option>
               <option value="#WLW">#WLW</option>
@@ -437,16 +468,6 @@
             <button id="resetFilters" class="btn">🔄 Reset</button>
             <button id="toggleView" class="btn">📋 Danh sách</button>
           </div>
-          <div class="chips" id="chips">
-            <button class="chip active" data-filter="all">Tất cả</button>
-            <button class="chip" data-filter="#WLW">WLW</button>
-            <button class="chip" data-filter="genre:hiện đại">Hiện đại</button>
-            <button class="chip" data-filter="genre:cổ trang">Cổ trang</button>
-            <button class="chip" data-filter="genre:aob">AOB</button>
-            <button class="chip" data-filter="genre:khác">Khác</button>
-            <button class="chip" data-filter="liked">❤️ Yêu thích</button>
-            <button class="chip" data-filter="pinned">📌 Đã ghim</button>
-          </div>
         </div>
 
         <div class="result-meta">
@@ -469,6 +490,7 @@
           <a href="#/">Thư viện</a>
           <a href="#featured">Chọn nhân vật</a>
           <a href="commands.html">Thư viện Lệnh</a>
+          <a href="req.html">💌 REQ</a>
           <a href="https://aistudio.google.com/" target="_blank" rel="noopener">Google AI Studio</a>
         </div>
         <div style="max-width:480px;margin:0 auto 10px;font-size:12.5px;line-height:1.7;">
@@ -1042,6 +1064,7 @@
           <div class="meta"><h3>${escapeHtml(item.name)}</h3><span class="tag" data-tag="${escapeHtml(item.tag||'')}">${renderTagChips(item.tag,null)}</span></div>
         </div>
         <p class="desc">${escapeHtml(item.summary)}</p>
+        <div class="sk-acts"><a class="sk-chat" href="${item.link}" target="_blank" rel="noopener">💬 Chat</a><button type="button" class="sk-more" data-more aria-label="Chi tiết ${escapeHtml(item.name)}">⋯</button></div>
         <div class="actions">
           <a class="btn primary" href="${item.link}" target="_blank" rel="noopener">Mở Character ↗</a>
           <button class="btn icon-btn heart-btn ${il?'liked':''}" data-action="heart" data-name="${escapeHtml(item.name)}" title="Yêu thích">${il?'❤️':'🤍'}</button>
@@ -1066,7 +1089,15 @@
       if(o==='random'){const k=`${rawQ}|${[...activeChipFilters].join(',')}|${o}`;if(!cachedRandom||lastRandomKey!==k){cachedRandom=[...items].sort(()=>Math.random()-0.5);lastRandomKey=k;}items=cachedRandom;}
       return [...items.filter(i=>pinnedLocal.includes(i.name)),...items.filter(i=>!pinnedLocal.includes(i.name))];
     }
-    function buildPag(tp,c){if(tp<=1){paginationTop.innerHTML='';paginationBottom.innerHTML='';return;}let h=`<button class="page-btn" onclick="gotoPage(${c-1})" ${c===1?'disabled':''}>←</button>`;for(let i=1;i<=tp;i++)h+=`<button class="page-btn ${i===c?'active':''}" onclick="gotoPage(${i})">${i}</button>`;h+=`<button class="page-btn" onclick="gotoPage(${c+1})" ${c===tp?'disabled':''}>→</button>`;paginationTop.innerHTML=h;paginationBottom.innerHTML=h;}
+    function buildPag(tp,c){
+      if(tp<=1){paginationTop.innerHTML='';paginationBottom.innerHTML='';return;}
+      const set=new Set([1,tp,c-1,c,c+1]); if(c<=3){set.add(2);set.add(3);} if(c>=tp-2){set.add(tp-1);set.add(tp-2);}
+      const pages=[...set].filter(p=>p>=1&&p<=tp).sort((a,b)=>a-b);
+      let h=`<button class="page-btn" aria-label="Trang đầu" onclick="gotoPage(1)" ${c===1?'disabled':''}>«</button>`,prev=0;
+      pages.forEach(p=>{ if(p-prev>1)h+='<span class="page-gap" aria-hidden="true">…</span>'; h+=`<button class="page-btn ${p===c?'active':''}" ${p===c?'aria-current="page"':''} onclick="gotoPage(${p})">${p}</button>`; prev=p; });
+      h+=`<button class="page-btn" aria-label="Trang cuối" onclick="gotoPage(${tp})" ${c===tp?'disabled':''}>»</button>`;
+      paginationTop.innerHTML=h;paginationBottom.innerHTML=h;
+    }
     function renderStatus(n){
       const q=normalize(search.value);
       const t=activeChipFilters.has('all')?'tất cả nhóm':[...activeChipFilters].map(filterLabel).join(' + ');
@@ -1301,7 +1332,7 @@
             if(rh2){ rh2.disabled = false; rh2.style.opacity = ''; }
             isSpinning = false;
             stagePhoto(target);
-            csOpenAs(heroIndex, true);
+            renderHero(); csOpenAs(heroIndex, true);
           }, 1600);
         }
       }
@@ -1318,6 +1349,7 @@
     /* 11/10/2026 — bấm thẻ nhân vật = mở KHUNG LỚN (đã bỏ hiệu ứng nở thẻ cho hết lỗi "viền thừa" ở chế độ máy tính) */
     function attachOpenCard(el){
       el.addEventListener('click',e=>{
+        const mb=e.target.closest('[data-more]'); if(mb){ const c0=mb.closest('.card'); const i0=c0?parseInt(c0.dataset.idx,10):NaN; if(!isNaN(i0)) csOpenAs(i0,false); return; }
         if(e.target.closest('a, button, details, summary, [data-action]'))return;
         const card=e.target.closest('.card');
         if(!card||!el.contains(card))return;
@@ -1340,32 +1372,6 @@
     const tt=$('#themeToggle');const stm=safeGet('theme')||'dark';
     if(stm==='light'){document.body.classList.add('light');tt.textContent='☀️';}else tt.textContent='🌙';
     tt.addEventListener('click',()=>{document.body.classList.toggle('light');const l=document.body.classList.contains('light');safeSet('theme',l?'light':'dark');tt.textContent=l?'☀️':'🌙';});
-
-        const sp = $('#splash');
-    let sdismissed = false;
-    function hs() {
-      if (sdismissed) return;
-      sdismissed = true;
-      if (sp) {
-        sp.classList.add('hide');
-        sp.style.pointerEvents = 'none';
-        setTimeout(() => { sp.style.display = 'none'; }, 550);
-      }
-      safeSet('splashSeen', 'true');
-    }
-    if (sp) {
-      sp.addEventListener('click', hs, { passive: true });
-      sp.addEventListener('pointerdown', hs, { passive: true });
-      sp.addEventListener('touchstart', hs, { passive: true });
-      window.addEventListener('keydown', hs, { once: true });
-      window.addEventListener('wheel', hs, { once: true, passive: true });
-      if (safeGet('splashSeen') === 'true') {
-        sp.style.display = 'none';
-        sdismissed = true;
-      } else {
-        setTimeout(hs, 2500);
-      }
-    }
 
     function showSkeleton(n){
       grid.classList.remove('fade-out');
@@ -1521,6 +1527,123 @@
         initSupabase().then(r=>{ renderAll(r); initSiteCounter(); });
     // countdown no longer needed after BXH removal
   </script>
+<!-- DẢI MỎNG: tên nhân vật đang chọn (hiện khi cuộn xuống thư viện) -->
+  <button type="button" class="sel-strip" id="selStrip" aria-label="Quay lại chọn nhân vật"><span aria-hidden="true">🕊️</span><b id="stripName"></b><span>⌃ chọn lại</span></button>
+
+  <!-- TABBAR 5 ICON -->
+  <nav class="tabbar" aria-label="Điều hướng nhanh">
+    <a href="#library" class="tab-item active"><span class="tab-ico">🌤️</span><span>Thư viện</span></a>
+    <a href="#featured" class="tab-item"><span class="tab-ico">🕊️</span><span>Nhân vật</span></a>
+    <a href="commands.html" class="tab-item"><span class="tab-ico">🪁</span><span>Lệnh</span></a>
+    <a href="isekai-guide.html" class="tab-item"><span class="tab-ico">🧭</span><span>Cẩm nang</span></a>
+    <a href="https://aistudio.google.com/" target="_blank" rel="noopener" class="tab-item"><span class="tab-ico">🎈</span><span>AI Studio</span></a>
+  </nav>
+
+  <script id="sky-js">
+  /* ═══ BẦU TRỜI & CHIM · tương tác mobile ═══ (không đụng logic data/render; chỉ bọc thêm giao diện) */
+  (function(){
+    const body=document.body, root=document.documentElement, land=matchMedia('(orientation: landscape)');
+
+    /* --- phụ trợ Select: chip, slogan, thẻ "peek", chấm, tên dải mỏng --- */
+    function selExtras(){
+      const item=chars[heroIndex]; if(!item) return;
+      const nx=chars[(heroIndex+1)%chars.length], a=(nx.accent||'#6FC3EC');
+      const g='linear-gradient(155deg,'+a+','+shadeColor(a,-0.4)+')';
+      const ch=$('#selChips'); if(ch) ch.innerHTML=parseTags(item.tag).slice(0,3).map(t=>'<span>'+escapeHtml(t.replace(/^#/,'').replace(/_/g,' '))+'</span>').join('');
+      const sg=$('#selSlogan'); if(sg) sg.textContent=item.summary||'';
+      const sn=$('#stripName'); if(sn) sn.textContent=item.name;
+      const bk=$('#selBack'); if(bk) bk.style.backgroundImage=(nx.__img?'url("'+nx.__img+'"),':'')+g;
+      const dots=$('#selDots'); if(dots) [...dots.children].forEach((d,i)=>d.classList.toggle('on',i<=heroIndex%3));
+      $('#heroCounter').textContent=(heroIndex+1)+' / '+chars.length;
+    }
+    const _rh=renderHero;
+    window.renderHero=function(){ _rh(); selExtras(); };
+    selExtras();
+
+    /* --- thẻ bài vuốt DỌC: lên = kế tiếp, xuống = trước --- */
+    const card=$('#selCard'), deck=$('#selDeck');
+    let y0=0, dy=0, t0=0, drag=false, moved=false, busy=false;
+    function swap(d){
+      if(busy||isSpinning) return; busy=true;
+      card.classList.add(d>0?'out-up':'out-down');
+      setTimeout(function(){
+        card.style.removeProperty('--dy');
+        heroGo(d);
+        card.classList.remove('out-up','out-down');
+        card.classList.add(d>0?'in-up':'in-down');
+        void card.offsetWidth;
+        requestAnimationFrame(function(){ card.classList.remove('in-up','in-down'); setTimeout(function(){ busy=false; },280); });
+      },230);
+    }
+    card.addEventListener('pointerdown',function(e){
+      if(busy||isSpinning||(e.pointerType==='mouse'&&e.button>0)) return;
+      drag=true; moved=false; y0=e.clientY; dy=0; t0=performance.now(); card.classList.add('drag');
+    });
+    window.addEventListener('pointermove',function(e){
+      if(!drag) return; dy=e.clientY-y0; if(Math.abs(dy)>8) moved=true;
+      card.style.setProperty('--dy',(dy*.55)+'px');
+    });
+    function endDrag(){
+      if(!drag) return; drag=false; card.classList.remove('drag');
+      const v=Math.abs(dy)/Math.max(1,performance.now()-t0);
+      if(moved&&(Math.abs(dy)>60||v>.5)) swap(dy<0?1:-1); else card.style.removeProperty('--dy');
+    }
+    window.addEventListener('pointerup',endDrag);
+    window.addEventListener('pointercancel',endDrag);
+    card.addEventListener('click',function(e){ if(moved){ e.stopPropagation(); e.preventDefault(); moved=false; } },true);
+    /* phương án thay thế cho vuốt: nút ⤴ ⤵ và phím mũi tên */
+    $('#heroNext').addEventListener('click',function(e){ e.stopImmediatePropagation(); swap(1); },true);
+    $('#heroPrev').addEventListener('click',function(e){ e.stopImmediatePropagation(); swap(-1); },true);
+    deck.addEventListener('keydown',function(e){
+      if(e.key==='ArrowDown'||e.key==='ArrowRight'||e.key==='PageDown'){ e.preventDefault(); swap(1); }
+      else if(e.key==='ArrowUp'||e.key==='ArrowLeft'||e.key==='PageUp'){ e.preventDefault(); swap(-1); }
+    });
+    $('#selToLib').addEventListener('click',function(){ $('#library').scrollIntoView({behavior:'smooth',block:'start'}); });
+    $('#selStrip').addEventListener('click',function(){ window.scrollTo({top:0,behavior:'smooth'}); });
+
+    /* --- cuộn dọc: Select thu nhỏ, dải mỏng dính trên cùng, tab đang chọn --- */
+    const tabs=[...document.querySelectorAll('.tabbar .tab-item')];
+    let tick=false;
+    function onScroll(){
+      if(tick) return; tick=true;
+      requestAnimationFrame(function(){
+        tick=false;
+        if(land.matches){ root.style.setProperty('--p',0); body.classList.remove('sel-mini'); if(tabs[0]) tabs[0].classList.add('active'); if(tabs[1]) tabs[1].classList.remove('active'); return; }
+        const vh=window.innerHeight, y=window.scrollY, lib=y>vh*.5;
+        root.style.setProperty('--p',Math.min(1,y/(vh*.8)).toFixed(3));
+        body.classList.toggle('sel-mini',y>vh*.78);
+        if(tabs[0]) tabs[0].classList.toggle('active',lib);
+        if(tabs[1]) tabs[1].classList.toggle('active',!lib);
+      });
+    }
+    window.addEventListener('scroll',onScroll,{passive:true});
+    window.addEventListener('resize',onScroll); onScroll();
+
+    /* --- 🌙 ban đêm --- */
+    const moon=$('#skyMoon'), meta=document.querySelector('meta[name="theme-color"]');
+    function setNight(n){
+      body.classList.toggle('night',n); moon.textContent=n?'☀️':'🌙';
+      moon.setAttribute('aria-label',n?'Chuyển sang ban ngày':'Chuyển sang ban đêm');
+      if(meta) meta.setAttribute('content',n?'#0E1B2E':'#DFF1FB'); safeSet('skyNight',n?'1':'0');
+    }
+    moon.addEventListener('click',function(){ setNight(!body.classList.contains('night')); });
+    setNight(safeGet('skyNight')==='1');
+
+    /* --- MÀN 1: GHÉ VÔ → chim bay + thanh xanh 0→100% (~1.6s) → fade vào Màn 2 --- */
+    const sp=$('#splash');
+    function seen(){ try{ return sessionStorage.getItem('skySplash')==='1'; }catch(e){ return false; } }
+    function closeSplash(){
+      sp.classList.add('hide'); body.classList.remove('sp-open','sp-loading');
+      setTimeout(function(){ sp.style.display='none'; },650);
+    }
+    if(seen()){ sp.style.display='none'; body.classList.remove('sp-open'); }
+    else $('#splashGo').addEventListener('click',function(){
+      if(body.classList.contains('sp-loading')) return;
+      body.classList.add('sp-loading');
+      setTimeout(function(){ try{ sessionStorage.setItem('skySplash','1'); }catch(e){} closeSplash(); },1700);
+    });
+  })();
+  </script>
 <script src="click-sound.js"></script>
   <script src="music-player-v4.js"></script>
   <script src="forest-portal.js?v=2"></script>
@@ -1535,15 +1658,7 @@
     }
     </script>
   
-  <!-- BOTTOM TAB BAR (chỉ hiện trên điện thoại) -->
-  <nav class="tabbar" aria-label="Điều hướng nhanh">
-    <a href="index.html" class="tab-item active"><span class="tab-ico">📚</span><span>Thư viện</span></a>
-    <a href="index.html#featured" class="tab-item"><span class="tab-ico">⭐</span><span>Nhân vật</span></a>
-    <a href="commands.html" class="tab-item"><span class="tab-ico">📜</span><span>Lệnh</span></a>
-    <a href="isekai-guide.html" class="tab-item"><span class="tab-ico">🌀</span><span>Cẩm nang</span></a>
-    <a href="req.html" class="tab-item"><span class="tab-ico">💌</span><span>REQ</span></a>
-    <a href="https://aistudio.google.com/" target="_blank" rel="noopener" class="tab-item"><span class="tab-ico">🚀</span><span>AI Studio</span></a>
-  </nav>
+  
 
 <script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a492d67da8fa0959',t:'MTc5MTc3Mzg1NA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a4931e9439c484e4',t:'MTc5MTc3NjgwNw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>

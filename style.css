@@ -1140,3 +1140,226 @@ body:not(.light) .pin-btn.pinned {
   .grid:not(.list) .card .meta h3{ font-size:20px; }
   .grid:not(.list) .card .desc{ font-size:14px; -webkit-line-clamp:4; }
 }
+
+/* ============================================================
+   BẦU TRỜI & CHIM — redesign mobile (dọc + ngang)
+   Chỉ áp dụng khi <body class="sky"> (index.html). commands.html không bị ảnh hưởng.
+   ============================================================ */
+body.sky{
+  --sky-50:#EAF6FF;--sky-100:#DFF1FB;--sky-200:#C7E8FB;--sky-300:#BFE3F5;--sky-500:#6FC3EC;--sky-700:#3C9BD6;
+  --sky-800:#1F78B4;--sun:#FFC93C;--sun-d:#F5B400;--cloud:#FFFFFF;--ink:#2B3A4A;--muted:#7C8DA0;
+  --sub:#5B6E83;--link:#1F78B4;--glass:rgba(255,255,255,.9);--sun-ink:#5A3B00;
+  --shadow:0 10px 30px rgba(60,140,200,.18);
+  --text:var(--ink);--muted-2:#8696A8;--line:rgba(60,155,214,.2);--line-strong:var(--sky-300);
+  --panel:var(--cloud);--panel-2:var(--sky-100);--panel-hover:var(--sky-100);--accent:var(--sky-700);--accent-2:var(--sky-700);
+  --tab-h:calc(84px + env(safe-area-inset-bottom,0px));--strip-h:0px;
+  font-family:'Nunito','Inter',system-ui,-apple-system,"Segoe UI",sans-serif;
+  background:linear-gradient(180deg,var(--sky-200) 0,var(--sky-50) 420px,#fff 100%) fixed;
+  color:var(--ink);padding-bottom:var(--tab-h);
+}
+body.sky.night{
+  --sky-50:#0E1B2E;--sky-100:#16273F;--sky-200:#1D3556;--sky-300:#2A4A73;--cloud:#18283F;--ink:#E8F1FA;
+  --muted:#8EA3BB;--sub:#A9BBD0;--link:#8FD0F7;--glass:rgba(24,40,63,.92);--muted-2:#8EA3BB;
+  --shadow:0 10px 30px rgba(0,0,0,.35);--line:rgba(124,196,242,.22);
+  background:linear-gradient(180deg,#1D3556 0,#0E1B2E 420px,#0A1422 100%) fixed;
+}
+body.sky::before,body.sky::after{display:none}
+body.sky.sp-open{overflow:hidden}
+body.sky .wrap{max-width:560px;padding:0 14px}
+body.sky .section{margin-top:0}
+body.sky :is(.navbar,.breadcrumb,.profile-hero,.hs-peek,#heroTags,.hs-wish){display:none}
+body.sky :focus-visible{outline:3px solid var(--sky-500);outline-offset:2px}
+
+/* ---------- MÀN 1 · SPLASH ---------- */
+body.sky #splash{background:linear-gradient(180deg,#BFE3F5 0%,#DFF1FB 55%,#fff 100%);backdrop-filter:none;-webkit-backdrop-filter:none;cursor:default;overflow:hidden}
+body.sky #splash.hide{opacity:0;transform:none;visibility:hidden;pointer-events:none}
+.sp-sky{position:absolute;inset:0;pointer-events:none}
+.cl{position:absolute;left:-12em;width:8em;height:2.6em;font-size:var(--s,18px);background:#fff;border-radius:99px;opacity:.92;animation:skyCloud var(--d,46s) linear var(--dl,0s) infinite}
+.cl::before,.cl::after{content:"";position:absolute;background:#fff;border-radius:50%}
+.cl::before{width:3.6em;height:3.6em;left:1.2em;top:-1.6em}
+.cl::after{width:2.8em;height:2.8em;left:4em;top:-1.1em}
+.cl.c1{top:12%}.cl.c2{top:37%;--s:28px;--d:64s;--dl:-22s;opacity:.7}.cl.c3{top:73%;--s:21px;--d:54s;--dl:-9s}
+@keyframes skyCloud{to{transform:translateX(calc(100vw + 24em))}}
+.bd{position:absolute;left:-2em;scale:-1 1;animation:skyBird var(--d,16s) linear var(--dl,0s) infinite}
+.bd.b1{top:21%;font-size:30px}.bd.b2{top:49%;font-size:20px;--d:22s;--dl:-9s}.bd.b3{top:64%;font-size:16px;--d:19s;--dl:-4s}
+@keyframes skyBird{0%{transform:translate(0,0)}25%{transform:translate(28vw,-14px)}50%{transform:translate(56vw,6px)}75%{transform:translate(84vw,-12px)}100%{transform:translate(112vw,0)}}
+body.sky .splash-content{position:relative;display:flex;flex-direction:column;align-items:center;animation:none;transition:opacity .35s}
+body.sky .splash-icon{width:104px;height:104px;border-radius:32px;background:#fff;border:0;box-shadow:var(--shadow);font-size:56px;margin:0 0 18px;animation:float 3.4s ease-in-out infinite}
+body.sky .splash-title{font-family:'Playfair Display',serif;font-style:normal;font-size:clamp(46px,14vw,66px);color:var(--sky-800);background:none;-webkit-text-fill-color:currentColor;margin:0;letter-spacing:-.01em}
+body.sky .splash-desc{margin:6px 0 34px;color:var(--sub);font-size:13px;font-weight:800;letter-spacing:.22em}
+.sp-go{appearance:none;border:0;cursor:pointer;font-family:inherit;font-weight:900;font-size:18px;letter-spacing:.06em;min-height:58px;padding:0 42px;border-radius:999px;background:var(--sun);color:var(--sun-ink);box-shadow:0 10px 24px rgba(245,180,0,.45),inset 0 -4px 0 var(--sun-d);transition:transform .15s}
+.sp-go:active{transform:translateY(2px) scale(.98)}
+.sp-load{position:absolute;left:0;right:0;top:50%;padding:0 14%;opacity:0;pointer-events:none;transition:opacity .3s}
+.sp-bird{position:absolute;left:-12vw;top:-58px;font-size:40px;scale:-1 1;animation:spFly 1.6s linear forwards paused}
+.sp-bar{height:12px;border-radius:99px;background:rgba(255,255,255,.85);box-shadow:inset 0 1px 3px rgba(60,140,200,.25);overflow:hidden}
+.sp-bar i{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,var(--sky-500),var(--sky-800))}
+body.sky.sp-loading .splash-content{opacity:0;pointer-events:none}
+body.sky.sp-loading .sp-load{opacity:1}
+body.sky.sp-loading .sp-bird{animation-play-state:running}
+body.sky.sp-loading .sp-bar i{animation:spFill 1.6s linear forwards}
+@keyframes spFly{to{transform:translate(135vw,-20px)}}
+@keyframes spFill{to{width:100%}}
+
+/* ---------- MÀN 2 · SELECT CHARACTER (thẻ vuốt dọc) ---------- */
+body.sky #featured{display:flex;min-height:100vh;min-height:100svh;padding:calc(env(safe-area-inset-top,0px) + 12px) 0 var(--tab-h)}
+body.sky .hero-select{flex:1;min-width:0;display:flex;flex-direction:column;gap:10px;padding:0;background:none;border:0;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;overflow:visible;
+  transform:scale(calc(1 - var(--p,0)*.08));opacity:calc(1 - var(--p,0)*.45);transform-origin:50% 0}
+.sel-top{display:flex;align-items:baseline;justify-content:space-between;padding:0 4px}
+body.sky .hs-label{margin:0;text-align:left;font-size:17px;font-weight:900;letter-spacing:0;text-transform:none;color:var(--ink)}
+body.sky .hs-counter{margin:0;font-size:13px;font-weight:800;color:var(--sub)}
+.sel-deck{position:relative;flex:1;min-height:340px}
+.sel-back{position:absolute;inset:16px 14px 0;border-radius:26px;background-size:cover;background-position:center 20%;box-shadow:var(--shadow);filter:saturate(.9) brightness(.97)}
+.sel-card{position:absolute;inset:0 0 16px;display:flex;flex-direction:column;overflow:hidden;border-radius:26px;background:var(--cloud);box-shadow:var(--shadow);
+  touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;
+  transform:translate3d(0,var(--dy,0px),0);transition:transform .28s cubic-bezier(.2,.8,.2,1),opacity .28s}
+.sel-card.drag{transition:none;cursor:grabbing}
+.sel-card.out-up{transform:translate3d(0,-115%,0) scale(.94);opacity:0}
+.sel-card.out-down{transform:translate3d(0,115%,0) scale(.94);opacity:0}
+.sel-card.in-up{transition:none;transform:translate3d(0,16px,0) scale(.94);opacity:.85}
+.sel-card.in-down{transition:none;transform:translate3d(0,-30px,0) scale(.94);opacity:.85}
+body.sky .sel-card .hs-stage{flex:0 0 67%;height:auto;min-height:0;margin:0;border-radius:0;box-shadow:none}
+body.sky .sel-card .hs-stage::before{display:none}
+body.sky .sel-card .hs-stage::after{background:linear-gradient(to top,var(--cloud) 0,transparent 42%)}
+body.sky .hs-stage .hero-photo{filter:none;object-position:center 22%}
+.sel-info{position:relative;z-index:2;flex:1;min-height:0;display:flex;flex-direction:column;gap:8px;margin-top:-34px;padding:0 20px 16px;overflow:hidden}
+body.sky .sel-info .hs-name{flex:none;margin:0;text-align:left;white-space:normal;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+  font-family:'Playfair Display',serif;font-size:clamp(23px,7vw,30px);font-weight:700;line-height:1.18;color:var(--ink);background:none;-webkit-text-fill-color:currentColor;letter-spacing:0}
+.sel-chips{display:flex;flex-wrap:wrap;gap:6px;max-height:62px;overflow:hidden}
+.sel-chips span{padding:4px 11px;border-radius:99px;background:var(--sky-100);border:1px solid var(--sky-200);color:var(--link);font-size:12.5px;font-weight:800}
+.sel-slogan{margin:0;font-family:'Playfair Display',serif;font-style:italic;font-weight:600;font-size:14.5px;line-height:1.5;color:var(--sub);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.sel-aux{position:absolute;right:10px;top:42%;transform:translateY(-50%);z-index:5;display:flex;flex-direction:column;gap:10px}
+body.sky .sel-aux .hs-arrow{width:46px;height:46px;font-size:21px;font-weight:900;background:rgba(255,255,255,.88);color:var(--sky-800);border:0;box-shadow:var(--shadow);backdrop-filter:blur(8px)}
+body.sky .hs-open.btn.primary{display:flex;width:100%;min-height:56px;border-radius:999px;font-size:16px;font-weight:900;letter-spacing:.01em}
+body.sky .btn.primary{background:var(--sun);color:var(--sun-ink);border:0;font-weight:900;box-shadow:0 8px 20px rgba(245,180,0,.38),inset 0 -3px 0 var(--sun-d)}
+.sel-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 4px}
+.sel-dots{display:flex;gap:5px}.sel-dots i{width:8px;height:8px;border-radius:50%;background:var(--sky-300)}.sel-dots i.on{background:var(--sky-800)}
+body.sky .hs-hint{flex:1;margin:0;text-align:center;font-size:12.5px;font-weight:700;color:var(--sub)}
+.sel-lib{appearance:none;border:0;background:var(--sky-100);color:var(--link);font:800 13px/1 inherit;font-family:inherit;min-height:44px;padding:0 14px;border-radius:99px;cursor:pointer}
+.sel-strip{position:fixed;left:0;right:0;top:0;z-index:90;display:flex;align-items:center;gap:10px;min-height:calc(44px + env(safe-area-inset-top,0px));padding:env(safe-area-inset-top,0px) 16px 0;
+  background:var(--glass);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:0;border-bottom:1px solid var(--sky-200);color:var(--ink);font:800 14px/1.2 inherit;font-family:inherit;text-align:left;cursor:pointer;
+  visibility:hidden;transform:translateY(-100%);transition:transform .25s,visibility .25s}
+.sel-strip b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sel-strip span:last-child{font-size:12px;color:var(--link)}
+body.sky.sel-mini{--strip-h:44px}
+body.sky.sel-mini .sel-strip{visibility:visible;transform:none}
+
+/* ---------- MÀN 3 · THƯ VIỆN ---------- */
+body.sky #library{margin-top:6px;scroll-margin-top:56px}
+body.sky .section-head{margin:0 0 6px}
+body.sky .section-title{font-family:inherit;font-size:20px;font-weight:900;color:var(--ink)}
+body.sky .section-title .accent{background:none;-webkit-text-fill-color:currentColor;font-style:normal}
+body.sky .section-sub{display:none}
+.sk-sticky{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--strip-h));z-index:60;margin:0 -14px;padding:8px 14px 6px;background:var(--sky-50);box-shadow:0 8px 14px -10px rgba(60,140,200,.4)}
+body.sky .field{min-height:52px;padding:0 96px 0 48px;border:2px solid transparent;border-radius:999px;background:var(--cloud);color:var(--ink);font-size:16px;box-shadow:var(--shadow)}
+body.sky .field:focus{border-color:var(--sky-500);background:var(--cloud);box-shadow:0 0 0 4px rgba(111,195,236,.3),var(--shadow)}
+body.sky .field::placeholder{color:var(--muted)}
+body.sky .search-icon{left:18px;opacity:1;font-size:18px}
+body.sky .clear-btn{right:52px;min-width:36px;min-height:36px;color:var(--sub)}
+.sk-moon{position:absolute;right:6px;width:42px;height:42px;border:0;border-radius:50%;background:var(--sky-100);font-size:18px;cursor:pointer}
+body.sky #searchSuggestions,body.sky #searchHistoryDropdown{background:var(--cloud)!important;border:0;border-radius:20px!important;box-shadow:var(--shadow)}
+body.sky #searchSuggestions>div,body.sky #searchHistoryDropdown>div{color:var(--ink);border-bottom-color:var(--sky-100);min-height:44px;display:flex;align-items:center}
+body.sky .chips{flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;margin:8px -14px 0;padding:2px 14px 4px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+body.sky .chips::-webkit-scrollbar{display:none}
+body.sky .chip{flex:0 0 auto;min-height:44px;padding:0 18px;background:var(--cloud);color:var(--sub);border:1.5px solid var(--sky-200);font-weight:800;font-size:14px}
+body.sky .chip.active{background:var(--sky-800);color:#fff;border-color:var(--sky-800);box-shadow:0 6px 14px rgba(31,120,180,.35)}
+body.sky .control-panel{margin-top:8px;padding:0;background:none;border:0;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+body.sky .toolbar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+body.sky #filter{display:none}
+body.sky .toolbar #randomBtn{grid-column:auto}
+body.sky #sort{grid-column:1/-1}
+body.sky .select,body.sky .btn{min-height:44px;background:var(--cloud);color:var(--ink);border:1.5px solid var(--sky-200);border-radius:14px;font-weight:800;font-size:13.5px;padding:0 10px}
+body.sky .result-meta{margin:14px 0 8px;font-size:13px;font-weight:700;color:var(--sub)}
+body.sky .pagination{gap:6px;margin:10px 0}
+body.sky .page-btn{min-width:44px;height:44px;border-radius:14px;background:var(--cloud);color:var(--ink);border:1.5px solid var(--sky-200);font-weight:800}
+body.sky .page-btn.active{background:var(--sky-800);color:#fff;border-color:var(--sky-800)}
+body.sky .page-btn:disabled{opacity:.35}
+.page-gap{color:var(--muted);font-weight:900;padding:0 2px}
+/* thẻ lưới: 2 cột dọc */
+body.sky .grid:not(.list){grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+body.sky .grid:not(.list) .card{display:flex;flex-direction:column;gap:8px;padding:8px;border:0;border-radius:22px;background:var(--cloud);box-shadow:var(--shadow);backdrop-filter:none;-webkit-backdrop-filter:none}
+body.sky .card::before,body.sky .card::after{display:none}
+body.sky .card:hover{transform:none;border-color:transparent;box-shadow:var(--shadow)}
+body.sky .grid:not(.list) .card .avatar{grid-area:auto;width:100%;height:auto;min-height:0;aspect-ratio:3/4;align-self:auto;border-radius:16px}
+body.sky .card .meta{padding:0 4px}
+body.sky .card .meta h3{font-size:15px;font-weight:800;line-height:1.3;color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+body.sky .card .meta .tag{flex-wrap:nowrap;overflow:hidden;margin-top:5px;gap:4px}
+body.sky .card .meta .tag .t{flex:0 1 auto;min-width:0;max-width:100%;padding:3px 9px;border:0;border-radius:99px;background:var(--sky-100);color:var(--link);font-size:11.5px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.sky .card .meta .tag .t:nth-child(n+3){display:none}
+body.sky .grid:not(.list) .card .desc{display:none}
+body.sky .card .desc{color:var(--sub);font-style:normal}
+.sk-acts{display:none}
+body.sky .sk-acts{display:flex;gap:6px;margin-top:auto;padding-top:2px}
+body.sky .sk-chat{flex:1;min-height:44px;display:inline-flex;align-items:center;justify-content:center;border-radius:999px;background:var(--sky-800);color:#fff;font-size:13px;font-weight:900;text-decoration:none}
+body.sky .sk-more{flex:0 0 44px;min-height:44px;border-radius:999px;border:1.5px solid var(--sky-200);background:var(--cloud);color:var(--link);font-size:18px;font-weight:900;cursor:pointer}
+/* chế độ danh sách */
+body.sky .grid.list{gap:10px}
+body.sky .grid.list .card{flex-direction:row;flex-wrap:wrap;align-items:center;gap:10px;padding:10px;border:0;border-radius:20px;background:var(--cloud);box-shadow:var(--shadow)}
+body.sky .grid.list .card .card-top{flex:1 1 0;min-width:0;gap:12px;align-items:center}
+body.sky .grid.list .card .avatar{width:60px;height:78px;border-radius:14px}
+body.sky .grid.list .card .desc{order:3;flex:1 1 100%;margin:0;font-size:13px}
+body.sky .grid.list .card .actions{display:none}
+body.sky .grid.list .sk-acts{order:2;margin:0}
+body.sky .grid.list .sk-chat{flex:0 0 auto;padding:0 16px}
+body.sky .skeleton-card{background:var(--cloud);border:0;box-shadow:var(--shadow);min-height:230px}
+body.sky .skeleton-line,body.sky .skeleton-avatar{background:var(--sky-100)}
+body.sky .empty{background:var(--cloud);border:2px dashed var(--sky-300);border-radius:22px;color:var(--sub)}
+body.sky .footer{margin:28px 0 12px;padding:20px 0;border-top:1px solid var(--sky-200);color:var(--sub)}
+body.sky .footer-links a{color:var(--link);font-weight:700}
+body.sky #backToTop{background:var(--sun);color:var(--sun-ink);box-shadow:0 8px 20px rgba(245,180,0,.45);bottom:calc(var(--tab-h) + 8px)!important}
+body.sky .toast{background:var(--cloud);color:var(--ink);border:1px solid var(--sky-200);box-shadow:var(--shadow);bottom:calc(var(--tab-h) + 12px)!important}
+
+/* ---------- TABBAR 5 ICON ---------- */
+body.sky .tabbar{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:2px;position:fixed;z-index:95;
+  left:max(12px,calc(50% - 268px));right:max(12px,calc(50% - 268px));bottom:calc(10px + env(safe-area-inset-bottom,0px));padding:6px;
+  border:1px solid var(--sky-200);border-radius:28px;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:var(--shadow)}
+body.sky .tab-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:54px;border-radius:22px;text-decoration:none;color:var(--sub);font-size:11px;font-weight:800;box-shadow:none;background:none}
+body.sky .tab-item .tab-ico{font-size:22px;line-height:1}
+body.sky .tab-item.active{background:var(--sky-100);color:var(--link);box-shadow:none}
+
+/* ---------- KHUNG LỚN (cs-sheet) theo theme ---------- */
+body.sky .cs-scrim{background:rgba(43,58,74,.45)}
+body.sky .cs-sheet{background:var(--cloud);color:var(--ink);border-top:0;box-shadow:0 -14px 40px rgba(60,140,200,.28)}
+body.sky .cs-topbar{background:var(--cloud)}
+body.sky .cs-grip{background:var(--sky-300)}
+body.sky .cs-grip::after,body.sky .cs-head{color:var(--sub)}
+body.sky .cs-x{background:var(--sky-100);border:0;color:var(--ink);min-width:44px;min-height:44px}
+body.sky .cs-quote{color:var(--ink);border-left-color:var(--sky-500)}
+body.sky #csSheet .cs-tag{background:var(--sky-100);color:var(--link);border-color:var(--sky-200)}
+body.sky .cs-wish b{background:none;-webkit-text-fill-color:currentColor;color:var(--link)}
+body.sky .cs-wish span{color:var(--sub)}
+
+/* ---------- NGANG: 2 CỘT (trái Select 42% · phải Thư viện 58%, cuộn riêng) ---------- */
+@media (orientation:landscape){
+  body.sky{--tab-h:calc(66px + env(safe-area-inset-bottom,0px));height:100vh;height:100dvh;overflow:hidden;padding-bottom:0}
+  body.sky .main-view{height:100%}
+  body.sky .main-view>.wrap{max-width:none;height:100%;padding:0;display:grid;grid-template-columns:42% 58%;grid-template-rows:100%}
+  body.sky #featured{grid-column:1;min-height:0;height:100%;padding:calc(env(safe-area-inset-top,0px) + 8px) 8px var(--tab-h) calc(env(safe-area-inset-left,0px) + 14px);overflow:hidden}
+  body.sky .hero-select{transform:none;opacity:1}
+  body.sky #library{grid-column:2;height:100%;margin:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:calc(env(safe-area-inset-top,0px) + 8px) calc(env(safe-area-inset-right,0px) + 14px) calc(var(--tab-h) + 8px) 14px}
+  body.sky .sk-sticky{top:0;margin:0 -14px}
+  body.sky .footer,body.sky .sel-strip,body.sky .sel-lib,body.sky #backToTop{display:none!important}
+  body.sky .grid:not(.list){grid-template-columns:repeat(3,minmax(0,1fr))}
+  body.sky .tabbar{left:50%;right:auto;width:min(440px,70vw);transform:translateX(-50%)}
+}
+@media (orientation:landscape) and (max-height:520px){
+  body.sky{--tab-h:calc(64px + env(safe-area-inset-bottom,0px))}
+  body.sky .section-head{display:none}
+  body.sky .toolbar{grid-template-columns:1.5fr 1fr 1fr 1fr}
+  body.sky #sort{grid-column:auto}
+  body.sky .select,body.sky .btn{min-height:40px;font-size:12.5px}
+  body.sky .field{min-height:46px}
+  .sk-sticky{padding:4px 14px 4px}
+  body.sky .chips{margin-top:4px}
+  body.sky .chip{min-height:40px}
+  body.sky .tab-item{min-height:42px}body.sky .tab-item span:last-child{display:none}
+  body.sky .tabbar{bottom:calc(6px + env(safe-area-inset-bottom,0px))}
+  body.sky .hs-label,body.sky .hs-hint{display:none}
+  body.sky .hero-select{gap:6px}
+  .sel-deck{min-height:0}
+  body.sky .sel-card .hs-stage{flex-basis:62%}
+  .sel-info{margin-top:-24px;padding:0 14px 8px;gap:5px}
+  body.sky .sel-info .hs-name{font-size:19px}
+  .sel-chips{max-height:26px}.sel-slogan{font-size:12.5px;-webkit-line-clamp:2}
+  body.sky .hs-open.btn.primary{min-height:46px;font-size:14px}
+  body.sky .sel-aux .hs-arrow{width:40px;height:40px}
+}
