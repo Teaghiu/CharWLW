@@ -2,7 +2,7 @@
    Chiến lược: điều hướng (trang) = network-first để LUÔN thấy bản mới;
    ảnh/nhạc/css/js = cache nhanh (stale-while-revalidate) để mở app mượt & xem offline ảnh đã xem. */
 const CACHE = 'teaghiu-v1';
-const CORE = ['./index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './style.css', './icon.jpg'];
+const CORE = ['./index.html', './thu-vien.html', './chars-data.js', './manifest.webmanifest', './icon-192.png', './icon-512.png', './style.css', './icon.jpg'];
 
 self.addEventListener('install', e => {
   e.waitUntil(

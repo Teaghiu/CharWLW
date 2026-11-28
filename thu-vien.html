@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Toàn bộ thư viện · TeaGhiu</title>
+  <link rel="icon" type="image/jpeg" href="icon.jpg">
+    <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#DFF1FB">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="TeaGhiu">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Nunito:wght@600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <meta name="description" content="Toàn bộ thư viện Character WLW by TeaGhiu — tìm kiếm, lọc, tim, ghim và khám phá hàng trăm nhân vật WLW cho Google AI Studio." />
+  <meta property="og:title" content="Thư viện WLW · TeaGhiu" />
+  <meta property="og:description" content="Tìm kiếm, lọc, tim, ghim và khám phá nhân vật WLW cho Google AI Studio." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="icon.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+<link rel="stylesheet" href="style.css?v=sky1">
+  <!-- ═══ ẢNH NHÂN VẬT + KHUNG LỚN · thêm 11/10/2026 ═══ -->
+  <style id="char-photo-style">
+  /* ảnh thay ô chữ cái trên thẻ */
+  .avatar{position:relative;overflow:hidden}
+  .avatar-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:inherit}
+  /* ảnh mờ ở khung SELECT CHARACTER */
+  .hs-stage .hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+    filter:blur(2px) brightness(.6) saturate(1.02);opacity:0;transition:opacity .45s ease;pointer-events:none;z-index:0}
+  .hs-stage .hero-photo.on{opacity:1}
+  .hs-stage.has-photo .hs-stage-mark,.hs-stage.has-photo .hs-stage-bgmark{opacity:0;transition:opacity .3s ease}
+  .hs-hint{text-align:center;font-size:11.5px;color:var(--muted);margin:-6px 0 14px;opacity:.9}
+  /* khung lớn nhân vật (giống khung hộp nhạc) */
+  .cs-scrim{position:fixed;inset:0;z-index:9995;background:rgba(4,3,10,.66);backdrop-filter:blur(3px);
+    opacity:0;pointer-events:none;transition:opacity .25s}
+  .cs-scrim.on{opacity:1;pointer-events:auto}
+  .cs-sheet{position:fixed;left:0;right:0;bottom:0;z-index:9996;display:flex;flex-direction:column;
+    max-height:88vh;max-width:620px;margin:0 auto;background:linear-gradient(180deg,#17142c,#0e0c1c);
+    border-top:1px solid #3a3560;border-radius:22px 22px 0 0;box-shadow:0 -18px 50px rgba(0,0,0,.55);
+    transform:translateY(102%);transition:transform .34s cubic-bezier(.2,0,.2,1);visibility:hidden}
+  .cs-sheet.on{transform:translateY(0);visibility:visible}
+  .cs-topbar{position:sticky;top:0;z-index:6;flex:0 0 auto;background:linear-gradient(180deg,#17142c 70%,rgba(23,20,44,.85));
+    border-radius:22px 22px 0 0;padding-top:2px}
+  .cs-grip{position:relative;width:64px;height:5px;border-radius:99px;background:#4a4470;margin:10px auto 10px;touch-action:none}
+  .cs-grip::after{content:"vuốt xuống để đóng";position:absolute;left:50%;bottom:calc(100% + 5px);
+    transform:translateX(-50%);font-size:9.5px;letter-spacing:.04em;color:var(--muted);white-space:nowrap;pointer-events:none}
+  .cs-head{display:flex;align-items:center;justify-content:space-between;padding:0 16px 10px;
+    font-size:11px;letter-spacing:.2em;color:var(--muted)}
+  .cs-x{background:#221e3f;border:1px solid var(--line);color:var(--text);width:34px;height:34px;
+    border-radius:12px;font-size:15px;line-height:1}
+  .cs-body{overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:26px}
+  .cs-photo{position:relative;margin:0 16px;border-radius:16px;overflow:hidden;background:#0d0b18;
+    display:grid;place-items:center;min-height:180px}
+  /* NHIỀU ẢNH: lướt ngang trong khung lớn */
+  .cs-slides{display:flex;width:100%;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .cs-slides::-webkit-scrollbar{display:none}
+  .cs-slide{flex:0 0 100%;scroll-snap-align:center;position:relative;display:grid;place-items:center;
+    min-height:180px;overflow:hidden}
+  .cs-slide-bg{position:absolute;inset:-14%;background-size:cover;background-position:center;
+    filter:blur(20px) brightness(.5);transform:scale(1.15)}
+  .cs-slide img{position:relative;z-index:1;max-width:100%;max-height:44vh;object-fit:contain;display:block}
+  .cs-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:34px;height:34px;border-radius:50%;
+    border:1px solid var(--line);background:rgba(12,10,24,.62);color:var(--text);font-size:19px;line-height:1;
+    display:grid;place-items:center;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+  .cs-nav-prev{left:8px} .cs-nav-next{right:8px}
+  .cs-dots{position:absolute;left:0;right:0;bottom:8px;z-index:3;display:flex;justify-content:center;gap:5px;
+    pointer-events:none}
+  .cs-dots i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.38);display:block;transition:width .2s,background .2s}
+  .cs-dots i.on{background:#fff;width:16px;border-radius:99px}
+  .cs-mark{font-family:'Playfair Display',serif;font-weight:800;font-size:64px;color:rgba(255,255,255,.9);z-index:1}
+  .cs-info{padding:14px 16px 0}
+  .cs-name{font-size:21px;font-weight:800;margin:2px 0 8px}
+  .cs-tags{display:flex;flex-wrap:wrap;gap:6px}
+  .cs-tag{font-size:11.5px;padding:4px 9px;border-radius:999px;background:rgba(255,255,255,.06);
+    border:1px solid var(--line);color:var(--text)}
+  .cs-quote{font-size:13.5px;line-height:1.6;color:var(--text);font-style:italic;margin:12px 0 14px;
+    border-left:2px solid var(--accent);padding-left:10px;opacity:.92}
+  .cs-acts{display:flex;gap:8px}
+  .cs-acts .btn.primary{flex:1}
+  .cs-wish{display:none;text-align:center;padding:12px 0 4px}
+  .cs-wish b{display:block;font-size:20px;background:linear-gradient(135deg,#8b7bff,#4fc3ff);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .cs-wish span{display:block;margin-top:8px;font-size:12px;color:var(--muted)}
+  .cs-sheet.wishmode .cs-acts{display:none}
+  .cs-sheet.wishmode .cs-wish{display:block}
+  @media (max-width:420px){ .cs-sheet{max-height:86vh} .cs-photo{margin:0 12px} .cs-info{padding:12px 12px 0} }
+  /* 12/10/2026: bản máy tính khung SELECT CHARACTER hơi thấp → nới cao cho ảnh đẹp hơn (điện thoại giữ nguyên) */
+  @media (min-width:901px){
+    .hs-stage{height:min(58vh,620px)}
+    .hs-stage .hero-photo{object-position:center 30%}
+    .cs-sheet{max-width:720px;max-height:94vh}
+    .cs-slide img{max-height:70vh}
+    .cs-name{font-size:26px}
+    .cs-quote{font-size:15px}
+    /* 🪽 ô mới: 3 ô đều nhau */
+    .profile-stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+  }
+  </style>
+  <style>
+  /* Chỉ đổi tag trong khung chi tiết nhân vật */
+  #csSheet .cs-tag {
+    color: var(--cs-tag-text, #dfc4ff);
+    background: var(--cs-tag-bg, #241c35);
+    border: 1px solid var(--cs-tag-border, #77628f);
+    border-radius: 999px;
+    font-weight: 600;
+  }
+
+  /* Viền ảnh cùng màu accent của char */
+  #csSheet .cs-photo {
+    border-color: var(--cs-char-accent, #c084fc);
+  }
+  </style>
+  <style>
+  /* Khung chi tiết trên máy tính:
+     ảnh trái — thông tin phải.
+     Không thay đổi giao diện điện thoại. */
+  @media (min-width: 900px) {
+    #csSheet {
+      left: 50%;
+      right: auto;
+      top: 50%;
+      bottom: auto;
+
+      width: min(1000px, calc(100vw - 48px));
+      max-width: 1000px;
+      max-height: 90vh;
+      max-height: 90dvh;
+      margin: 0;
+
+      border: 1px solid rgba(192, 132, 252, 0.35);
+      border-radius: 20px;
+
+      transform: translate(-50%, -45%) scale(0.98);
+    }
+
+    #csSheet.on {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    #csSheet .cs-topbar {
+      border-radius: 20px 20px 0 0;
+    }
+
+    #csSheet .cs-body {
+      display: grid;
+      grid-template-columns:
+        minmax(0, 0.9fr)
+        minmax(0, 1.1fr);
+
+      gap: 24px;
+      align-items: start;
+      min-height: 0;
+      padding: 4px 24px 24px;
+      overflow-y: auto;
+    }
+
+    #csSheet .cs-photo {
+      min-width: 0;
+      margin: 0;
+      align-self: start;
+      border: 1px solid var(--cs-char-accent, #c084fc);
+      border-radius: 14px;
+    }
+
+    #csSheet .cs-slide img {
+      width: auto;
+      max-width: 100%;
+      max-height: 64vh;
+      max-height: 64dvh;
+      object-fit: contain;
+    }
+
+    #csSheet .cs-info {
+      min-width: 0;
+      padding: 8px 0 0;
+    }
+
+    #csSheet .cs-name {
+      font-size: 28px;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+
+    #csSheet .cs-quote {
+      font-size: 15px;
+      line-height: 1.8;
+      overflow-wrap: anywhere;
+    }
+
+    #csSheet .cs-acts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    #csSheet .cs-acts .btn {
+      min-height: 44px;
+    }
+
+    #csSheet .cs-acts .btn.primary {
+      flex: 1 0 100%;
+      width: 100%;
+    }
+
+    #csSheet .cs-acts .icon-btn {
+      flex: 1 1 0;
+      min-width: 0;
+    }
+  }
+  </style>
+  <!-- ═══ SỬA GIAO DIỆN DESKTOP: KHUNG NGANG, ẢNH TRÁI - CHỮ PHẢI ═══ -->
+<style id="desktop-landscape-fix">
+  @media (min-width: 900px) {
+    /* 1. Tổng thể khung: Hình chữ nhật ngang */
+    #csSheet {
+      width: min(1050px, calc(100vw - 40px)) !important;
+      max-width: 1050px !important;
+      height: auto !important;
+      max-height: 85vh !important;
+      top: 50% !important;
+      left: 50% !important;
+      bottom: auto !important;
+      transform: translate(-50%, -50%) scale(1) !important;
+      border-radius: 20px !important;
+      overflow: hidden !important;
+    }
+
+    /* 2. Chia 2 cột: Trái (Ảnh) - Phải (Chữ + Nút) */
+    #csSheet .cs-body {
+      display: grid !important;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr) !important; /* Cột ảnh rộng hơn chữ một chút */
+      gap: 24px !important;
+      padding: 24px !important;
+      align-items: center !important;
+    }
+
+    /* 3. Cột Trái: Ảnh nhân vật */
+    #csSheet .cs-photo {
+      order: 1 !important; /* Đưa ảnh sang trái */
+      margin: 0 !important;
+      height: 100% !important;
+      min-height: 450px !important;
+      border-radius: 14px !important;
+      border: 1px solid var(--cs-char-accent, #c084fc) !important;
+    }
+    #csSheet .cs-slide img {
+      max-height: 65vh !important;
+      object-fit: contain !important;
+    }
+
+    /* 4. Cột Phải: Thông tin & Nút */
+    #csSheet .cs-info {
+      order: 2 !important; /* Đưa chữ sang phải */
+      padding: 0 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: center !important;
+    }
+    #csSheet .cs-name { font-size: 32px !important; margin-bottom: 12px !important; }
+    #csSheet .cs-quote { font-size: 16px !important; line-height: 1.7 !important; margin-bottom: 24px !important; }
+
+    /* 5. Căn chỉnh 4 nút bấm (Giống bố cục Ảnh 1: 1 nút to, 3 nút nhỏ dưới) */
+    #csSheet .cs-acts {
+      display: flex !important;
+      flex-wrap: wrap !important;
+      gap: 10px !important;
+    }
+    #csSheet .cs-acts .btn.primary {
+      flex: 1 1 100% !important; /* Nút mở Character full chiều ngang */
+      padding: 14px !important;
+      font-size: 15px !important;
+      font-weight: 600 !important;
+    }
+    #csSheet .cs-acts .icon-btn {
+      flex: 1 1 calc(33.33% - 10px) !important; /* 3 nút chia đều 3 cột */
+      height: 48px !important;
+      display: grid !important;
+      place-items: center !important;
+      font-size: 18px !important;
+    }
+  }
+</style>
+  <style>
+  /* ═══ TRANG 2 · TOÀN BỘ THƯ VIỆN — menu ☰ + tinh chỉnh sau khi tách trang ═══ */
+  body.sky{--tab-h:calc(12px + env(safe-area-inset-bottom,0px))}
+  .sel-strip{padding-right:64px}
+  #tgMenuBtn{position:fixed;top:calc(env(safe-area-inset-top,0px) + 8px);right:12px;z-index:9700;width:42px;height:42px;border:1px solid var(--line-strong);border-radius:12px;background:var(--glass);color:var(--ink);font-size:19px;line-height:1;display:grid;place-items:center;box-shadow:var(--shadow);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);cursor:pointer}
+  #tgMenuBtn:active{transform:scale(.94)}
+  #tgMenuPanel{position:fixed;top:calc(env(safe-area-inset-top,0px) + 58px);right:12px;z-index:9701;width:min(264px,calc(100vw - 24px));max-height:calc(100dvh - 130px);overflow:auto;padding:8px;border-radius:16px;border:1px solid var(--line-strong);background:var(--cloud);color:var(--ink);box-shadow:0 18px 50px rgba(10,25,55,.28)}
+  #tgMenuPanel button,#tgMenuPanel a{display:flex;align-items:center;gap:10px;width:100%;box-sizing:border-box;padding:12px 10px;border:0;border-radius:10px;background:transparent;color:inherit;text-decoration:none;text-align:left;font:800 13.5px/1.4 inherit;font-family:inherit;cursor:pointer}
+  #tgMenuPanel button:hover,#tgMenuPanel a:hover{background:var(--sky-100)}
+  #tgMenuPanel .tg-sep{border-top:1px solid var(--line);margin:6px 4px}
+  #tgForestOverlay{position:fixed;inset:0;z-index:9900;background:#142d28}
+  #tgForestOverlay[hidden]{display:none!important}
+  #tgForestOverlay iframe{width:100%;height:100%;border:0;display:block}
+  body.tg-forest-open #teaghiu-greeting-host,body.tg-forest-open #teaghiu-bento-host{display:none!important}
+  @media (orientation:landscape){
+    body.sky .main-view>.wrap{display:block;height:100%}
+    body.sky #library{grid-column:auto;height:100%;margin:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:calc(env(safe-area-inset-top,0px) + 52px) calc(env(safe-area-inset-right,0px) + 14px) calc(var(--tab-h) + 8px) 14px}
+    body.sky{--strip-h:44px}
+    body.sky .sel-strip{display:flex!important;visibility:visible!important;transform:none!important}
+    body.sky .sk-sticky{top:var(--strip-h)}
+  }
+  </style>
+  <script>if(location.hash==='#featured'){location.replace('index.html');}</script>
+</head>
+
+<body class="sky">
+<script>try{if(localStorage.getItem('skyNight')==='1')document.body.classList.add('night')}catch(e){}</script>
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="#/" class="nav-brand">
+        <span class="nav-mark" id="navMark">
+          <img src="icon.jpg" alt="TeaGhiu" onerror="this.style.display='none';this.parentElement.classList.add('fallback');this.parentElement.textContent='T';">
+        </span>
+        <span>TeaGhiu</span>
+      </a>
+      <div class="nav-links">
+        <a href="thu-vien.html" class="nav-link" data-nav="home">Thư viện</a>
+        <a href="index.html" class="nav-link" data-nav="featured">Nhân vật</a>
+        <a href="commands.html" class="nav-link">Hỗ trợ lệnh</a>
+        <a href="isekai-guide.html" class="nav-link">📖 Cẩm nang Isekai</a>
+        <a href="req.html" class="nav-link">💌 REQ</a>
+        <a href="https://aistudio.google.com/" target="_blank" rel="noopener" class="nav-link">AI Studio ↗</a>
+      </div>
+      <div class="nav-actions">
+        <button id="themeToggle" class="theme-toggle-btn" aria-label="Chuyển theme">🌙</button>
+      </div>
+    </div>
+  </nav>
+
+
+  <div class="breadcrumb"><a href="index.html">Trang chủ</a><span class="sep">›</span><span class="current">Toàn bộ thư viện</span></div>
+  <!-- MAIN VIEW -->
+  <div class="main-view" id="mainView">
+    <div class="wrap">
+      <!-- Hero -->
+      <section class="profile-hero">
+        <div class="profile-banner">
+          <span class="banner-deco d1">✧</span>
+          <span class="banner-deco d2">❀</span>
+          <span class="banner-deco d3">✦</span>
+        </div>
+        <div class="profile-body">
+          <div class="profile-avatar-wrap">
+            <div class="profile-avatar" id="heroAvatar">
+              <img src="icon.jpg" alt="TeaGhiu" onerror="this.style.display='none';this.parentElement.classList.add('fb');this.parentElement.innerHTML+='<span class=\'fb-text\'>T</span><div style=\'position:absolute;bottom:-6px;right:-6px;width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#22d3ee,#a78bfa);border:3px solid var(--bg);display:grid;place-items:center;font-size:14px;color:#fff;z-index:2;\'>✦</div>';">
+            </div>
+            <div class="profile-actions">
+              <button id="randomHeroBtn" class="btn">🎲 Char ngẫu nhiên</button>
+            </div>
+          </div>
+          <div class="profile-info">
+            <h1 class="profile-name">Thư viện Character WLW</h1>
+            <div class="profile-handle">
+              <span class="profile-dot"></span>
+              <span>TeaGhiu · Google AI Studio Prompts</span>
+            </div>
+            <div class="profile-stats">
+                            <a href="#library" class="pstat" style="text-decoration:none;color:inherit;"><b id="statTotal">0</b><span>Nhân vật</span></a>
+              <a href="#library" class="pstat" style="text-decoration:none;color:inherit;"><b id="statShown">0</b><span>Đang hiển thị</span></a>
+                            <div class="pstat"><b id="statClicks">…</b><span>🪽 Lần bước vô</span></div>
+            </div>
+            <div class="tag-cloud">
+              <span class="tag-pill">#WLW</span>
+              <span class="tag-pill">#Hiện đại</span>
+              <span class="tag-pill">#Cổ trang</span>
+              <span class="tag-pill">#ABO</span>
+              <span class="tag-pill">#Tu tiên</span>
+              <span class="tag-pill">#Yandere</span>
+              <span class="tag-pill">#Ngọt sủng</span>
+              <span class="tag-pill">#Hài hước</span>
+              <span class="tag-pill">#Kinh dị</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Library -->
+      <section class="section" id="library">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Toàn bộ <span class="accent">thư viện</span></h2>
+            <p class="section-sub">Tìm kiếm, lọc, khám phá. Bấm ❤️ yêu thích, 📋 copy link, 📌 ghim nhân vật yêu thích.</p>
+          </div>
+        </div>
+
+        <div class="sk-sticky">
+          <div class="search-wrap">
+            <span class="search-icon" aria-hidden="true">🔍</span>
+            <input id="search" class="field" type="text" aria-label="Tìm nhân vật" placeholder="Tìm nhân vật theo tên, tag, mô tả..." />
+            <button id="clearSearch" class="clear-btn" type="button" style="display:none;" aria-label="Xóa tìm kiếm">✖</button>
+            <button id="skyMoon" class="sk-moon" type="button" aria-label="Chuyển sang ban đêm">🌙</button>
+            <div id="searchHistoryDropdown"></div>
+            <div id="searchSuggestions"></div>
+          </div>
+          <div class="chips" id="chips">
+            <button class="chip active" data-filter="all">Tất cả</button>
+            <button class="chip" data-filter="#WLW">WLW</button>
+            <button class="chip" data-filter="genre:hiện đại">Hiện đại</button>
+            <button class="chip" data-filter="genre:cổ trang">Cổ trang</button>
+            <button class="chip" data-filter="genre:aob">AOB</button>
+            <button class="chip" data-filter="genre:khác">Khác</button>
+            <button class="chip" data-filter="liked">❤️ Yêu thích</button>
+            <button class="chip" data-filter="pinned">📌 Đã ghim</button>
+          </div>
+        </div>
+
+        <div class="control-panel">
+          <div class="toolbar">
+            <select id="filter" class="select">
+              <option value="all">Tất cả nhóm</option>
+              <option value="#WLW">#WLW</option>
+              <option value="genre:aob">AOB</option>
+              <option value="genre:hiện đại">Hiện đại</option>
+              <option value="genre:cổ trang">Cổ trang</option>
+              <option value="genre:khác">Khác</option>
+              <option value="liked">❤️ Yêu thích</option>
+              <option value="pinned">📌 Đã ghim</option>
+            </select>
+            <select id="sort" class="select">
+              <option value="default">Mặc định</option>
+              <option value="newest">🆕 Mới nhất</option>
+              <option value="random">Ngẫu nhiên</option>
+              <option value="name-asc">Tên A → Z</option>
+              <option value="name-desc">Tên Z → A</option>
+              <option value="hearts">❤️ Nhiều tim</option>
+              <option value="copies">📋 Nhiều copy</option>
+              <option value="score">⭐ Điểm cao</option>
+            </select>
+            <button id="randomBtn" class="btn primary">🎲 Ngẫu nhiên</button>
+            <button id="resetFilters" class="btn">🔄 Reset</button>
+            <button id="toggleView" class="btn">📋 Danh sách</button>
+          </div>
+        </div>
+
+        <div class="result-meta">
+          <span id="statusText">Đang tải...</span>
+          <span id="cloudStatus" style="font-size:12px;color:var(--muted);"><span id="cloudStatusText">☁️ Đang kết nối...</span></span>
+          <span id="countInfo"></span>
+        </div>
+        <div id="paginationTop" class="pagination"></div>
+        <div id="grid" class="grid"></div>
+        <div id="paginationBottom" class="pagination"></div>
+        <div id="empty" class="empty">
+          <div class="empty-icon">🔍</div>
+          <div>Không tìm thấy nhân vật nào khớp bộ lọc.</div>
+          <div style="margin-top:8px;font-size:13px;">Thử từ khóa khác hoặc bấm Reset nhé!</div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div style="max-width:480px;margin:0 auto 10px;font-size:12.5px;line-height:1.7;">
+          📖 Cách dùng nhanh: gõ từ khoá hoặc chọn chip thể loại để lọc → bấm 🎲 để xem ngẫu nhiên → bấm <b>Mở Character</b> để bắt đầu trò chuyện trên AI Studio. Bấm 📌 để ghim nhân vật yêu thích lên đầu danh sách.
+        </div>
+        <div>Thư viện WLW by TeaGhiu <span class="heart">♥</span> · Đồng bộ bởi Supabase</div>
+      </footer>
+    </div>
+  </div>
+
+  <button id="backToTop" aria-label="Lên đầu trang">↑</button>
+
+  <div id="toast" class="toast"></div>
+  <!-- KHUNG LỚN NHÂN VẬT (bấm khung SELECT CHARACTER hoặc thẻ nhân vật) -->
+  <div class="cs-scrim" id="csScrim"></div>
+  <section class="cs-sheet" id="csSheet" aria-hidden="true">
+    <div class="cs-topbar">
+      <div class="cs-grip" id="csGrip" title="Vuốt xuống hoặc chạm để đóng"></div>
+      <div class="cs-head"><span>NHÂN VẬT</span><button class="cs-x" id="csClose" aria-label="Đóng">✕</button></div>
+    </div>
+    <div class="cs-body">
+      <div class="cs-photo" id="csPhoto">
+        <div class="cs-slides" id="csSlides"></div>
+        <span class="cs-mark" id="csMark">?</span>
+        <button class="cs-nav cs-nav-prev" id="csPrev" type="button" aria-label="Ảnh trước" hidden>‹</button>
+        <button class="cs-nav cs-nav-next" id="csNext" type="button" aria-label="Ảnh sau" hidden>›</button>
+        <div class="cs-dots" id="csDots" hidden></div>
+      </div>
+      <div class="cs-info">
+        <div class="cs-name" id="csName">—</div>
+        <div class="cs-tags" id="csTags"></div>
+        <p class="cs-quote" id="csQuote"></p>
+        <div class="cs-acts" id="csActs"></div>
+        <div class="cs-wish"><b>Chúc bạn chơi vui vẻ 🎉</b><span>nhân vật đã chọn sẵn — bấm “Mở Character ↗” để bắt đầu</span></div>
+      </div>
+    </div>
+  </section>
+
+<!-- DẢI MỎNG: tên nhân vật đang chọn (hiện khi cuộn xuống thư viện) -->
+  <button type="button" class="sel-strip" id="selStrip" aria-label="Quay lại chọn nhân vật"><span aria-hidden="true">🕊️</span><b id="stripName"></b><span>⌃ chọn lại</span></button>
+
+  <script src="chars-data.js"></script>
+  <script>
+  
+    /* =========================================================
+       ⚙️  CẤU HÌNH SUPABASE
+       ========================================================= */
+    const SUPABASE_URL = "https://xdgnufnlbdwtydfagxzi.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhkZ251Zm5sYmR3dHlkZmFneHppIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzNTA3OTAsImV4cCI6MjEwMDkyNjc5MH0.Jopm_TQwiaiPtPOTCTItV39HJ1TZCAIzOD-cFFmD0gU";
+
+    /* ================= LOCAL STORAGE HELPER ================= */
+    function safeGet(key, def = null) {
+      try { return localStorage.getItem(key) ?? def; } catch (e) { return def; }
+    }
+    function safeSet(key, val) {
+      try { localStorage.setItem(key, val); } catch (e) { }
+    }
+
+    /* ================= UTILS ================= */
+    const $ = s => document.querySelector(s);
+    const $$ = s => [...document.querySelectorAll(s)];
+    function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+    function normalize(s){ return String(s||'').toLowerCase().trim(); }
+
+    /* ================= CHUẨN HÓA & PHÂN LOẠI TAG (Hiện đại / Cổ trang / AOB / Khác) =================
+       Vấn đề gốc: các tag nhiều từ như "#Hiện đại" / "#Cổ trang" chứa khoảng trắng bên trong,
+       nên logic tách tag cũ (theo khoảng trắng) đã cắt gãy chúng thành 2 tag rời rạc.
+       => parseTags() tách đúng từng tag hoàn chỉnh (từ dấu # đến trước dấu # kế tiếp).
+       => tagFlags()/classifyChar() dùng alias xây từ tag THỰC TẾ trong dữ liệu để gom nhóm,
+          không suy đoán/không dùng contains() tràn lan. */
+    function parseTags(tagStr){
+      return (String(tagStr||'').match(/#[^#]+/g) || []).map(t => t.trim()).filter(Boolean);
+    }
+    // Chuẩn hóa 1 tag để so sánh: bỏ dấu #, chuẩn hóa Unicode NFC, viết thường,
+    // coi gạch dưới/gạch nối như khoảng trắng, gộp khoảng trắng thừa
+    function normalizeTagToken(raw){
+      return String(raw || '')
+        .normalize('NFC')
+        .trim()
+        .replace(/^#+/, '')
+        .toLowerCase()
+        .replace(/[_\-]+/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+    // Dạng "nén" — bỏ hết khoảng trắng, dùng để so khớp biến thể viết liền/viết cách (VD "Cổ trang" ~ "CổTrang")
+    function compactTag(normalizedTag){ return normalizedTag.replace(/\s+/g, ''); }
+
+    // Cờ phân loại cho 1 tag đơn lẻ, dựa trên alias xây từ tag thực tế đang có trong dữ liệu:
+    // - HIỆN ĐẠI: "Hiện đại", "Hiện đại Châu Âu"...
+    // - CỔ TRANG: "Cổ trang", "CổTrang", "CổTrangAOB", "Cổ đại", "Tu tiên", "Cung đấu", "Tu chân tiên hiệp"...
+    // - AOB: "AOB", "ABO", "Alpha"/"Beta"/"Omega" đứng riêng, hoặc ký hiệu ghép cặp kiểu
+    //   "A x A", "O x E", "A x E x O", "AlphaXAlpha"...
+
+    // Danh sách alias [Cổ trang] — mỗi alias là 1 cụm từ đã chuẩn hóa (mảng các từ theo đúng thứ tự).
+    // Chỉ gồm đúng các cụm được yêu cầu gộp nhóm, không tự ý thêm cụm khác.
+    const ANCIENT_ALIAS_PHRASES = [
+      ['cổ', 'trang'],
+      ['cổ', 'đại'],
+      ['tu', 'tiên'],
+      ['cung', 'đấu'],
+      ['tu', 'chân', 'tiên', 'hiệp'],
+    ];
+    // So khớp 1 tag (đã tách từ + nén) với 1 alias-phrase: hỗ trợ cả dạng viết cách (khớp đúng thứ tự
+    // từng từ đầu) lẫn dạng viết liền không dấu cách (khớp phần đầu chuỗi đã nén) — không dùng contains() mơ hồ.
+    function matchesAliasPhrase(words, compact, phraseWords){
+      const wordMatch = phraseWords.every((w, idx) => words[idx] === w);
+      const compactMatch = compact.startsWith(phraseWords.join(''));
+      return wordMatch || compactMatch;
+    }
+
+    function tagFlags(rawTagToken){
+      const norm = normalizeTagToken(rawTagToken);
+      const compact = compactTag(norm);
+      const words = norm.split(' ').filter(Boolean);
+      const flags = { modern: false, ancient: false, aob: false };
+
+      if (compact === 'aob' || compact === 'abo') flags.aob = true;
+// Nhận diện AOB nằm cuối tag ghép, VD: "ThúNhânAOB", "CổTrangAOB"
+      if (compact.endsWith('aob') || compact.endsWith('abo')) flags.aob = true;
+      if (compact === 'alpha' || compact === 'beta' || compact === 'omega') flags.aob = true;
+      if (/^(alpha|beta|omega|[aboe])(x(alpha|beta|omega|[aboe]))+$/.test(compact)) flags.aob = true;
+
+      if ((words[0] === 'hiện' && words[1] === 'đại') || compact.startsWith('hiệnđại')) {
+        flags.modern = true;
+      }
+
+      if (ANCIENT_ALIAS_PHRASES.some(phrase => matchesAliasPhrase(words, compact, phrase))) {
+        flags.ancient = true;
+        // Tag ghép thực tế "CổTrangAOB" => vừa Cổ trang vừa AOB
+        if (compact.startsWith('cổtrang')) {
+          const suffix = compact.slice('cổtrang'.length);
+          if (suffix === 'aob' || suffix === 'abo') flags.aob = true;
+        }
+      }
+
+      return flags;
+    }
+
+    // Phân loại 1 Character: thể loại chính (Hiện đại / Cổ trang / Khác) + cờ AOB (không loại trừ lẫn nhau)
+    function classifyChar(item){
+      const tags = parseTags(item.tag);
+      let hasModern = false, hasAncient = false, hasAob = false;
+      tags.forEach(t => {
+        const f = tagFlags(t);
+        if (f.modern) hasModern = true;
+        if (f.ancient) hasAncient = true;
+        if (f.aob) hasAob = true;
+      });
+      let primary = 'khác';
+      if (hasModern && !hasAncient) primary = 'hiện đại';
+      else if (hasAncient && !hasModern) primary = 'cổ trang';
+      // Có cả 2 mà không có quy tắc ưu tiên rõ ràng trong dữ liệu => Khác (không đoán bừa)
+      return { hasModern, hasAncient, hasAob, primary };
+    }
+
+    // So khớp Character với 1 giá trị filter: hỗ trợ filter theo nhóm thể loại chính (genre:...)
+    // lẫn filter theo tag thô như "#WLW" (giữ nguyên hành vi cũ cho các tag không thuộc 2 nhóm chính)
+    function matchesFilter(item, filterVal){
+      if (filterVal === 'all') return true;
+      if (filterVal === 'genre:aob') return classifyChar(item).hasAob;
+      if (filterVal === 'genre:hiện đại') return classifyChar(item).primary === 'hiện đại';
+      if (filterVal === 'genre:cổ trang') return classifyChar(item).primary === 'cổ trang';
+      if (filterVal === 'genre:khác') return classifyChar(item).primary === 'khác';
+      if (filterVal === 'liked')  return likedSet.has(item.name);
+      if (filterVal === 'pinned') return pinnedLocal.includes(item.name);
+      return parseTags(item.tag).some(t => t === filterVal);
+    }
+
+    // Nhãn hiển thị thân thiện cho trạng thái filter đang chọn
+    function filterLabel(v){
+      const map = { 'all': 'tất cả nhóm', '#WLW': '#WLW', 'genre:aob': 'AOB', 'genre:hiện đại': 'Hiện đại', 'genre:cổ trang': 'Cổ trang', 'genre:khác': 'Khác', 'liked': '❤️ Yêu thích', 'pinned': '📌 Đã ghim' };
+      return map[v] || v;
+    }
+
+    // Tìm theo từ khóa/tag tự do (Tầng 2): chấp nhận có/không dấu #, hoa/thường, viết liền/viết cách
+    function textMatches(item, rawQuery){
+      const q = normalizeTagToken(rawQuery);
+      if (!q) return true;
+      const qCompact = compactTag(q);
+      const plain = normalize(item.name) + ' ' + normalize(item.summary || '') + ' ' + normalize(item.extra || '');
+      if (plain.includes(q)) return true;
+      return parseTags(item.tag).some(t => {
+        const nt = normalizeTagToken(t);
+        if (nt.includes(q)) return true;
+        return compactTag(nt).includes(qCompact);
+      });
+    }
+
+    function avatarText(name){
+      const parts = String(name||'').trim().split(/[\s·&]+/).filter(Boolean);
+      if(!parts.length) return '?';
+      const ini = w => (w[0]||'').toUpperCase();
+      return parts.length===1 ? ini(parts[0]) : ini(parts[0]) + ini(parts[parts.length-1]);
+    }
+    function getMonday(d){
+      const date = new Date(d); const day = date.getDay();
+      const diff = (day+6)%7;
+      date.setDate(date.getDate()-diff); date.setHours(0,0,0,0);
+      return date;
+    }
+    function getWeekKey(d){
+      const monday = getMonday(d);
+      const firstJan = new Date(monday.getFullYear(),0,1);
+      const days = Math.floor((monday-firstJan)/(24*60*60*1000));
+      const week = Math.ceil((days+firstJan.getDay()+1)/7);
+      return `${monday.getFullYear()}-W${String(week).padStart(2,'0')}`;
+    }
+    function formatWeekLabel(monday){
+      const sun = new Date(monday); sun.setDate(sun.getDate()+6);
+      const fmt = d => `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`;
+      return `${fmt(monday)} – ${fmt(sun)}`;
+    }
+    function getCountdown(monday){
+      const next = new Date(monday); next.setDate(next.getDate()+7);
+      const diff = next - new Date();
+      const d = Math.floor(diff/(1000*60*60*24));
+      const h = Math.floor((diff/(1000*60*60))%24);
+      return `${d} ngày ${h} giờ`;
+    }
+    const WEEK_KEY = getWeekKey(new Date());
+    const WEEK_MONDAY = getMonday(new Date());
+
+    let statsData = {};
+    let likedSet = new Set();
+    let pinnedLocal = [];
+    let supabaseClient = null;
+    let cloudMode = false;
+
+    function defaultStats(){
+      const s = {};
+      chars.forEach(c => { s[c.name] = {hearts:0,copies:0,pins:0}; });
+      return s;
+    }
+        function initStatsData(){ statsData = defaultStats(); }
+
+    /* 🪽 12/10/2026 — đếm tổng lượt mở link: mỗi lần trang được mở +1, hiện ở ô thứ 3 */
+    async function initSiteCounter(){
+      const el=$('#statClicks'); if(!el) return;
+      if(!supabaseClient){ el.textContent='–'; return; }
+      try{
+        const {data,error}=await supabaseClient.rpc('bump_site',{d:1});
+        if(error) throw error;
+        el.textContent=Number(data||0).toLocaleString('vi-VN');
+      }catch(e){ console.warn('site counter:',e); el.textContent='–'; }
+      }
+
+    function setCloud(status, msg){
+      cloudMode = status;
+      if(typeof cloudStatus === 'undefined' || !cloudStatus) return;
+      if(status){
+        cloudStatus.classList.remove('offline');
+        if(cloudStatusText) cloudStatusText.textContent = msg || '☁️ Đã đồng bộ đám mây (Supabase)';
+      } else {
+        cloudStatus.classList.add('offline');
+        if(cloudStatusText) cloudStatusText.textContent = msg || '📴 Chế độ ngoại tuyến';
+      }
+    }
+
+    async function initSupabase(){
+      if(!SUPABASE_URL || !SUPABASE_ANON_KEY){ setCloud(false,'📴 Chưa cấu hình Supabase'); return false; }
+      try {
+        if (!window.supabase || typeof window.supabase.createClient !== 'function') {
+          setCloud(false, '📴 Chưa tải thư viện Supabase');
+          return false;
+        }
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth:{persistSession:false} });
+        const rowsOk  = await ensureWeekRows();
+        const fetchOk = await fetchStats();
+        if(!fetchOk){
+          // Kết nối được client nhưng KHÔNG truy vấn được (project pause/xoá, sai key, mất mạng...)
+          supabaseClient = null;
+          setCloud(false, rowsOk ? '⚠️ Supabase trả lỗi – đang dùng dữ liệu cục bộ' : '📴 Không kết nối được Supabase – dùng dữ liệu cục bộ');
+          return false;
+        }
+        setCloud(true);
+        return true;
+      } catch(err){
+        console.warn('Supabase init failed:',err);
+        setCloud(false,'⚠️ Lỗi kết nối – dùng dự phòng cục bộ');
+        supabaseClient = null;
+        return false;
+      }
+    }
+    async function ensureWeekRows(){
+      if(!supabaseClient) return false;
+      const rows = chars.map(c => ({week_key:WEEK_KEY, char_name:c.name, hearts:0,copies:0,pins:0}));
+      try {
+        const {error} = await supabaseClient.from('char_stats').upsert(rows, {onConflict:'week_key,char_name', ignoreDuplicates:true});
+        if(error) throw error;
+        return true;
+      } catch(e){ console.warn('ensureWeekRows failed:',e); return false; }
+    }
+    async function fetchStats(){
+      if(!supabaseClient) return;
+      try {
+        const {data,error} = await supabaseClient.from('char_stats').select('char_name,hearts,copies,pins').eq('week_key',WEEK_KEY);
+        if(error) throw error;
+        if(data && data.length){
+          const merged = defaultStats();
+          data.forEach(r => { if(merged[r.char_name]) merged[r.char_name] = {hearts:r.hearts||0,copies:r.copies||0,pins:r.pins||0}; });
+          statsData = merged;
+        }
+        return true;                       // kết nối + truy vấn thành công
+      } catch(e){
+        console.warn('fetchStats failed:',e);
+        return false;                      // mất mạng / bảng chưa tạo / project bị pause
+      }
+    }
+    async function bumpStatRemote(name,field,delta){
+      if(!supabaseClient) return false;
+      try {
+        const {error} = await supabaseClient.rpc('increment_stat',{wk:WEEK_KEY,cn:name,fld:field,d:delta});
+        if(error) throw error;
+        return true;
+      } catch(e){
+        try {
+          const res = await fetch(`${SUPABASE_URL}/rest/v1/char_stats?week_key=eq.${encodeURIComponent(WEEK_KEY)}&char_name=eq.${encodeURIComponent(name)}`,{
+            method:'PATCH',
+            headers:{
+              'apikey':SUPABASE_ANON_KEY,
+              'Authorization':`Bearer ${SUPABASE_ANON_KEY}`,
+              'Content-Type':'application/json',
+              'Prefer':'return=minimal'
+            },
+            body: JSON.stringify({[field]: (statsData[name]?.[field]||0)+delta})
+          });
+          return res.ok;
+        } catch(e2){ return false; }
+      }
+    }
+    function charStats(name){ return statsData[name]||{hearts:0,copies:0,pins:0}; }
+    function totalStats(){ let h=0,c=0,p=0; Object.values(statsData).forEach(s=>{h+=s.hearts||0;c+=s.copies||0;p+=s.pins||0;}); return {hearts:h,copies:c,pins:p}; }
+
+    function loadLocalPrefs(){
+      const key = `liked_${WEEK_KEY}`;
+      try { likedSet = new Set(JSON.parse(localStorage.getItem(key)||'[]')); } catch { likedSet = new Set(); }
+      try { pinnedLocal = JSON.parse(localStorage.getItem('pinnedChars'))||[]; } catch { pinnedLocal=[]; }
+    }
+    function saveLiked(){ safeSet(`liked_${WEEK_KEY}`, JSON.stringify([...likedSet])); }
+    function savePinned(){ safeSet('pinnedChars', JSON.stringify(pinnedLocal)); }
+    function updateLocalStat(name,field,delta){
+      if(!statsData[name]) statsData[name]={hearts:0,copies:0,pins:0};
+      statsData[name][field] = Math.max(0,(statsData[name][field]||0)+delta);
+    }
+
+    let toastTimeout=null,toastEl=$('#toast');
+    function showToast(msg,dur=2000){
+      if(toastTimeout){ clearTimeout(toastTimeout); toastTimeout=null; }
+      toastEl.textContent=msg; toastEl.style.display='block';
+      void toastEl.offsetWidth; toastEl.classList.add('show');
+      toastTimeout=setTimeout(()=>{toastEl.classList.remove('show'); setTimeout(()=>toastEl.style.display='none',300);},dur);
+    }
+
+    async function doCopy(name,link){
+      updateLocalStat(name,'copies',1);
+      if(supabaseClient) bumpStatRemote(name,'copies',1).then(ok=>{if(ok)fetchStats().then(refreshUI);});
+      try { await navigator.clipboard.writeText(link); showToast('✅ Đã copy link!'); }
+      catch { showToast('❌ Không copy được',2500); }
+      refreshUI();
+    }
+    window.doCopy = doCopy;
+    async function toggleHeart(name){
+      const wasLiked = likedSet.has(name); const delta = wasLiked?-1:1;
+      if(wasLiked) likedSet.delete(name); else likedSet.add(name);
+      saveLiked(); updateLocalStat(name,'hearts',delta); refreshUI();
+      if(supabaseClient){ const ok=await bumpStatRemote(name,'hearts',delta); if(ok) fetchStats().then(refreshUI); }
+      showToast(wasLiked?`🤍 Bỏ tim ${name}`:`❤️ Đã tim ${name}`);
+    }
+    async function togglePin(name){
+      const idx=pinnedLocal.indexOf(name);
+      if(idx!==-1){
+        pinnedLocal.splice(idx,1); savePinned(); updateLocalStat(name,'pins',-1);
+        showToast(`📌 Đã bỏ ghim ${name}`);
+        if(supabaseClient) bumpStatRemote(name,'pins',-1).then(ok=>ok?fetchStats().then(refreshUI):null);
+      } else {
+        if(pinnedLocal.length>=3){ showToast('⚠️ Tối đa 3 ghim!',2500); return; }
+        pinnedLocal.push(name); savePinned(); updateLocalStat(name,'pins',1);
+        showToast(`📌 Đã ghim ${name}`);
+        if(supabaseClient) bumpStatRemote(name,'pins',1).then(ok=>ok?fetchStats().then(refreshUI):null);
+      }
+      refreshUI();
+    }
+
+
+    function refreshUI(){ if(typeof window.__pageRefresh === 'function') window.__pageRefresh(); }
+    function renderAll(){ refreshUI(); }
+    function attachG(el){el.addEventListener('click',async e=>{const b=e.target.closest('[data-action]');if(!b||b.disabled)return;const n=b.dataset.name;if(!n)return;b.classList.add('loading');if(b.dataset.action==='heart')await toggleHeart(n);else if(b.dataset.action==='pin')await togglePin(n);b.classList.remove('loading');});}
+
+    /* SELECT CHARACTER CAROUSEL */
+    function shadeColor(hex, percent){
+      let c=(hex||'#a78bfa').replace('#','');
+      if(c.length===3) c=c.split('').map(x=>x+x).join('');
+      const num=parseInt(c,16)||0xa78bfa;
+      let r=(num>>16)&255,g=(num>>8)&255,b=num&255;
+      const t=percent<0?0:255, p=Math.abs(percent);
+      r=Math.round((t-r)*p)+r; g=Math.round((t-g)*p)+g; b=Math.round((t-b)*p)+b;
+      return '#'+(0x1000000+(r<<16)+(g<<8)+b).toString(16).slice(1);
+    }
+    const tt=$('#themeToggle');const stm=safeGet('theme')||'dark';
+    if(stm==='light'){document.body.classList.add('light');tt.textContent='☀️';}else tt.textContent='🌙';
+    tt.addEventListener('click',()=>{document.body.classList.toggle('light');const l=document.body.classList.contains('light');safeSet('theme',l?'light':'dark');tt.textContent=l?'☀️':'🌙';});
+
+    function stagePhoto(item){
+      const st=$('#heroStage'); if(!st) return;
+      let im=st.querySelector('.hero-photo');
+      if(!item||!item.__img){ if(im) im.remove(); st.classList.remove('has-photo'); return; }
+      if(!im){ im=document.createElement('img'); im.className='hero-photo'; im.alt=''; im.decoding='async';
+               st.insertBefore(im, st.firstChild); }
+      im.setAttribute('data-c', item.__cands||''); im.setAttribute('data-k','1');
+      im.onerror=()=>{ if(window.__imgStep(im)) return; im.classList.remove('on'); st.classList.remove('has-photo'); };
+      im.onload =()=>{ im.classList.add('on');    st.classList.add('has-photo'); };
+      if(im.getAttribute('data-src')!==item.__img){ im.setAttribute('data-src',item.__img); im.src=item.__img; }
+    }
+
+    const csSheetEl=$('#csSheet'), csScrimEl=$('#csScrim');
+    let csIsOpen=false, csOpenedAt=0, csTimer=null, csSeq=0;
+    let csList=[], csIdx=0;
+
+    /* tìm các ảnh của 1 nhân vật: pic001.jpg (bìa) rồi pic001_2.jpg, pic001_3.jpg… dừng ở tấm đầu tiên bị thiếu
+       (nếu không có ảnh bìa thì bắt đầu từ pic001_1.jpg). Kết quả được nhớ lại, không dò lại từ đầu. */
+    function csProbe(name, ok, fail){
+      const a=new Image();
+      a.onload=()=>ok(CS_DIR+name);
+      a.onerror=()=>{ const b=new Image(); b.onload=()=>ok(name); b.onerror=fail; b.src=name; };
+      a.src=CS_DIR+name;
+    }
+    function imgsFor(i, cb){
+      const c=chars[i]; if(!c){ cb([]); return; }
+      if(c.__imgs){ cb(c.__imgs); return; }
+      const base=picBase(i), ex=picExt(i), list=[];
+      const done=()=>{ c.__imgs=list; cb(list); };
+      const findOne=(nm, yes, no)=>{ let k=0; const step=()=>{ if(k>=ex.length){ no(); return; } csProbe(nm+ex[k++], yes, step); }; step(); };
+      const more=k=>{ if(k>12){ done(); return; }
+        findOne(base+'_'+k, src=>{ list.push(src); more(k+1); }, done); };
+      findOne(base, src=>{ list.push(src); more(2); },
+              ()=>findOne(base+'_1', src=>{ list.push(src); more(2); }, done));
+    }
+    function csDots(k){ const d=$('#csDots'); if(d) [...d.children].forEach((el,i)=>el.classList.toggle('on',i===k)); }
+    function csRender(list){
+      const sl=$('#csSlides'), mk=$('#csMark'), dots=$('#csDots'), pv=$('#csPrev'), nx=$('#csNext'), ph=$('#csPhoto');
+      csList=list; csIdx=0;
+      if(!list.length){ sl.innerHTML=''; dots.hidden=true; pv.hidden=true; nx.hidden=true; mk.style.display='grid'; return; }
+      mk.style.display='none'; ph.style.background='#0d0b18';
+      sl.innerHTML=list.map((src,k)=>'<div class="cs-slide"><div class="cs-slide-bg" style="background-image:url(\''+src+'\')"></div>'+
+        '<img src="'+src+'" alt="" decoding="async" loading="'+(k?'lazy':'eager')+'"></div>').join('');
+      sl.scrollLeft=0;
+      const many=list.length>1;
+      dots.hidden=!many; pv.hidden=!many; nx.hidden=!many;
+      dots.innerHTML=many?list.map((_,k)=>'<i class="'+(k?'':'on')+'"></i>').join(''):'';
+    }
+    function csGo(k){ const sl=$('#csSlides'); if(!csList.length) return;
+      csIdx=Math.max(0,Math.min(k,csList.length-1));
+      sl.scrollTo({left:csIdx*sl.clientWidth, behavior:'smooth'}); csDots(csIdx); }
+    $('#csSlides').addEventListener('scroll',()=>{ const sl=$('#csSlides'); if(csList.length<2) return;
+      const k=Math.round(sl.scrollLeft/sl.clientWidth); if(k!==csIdx){ csIdx=k; csDots(k); } },{passive:true});
+    $('#csPrev').addEventListener('click',e=>{ e.stopPropagation(); csGo(csIdx-1); });
+    $('#csNext').addEventListener('click',e=>{ e.stopPropagation(); csGo(csIdx+1); });
+
+    function csFill(item, i){
+      const a=item.accent||'#8b7bff', a2=shadeColor(a,-0.55);
+      const ph=$('#csPhoto'), mk=$('#csMark');
+            const detail = $('#csSheet');
+      detail.style.setProperty('--cs-char-accent', a);
+      detail.style.setProperty('--cs-tag-text', shadeColor(a, 0.35));
+      detail.style.setProperty('--cs-tag-bg', shadeColor(a, -0.84));
+      detail.style.setProperty('--cs-tag-border', shadeColor(a, -0.35));
+      ph.style.background='linear-gradient(155deg,'+a+' 0%,'+a2+' 100%)';
+      mk.style.display='grid'; mk.textContent=avatarText(item.name);
+      $('#csSlides').innerHTML='';
+      $('#csDots').hidden=true; $('#csPrev').hidden=true; $('#csNext').hidden=true;
+      const tok=++csSeq;
+      imgsFor(i, list=>{ if(tok===csSeq) csRender(list); });
+      $('#csName').textContent=item.name;
+      $('#csTags').innerHTML=parseTags(item.tag).map(t=>'<span class="cs-tag">'+escapeHtml(t)+'</span>').join('');
+      $('#csQuote').textContent='“'+(item.summary||'')+'”';
+      const il=likedSet.has(item.name), ip=pinnedLocal.includes(item.name);
+      $('#csActs').innerHTML=
+        '<a class="btn primary" href="'+item.link+'" target="_blank" rel="noopener">Mở Character ↗</a>'+
+        '<button class="btn icon-btn heart-btn '+(il?'liked':'')+'" data-action="heart" data-name="'+escapeHtml(item.name)+'" title="Yêu thích">'+(il?'❤️':'🤍')+'</button>'+
+        '<button class="btn icon-btn" onclick=\'doCopy('+JSON.stringify(item.name)+','+JSON.stringify(item.link)+')\' title="Copy link">📋</button>'+
+        '<button class="btn icon-btn pin-btn '+(ip?'pinned':'')+'" data-action="pin" data-name="'+escapeHtml(item.name)+'" '+(pinnedLocal.length>=3&&!ip?'disabled':'')+' title="Ghim">📌</button>';
+    }
+    function csOpenAs(i, wishMode){
+      const item=chars[i]; if(!item) return;
+      /* 12/10/2026: phải MỞ khung trước rồi mới vẽ ảnh.
+         Nếu vẽ trước, cờ csIsOpen còn false → ảnh không hiện khi mở lại nhân vật (bị hiện chữ cái). */
+      csIsOpen=true; csOpenedAt=Date.now();
+      csSheetEl.classList.toggle('wishmode',!!wishMode);
+      csSheetEl.classList.add('on'); csScrimEl.classList.add('on');
+      csSheetEl.setAttribute('aria-hidden','false');
+      document.body.style.overflow='hidden';
+      if(csTimer){ clearTimeout(csTimer); csTimer=null; }
+            if(wishMode) csTimer=setTimeout(()=>{ if(csIsOpen) window.location.href=item.link; },6000);   /* 🎲 hết 6 giây → chuyển thẳng sang link character */
+      csFill(item, i);
+    }
+    function csClose(){
+      csIsOpen=false;
+      if(csTimer){ clearTimeout(csTimer); csTimer=null; }
+      csSheetEl.classList.remove('on'); csScrimEl.classList.remove('on');
+      csSheetEl.setAttribute('aria-hidden','true');
+      document.body.style.overflow='';
+      csSheetEl.style.transition=''; csSheetEl.style.transform='';
+    }
+    /* nuốt "click ảo" ~300ms sau khi mở — mẹo đã sửa cho hộp nhạc */
+    document.addEventListener('click',e=>{ if(csIsOpen&&Date.now()-csOpenedAt<700){ e.stopPropagation(); e.preventDefault(); } },true);
+    csScrimEl.addEventListener('click',()=>{ if(Date.now()-csOpenedAt>700) csClose(); });
+    $('#csClose').addEventListener('click',csClose);
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&csIsOpen) csClose(); });
+    attachG($('#csActs'));
+    (function(){
+      const g=$('#csGrip'); let y0=null, dy=0;
+      g.addEventListener('pointerdown',e=>{ y0=e.clientY; dy=0; try{g.setPointerCapture(e.pointerId);}catch(_){} });
+      g.addEventListener('pointermove',e=>{ if(y0==null) return; dy=e.clientY-y0;
+        if(dy>0){ csSheetEl.style.transition='none'; csSheetEl.style.transform='translateY('+dy+'px)'; } });
+      const fin=()=>{ if(y0==null) return; const d=dy; y0=null; dy=0;
+        csSheetEl.style.transition=''; csSheetEl.style.transform=''; if(d>70) csClose(); };
+      g.addEventListener('pointerup',fin); g.addEventListener('pointercancel',fin);
+      g.addEventListener('click',e=>{ e.stopPropagation(); csClose(); });
+    })();
+    if(window.console) console.log('🏞️ Ảnh nhân vật: đã bật (12/10/2026 · sửa lỗi mở lại mất ảnh) · chars/pic001.jpg … pic120.jpg');
+
+    const grid = $('#grid');
+    const empty = $('#empty');
+    const search = $('#search');
+    const filterEl = $('#filter');
+    const sortEl = $('#sort');
+    const statusText = $('#statusText');
+    const countInfo = $('#countInfo');
+    const mainView = $('#mainView');
+        const cloudStatus = $('#cloudStatus');
+    const cloudStatusText = $('#cloudStatusText');
+
+    function renderTagChips(tagStr, limit=5){
+      let all = parseTags(tagStr);
+      if(limit!=null) all = all.slice(0,limit);
+      return all.map(t=>`<span class="t">${escapeHtml(t)}</span>`).join('');
+    }
+    function firstTag(tagStr){ const t = parseTags(tagStr); return t.length?t[0]:''; }
+
+    /* SEARCH */
+    const historyDropdown=$('#searchHistoryDropdown'),suggestionsEl=$('#searchSuggestions');
+    const HK='searchHistory_wlw';
+    function getHistory(){try{return JSON.parse(localStorage.getItem(HK))||[];}catch{return[]}}
+    function setHistory(h){safeSet(HK,JSON.stringify(h))}
+    function addSearchTerm(t){if(!t.trim())return;let h=getHistory().filter(x=>x!==t.trim());h.unshift(t.trim());if(h.length>3)h.pop();setHistory(h);renderHistory();}
+    function renderHistory(){const h=getHistory();if(!h.length){historyDropdown.style.display='none';return;}historyDropdown.innerHTML=h.map(t=>`<div data-term="${escapeHtml(t)}">🕘 ${escapeHtml(t)}</div>`).join('');}
+    function allKW(){const k=[];chars.forEach(c=>{k.push(c.name);parseTags(c.tag).forEach(t=>k.push(t.replace(/^#/,'')));});return[...new Set(k)].sort();}
+    const allSug = allKW();
+    function renderSuggestions(q){q=q.toLowerCase().trim();if(!q){suggestionsEl.style.display='none';return;}const m=allSug.filter(k=>k.toLowerCase().includes(q)).slice(0,10);if(!m.length){suggestionsEl.style.display='none';return;}suggestionsEl.innerHTML=m.map(t=>`<div data-term="${escapeHtml(t)}">🔎 ${escapeHtml(t)}</div>`).join('');suggestionsEl.style.display='block';}
+    historyDropdown.addEventListener('click',e=>{const t=e.target.closest('div[data-term]');if(!t)return;search.value=t.dataset.term;addSearchTerm(t.dataset.term);currentPage=1;historyDropdown.style.display='none';render();});
+    suggestionsEl.addEventListener('click',e=>{const t=e.target.closest('div[data-term]');if(!t)return;search.value=t.dataset.term;addSearchTerm(t.dataset.term);suggestionsEl.style.display='none';currentPage=1;render();});
+    search.addEventListener('focus',()=>{if(search.value.trim()){renderSuggestions(search.value);historyDropdown.style.display='none';}else{renderHistory();historyDropdown.style.display=getHistory().length?'block':'none';suggestionsEl.style.display='none';}});
+    search.addEventListener('blur',()=>setTimeout(()=>{historyDropdown.style.display='none';suggestionsEl.style.display='none';},200));
+    search.addEventListener('input',()=>{$('#clearSearch').style.display=search.value?'inline-flex':'none';currentPage=1;if(search.value){renderSuggestions(search.value);historyDropdown.style.display='none';}else suggestionsEl.style.display='none';render();});
+    search.addEventListener('keydown',e=>{if(e.key==='Enter'){const t=search.value.trim();if(t){addSearchTerm(t);historyDropdown.style.display='none';suggestionsEl.style.display='none';currentPage=1;render();}}});
+
+    /* CARDS */
+    let currentPage=1, pageSize=20, cachedRandom=null, lastRandomKey='';
+    let activeChipFilters = new Set(['all']);
+    function cardHTML(item){
+      const a=item.accent||'#a78bfa', il=likedSet.has(item.name), ip=pinnedLocal.includes(item.name);
+      return `<article class="card" data-idx="${item.__i!=null?item.__i:-1}" style="--card-accent:${a};--card-glow:radial-gradient(circle,${a}33,transparent 70%);">
+        <div class="card-top">
+          <div class="avatar" style="background:linear-gradient(135deg,${a},${a}99);">${item.__img?`<img class="avatar-img" src="${item.__img}" alt="" loading="lazy" decoding="async" data-c="${item.__cands}" data-k="1" onerror="window.__imgStep?__imgStep(this):this.remove()">`:''}${avatarText(item.name)}</div>
+          <div class="meta"><h3>${escapeHtml(item.name)}</h3><span class="tag" data-tag="${escapeHtml(item.tag||'')}">${renderTagChips(item.tag,null)}</span></div>
+        </div>
+        <p class="desc">${escapeHtml(item.summary)}</p>
+        <div class="sk-acts"><a class="sk-chat" href="${item.link}" target="_blank" rel="noopener">💬 Chat</a><button type="button" class="sk-more" data-more aria-label="Chi tiết ${escapeHtml(item.name)}">⋯</button></div>
+        <div class="actions">
+          <a class="btn primary" href="${item.link}" target="_blank" rel="noopener">Mở Character ↗</a>
+          <button class="btn icon-btn heart-btn ${il?'liked':''}" data-action="heart" data-name="${escapeHtml(item.name)}" title="Yêu thích">${il?'❤️':'🤍'}</button>
+          <button class="btn icon-btn" onclick='doCopy(${JSON.stringify(item.name)},${JSON.stringify(item.link)})' title="Copy link">📋</button>
+          <button class="btn icon-btn pin-btn ${ip?'pinned':''}" data-action="pin" data-name="${escapeHtml(item.name)}" ${pinnedLocal.length>=3&&!ip?'disabled':''} title="Ghim">📌</button>
+        </div></article>`;
+    }
+    function getFiltered(){
+      const rawQ=search.value;
+      let items=chars.filter(i=>{
+        const mq=!rawQ.trim()||textMatches(i,rawQ);
+        const mt=activeChipFilters.has('all')||[...activeChipFilters].some(f=>matchesFilter(i,f));
+        return mq&&mt;
+      });
+      const o=sortEl.value;
+      if(o==='name-asc')items.sort((a,b)=>a.name.localeCompare(b.name,'vi'));
+      if(o==='name-desc')items.sort((a,b)=>b.name.localeCompare(a.name,'vi'));
+      if(o==='newest')items=[...items].reverse();
+      if(o==='hearts')items.sort((a,b)=>charStats(b.name).hearts-charStats(a.name).hearts||a.name.localeCompare(b.name,'vi'));
+      if(o==='copies')items.sort((a,b)=>charStats(b.name).copies-charStats(a.name).copies||a.name.localeCompare(b.name,'vi'));
+      if(o==='score')items.sort((a,b)=>{const sa=charStats(a.name),sb=charStats(b.name);return(sb.hearts*3+sb.copies*2+sb.pins*5)-(sa.hearts*3+sa.copies*2+sa.pins*5)||a.name.localeCompare(b.name,'vi');});
+      if(o==='random'){const k=`${rawQ}|${[...activeChipFilters].join(',')}|${o}`;if(!cachedRandom||lastRandomKey!==k){cachedRandom=[...items].sort(()=>Math.random()-0.5);lastRandomKey=k;}items=cachedRandom;}
+      return [...items.filter(i=>pinnedLocal.includes(i.name)),...items.filter(i=>!pinnedLocal.includes(i.name))];
+    }
+    function buildPag(tp,c){
+      if(tp<=1){paginationTop.innerHTML='';paginationBottom.innerHTML='';return;}
+      const set=new Set([1,tp,c-1,c,c+1]); if(c<=3){set.add(2);set.add(3);} if(c>=tp-2){set.add(tp-1);set.add(tp-2);}
+      const pages=[...set].filter(p=>p>=1&&p<=tp).sort((a,b)=>a-b);
+      let h=`<button class="page-btn" aria-label="Trang đầu" onclick="gotoPage(1)" ${c===1?'disabled':''}>«</button>`,prev=0;
+      pages.forEach(p=>{ if(p-prev>1)h+='<span class="page-gap" aria-hidden="true">…</span>'; h+=`<button class="page-btn ${p===c?'active':''}" ${p===c?'aria-current="page"':''} onclick="gotoPage(${p})">${p}</button>`; prev=p; });
+      h+=`<button class="page-btn" aria-label="Trang cuối" onclick="gotoPage(${tp})" ${c===tp?'disabled':''}>»</button>`;
+      paginationTop.innerHTML=h;paginationBottom.innerHTML=h;
+    }
+    function renderStatus(n){
+      const q=normalize(search.value);
+      const t=activeChipFilters.has('all')?'tất cả nhóm':[...activeChipFilters].map(filterLabel).join(' + ');
+      statusText.textContent=q?`Bộ lọc: ${t} · "${search.value}"`:`Đang xem: ${t}`;
+      countInfo.textContent=`${n} / ${chars.length} nhân vật`;
+      $('#statTotal').textContent=chars.length;$('#statShown').textContent=n;
+    }
+    function getPerRow(){
+      if(grid.classList.contains('list'))return 1;
+      const w=window.innerWidth;
+      if(w>=1000)return 4;
+      if(w>=700)return 3;
+      if(w>=460)return 2;
+      return 1;
+    }
+    function chunkArr(arr,n){const out=[];for(let i=0;i<arr.length;i+=n)out.push(arr.slice(i,i+n));return out;}
+    function render(){
+      const items=getFiltered();const tp=Math.max(1,Math.ceil(items.length/pageSize));
+      if(currentPage>tp)currentPage=tp;
+      const pi=items.slice((currentPage-1)*pageSize,currentPage*pageSize);
+      grid.classList.add('fade-out');
+      setTimeout(()=>{
+        const perRow=getPerRow();
+        grid.innerHTML=chunkArr(pi,perRow).map(row=>`<div class="card-row">${row.map(cardHTML).join('')}</div>`).join('');
+        grid.classList.remove('fade-out');
+        empty.style.display=items.length?'none':'block';
+        chips.forEach(b=>b.classList.toggle('active',activeChipFilters.has(b.dataset.filter)));
+        buildPag(tp,currentPage);renderStatus(items.length);
+      },150);
+    }
+
+    window.__pageRefresh = function(){ render(); renderStatus(getFiltered().length); };
+    function gotoPage(p){const items=getFiltered();const tp=Math.max(1,Math.ceil(items.length/pageSize));currentPage=Math.max(1,Math.min(p,tp));render();$('#library').scrollIntoView({behavior:'smooth',block:'start'});}
+    window.gotoPage=gotoPage;
+
+    function navigate(){
+      const h=location.hash||'#/';
+      if(h==='#featured'){ location.replace('index.html'); return; }
+      else if(h==='#library')setTimeout(()=>$('#library').scrollIntoView({behavior:'smooth'}),50);
+      $$('.nav-link[data-nav]').forEach(a=>a.classList.toggle('active',(a.dataset.nav==='home'&&h!=='#featured'&&h!=='#library')||(a.dataset.nav==='featured'&&h==='#featured')));
+    }
+    window.addEventListener('hashchange',navigate);
+
+    const chips=$$('.chip');
+    chips.forEach(b=>b.addEventListener('click',()=>{
+      const v=b.dataset.filter;
+      if(v==='all'){ activeChipFilters=new Set(['all']); }
+      else {
+        activeChipFilters.delete('all');
+        if(activeChipFilters.has(v)) activeChipFilters.delete(v); else activeChipFilters.add(v);
+        if(activeChipFilters.size===0) activeChipFilters=new Set(['all']);
+      }
+      filterEl.value=(activeChipFilters.size===1&&!activeChipFilters.has('all'))?[...activeChipFilters][0]:'all';
+      currentPage=1;cachedRandom=null;render();
+    }));
+    filterEl.addEventListener('change',()=>{activeChipFilters=new Set([filterEl.value]);currentPage=1;cachedRandom=null;render();});
+    sortEl.addEventListener('change',()=>{currentPage=1;cachedRandom=null;render();});
+    $('#clearSearch').addEventListener('click',()=>{search.value='';$('#clearSearch').style.display='none';currentPage=1;render();search.focus();});
+    $('#resetFilters').addEventListener('click',()=>{search.value='';filterEl.value='all';sortEl.value='default';activeChipFilters=new Set(['all']);currentPage=1;chips.forEach(b=>b.classList.toggle('active',b.dataset.filter==='all'));cachedRandom=null;render();});
+    
+    attachG(grid);
+    /* 11/10/2026 — bấm thẻ nhân vật = mở KHUNG LỚN (đã bỏ hiệu ứng nở thẻ cho hết lỗi "viền thừa" ở chế độ máy tính) */
+    function attachOpenCard(el){
+      el.addEventListener('click',e=>{
+        const mb=e.target.closest('[data-more]'); if(mb){ const c0=mb.closest('.card'); const i0=c0?parseInt(c0.dataset.idx,10):NaN; if(!isNaN(i0)) csOpenAs(i0,false); return; }
+        if(e.target.closest('a, button, details, summary, [data-action]'))return;
+        const card=e.target.closest('.card');
+        if(!card||!el.contains(card))return;
+        const i=parseInt(card.dataset.idx,10);
+        if(!isNaN(i)) csOpenAs(i,false);
+      });
+    }
+    attachOpenCard(grid);
+    let resizeT=null;
+    window.addEventListener('resize',()=>{clearTimeout(resizeT);resizeT=setTimeout(render,200);});
+
+    const bb=$('#backToTop');
+    window.addEventListener('scroll',()=>{bb.style.display=window.scrollY>400?'block':'none';});
+    bb.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+
+    const tb=$('#toggleView');let vm=safeGet('viewMode')||'grid';
+    function apV(){if(vm==='list'){grid.classList.add('list');tb.innerHTML='📐 Dạng lưới';}else{grid.classList.remove('list');tb.innerHTML='📋 Danh sách';}}
+    apV();tb.addEventListener('click',()=>{vm=vm==='grid'?'list':'grid';safeSet('viewMode',vm);apV();render();});
+
+    function showSkeleton(n){
+      grid.classList.remove('fade-out');
+      const row = Array.from({length:getPerRow()}).map(()=>'<div class="skeleton-card"><div class="skeleton-avatar"></div><div class="skeleton-line w60"></div><div class="skeleton-line w40"></div><div class="skeleton-line w90"></div></div>').join('');
+      grid.innerHTML = Array.from({length:Math.max(1,Math.ceil(n/getPerRow()))}).map(()=>'<div class="card-row">'+row+'</div>').join('');
+    }
+
+    /* 🎲 Char ngẫu nhiên (profile-hero) → mở khung lớn nhân vật ngẫu nhiên */
+    (function(){ const rh=$('#randomHeroBtn'); if(rh) rh.addEventListener('click',function(){ if(!chars.length) return; csOpenAs(Math.floor(Math.random()*chars.length), true); }); })();
+
+    showSkeleton(8);
+    initStatsData();loadLocalPrefs();
+    setTimeout(()=>{ render();renderStatus(getFiltered().length);navigate(); }, 300);
+    initSupabase().then(r=>{ renderAll(r); initSiteCounter(); });
+  </script>
+  <script id="sky-js">
+  /* ═══ BẦU TRỜI · tương tác mobile ═══ (TRANG 2 · TOÀN BỘ THƯ VIỆN) */
+  (function(){
+    const body=document.body, root=document.documentElement;
+
+    /* --- dải mỏng "⌃ chọn lại": về màn Select Character (đồng bộ tên nhân vật) --- */
+    (function(){
+      const sn=$('#stripName'); if(!sn) return;
+      let sv=parseInt(safeGet('skyHeroIndex')||'0',10); if(isNaN(sv)||sv<0||sv>=chars.length) sv=0;
+      sn.textContent=chars[sv].name;
+    })();
+    $('#selStrip').addEventListener('click',function(){ location.href='index.html'; });
+
+    /* --- cuộn dọc: tiến trình bầu trời + dải mỏng dính trên cùng --- */
+    let tick=false;
+    function onScroll(){
+      if(tick) return; tick=true;
+      requestAnimationFrame(function(){
+        tick=false;
+        const vh=window.innerHeight, y=window.scrollY;
+        root.style.setProperty('--p',Math.min(1,y/(vh*.8)).toFixed(3));
+        body.classList.toggle('sel-mini',y>vh*.78);
+      });
+    }
+    window.addEventListener('scroll',onScroll,{passive:true});
+    window.addEventListener('resize',onScroll); onScroll();
+
+    /* --- 🌙 ban đêm --- */
+    const moon=$('#skyMoon'), meta=document.querySelector('meta[name="theme-color"]');
+    function setNight(n){
+      body.classList.toggle('night',n); moon.textContent=n?'☀️':'🌙';
+      moon.setAttribute('aria-label',n?'Chuyển sang ban ngày':'Chuyển sang ban đêm');
+      if(meta) meta.setAttribute('content',n?'#0E1B2E':'#DFF1FB'); safeSet('skyNight',n?'1':'0');
+    }
+    moon.addEventListener('click',function(){ setNight(!body.classList.contains('night')); });
+    setNight(safeGet('skyNight')==='1');
+  })();
+  </script>
+<script src="click-sound.js"></script>
+  <script src="music-player-v4.js"></script>
+    <script src="greeting-mail.js"></script>
+   <script src="bento-lunch.js"></script>
+
+  <script>
+  /* ═══ MENU ☰ 3 GẠCH — chứa TOÀN BỘ mục điều hướng (góc phải trên, trang Thư viện) ═══ */
+  (function(){
+    'use strict';
+    if(document.getElementById('tgMenuBtn')) return;
+    const btn=document.createElement('button');
+    btn.id='tgMenuBtn'; btn.type='button'; btn.textContent='☰';
+    btn.setAttribute('aria-label','Mở menu điều hướng'); btn.setAttribute('aria-expanded','false');
+    const panel=document.createElement('nav');
+    panel.id='tgMenuPanel'; panel.hidden=true; panel.setAttribute('aria-label','Điều hướng TeaGhiu');
+    panel.innerHTML=
+      '<a href="index.html">🕊️ Chọn nhân vật</a>'+
+      '<button type="button" id="tgTopBtn">🌤️ Về đầu trang</button>'+
+      '<a href="commands.html">🪁 Thư viện Lệnh</a>'+
+      '<a href="isekai-guide.html">📖 Cẩm nang Isekai</a>'+
+      '<a href="req.html">💌 REQ</a>'+
+      '<button type="button" id="tgForestBtn">🌲 Cuốn sách khu rừng</button>'+
+      '<a href="https://aistudio.google.com/" target="_blank" rel="noopener">🎈 Google AI Studio</a>'+
+      '<div class="tg-sep" role="separator"></div>'+
+      '<button type="button" id="tgThemeBtn">☀️ / 🌙 Chuyển sáng ↔ tối</button>'+
+      '<button type="button" id="tgMusicBtn">🎵 Hộp nhạc</button>';
+    document.body.appendChild(btn); document.body.appendChild(panel);
+    const close=()=>{ panel.hidden=true; btn.setAttribute('aria-expanded','false'); };
+    btn.addEventListener('click',e=>{ e.stopPropagation(); panel.hidden=!panel.hidden; btn.setAttribute('aria-expanded',String(!panel.hidden)); });
+    document.addEventListener('click',e=>{ if(!panel.hidden && !panel.contains(e.target) && e.target!==btn) close(); });
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape') close(); });
+    document.getElementById('tgTopBtn').addEventListener('click',function(){ close(); window.scrollTo({top:0,behavior:'smooth'}); });
+    document.getElementById('tgThemeBtn').addEventListener('click',function(){ close(); const m=document.getElementById('skyMoon'); if(m) m.click(); });
+    function openMusic(){ const disc=document.getElementById('bgmDisc'); if(disc) disc.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true})); }
+    document.getElementById('tgMusicBtn').addEventListener('click',function(){ close(); openMusic(); });
+    /* 🌲 khu rừng: mở overlay iframe — hộp nhạc không bị tải lại */
+    let overlay=null,frame=null,oldOverflow='';
+    function send(action,extra){ extra=extra||{}; if(frame) frame.contentWindow.postMessage(Object.assign({source:'teaghiu-portal',action:action},extra),location.origin); }
+    function syncTheme(){ send('theme',{dark:!document.body.classList.contains('light')}); }
+    function openForest(){
+      close();
+      if(!overlay){
+        overlay=document.createElement('section'); overlay.id='tgForestOverlay'; overlay.setAttribute('aria-label','Cuốn sách khu rừng');
+        frame=document.createElement('iframe'); frame.title='Cuốn sách khu rừng TeaGhiu'; frame.src='khu-rung.html?embedded=1';
+        frame.addEventListener('load',syncTheme); overlay.appendChild(frame); document.body.appendChild(overlay);
+      }
+      if(!document.body.classList.contains('tg-forest-open')) oldOverflow=document.body.style.overflow;
+      overlay.hidden=false; document.body.classList.add('tg-forest-open'); document.body.style.overflow='hidden'; syncTheme();
+    }
+    function closeForest(){ if(!overlay) return; send('pause'); overlay.hidden=true; document.body.classList.remove('tg-forest-open'); document.body.style.overflow=oldOverflow; }
+    window.addEventListener('message',function(e){
+      if(!frame||e.source!==frame.contentWindow||e.origin!==location.origin||!e.data||e.data.source!=='teaghiu-forest') return;
+      if(e.data.action==='music') openMusic();
+      if(e.data.action==='close') closeForest();
+      if(e.data.action==='theme'){ const t=document.getElementById('themeToggle'); if(t) t.click(); syncTheme(); }
+    });
+    document.getElementById('tgForestBtn').addEventListener('click',openForest);
+  })();
+  </script>
+    <script>
+    /* 📲 PWA 12/10/2026 — register service worker so web can be installed like an app */
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(e => console.warn('SW:', e));
+      });
+    }
+    </script>
+</body>
+</html>

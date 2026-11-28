@@ -412,7 +412,7 @@ if(embedded)document.body.classList.add('portal-mode');
 function requestParent(action){if(embedded&&window.parent!==window)window.parent.postMessage({source:'teaghiu-forest',action},location.origin);}
 function openMusic(){if(embedded){requestParent('music');return;}const disc=document.getElementById('bgmDisc');if(disc)disc.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}));}
 $('menuMusic').onclick=()=>{ $('menu').hidden=true;openMusic();};
-$('menuLibrary').onclick=()=>{if(embedded)requestParent('close');else location.href='index.html';};
+$('menuLibrary').onclick=()=>{if(embedded)requestParent('close');else location.href='thu-vien.html';};
 $('theme').onclick=()=>{if(embedded)requestParent('theme');else{document.body.classList.toggle('nightmode');try{localStorage.setItem('theme',document.body.classList.contains('nightmode')?'dark':'light');}catch(e){}}};
 window.addEventListener('message',e=>{if(!embedded||e.origin!==location.origin||e.source!==window.parent)return;if(e.data?.source!=='teaghiu-portal')return;if(e.data.action==='pause'&&playing)$('start').click();if(e.data.action==='theme')document.body.classList.toggle('nightmode',e.data.dark);});
 if(!embedded){const player=document.createElement('script');player.src='music-player-v4.js?v=forest1';document.body.appendChild(player);}

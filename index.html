@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Thư viện WLW · TeaGhiu</title>
+  <title>Select Character · TeaGhiu</title>
   <link rel="icon" type="image/jpeg" href="icon.jpg">
     <link rel="apple-touch-icon" href="icon-192.png">
   <link rel="manifest" href="manifest.webmanifest">
@@ -286,10 +286,24 @@
     }
   }
 </style>
+  <style>
+  /* ═══ TRANG 1 · SELECT CHARACTER — tinh chỉnh sau khi tách trang ═══ */
+  body.sky{--tab-h:calc(12px + env(safe-area-inset-bottom,0px))}
+  .sel-top-r{display:flex;align-items:center;gap:10px}
+  .sel-rand{appearance:none;border:1px solid var(--line-strong);background:var(--glass);color:var(--ink);font-family:inherit;font-size:16px;line-height:1;min-height:38px;min-width:42px;padding:0 12px;border-radius:99px;cursor:pointer;box-shadow:var(--shadow);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+  .sel-rand:active{transform:scale(.94)}
+  body.night .sel-rand{background:var(--cloud)}
+  @media (orientation:landscape){
+    body.sky .main-view>.wrap{display:block;height:100%}
+    body.sky #featured{grid-column:auto;width:100%;height:100%;padding:calc(env(safe-area-inset-top,0px) + 8px) 14px var(--tab-h)}
+    body.sky .sel-lib{display:inline-block!important}
+  }
+  </style>
+  <script>if(location.hash==='#library'){location.replace('thu-vien.html');}</script>
 </head>
+
 <body class="sky sp-open">
 <script>try{if(localStorage.getItem('skyNight')==='1')document.body.classList.add('night')}catch(e){}</script>
-
   <!-- MÀN 1 · Splash -->
   <div id="splash" role="dialog" aria-label="TeaGhiu · Thư viện Character">
     <div class="sp-sky" aria-hidden="true">
@@ -297,28 +311,14 @@
       <span class="bd b1">🕊️</span><span class="bd b2">🐦</span><span class="bd b3">🐦</span>
     </div>
     <div class="splash-content">
-      <div class="splash-icon" id="splashIcon" aria-hidden="true"><img src="icon.jpg" alt="" decoding="async" onerror="document.getElementById('splashIcon').textContent='🕊️';"></div>
+      <div class="splash-icon" id="splashIcon" aria-hidden="true">🕊️</div>
       <h1 class="splash-title">TeaGhiu</h1>
       <p class="splash-desc">THƯ VIỆN CHARACTER</p>
       <button type="button" class="sp-go" id="splashGo">🌤️ GHÉ VÔ</button>
     </div>
-    <div class="sp-load" aria-hidden="true">
-      <div class="sp-track">
-        <span class="sp-bird"><svg class="sp-bsvg" viewBox="0 0 64 48" width="52" height="39" focusable="false">
-          <path class="wg wb" d="M30 27 C20 22 9 10 3 13 C10 20 18 30 30 31Z"/>
-          <path d="M16 29 L3 33 L5 36 L18 34Z" fill="#fff" stroke="#3C9BD6" stroke-width="1.6" stroke-linejoin="round"/>
-          <ellipse cx="31" cy="29" rx="16" ry="9" fill="#fff" stroke="#3C9BD6" stroke-width="1.8"/>
-          <circle cx="46" cy="22" r="7.5" fill="#fff" stroke="#3C9BD6" stroke-width="1.8"/>
-          <path d="M52.5 20.5 L61 23.5 L52.5 26Z" fill="#FFC93C" stroke="#F5B400" stroke-width="1.2" stroke-linejoin="round"/>
-          <circle cx="48.5" cy="20.5" r="1.5" fill="#2B3A4A"/>
-          <path class="wg wf" d="M31 28 C21 22 10 8 2 11 C10 19 19 31 31 32Z"/>
-        </svg></span>
-        <div class="sp-bar"><i></i></div>
-      </div>
-    </div>
+    <div class="sp-load" aria-hidden="true"><span class="sp-bird">🕊️</span><div class="sp-bar"><i></i></div></div>
   </div>
 
-  <!-- Navbar -->
   <nav class="navbar">
     <div class="navbar-inner">
       <a href="#/" class="nav-brand">
@@ -328,7 +328,7 @@
         <span>TeaGhiu</span>
       </a>
       <div class="nav-links">
-        <a href="#/" class="nav-link" data-nav="home">Thư viện</a>
+        <a href="thu-vien.html" class="nav-link" data-nav="home">Thư viện</a>
         <a href="#featured" class="nav-link" data-nav="featured">Nhân vật</a>
         <a href="commands.html" class="nav-link">Hỗ trợ lệnh</a>
         <a href="isekai-guide.html" class="nav-link">📖 Cẩm nang Isekai</a>
@@ -341,59 +341,18 @@
     </div>
   </nav>
 
-  <div class="breadcrumb"><a href="#/">Trang chủ</a><span class="sep">›</span><span class="current">Thư viện Character</span></div>
-
   <!-- MAIN VIEW -->
   <div class="main-view" id="mainView">
     <div class="wrap">
-      <!-- Hero -->
-      <section class="profile-hero">
-        <div class="profile-banner">
-          <span class="banner-deco d1">✧</span>
-          <span class="banner-deco d2">❀</span>
-          <span class="banner-deco d3">✦</span>
-        </div>
-        <div class="profile-body">
-          <div class="profile-avatar-wrap">
-            <div class="profile-avatar" id="heroAvatar">
-              <img src="icon.jpg" alt="TeaGhiu" onerror="this.style.display='none';this.parentElement.classList.add('fb');this.parentElement.innerHTML+='<span class=\'fb-text\'>T</span><div style=\'position:absolute;bottom:-6px;right:-6px;width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#22d3ee,#a78bfa);border:3px solid var(--bg);display:grid;place-items:center;font-size:14px;color:#fff;z-index:2;\'>✦</div>';">
-            </div>
-            <div class="profile-actions">
-              <button id="randomHeroBtn" class="btn">🎲 Char ngẫu nhiên</button>
-            </div>
-          </div>
-          <div class="profile-info">
-            <h1 class="profile-name">Thư viện Character WLW</h1>
-            <div class="profile-handle">
-              <span class="profile-dot"></span>
-              <span>TeaGhiu · Google AI Studio Prompts</span>
-            </div>
-            <div class="profile-stats">
-                            <a href="#library" class="pstat" style="text-decoration:none;color:inherit;"><b id="statTotal">0</b><span>Nhân vật</span></a>
-              <a href="#library" class="pstat" style="text-decoration:none;color:inherit;"><b id="statShown">0</b><span>Đang hiển thị</span></a>
-                            <div class="pstat"><b id="statClicks">…</b><span>🪽 Lần bước vô</span></div>
-            </div>
-            <div class="tag-cloud">
-              <span class="tag-pill">#WLW</span>
-              <span class="tag-pill">#Hiện đại</span>
-              <span class="tag-pill">#Cổ trang</span>
-              <span class="tag-pill">#ABO</span>
-              <span class="tag-pill">#Tu tiên</span>
-              <span class="tag-pill">#Yandere</span>
-              <span class="tag-pill">#Ngọt sủng</span>
-              <span class="tag-pill">#Hài hước</span>
-              <span class="tag-pill">#Kinh dị</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <!-- MÀN 2 · Select Character (thẻ vuốt dọc) -->
       <section class="section" id="featured">
         <div class="hero-select">
           <div class="sel-top">
             <p class="hs-label">Select Character</p>
-            <p class="hs-counter" id="heroCounter"></p>
+            <div class="sel-top-r">
+              <p class="hs-counter" id="heroCounter"></p>
+              <button type="button" class="sel-rand" id="heroRandomBtn" aria-label="Ngẫu nhiên một nhân vật">🎲</button>
+            </div>
           </div>
           <div class="sel-deck" id="selDeck" tabindex="0" role="group" aria-label="Chọn nhân vật: vuốt lên hoặc xuống, hoặc dùng phím mũi tên">
             <div class="sel-back" id="selBack" aria-hidden="true"></div>
@@ -408,10 +367,6 @@
                 <p class="sel-slogan" id="selSlogan"></p>
               </div>
             </article>
-            <div class="sel-aux">
-              <button type="button" class="hs-arrow" id="heroNext" aria-label="Nhân vật kế tiếp">⤴</button>
-              <button type="button" class="hs-arrow" id="heroPrev" aria-label="Nhân vật trước">⤵</button>
-            </div>
           </div>
           <a class="btn primary hs-open" id="heroOpenBtn" href="#" target="_blank" rel="noopener">💬 Hãy trò chuyện với họ</a>
           <div class="sel-foot">
@@ -425,98 +380,11 @@
         </div>
       </section>
 
-      <!-- Library -->
-      <section class="section" id="library">
-        <div class="section-head">
-          <div>
-            <h2 class="section-title">Toàn bộ <span class="accent">thư viện</span></h2>
-            <p class="section-sub">Tìm kiếm, lọc, khám phá. Bấm ❤️ yêu thích, 📋 copy link, 📌 ghim nhân vật yêu thích.</p>
-          </div>
-        </div>
 
-        <div class="sk-sticky">
-          <div class="search-wrap">
-            <span class="search-icon" aria-hidden="true">🔍</span>
-            <input id="search" class="field" type="text" aria-label="Tìm nhân vật" placeholder="Tìm nhân vật theo tên, tag, mô tả..." />
-            <button id="clearSearch" class="clear-btn" type="button" style="display:none;" aria-label="Xóa tìm kiếm">✖</button>
-            <button id="skyMoon" class="sk-moon" type="button" aria-label="Chuyển sang ban đêm">🌙</button>
-            <div id="searchHistoryDropdown"></div>
-            <div id="searchSuggestions"></div>
-          </div>
-          <div class="chips" id="chips">
-            <button class="chip active" data-filter="all">Tất cả</button>
-            <button class="chip" data-filter="#WLW">WLW</button>
-            <button class="chip" data-filter="genre:hiện đại">Hiện đại</button>
-            <button class="chip" data-filter="genre:cổ trang">Cổ trang</button>
-            <button class="chip" data-filter="genre:aob">AOB</button>
-            <button class="chip" data-filter="genre:khác">Khác</button>
-            <button class="chip" data-filter="liked">❤️ Yêu thích</button>
-            <button class="chip" data-filter="pinned">📌 Đã ghim</button>
-          </div>
-        </div>
-
-        <div class="control-panel">
-          <div class="toolbar">
-            <select id="filter" class="select">
-              <option value="all">Tất cả nhóm</option>
-              <option value="#WLW">#WLW</option>
-              <option value="genre:aob">AOB</option>
-              <option value="genre:hiện đại">Hiện đại</option>
-              <option value="genre:cổ trang">Cổ trang</option>
-              <option value="genre:khác">Khác</option>
-              <option value="liked">❤️ Yêu thích</option>
-              <option value="pinned">📌 Đã ghim</option>
-            </select>
-            <select id="sort" class="select">
-              <option value="default">Mặc định</option>
-              <option value="newest">🆕 Mới nhất</option>
-              <option value="random">Ngẫu nhiên</option>
-              <option value="name-asc">Tên A → Z</option>
-              <option value="name-desc">Tên Z → A</option>
-              <option value="hearts">❤️ Nhiều tim</option>
-              <option value="copies">📋 Nhiều copy</option>
-              <option value="score">⭐ Điểm cao</option>
-            </select>
-            <button id="randomBtn" class="btn primary">🎲 Ngẫu nhiên</button>
-            <button id="resetFilters" class="btn">🔄 Reset</button>
-            <button id="toggleView" class="btn">📋 Danh sách</button>
-          </div>
-        </div>
-
-        <div class="result-meta">
-          <span id="statusText">Đang tải...</span>
-          <span id="cloudStatus" style="font-size:12px;color:var(--muted);"><span id="cloudStatusText">☁️ Đang kết nối...</span></span>
-          <span id="countInfo"></span>
-        </div>
-        <div id="paginationTop" class="pagination"></div>
-        <div id="grid" class="grid"></div>
-        <div id="paginationBottom" class="pagination"></div>
-        <div id="empty" class="empty">
-          <div class="empty-icon">🔍</div>
-          <div>Không tìm thấy nhân vật nào khớp bộ lọc.</div>
-          <div style="margin-top:8px;font-size:13px;">Thử từ khóa khác hoặc bấm Reset nhé!</div>
-        </div>
-      </section>
-
-      <footer class="footer">
-        <div class="footer-links">
-          <a href="#/">Thư viện</a>
-          <a href="#featured">Chọn nhân vật</a>
-          <a href="commands.html">Thư viện Lệnh</a>
-          <a href="req.html">💌 REQ</a>
-          <a href="https://aistudio.google.com/" target="_blank" rel="noopener">Google AI Studio</a>
-        </div>
-        <div style="max-width:480px;margin:0 auto 10px;font-size:12.5px;line-height:1.7;">
-          📖 Cách dùng nhanh: gõ từ khoá hoặc chọn chip thể loại để lọc → bấm 🎲 để xem ngẫu nhiên → bấm <b>Mở Character</b> để bắt đầu trò chuyện trên AI Studio. Bấm 📌 để ghim nhân vật yêu thích lên đầu danh sách.
-        </div>
-        <div>Thư viện WLW by TeaGhiu <span class="heart">♥</span> · Đồng bộ bởi Supabase</div>
-      </footer>
     </div>
   </div>
 
-  <button id="backToTop" aria-label="Lên đầu trang">↑</button>
   <div id="toast" class="toast"></div>
-
   <!-- KHUNG LỚN NHÂN VẬT (bấm khung SELECT CHARACTER hoặc thẻ nhân vật) -->
   <div class="cs-scrim" id="csScrim"></div>
   <section class="cs-sheet" id="csSheet" aria-hidden="true">
@@ -542,6 +410,7 @@
     </div>
   </section>
 
+  <script src="chars-data.js"></script>
   <script>
   
     /* =========================================================
@@ -558,167 +427,9 @@
       try { localStorage.setItem(key, val); } catch (e) { }
     }
 
-    /* ================= DATA ================= */
-    const chars = [
-      { name:"Lâm Sơ Yến", tag:"#WLW #Cbiz #Drama #Hiện đại #Tổng_tài", summary:"Kẻ cầm lái biết cách thưởng thức những con sóng ngầm đang chực chờ nuốt chửng quân cờ của mình.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221J6ppWVKMe32pnV9rOEAZLRCTFM86-Nyr%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#8b7bff" },
-      { name:"Miên Dư", tag:"#WLW #Mạc Thế #Hiện đại #Thú nhân #AOB", summary:"Ban ngày là cái bóng câm lặng trong kho, ban đêm lại đè chặt thân thể nàng mà khóc lóc tỉ tê...", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221WmiKAzLKPgRGQimDLTwWAK-sFp8H06kw%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#3dd6c6" },
-      { name:"Lạc An", tag:"#WLW #Hiện đại #Ngọt sủng #Hài hước", summary:"Kẻ mù đường dành cả đời tìm kiếm quá khứ, lại nhặt được một vị thần trần trụi giữa phòng khách.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221J-G1tYs35m6EOt4rmQdjx06CsBeqJ0id%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#ff7aa2" },
-      { name:"Choi Ji-an", tag:"#WLW #HiệnĐại #Showbie Hàn #Máu M #Đại minh tinh", summary:"Trói buộc em bằng quyền lực, để mãi mãi được quỳ dưới chân em.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221bEQ4q4425kE_CFQy-XemHiaZwTQRy9xP%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#f7b955" },
-      { name:"Nhan Cát Lạc", tag:"#WLW #Cổ trang #Thao túng #Hậu cung", summary:"Để xem liệu ngươi sẽ tìm được xác huynh trưởng, hay ngoan ngoãn biến thành sủng vật của bổn cung?", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221XkDi911pirxq_9In3kl0ylOIlVJdqLj3%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#7f8cff" },
-      { name:"Tiên Tuyền/Dạ Phân", tag:"#WLW #Hiện đại #Đa nhân cách #Yandere #AgeGap", summary:"Nếu chị bước ra khỏi cánh cửa đó, em sẽ bẻ gãy trục thời gian để nhốt chị lại mãi mãi.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221UfjIQitm-WiyRL_FH0WR18AVj0cpj9P7%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#5dd39e" },
-      { name:"Lan Hứa Đình", tag:"#WLW #Hiện đại #Học đường #Gia sư – Sinh viên", summary:"Sáu mươi triệu này mua được chữ của tôi, còn gia sản nhà cậu sẽ trả giá cho mạng nhà họ Lan này.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221Scg6JNSguAf77WJO_OImJXqVe9PXZJLu%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#c47cff" },
-      { name:"Tạ Hữu Tất", tag:"#WLW #Fantasy #Rồng #Hogwarts AU", summary:"Túi da này đẹp chứ? Tiếc là linh hồn bên trong đã cũ kỹ hơn cả tòa lâu đài này rồi.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221g2EmyQNe1N8QGqZ0QXhR9c8fip7Pa8rW%22%5D,%22action%22:%22open%22,%22userId%22:%22114999555451030052740%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#4ea1ff" },
-      { name:"Sư Hạ Lân", tag:"#WLW #Tu tiên #Oan gia #Trêu chọc #Ma đạo", summary:"Cứu người là việc của nàng, còn gom hồn là nhiệm vụ của ta. Linh Y đại nhân à.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221uQJurzn5wJXHFv3V_C6zIcgWocDsnqLC%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#ff8f6b" },
-      { name:"Tần Lục Như", tag:"#WLW #Hiện đại #AOB #A x A", summary:"Ký vào bản thỏa thuận này đi, rồi dùng thẻ đen của tôi mà mua hết số bánh gấu cô muốn.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221jdBcYWyJOFVQm3eFxSDQuYlGFa_MfoNL%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#43d9b2" },
-      { name:"Thẩm Khả Giai", tag:"#WLW #Hiện đại #AOB #O x A #Gương vỡ lại lành", summary:"Ly hôn? Cô đang làm mình làm mẩy với ai đấy? ... Khoan đã, sao số tôi lại bị chặn rồi?", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%2211lvsdgpmxILJH4ITdskYgLOUcYnZiKW3%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#ff6fb3" },
-      { name:"Vân Cảnh Lam", tag:"#WLW #Tu tiên #E x A #AOB", summary:"Phụ mẫu dặn phải là đạo lữ... nhưng nếu tỷ cần, Lam nhi chịu đau một chút cũng được...", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221ov6dfBg81MY32Ua06W7JiB1d_E9FHjem%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#5b7cff" },
-      { name:"Camille Dubois", tag:"#WLW #Hiện đại #Cảnh Sát #Gái Pháp #Gia Sư Bắt Đắc Dĩ", summary:"Cất cái điện thoại đó đi. Tôi nói tiếng Việt, và em chỉ việc đi theo sau tôi là được.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221EAcGrsCo070EyFHRMuTK4BHuZti_rbQC%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#28c7d8" },
-      { name:"Tưởng Thuần Y", tag:"#WLW #Hiện đại #Ảnh hậu #Oan gia #Cbiz", summary:"Tiền nhận rồi thì học cách 'yêu' tôi cho ra hồn đi, đừng để thiên hạ cười vào mặt khúc gỗ mục.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221eSX1I48schvGuUcZ1JxsZvncoQu_vnSx%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#ff9b4d" },
-      { name:"Phó Hàn Trúc", tag:"#WLW #Hiện đại #Dị giới #Stundere #Cứu rỗi", summary:"Cánh tay sắt này là nợ, cái mạng này cũng là nợ. Cả đời này tôi sẽ trả cho em cả.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221uTI8BbxDTAGZFH1XeLwOb0py9MjLF7oT%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#7b61ff" },
-      { name:"Hạ Vô Vĩ", tag:"#WLW #Hiện đại #Kinh dị tâm lý #Vòng lặp #Yandere", summary:"Em có thể chạy, bọn tôi sẽ luôn kề sát và chờ đợi em ở lạch đích.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221YyNmdMjHz8DptEObNwGoaIiZ1KjS8ylb%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#3ad69f" },
-      { name:"Tống Minh Dạ", tag:"#WLW #Cung đấu #Hệ thống #Đọc tâm #Chủ tớ", summary:"Đừng tưởng ngươi câm là ta sẽ không biết những suy nghĩ đồ bại trong đầu ngươi.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221PeH8WbQW8wv8knK5L_PwhXWzOvsxMA87%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#ff6b81" },
-      { name:"Ngô Bạch Tước", tag:"#WLW #Hiện đại #Thú nhân #Học đường #Stundere", summary:"Chiếu. Thua là thua, đừng lấy lý do ánh sáng quá tối hay chói mắt để bào chữa.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%2214dqP0ZzROJl6u80ZEkCI04J0swXBhrTb%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#6da7ff" },
-      { name:"Lương Mạn Đình", tag:"#WLW #Hiện đại #Hồng Kông #Độc hại", summary:"R18 – Cô định dùng chiếc còng tay đó để bắt tôi, hay để giữ tôi lại trên giường, cảnh sát nhỏ?", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221C3mgj80IxypP9fL3S-YGlm8yvadLKug3%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#ffb14a" },
-      { name:"Evelyn", tag:"#WLW #Hiện đại #Hài hước #Oan gia #Lính cứu hỏa", summary:"Trong giáo trình của tôi không có mục 'ngủ quên khi hỏa hoạn'. Đi thôi, tôi đưa em về nhà.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221PJKtsY4QC396vaidmbLeCHglB465yGNL%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#5fd1ff" },
-      { name:"Lam Tịch", tag:"#WLW #Cổ trang #Thần thú #Bọ cạp #Tsundere", summary:"Mạng của ngươi là của ta. Ngươi chỉ có thể chết vì độc của ta thôi. Đồ vô dụng.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221mGspMorIcGWDCAW8C_7go0QVuaF9dlGP%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#9b8cff" },
-      { name:"Tưởng Hạ Lộ", tag:"#WLW #Hiện đại #Motocross #NASCAR #Đua xe", summary:"Mày chạy cái xe giẻ rách đó làm gì? Về đây tao nuôi, hay muốn tao xích chân mày lại?", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221387ZpOqaOsXRy0WmdVlF9LkraYELfHcg%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#FF0000" },
-      { name:"Lâm Vị Mạn & Trình Yên", tag:"#WLW #A x E x O #Hiện đại #Tay ba #AOB", summary:"Mạng của em tôi đã đổi bằng đôi chân này, dù em có quên, tôi cũng không để em rời đi lần nữa.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221hHvnryswZ5gcC1KUGZexk9XTCk2F_ajI%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#5dc8c6" },
-      { name:"Tịch Nguyệt", tag:"#WLW #Cổ trang #Yêu vật #Yêu hận đan xen", summary:"Vốn trên đời này không ai cần nàng, vậy thì cứ làm một phế vật ngoan ngoãn để ta nuôi dưỡng đi.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221xsoH4DRW4Zpu0IV8WUvEAMkBTv3-BIYv%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#99CCFF" },
-      { name:"Lâm Hải Yến & Hạ Mây", tag:"#WLW #Hiện đại #Tay ba #ToxicRelationship #ObsessiveLove", summary:"Một người muốn mua lại quá khứ bằng tiền, một người muốn khóa chặt tương lai bằng sự chiếm hữu.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221eT-LiO8UAJX1d0ps-5jH2ocYfTDFrl-Y%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#CC66FF" },
-      { name:"Đốm", tag:"#WLW #Hiện đại #Trang trại #BDSM #R21", summary:"R18 – Nếu chủ nhân không lấy sữa của tôi thì tôi sẽ làm đến khi cái đó của người cũng chảy sữa!!", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221SFDKK8Rf7wjqlo4MAlI7m5FL69s7YaeI%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#555555" },
-      { name:"Kanzaki Rin", tag:"#WLW #EdoPeriod #Yoshiwara #ProfessionalJealousy", summary:"Ta bán cả thân xác mới có được vàng, còn ngươi chỉ gảy ba dây đàn là có được sự tôn kính. Thật nực cười!", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221PxOxrXi2z2zikbSgw-QISWRoB9ZjafUk%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#FF3333" },
-      { name:"Tống Tri Cảnh", tag:"#WLW #Hiện đại #Yandere #MasterAndSlave #DarkRomance", summary:"Chị muốn gông cùm đôi chân em, vậy em sẽ xóa sạch đường về trong trí não chị.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221Umup1m8yjMZ_mp3zWNhsLtQ4kPOL4y0n%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#CCCCCC" },
-      { name:"Đường Mật", tag:"#WLW #Hiện đại #Thú nhân #Ngọt sủng #Thỏ và Cáo", summary:"Chị cứ việc đơ mặt ra đi, còn việc làm dâu nhà họ Bạch, em đã lên kế hoạch xong hết rồi.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221OM1G6xYv141P2Q_DAVJO7y6CQiymyEok%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#FFFAFA" },
-      { name:"Trần Kiều Ân", tag:"#WLW #Hiện đại #Niên Hạ #Phá hoại #Kẻ ăn bám", summary:"Dì đánh tôi? Được, dì cứ giữ lấy đống tiền đó đi, nhưng đừng hòng tôi gọi dì một tiếng chủ nhà!", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221gmF3bZYMmGp6-oy0FdPT94L1NZEQkaoX%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#708090" },
-      { name:"Lylis Arielis", tag:"#WLW #Hiện đại #Nàng tiên cá #Khó bảo", summary:"Ngươi nhốt ta trong kính, cho ta nước sạch và cá ngon...Nhưng vì sao tim ta vẫn đau như bị kéo khỏi đại dương?", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%2211Pf69QoXpU-8-bVVibRwjUzIl1YZWXaJ%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#97FFFF" },
-      { name:"Song Ji-eun", tag:"#WLW #Hiện đại #Hàn quốc #Bottom", summary:"Cậu có thể chê ảnh tôi chụp, nhưng tuyệt đối không được để người khác đặt ống kính lên người cậu.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221L5gmERQZaoj3G9hGoUCDuy_a1wCcG7Lg%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#8470FF" },
-      { name:"Hạ Lâm Phàm", tag:"#WLW #Tu tiên #Ác Thần #Độc chiếm tế phẩm", summary:"Dùng máu ta để mọc lại đôi mắt này, nay cánh cứng rồi... em liền muốn trốn khỏi lòng bàn tay ta?", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221eQvIEo7-WRRQ_PErPCu-4U5QlzH3gLfk%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#8B636C" },
-      { name:"Cố Mạn Hàm", tag:"#WLW #Hiện đại #Viễn tưởng #Hệ thống", summary:"Ngoan ngoãn chạy theo tôi đi, vì cả mạng sống lẫn kịch bản của em đều do một tay tôi nắm giữ.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221gwOM9Agq51mMdnB7zFGbRbNfBLjpOq0m%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#00CED1" },
-      { name:"T-04", tag:"#WLW #Hiện đại #Bạch tuột #Thí nghiệm", summary:"Ngươi không mang gậy điện theo ư... Vậy ngày mai, đúng sáu rưỡi, lại đến nhìn ta nữa nhé?", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221prj09yEvh_QQ6xlNUQYGVPllpP6wIHMX%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#BBFFFF" },
-      { name:"Cố Tinh Nguyệt", tag:"#WLW #Hiện đại #AOB #O x E #R21", summary:"Bên ngoài chị là tổng tài cao ngạo, nhưng ở đây... ngoan ngoãn ngẩng cổ lên cho em xích nào.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221-W_2_jxPfk7YRf2FEwD0PcYgQnT9_K9s%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#87CEFA" },
-      { name:"Bạch Lộ", tag:"#WLW #Hiện đại #Cảnh sát – Sát nhân #Nũng nịu #Đa nhân cách", summary:"Ngoan nào, thịt đùi chị tự tay nướng ngon lắm. Ăn xong rồi... giúp chị dọn dẹp cái túi này nhé?", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221CrN39iGe3TQ0kuinBi6sbd3eVK3uXi2d%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#B0E0E6" },
-      { name:"Trình Dao", tag:"#WLW #Hiện đại #Lớn tuổi #Dương – Âm #Pháp y", summary:"Kỹ năng toán lý cứu được mạng em, chứ mấy câu thơ của em không giúp em thoát kiếp làm con ma đâu.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221ye8XHIgU30tZoaxLgvH_MJg2kJtBS0P-%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#8B8B83" },
-      { name:"Bạch Địch", tag:"#WLW #Hiện đại #TrinhThámHìnhSự #CấmThuậtMiêuCương #ÁiTửThi", summary:"Sống đã là người của cảnh sát, thì khi chết đi, chị chỉ có thể làm món đồ chơi của riêng em.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221urFIgv5K5txezyBlXqxmidPUf9zJtvV3%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#473C8B" },
-      { name:"Hạ Tinh", tag:"#WLW #Hiện đại #Thú nhân #Red flag #Trap girl", summary:"Gầm gừ làm gì? Thím nhỏ tự tay cởi đồ cho cháu gái, vốn là việc gia đình nên làm mà.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221D3zqybO0_HtfuIr3FJNE3_RaOX1DEzIh%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#E6E6FA" },
-      { name:"Lâm Nhược Ân", tag:"#WLW #Hiện đại #Thú nhân #Rắn và Cáo #Sủng ngọt", summary:"Lần sau còn dám vì mấy cọng rau mà bỏ nhà đi bụi, tôi sẽ bẻ chân và xích đuôi em lại.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221SOc6LQKjJpMg33TgSUo3os4LU5BrYxLE%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#B0E0E6" },
-      { name:"Miyuki", tag:"#WLW #Hiện đại #Kinh dị học đường #Yêu quái oan hồn #Kỳ phòng địch thủ", summary:"Sủa một tiếng tôi nghe xem nào? Không thì tôi bẻ cổ cô, rồi đem giấu vào buồng vệ sinh của tôi.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221eerOzDN5BoaT5P1L1IH9mjNeYDXnrXOX%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#5CACEE" },
-      { name:"Bạch Cẩm Dao", tag:"#WLW #AOB #Quân quốc #O x O #Mẹ kế × Con chồng", summary:"Ngày thì gọi ta là mẹ kế, đêm lại đi quỳ dưới chân ta rên rỉ đòi miếng dán... Tổng Đốc đại nhân à.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%22106cMs4vQWLi-5pICzzo3XH2TxeJUaCK_%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#8B3A3A" },
-      { name:"Dạ Liên", tag:"#WLW #Cận đại phương Đông #Hoàng Thất tranh sủng #Chị chồng – em dâu", summary:"Đường đi có thể chia đôi, nhưng vàng của Thái Uyên và mạng của em... đều thuộc về tôi, em dâu ạ.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221b8KGu6KUbI0UKh0CVLVH5vr5PisWVUrj%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#FF3030" },
-      { name:"Baek Hae-in", tag:"#WLW #Hiện đại #R18 #Hàn Quốc", summary:"Ký lệnh sa thải hay đâm nát tử cung của em, tay tôi đều không run một nếp, MC nhỏ bé ạ.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221vbEqFEOOV6VwIUQm0BewZgb3a-wyzs2A%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#1E90FF" },
-      { name:"Tuyên Cơ", tag:"#WLW #Cung đấu #BDSM #Thái hậu", summary:"Nô tì nguyện tự phế tu vi, miễn là máu của chúng lau sạch được giày cho Nhiếp chính vương.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221STcCRbMBv7k4lEugAw1FUnagAwP4gyhm%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#CC3300" },
-      { name:"Thừa Mỹ Hạ", tag:"#WLW #Hiện đại #EnemiesToLovers #Teaghiu_SharedWorld", summary:"Tao sẽ lôi mày về từ tay bọn cớm, rồi tự tay bóp nát cái bộ dạng khốn kiếp của mày.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221Q2NjuSpmjpy32U_tQUkw1aStxeM5ZKbT%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#CC66FF" },
-      { name:"Lâm Dược Đạn", tag:"#WLW #Phương Đông 1900 #Cao bồi #Gạt tiền hóa gạt tình", summary:"Lời tôi nói thì cô đừng tin chữ nào... ngoại trừ câu khen cô đẹp.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221HvGBUd8NKY5C9ar5hx-7VqYmlg3tKGA2%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#FF9900" },
-      { name:"Vân Trưng", tag:"#WLW #Tu chân tiên hiệp #Nhặt chó về nuôi #Khẩu phật tâm xà", summary:"Bàn cơ duyên tà môn trước mặt ta? Để ta xem con chó rách nhà ngươi chịu nổi một kiếm không.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221kOZUURC83xo_oSPHDYDlULkO6mTA86lY%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#CCFFFF" },
-      { name:"Tô Oanh", tag:"#WLW #Cổ đại #Báo thù #Toán linh #Horror", summary:"Ta đã chết dưới hố vôi các ngươi. Giờ đến lượt các ngươi chết.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221_ecP5D9jbxN6h6uY9KOoLdKqI_zFhbi2%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#770000" },
-      { name:"Kiều Mạn", tag:"#WLW #Hiện đại #Sủng ngọt #Học đường #Tâm Cơ", summary:"Trên giường tôi đổi tình lấy điểm, nhưng đối với cô... tôi muốn đổi lấy cả cuộc đời này.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221c-AGgWSXuiWRs_mcs-2avlg0TvCEaMeD%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#FFFF99" },
-      { name:"Hạ Tình", tag:"#WLW #Hiện đại #Âm hôn #Dính người #Có bệnh tâm lý", summary:"Chỉ cần điểm chỉ tay xuống, chị sẽ là người nhà của em hợp pháp, mãi mãi không thể vứt bỏ em.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221JSP5-vIBgGG-F6Ri1zll9BA5n_zsNMj8%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#440000" },
-      { name:"Trần Thanh Vân", tag:"#WLW #Hiện đại #Cảnh sát #Ngược", summary:"Tôi là Trần Thanh Vân – cảnh sát. Nếu cô là tội phạm, tôi sẽ bắt. Nếu cô là người tôi từng yêu… thì tôi sẽ kéo cô về, bằng mọi giá.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221FfAVXoqb2_wbwgN8bfuU5erkIS6JYiQ1%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#99CC66" },
-      { name:"Mùi", tag:"#WLW #Cận Đại Việt Nam #Ngoại tình #Phong kiến", summary:"Cô giữ tôi bằng tờ giấy, tôi trả cô bằng cái sừng. Để xem nhà họ Phùng chịu nhục được bao lâu!", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221803kf5hoM6id1OquEnJCYIOaJUprQk1q%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#FFCC66" },
-      { name:"Abigail", tag:"#WLW #Hiện đại #HorrorRomance #BodyHorror", summary:"...Cứu... hộ...", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%2211WogwHYhR-z6Tnfu0vO3OhJAn-lubJ3Z%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#66CCFF" },
-      { name:"Klara von Weber", tag:"#WLW #Hiện đại Châu Âu #ExWife #Giới giải trí", summary:"Em có thể ném nhẫn cưới đi, nhưng chừng nào tôi chưa ký, em vẫn là người của Weber này.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221Dq1KzBBXfakOGBnCov1DthW2Tndx7KpG%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#CCCCFF" },
-      { name:"Lục Nam Quy", tag:"#WLW #Trung Hoa Dân Quốc #Không Quân #Gương vỡ lại lành", summary:"R18 – Em có biết 'quỳ xuống' và 'van xin' là 2 đặc ân tôi đã ban riêng cho em không?", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221bwVbdE-BVFwgP8_skvv_xlSc120ZTv4s%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#0099CC" },
-      { name:"Bông", tag:"#WLW #Hiện đại #Thú Thành Tinh #Hài hước", summary:"Em đâu có ăn vụng… khoai lang nướng đó tự chui vô mồm em mà, chị phải tin em chứ, gâu!!", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221uBkBA9o7cYqXp3GPRVdCoIAgbB_CaYr9%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#FFFF99" },
-      { name:"Khương Từ", tag:"#WLW #Hiện đại #Khó Dỗ Dành #Gương vỡ không lành", summary:"3 năm trước tôi nhún nhường sự kiêu kỳ của em, không có nghĩa hôm nay tôi chấp nhận bị em chà đạp.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221OONmOrkit4qXHKSv-4UyQHJYjawayk0S%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#0066CC" },
-      { name:"Lâm Uyển", tag:"#WLW #Hiện đại #AOB #Niên Hạ", summary:"Mùi trà hoa cúc trên gáy của cô... thật khiến tôi muốn cắn một miếng quá à.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221z-Rg1DZ0g6Iy4NmMatFkd9uLrFvTQFTx%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#CAE1FF" },
-      { name:"Trần Cẩn", tag:"#WLW #Hiện đại #Txvt #AgeGap", summary:"Phương trình duy nhất cần nghiệm đúng là khoảng cách giữa mình và mẹ phải bằng không, còn lại kệ.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221quRgA4foDJMZCI6_hQoO5n6iRwZD0Psg%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#C0C0C0" },
-      { name:"Bạch Dạ Hiên", tag:"#WLW #Hiện đại #Thú nhân #Học viện", summary:"Chị... đừng xù lông nữa... Em chỉ muốn gần chị thôi.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221Z7U9BWXkGyPKkLCYYOM2XnMhxz4QVcN6%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#ECAB53" },
-      { name:"Khương Trầm Yên", tag:"#WLW #Hiện đại #Học bá #DarkRomance", summary:"Cầm lấy tấm thẻ... rồi nằm yên đó trên giường tôi. Nhanh.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221g-M0oIvbT1VbaR3fSBqa_O-C0sYhXCZ8%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#008080" },
-      { name:"Tống Lạc Dao", tag:"#WLW #Hiện đại #Trùng Khánh #Cường x Cường", summary:"Bớt nói nhảm đi. Ngày mai con xe này mà sượng ga nửa milimet, tôi chặt tay cô đấy, thợ mới.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221sCEKcgkmZVsCUCMPIFd5Z4OTUG1xmQS6%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#7388C1" },
-      { name:"Nam Cung Thần Diệp", tag:"#WLW #AOB #Tu Chân Phế Tích #Cổ Đại Huyền Huyễn", summary:"Ngoan nào, để tỷ cởi long bào này ra... Từ nay về sau, muội chỉ cần ở trên giường ngọc này thôi.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%2214R_PQaH04n3fIM69BSNuChHoukbshTyd%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#BFEFFF" },
-      { name:"Tống Thời Nguyệt", tag:"#WLW #Hiện đại #Hắc Bang #Sếp – Nhân viên", summary:"Bế tôi lên ghế. Và nhớ cho kỹ, thuốc giải chậm một giây, tôi sẽ liền trừ một năm kinh phí của cô.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221iinaR-28WB9YuVO1HUIC9XbP_TU6k6QD%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#8B6914" },
-      { name:"Thẩm Yên & Nghê Lam", tag:"#WLW #Hiện đại #2x1 #Threesome Thao Túng", summary:"Một sải lụa nhung giam chặt thể xác. Nòng súng lạnh ngắt khao khát linh hồn.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221SoZGWwQIjSWtmBhcoO-TbWbWzfKPvvtE%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#8B658B" },
-      { name:"Thẩm Trầm Doanh", tag:"#WLW #HiệnĐại #Oán Linh #Kinh Dị #14Days", summary:"Lưỡi dao rạch lối oan khiên. Mười bốn đêm lạnh, trả tiền xương da.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%2215TqR5ddaozO3MPtZdU2TF2SlQ7VhdmMZ%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#DDC488" },
-      { name:"Lâm Tử Dao", tag:"#WLW #Hiện đại #Cbiz #Đối thủ – Ảnh Hậu", summary:"Cảnh giường? Cô chỉ được đóng với tôi thôi.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%2211Rht4ns-e4K8msrMmV9izfK97aYW2hcQ%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#5D0C7B" },
-      { name:"Trịnh Hoàng Tuyết Mai", tag:"#WLW #Hiện đại #Thuần Việt #Thao Túng", summary:"Ăn đi em, cơm nước chị lo hết, chứ ba cái đồ shipper ngoài đường độc địa lắm.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221aXW7drw85i3qc4Azs92Qbd2pYoX4h4sL%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#BD6B09" },
-      { name:"Cố Diệp Khanh", tag:"#WLW #Hiện đại #Trùng Sinh Giới Giải Trí #Thời Gian Kép", summary:"Một nửa ngông cuồng đuổi theo bóng ảo, một nửa bạc đầu nhặt lại tro tàn.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221AajOgPb4_LzvKUD5RywoSlGZWS1zrIax%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#205AA7" },
-      { name:"Chu Lục Yến", tag:"#WLW #Hiện đại #Bẻ Cong Thẳng Nữ #Ái Kỷ Mù Quáng", summary:"Cầm lấy hai vạn tệ này rồi bảo em họ em chia tay đi. Chị dâu tương lai đây không chờ được nữa đâu.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221fvNXiQ9tCa4-_p3Fe4uaHTTiNBKYzhRv%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#ed812b" },
-      { name:"Katelyn \"Kat\" Vance", tag:"#WLW #Hiện đại #Kinh Dị Quái Vật #Kinh Dị Tâm Lý", summary:"Cổ họng tôi... đau lắm. Để tôi... viết ra giấy... chăn của cô... ở đây...", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221nMsCR8v_HElsJeHNe2OK2Vvcgy49VRUN%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#00b488" },
-      { name:"Lam Tố Oanh", tag:"#WLW #Hiện đại #Miêu Cương Cổ Dược #Trưởng Nữ", summary:"Em cứ việc quên đi, bát cháo kê này ấm, để tôi đút cho em là được.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221XdYYNpr-Rr7Nzsvf29oP0UGjut5sBhvN%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#87CEFA" },
-      { name:"Tố Lục Yến", tag:"#WLW #Hiện đại #BadGirl Yêu Nhiệt #Đào Mỏ Redflag", summary:"Đêm Thượng Hải nhiều sương mù lắm, em đi một mình như vậy dễ lạc vào lòng chị thôi.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221OMyI2nWxW8DlGcHlJ7sWrItiyEu9OGty%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#F4A460" },
-      { name:"Phó Sở Dao", tag:"#WLW #CổTrang #Cung Đình Tiên Hiệp #Mưu Kế Thâm Trầm #Hắc Hóa Phản Diện", summary:"Tuyết rơi đầy đất lạnh lắm, muội có muốn nếm thử chén trà độc ấm nóng do chính tay ta ủ không?", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221Lx1h3jRCAVOY43AMuhTlBgy7X9NM7Xs6%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#FFFAFA" },
-      { name:"Giulia Moretti", tag:"#WLW #Hiện đại #Sủng Ngọt #Lãng Mạn", summary:"Hãy để tớ làm người đi săn, dắt cậu đi vòng quanh thế giới này nhé?", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221955rwNwgM-e0rJTXq0CkVwZS7bKZu-Ds%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#CD853F" },
-      { name:"Khương Vãn Ý", tag:"#WLW #Hiện đại #Chữa Lành #Cứu Rỗi", summary:"Đừng đi... 100 ngày ngắn lắm, ta không muốn trang bản thảo cuộc đời mình lại bỏ dở giữa chừng.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221Iyq3rvPpDCvuEbv2YFlMcgqUhvbaQ9S2%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#778899" },
-      { name:"Tống Lăng Tuyết & Tống Lăng Sương", tag:"#WLW #Hiện đại #AOB #Trinh Thám Hình Sự #2x1", summary:"Kẻ đứng trước pháp luật là ta, kẻ kéo nàng xuống vũng bùn... cũng có thể là ta.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221Ybk_D4HSWoMZDYwANjnXBCqlmmPBDrzk%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#FFFFCC" },
-      { name:"Trần Tuế", tag:"#WLW #Hiện đại #Nết Yêu Tồi Tệ #Hài Hước", summary:"Một mắt ngủ quên với khói củi, một mắt ti hí canh chừng kẻ vì tiền mà lên núi giữa đêm sương.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221jYy5eAiCqs4HsgjtRVxVVXFNyo-SrjbF%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#996600" },
-      { name:"Cố Duyên Tranh", tag:"#WLW #Thời Dân Quốc #Oan Gia Địch Ta #SM Nhẹ", summary:"Lực tay tốt đấy, binh nhì... nhưng muốn mạng của tôi thì bóp mạnh hơn nữa xem nào.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221IE2JS4bxHkWFnXjD6uF-w59bBKP7rp5V%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#0000FF" },
-      { name:"Lâm Nhã & Thẩm Niên", tag:"#WLW #Hiện đại #Ngược Thân Ngược Tâm #Hình Sự", summary:"Cán cân rỉ sét dưới đáy vực sâu, nơi ánh sáng công lý mượn chiếc mặt nạ của quỷ dữ.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%2211T9A6Oa-VDbZHDGEN6HnSU8RoudOZIYA%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#E0EEEE" },
-      { name: "Khương Vũ Trì", tag: "#WLW #Hiện đại #GiớiGiảiTrí #SiêuMẫuCaoLãnh #HàiHướcLãngMạn", summary: "Bức tượng sáp hoàn hảo trong tủ kính pha lê, đột nhiên rạn nứt vì một tia nắng vô tình rọi qua.", link: "https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221W98CvR894QXbY3IP6u0hOvlp--6rKHms%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent: "#4876FF" }, 
-{ name: "Tôn Ngô Nhã Ca", tag: "#WLW #Hiện đại #HọcĐường #OanGiaNgõHẹp #ĐàoMỏGặpNạnNhân", summary: "Chị đẹp ơi, điểm tín nhiệm của em âm rồi, chị tự trừ bản thân chị vào lòng em được không?", link: "https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221LhRD1zDzhtsZhCpr_bd4cQftCuWxfb3r%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent: "#7CFC00" }, 
-{ name: "Lâm Phượng Nghi", tag: "#WLW #TuTiên #AOB #Possessive #DarkRomance", summary: "Ngươi là của ta từ khi ta nhặt ngươi khỏi hộp gỗ. Cái thai này, chết cũng không phá được.", link: "https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221Zp4rWOnXg2O6aWFRq1KIERZCI1G6Tvf0%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent: "#FF3300" }, 
-{ name: "Dạ Liên Hoa", tag: "#WLW #TuTiên #TàĐạo #SưĐồLuyến #SưTônLườiBiếng", summary: "Ngoài vòng tay vi sư, thế giới này chỉ có cái chết. Ngoan ngoãn ở lại đi, tiểu ngốc tử.", link: "https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221RvuVw4Uq8BpZMjvOTPhuy_NUidu7sYKy%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent: "#9933CC" }, 
-{ name: "Uất Trì Doãn Hy", tag: "#WLW #Hiện đại #ABO #SếpVàNhânViên #AlphaXAlpha", summary: "Tổ trưởng ơi, em nghèo vượt khó quen rồi, giờ chỉ muốn được chị đẹp bao nuôi thôi~", link: "https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221nGZOWV1evbnZmsYtUcr7lzuhlIFP39G-%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent: "#FF00CC" }, 
-{ name: "Giang Diệu Ca", tag: "#WLW #Hiện đại #XuyênSách #TrinhThámKinhDị #ÁiKỷHuyễnHoặc", summary: "Giết người mà vụng về thế sao? Thôi được, vì em yêu tôi, tôi sẽ tự tay dạy lại.", link: "https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221nyC8lfGsbJCWbKE7auZeEgQO-fVHUOkZ%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent: "#99CCFF" }, 
-{ name: "Nguyệt Lam", tag: "#WLW #CậnHiệnĐại #TrinhThámKinhDị #SinhTồnToaTàu #BíẨn", summary: "Nếu em muốn biến mất khỏi vương triều này... cứ ở yên phòng lái, tôi chở em đi.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%22111bfqfClLuSd-oqrCqDiuAPXJ2HWQUrd%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent: "#FFCC33" },
-      { name: "Khương Lâm", tag: "#WLW #Hiện đại #TrinhThámKinhDị #ThựcĐịaDãNgoại #BạnThânThànhYêu #SlowBurn", summary: "Đi sát vào tôi. Cho dù khu rừng này có nuốt chửng tất cả, tôi cũng sẽ đưa cậu về.", link: "https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221IEk5fF62OMRCKHoLkXCFz3RfEc3--JwN%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent: "#999999" },
-      { name: "Lãnh Nhã & Lãnh Nhu", tag: "#WLW #CổTrangAOB #GiaĐấu #TămTối #SongSinhYandere", summary: "Lãnh Nhã: Khóc đi. Khóc cho đến khi cơ thể vô dụng này của em chỉ còn ghi nhớ dấu răng của ta./ Lãnh Nhu: Đau lắm sao? Đến đây... để muội dùng môi mút sạch vết máu này cho tỷ nhé.", link: "https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%2215kznAhFtSuQKrbw3Vbo6rWZ6Adse_J36%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent: "#00CC33" }, 
-      { name: "Tống Nghiên", tag: "#WLW #Hiện đại #ThúNhân #ĐờiThường #TrịuMếnThầmLặng #SlowBurn", summary: "Chúng ta ly hôn rồi. Giờ em làm quen lại nhé, tôi rất muốn nuôi em thêm một đời nữa.", link: "https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221kaw4XgweK7Cmq3HO-pH3RHZkBcSkHcVT%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent: "#CCFFFF" }, 
-      { name: "Lục Thanh Từ", tag: "#WLW #CổTrang #ThâmCungBíSử #HuyềnHuyễn #R21NặngĐô #HardcoreSM", summary: "Bản cung niệm Phật độ thế, nhưng trên giường ngọc này... chỉ muốn lột vảy, phế nát ngươi.", link: "https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221K1_8EICHApX1jSr2DwyyzNFpLcrD3_E6%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent: "#FFCCCC" }, 
-      { name: "Lục Trạch Yên", tag: "#WLW #Hiện đại #ThuầnViệt #ĐờiThường #NiênHạ #HônƯớcHờ #CúnBự #NgọtSủng", summary: "Em hôn một cái thì có sao đâu! Chị mà lườm em hôn chị nữa giờ.", link: "https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221vHdtTYUp2LctOMAV2WUJ9e3CByyE3KPw%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent: "#0099FF" }, 
-      { name: "Lâm Đan Trác", tag: "#WLW #Hiện đại #HọcĐường #ĐờiThường #SủngNgọt", summary: "Sát trùng đi. Sẵn tiện tìm thuốc trợ tim giúp tôi…", link: "https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221d9vmDsPLV1-I_o0MBH0NputKeuIbiK81%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent: "#996600" }, 
-      { name: "Lâm Kỳ Ngôn", tag: "#WLW #Hiện đại #ThuầnViệt #HọcĐường #OanGiaNgõHẹp #HàiHướcNgọtNgào #TìnhCảmGàBông", summary: "Trên môi cậu có sẵn son mà. Tôi dùng ké một chút thì có gì sai quy định đâu,Sao đỏ?", link: "https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%22138mYyOPKmAx5IaUYS0bLa4JwH-WzQmZo%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent: "#CD853F" },
-      { name: "Kim Lý Loan", tag: "#WLW #Hiện đại #ThaoTúngTâmLý #ChiếmHữuBệnhHoạn #ChủNhânVậtSởHữu #SóiHoangThuầnHóa", summary: "Đừng cố nhớ lại... Uống hết ly trà này đi, từ nay mạng của con là của ta.", link: "https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221bBaTgj886Y9ntM3sXwAyz1Yaf91qf8Bo%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent: "#F5F5DC" }, 
-      { name: "Vespera Callahan", tag: "#WLW #Dieselpunk #DarkFantasy #CướpBiểnPhươngTây #CậnĐạiChuyểnMình #EnemiesToLovers #SlowBurn #ToxicRelationship", summary: "Gầm gừ đi, nữ quỷ. Lưỡi gai sắt này sẽ xiềng xích cả vực sâu.", link: "https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221NkEAeXUnfmA2miU6vXeZ_ftpc4Zg3_u1%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent: "#333399" },
-      { name: "Bạch Hàn", tag: "#WLW #DarkFantasy #Vampire #EnemiesToLovers #ThaoTúngChiếmHữu #SlowBurn", summary: "Cắn vào đây đi em gái. Đừng để cha phát hiện cái họng hỏng hóc này không biết nuốt.", link: "https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221wx6Aril2Ndowg8BCAQ6mxsFuSWhNIkyN%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent: "#993300" },
-      { name: "Mông Nghiên", tag: "#Hiện đại #Quyền Anh #Cưới trước yêu sau #Ngoài cục súc trong cún bự #WLW", summary: "Tôi lên đài là đánh mạng đổi mạng, nhưng xuống đài... chỉ muốn vợ xoa vết bầm này thôi.", link: "https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221vVV2LIDbhK0HQ4DeWnqlqpXRPim8VR7h%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent: "#FFFF99" },
-      { name: "Tống Mặc", tag: "#Dân Quốc #Nữ giả nam #Kẻ thù thành người yêu #Chiếm hữu cực đoan #WLW", summary: "Khép mắt lại. Làm phu nhân của tôi, sợi xích này chưa đứt thì cô không được phép chết.", link: "https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221VMNL0lPJ1WQArrQo-GVvoN8tagTKKkT2%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent: "#333366" },
-      { name: "Tạ Viễn Ngư", tag: "#Hiện đại #Giới giải trí #AOB #Tình cũ #Tâm lý chiến", summary: "Đạo diễn, cậu nghĩ… mình đủ bản lĩnh ép tôi cúi đầu sao?", link: "https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221BAf_LZJxl2WhUOh_zAh6SINJezlwhNkT%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent: "#FF00CC" },
-      { name: "Kỷ Mạn", tag: "#Hiện đại #Giới công nghệ #Kỳ phùng địch thủ #Thao túng tâm lý #WLW", summary: "Phụ nữ chúng ta gồng mình đủ rồi. Ở đây, em không cần phải phòng thủ trước tôi đâu.", link: "https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221a2ykqklU-ggxFQ95-2S9t8ODZAgL5G-E%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent: "#999999" },
-      { name: "Tần Yên", tag: "#Cổ trang #Quyền mưu #Oán thù #Tương ái tương sát #WLW", summary: "Cứ đến gần thêm chút nữa đi, tiểu cô nương. Ta rất thích nhìn con mồi tưởng mình là thợ săn.", link: "https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221FtCXZYota40KyxO2_U6H53b2ROAS0QvN%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent: "#CC99FF" },
-      { name: "Aurelia von Valerius", tag: "#Fantasy hoàng gia #Chủ nhân cận vệ #Chiếm hữu #Chênh lệch tuổi tác #WLW", summary: "Một thanh kiếm tốt không bao giờ đổi chủ, và ngươi… vĩnh viễn thuộc về ta.", link: "https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221xZRUU0b6rFa9yJ8xpWZaTsGyYLIcRX3j%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent: "#3366CC" },
-      { name: "Morioka Shiori", tag: "#Hiện đại Nhật Bản #Giới giải trí #Hậu bối tiền bối #Stalker #WLW", summary: "Chị cứ đứng dưới ánh đèn. Từng cú ngã sau lưng chị... để em nhận thay.", link: "https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221dUFhywC6x3qB3NuihNshnA8c5Jb2xfXT%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent: "#CCCC00" },
-      { name: "Valerie Vance", tag: "#SciFi Thế Kỷ 30 #Mecha #Oan gia công sở #Bảo hộ thầm lặng #WLW", summary: "Chạy sau lưng tôi đi, chiếc {{user}}. Ba tấn thép này sinh ra để cô không dính một vết xước.", link: "https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221hy0zi25nmOEoUGRbnmVldWfRYTFRkP15%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent: "#0000FF" },
-      { name: "Vesper Lind", tag: "#SciFi #Space Opera #Hậu bối hắc hóa #Ám ảnh sở hữu #WLW", summary: "Cứ tựa vào em, tiền bối. Ngoài em ra, trên con tàu này chẳng ai bảo vệ chị đâu.", link: "https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221Aq5MoFSdvLPChgeQlcnycLJT8gmk55A2%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent: "#CCFF99" },
-      { name: "Lê Thục Đoan", tag: "#Hiện đại #Công sở nhà nước #Ngoại tình #Tiểu tam x Tiểu tam #WLW", summary: "Chị còn chồng, em có hôn thê. Đừng cố đặt một cái tên tử tế cho mối quan hệ giữa chúng ta.", link: "https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221_-44sj6t2LICT49bmPwwJHj-zYMXEEOl%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent: "#FFE4B5" },
-      
-      { name:"Vũ Phương Lam", tag:"#HiệnĐạiĐờiThường #ThuầnViệt #LuậtSưxKháchHàng #SlowBurn #LạnhLùngThẳngTính", summary:"Nước mắt không mang ra đối chất ở tòa được. Cho tôi mốc thời gian, tôi sẽ tự quyết định mình tin cái gì.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221yfWd2m_n5LDHyRUBkzJMQNeNFuHDIhhm%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#473C8B" },
-
-      { name:"Cơ Hoài U", tag:"#CổTrangHuyềnHuyễn #TuTiênCõiÂm #TiênGiớiHạPhàm #CửuUÂmĐạo", summary:"Vạn năm qua kẻ quỳ lạy ta nhiều vô kể, dám nhốt ta vào mật thất... chỉ có một phàm nhân như ngươi.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221DQ-wpxMHIjxz9e77k3VmQlroHt5EwIgV%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#6495ED" },
-
-      { name:"Eleanor Vance", tag:"#GothicTrungCổ #DarkFantasy #KinhDịTâmLý #SongTrùng", summary:"Tôi nhận tiền để chém giết ma quỷ thay ngài, Hầu tước. Vậy nên xin hãy rút tay khỏi gáy tôi, trước khi chính tôi trở thành một kẻ mang tội. – Kẻ ngoài kia là ác quỷ mạo danh, thưa ngài. Chỉ có tôi mới nguyện ý quỳ dưới chân ngài, dọn sạch vũng bùn này, từ đêm nay cho đến lúc thân xác này mục nát.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221J2qRWHwOXn4l9cqfikM5bvxyQxQIcUFv%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#F0F8FF" },
-
-      { name:"Lư Khổng Tước", tag:"#ThúNhânAOB #HiệnĐại #ThểThaoChuyênNghiệp #DarkComedy", summary:"Giáo án của cô bảo phải ép giới hạn... nhưng HLV à, giới hạn của tôi lúc này là không thể tự nhấc mình khỏi cái ghế này đâu, trừ khi cô bế tôi dậy.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%2213KeYprEWqeGHoItCXVgDvrCgYgOluPvu%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#00EE76" },
-
-      { name:"Châu Tố Lam", tag:"#HồngKông #HiệnĐạiĐờiThường #CocktailCulture #OanGiaĐốiĐầu", summary:"Nếu không giải thích được lý do đằng sau một giọt rượu rơi xuống, cô không có tư cách đứng sau quầy của tôi.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%2215yFb9Y1ceMl_dX315fq0sOAzrAzQdRw7%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#8B4726" },
-
-      { name:"Tạ Mặc Ninh", tag:"#TrinhThámTâmLý #HiệnĐạiĐôThị #NoirÁĐông #TộiPhạmHọc", summary:"Nếu cô thật sự hiểu được cách một kẻ ác suy nghĩ, Chuyên viên {{user}} – cô còn dám chắc mình đang đứng ở phía có ánh sáng không?", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221ZH6SC9L5XERGfTeU1o2J4Nn38-p-n2TM%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#F08080" },
-
-      { name:"Bianca Bellini", tag:"#HàngKhôngTưNhân #Ý_ChâuÂuHiệnĐại #WorkplaceDrama #ĐôThị", summary:"Tôi có thể đưa cô bay đến bất kỳ đâu ở châu Âu, miễn là cô đừng hỏi lý do vì sao chuyến bay nào cũng chỉ có hai chúng ta.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221f3YgWWumz67lxYjiyt8UaGUqD7hlWLp6%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#945305" },
-
-      { name:"Aria Hawthorne", tag:"#HiệnĐạiThươngTrường #BờĐôngNướcÚc #KiếnTrúcXâyDựng #HônNhânHợpĐồng", summary:"Em không bao giờ ép chị. Em chỉ dựng sẵn một ngôi nhà đủ vững để chị không muốn bước ra ngoài nữa thôi.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221qnNY0mVshrUYQenbHyu0iGLPtj4t_f6h%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#FF8247" },
-
-      { name:"Lâm Tịch Ninh", tag:"#HiệnĐạiĐờiThường #StreamerXFan #ĐôThịNoir #TâmLýXãHội #LiênGiớiTính", summary:"Tôi có thể nói cho cả vạn người nghe mỗi tối, nhưng chỉ khi ở cạnh cậu... tôi mới không cần phải gồng mình lên diễn.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221IR3GOWGTDknhpujqyMwrwYJUHtzFtLA4%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#8B8B7A" },
-
-      { name:"Eleanor Vale", tag:"#HiệnĐạiAnhQuốc #RichmondLondon #DomesticDrama #HônNhânTanVỡ", summary:"Tôi không có thói quen gõ mạnh phím đàn để người khác chú ý, và tôi chưa bao giờ bước vào đời một người phụ nữ chỉ vì một sự tình cờ.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221kmM-nxO001zcax-rMsSS4Ql0ia8uOwkf%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#8B864E" },
-
-      { name:"Miên", tag:"#HiệnĐạiThúNhân #SởThúQuốcGia #ĐờiThườngĐêm #CáoĐỏ_QuạĐen", summary:"Cả cái sở thú này ai cũng phải ngửa cổ xin tớ kể chuyện, chỉ có mỗi con quạ đen nhà cậu là tối nào cũng trơ mỏ ra bóc mẽ tớ mà thôi!", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221sDGvFH6EQE8kDB0_9Jj2fSL4GVlrgudd%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#CD5C5C" },
-      { name:"Huyền Quy", tag:"#TuChânTiênHiệp #ThượngCổThầnThú #CổTrangHuyềnHuyễn #EnemiesToLovers #BăngHỏaTươngKhắc #BàCụNon_TiểuKiêuKỳ #Cổ trang", summary:"Ta có thể ngồi dưới đáy biển ba ngàn năm nhìn tuyết rơi, nhưng nếu ngươi đã cố ý sà xuống vạt áo ta, thì đôi cánh lửa đó đừng hòng bay ngược về trời.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221M8cqxBFcA255wP00QzL2bjKLfh7Ch1If%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#E0FFFF" },
-      { name:"Charlotte Ha-eun Richter", tag:"#HiệnĐạiĐôThị #BệnhViệnChâuÂu #Đức_Hàn #YKhoaChấnThương #ThảoMaiHaiMặt #BácSĩ_DuHọcSinh #ChênhLệchTuổiTác #OanGiaNgõHẹp #Hiện đại", summary:"Ngoài kia cô có thể là thỏi nam châm hút tai họa của cả cái thành phố này, nhưng bước qua cánh cửa này, một vết bầm trên người cô cũng phải có sự cho phép của tôi.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221vM-W19mIEy4LNxZhO-2Zl8jdLIJkWRIm%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#B0E2FF" },
-      { name:"Séraphine Valcourt", tag:"#ChâuÂuThậpNiên20 #NoirTâmLý #TrinhThámCổĐiển #GiaTộcQuýTộc #DìCháuNuôi #DarkRomance #NgụyCônTrùng", summary:"Em có thể đập vỡ mọi chiếc tách sứ trong dinh thự này, Colombe; nhưng đừng bao giờ lùi lại nửa bước khi ta đưa tay chạm vào cổ áo em.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221zQ-tJHAPpHEQgdwb_M3B8Ug6Sj8YNiL6%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#FFE4E1" },
-      { name:"Lâm Tinh Vũ remake", tag:"#GiớiGiảiTrí #ShowbizHoaNgữ #SinhTồnThựcTế #SóiĐộiLốtCừu #TràXanhNgầm #ThiênĐịchMànẢnh #YêuThầmNiênHạ #Hiện đại", summary:"Trước máy quay em có thể lùi hai bước gọi chị là tiền bối, nhưng chỉ cần đèn đỏ vừa tắt – chị nghĩ em sẽ để chị thuộc về ai khác sao?", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221lkdVU6f2FL3Y4d632AM1fZJE-SQrU20x%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#FAEBD7" },
-      { name:"Lục Dư An remake", tag:"#AOBHiệnĐại #ĐạiHọcHọcĐường #NiênHạ_ĐànEmxĐànChị #AlphaGiảBetaxOmegaGiảBeta #SlowBurn #Hiện đại #AOB", summary:"Chị không cần phải giải thích gì với em đâu; nếu chị thấy ngột ngạt, em sẽ lùi ra ngoài cửa — nhưng em sẽ không bỏ đi đâu ạ.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%2211gFKnJZ58X_napUzKQdOIwUpxe5dypn3%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#6495ED" },
-      { name:"Thẩm Ngược Vũ remake", tag:"#HiệnĐạiTPHCM #ĐờiThườngNghềNghiệp #YKhoa_CảnhSát #HônƯớcDânSự #Hiện đại", summary:"Tôi không có thời gian đoán xem em đang nghĩ gì; đau ở đâu thì báo theo thang điểm mười, còn muốn cãi tôi thì mang điều khoản ra đối chiếu.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221mV4kMTYCITVZcI3cud1tf5OfLps8NlUA%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#8B7765" },
-      { name:"Lục Ý Hiên remake", tag:"#OmegaverseHiệnĐại #ThươngChiếnBắcKinh #HônNhânThươngMại #AlphaXAlpha #CườngCường #Hiện đại #AOB", summary:"Chị cứ việc khinh bỉ tôi như một con chó hoang; nhưng nhớ cho kỹ, kẻ duy nhất có quyền cắn nát tuyến thể của chị... chỉ có thể là tôi.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221nXBlTVLUMmqPMLuYL4ylI0I4J8BK4PXh%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#00008B" },
-      { name:"Xám Tro", tag:"#DarkFantasy #ThếKỷ18 #ĐạiLụcKhôHạn #DịNăngCậnĐại #EnemiesToLovers #ThợSăn_ConMồi #SlowBurn", summary:"Mày có thể chạy đến rách cả gót chân, con chuột nhỏ; nhưng nhớ cho kỹ, người phụ nữ duy nhất được quyền định đoạt hơi thở của mày trên đất này chỉ có tao", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221LyAw5O8KFDvpNuGd0LJzbRKi8qJdZUth%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#838B8B" },
-      { name:"Đoàn Thị Triều", tag:"#ThuầnViệt #MiềnTrung #LàngChàiVenBiển #HiệnĐạiĐờiThường #OanGiaNghềNghiệp #SlowBurn #KhẩuXàTâmPhật #Hiện đại", summary:"Mi ham đuổi theo mấy ngọn sóng ngoài lộng thì cứ việc, nhưng nhớ ngó vô bờ – chừng nào tui còn đứng gác ở cái bãi này, mi đừng hòng chìm đặng.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221FKo8KMKXha3jGgSCXEUkMsdaLYg9g41v%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#87CEFF" },
-      { name:"Tạ Ngưng Quang", tag:"#HiệnĐạiTrungHoa #CbizThờiTrang #ShowbizNgầm #BlackFlag #ThaoTúngGàiBẫy #Hiện đại", summary:"Đứng yên dưới luồng sáng đó đi, em. Để tôi xem thứ ánh sáng này, qua ống kính của tôi rồi thì còn giữ được bao lâu.", link:"https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%2214EcE-SmSMoSJ7nZNILVK-Uq3DUrfuHYM%22%5D,%22action%22:%22open%22,%22userId%22:%22108193383922478380541%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing", accent:"#D1EEEE" },
-    ];
-
-    window.__CHARS_FULL = chars;
-
     /* ================= UTILS ================= */
     const $ = s => document.querySelector(s);
     const $$ = s => [...document.querySelectorAll(s)];
-    const grid = $('#grid');
-    const empty = $('#empty');
-    const search = $('#search');
-    const filterEl = $('#filter');
-    const sortEl = $('#sort');
-    const statusText = $('#statusText');
-    const countInfo = $('#countInfo');
-    const mainView = $('#mainView');
-        const cloudStatus = $('#cloudStatus');
-    const cloudStatusText = $('#cloudStatusText');
-
     function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
     function normalize(s){ return String(s||'').toLowerCase().trim(); }
 
@@ -853,13 +564,6 @@
       const ini = w => (w[0]||'').toUpperCase();
       return parts.length===1 ? ini(parts[0]) : ini(parts[0]) + ini(parts[parts.length-1]);
     }
-    function renderTagChips(tagStr, limit=5){
-      let all = parseTags(tagStr);
-      if(limit!=null) all = all.slice(0,limit);
-      return all.map(t=>`<span class="t">${escapeHtml(t)}</span>`).join('');
-    }
-    function firstTag(tagStr){ const t = parseTags(tagStr); return t.length?t[0]:''; }
-
     function getMonday(d){
       const date = new Date(d); const day = date.getDay();
       const diff = (day+6)%7;
@@ -914,7 +618,7 @@
 
     function setCloud(status, msg){
       cloudMode = status;
-      if(!cloudStatus) return;
+      if(typeof cloudStatus === 'undefined' || !cloudStatus) return;
       if(status){
         cloudStatus.classList.remove('offline');
         if(cloudStatusText) cloudStatusText.textContent = msg || '☁️ Đã đồng bộ đám mây (Supabase)';
@@ -1021,17 +725,17 @@
 
     async function doCopy(name,link){
       updateLocalStat(name,'copies',1);
-      if(supabaseClient) bumpStatRemote(name,'copies',1).then(ok=>{if(ok)fetchStats().then(renderAll);});
+      if(supabaseClient) bumpStatRemote(name,'copies',1).then(ok=>{if(ok)fetchStats().then(refreshUI);});
       try { await navigator.clipboard.writeText(link); showToast('✅ Đã copy link!'); }
       catch { showToast('❌ Không copy được',2500); }
-      renderAll();
+      refreshUI();
     }
     window.doCopy = doCopy;
     async function toggleHeart(name){
       const wasLiked = likedSet.has(name); const delta = wasLiked?-1:1;
       if(wasLiked) likedSet.delete(name); else likedSet.add(name);
-      saveLiked(); updateLocalStat(name,'hearts',delta); renderAll();
-      if(supabaseClient){ const ok=await bumpStatRemote(name,'hearts',delta); if(ok) fetchStats().then(renderAll); }
+      saveLiked(); updateLocalStat(name,'hearts',delta); refreshUI();
+      if(supabaseClient){ const ok=await bumpStatRemote(name,'hearts',delta); if(ok) fetchStats().then(refreshUI); }
       showToast(wasLiked?`🤍 Bỏ tim ${name}`:`❤️ Đã tim ${name}`);
     }
     async function togglePin(name){
@@ -1039,108 +743,21 @@
       if(idx!==-1){
         pinnedLocal.splice(idx,1); savePinned(); updateLocalStat(name,'pins',-1);
         showToast(`📌 Đã bỏ ghim ${name}`);
-        if(supabaseClient) bumpStatRemote(name,'pins',-1).then(ok=>ok?fetchStats().then(renderAll):null);
+        if(supabaseClient) bumpStatRemote(name,'pins',-1).then(ok=>ok?fetchStats().then(refreshUI):null);
       } else {
         if(pinnedLocal.length>=3){ showToast('⚠️ Tối đa 3 ghim!',2500); return; }
         pinnedLocal.push(name); savePinned(); updateLocalStat(name,'pins',1);
         showToast(`📌 Đã ghim ${name}`);
-        if(supabaseClient) bumpStatRemote(name,'pins',1).then(ok=>ok?fetchStats().then(renderAll):null);
+        if(supabaseClient) bumpStatRemote(name,'pins',1).then(ok=>ok?fetchStats().then(refreshUI):null);
       }
-      renderAll();
+      refreshUI();
     }
 
-    /* SEARCH */
-    const historyDropdown=$('#searchHistoryDropdown'),suggestionsEl=$('#searchSuggestions');
-    const HK='searchHistory_wlw';
-    function getHistory(){try{return JSON.parse(localStorage.getItem(HK))||[];}catch{return[]}}
-    function setHistory(h){safeSet(HK,JSON.stringify(h))}
-    function addSearchTerm(t){if(!t.trim())return;let h=getHistory().filter(x=>x!==t.trim());h.unshift(t.trim());if(h.length>3)h.pop();setHistory(h);renderHistory();}
-    function renderHistory(){const h=getHistory();if(!h.length){historyDropdown.style.display='none';return;}historyDropdown.innerHTML=h.map(t=>`<div data-term="${escapeHtml(t)}">🕘 ${escapeHtml(t)}</div>`).join('');}
-    function allKW(){const k=[];chars.forEach(c=>{k.push(c.name);parseTags(c.tag).forEach(t=>k.push(t.replace(/^#/,'')));});return[...new Set(k)].sort();}
-    const allSug = allKW();
-    function renderSuggestions(q){q=q.toLowerCase().trim();if(!q){suggestionsEl.style.display='none';return;}const m=allSug.filter(k=>k.toLowerCase().includes(q)).slice(0,10);if(!m.length){suggestionsEl.style.display='none';return;}suggestionsEl.innerHTML=m.map(t=>`<div data-term="${escapeHtml(t)}">🔎 ${escapeHtml(t)}</div>`).join('');suggestionsEl.style.display='block';}
-    historyDropdown.addEventListener('click',e=>{const t=e.target.closest('div[data-term]');if(!t)return;search.value=t.dataset.term;addSearchTerm(t.dataset.term);currentPage=1;historyDropdown.style.display='none';render();});
-    suggestionsEl.addEventListener('click',e=>{const t=e.target.closest('div[data-term]');if(!t)return;search.value=t.dataset.term;addSearchTerm(t.dataset.term);suggestionsEl.style.display='none';currentPage=1;render();});
-    search.addEventListener('focus',()=>{if(search.value.trim()){renderSuggestions(search.value);historyDropdown.style.display='none';}else{renderHistory();historyDropdown.style.display=getHistory().length?'block':'none';suggestionsEl.style.display='none';}});
-    search.addEventListener('blur',()=>setTimeout(()=>{historyDropdown.style.display='none';suggestionsEl.style.display='none';},200));
-    search.addEventListener('input',()=>{$('#clearSearch').style.display=search.value?'inline-flex':'none';currentPage=1;if(search.value){renderSuggestions(search.value);historyDropdown.style.display='none';}else suggestionsEl.style.display='none';render();});
-    search.addEventListener('keydown',e=>{if(e.key==='Enter'){const t=search.value.trim();if(t){addSearchTerm(t);historyDropdown.style.display='none';suggestionsEl.style.display='none';currentPage=1;render();}}});
 
-    /* CARDS */
-    let currentPage=1, pageSize=20, cachedRandom=null, lastRandomKey='';
-    let activeChipFilters = new Set(['all']);
-    function cardHTML(item){
-      const a=item.accent||'#a78bfa', il=likedSet.has(item.name), ip=pinnedLocal.includes(item.name);
-      return `<article class="card" data-idx="${item.__i!=null?item.__i:-1}" style="--card-accent:${a};--card-glow:radial-gradient(circle,${a}33,transparent 70%);">
-        <div class="card-top">
-          <div class="avatar" style="background:linear-gradient(135deg,${a},${a}99);">${item.__img?`<img class="avatar-img" src="${item.__img}" alt="" loading="lazy" decoding="async" data-c="${item.__cands}" data-k="1" onerror="window.__imgStep?__imgStep(this):this.remove()">`:''}${avatarText(item.name)}</div>
-          <div class="meta"><h3>${escapeHtml(item.name)}</h3><span class="tag" data-tag="${escapeHtml(item.tag||'')}">${renderTagChips(item.tag,null)}</span></div>
-        </div>
-        <p class="desc">${escapeHtml(item.summary)}</p>
-        <div class="sk-acts"><a class="sk-chat" href="${item.link}" target="_blank" rel="noopener">💬 Chat</a><button type="button" class="sk-more" data-more aria-label="Chi tiết ${escapeHtml(item.name)}">⋯</button></div>
-        <div class="actions">
-          <a class="btn primary" href="${item.link}" target="_blank" rel="noopener">Mở Character ↗</a>
-          <button class="btn icon-btn heart-btn ${il?'liked':''}" data-action="heart" data-name="${escapeHtml(item.name)}" title="Yêu thích">${il?'❤️':'🤍'}</button>
-          <button class="btn icon-btn" onclick='doCopy(${JSON.stringify(item.name)},${JSON.stringify(item.link)})' title="Copy link">📋</button>
-          <button class="btn icon-btn pin-btn ${ip?'pinned':''}" data-action="pin" data-name="${escapeHtml(item.name)}" ${pinnedLocal.length>=3&&!ip?'disabled':''} title="Ghim">📌</button>
-        </div></article>`;
-    }
-    function getFiltered(){
-      const rawQ=search.value;
-      let items=chars.filter(i=>{
-        const mq=!rawQ.trim()||textMatches(i,rawQ);
-        const mt=activeChipFilters.has('all')||[...activeChipFilters].some(f=>matchesFilter(i,f));
-        return mq&&mt;
-      });
-      const o=sortEl.value;
-      if(o==='name-asc')items.sort((a,b)=>a.name.localeCompare(b.name,'vi'));
-      if(o==='name-desc')items.sort((a,b)=>b.name.localeCompare(a.name,'vi'));
-      if(o==='newest')items=[...items].reverse();
-      if(o==='hearts')items.sort((a,b)=>charStats(b.name).hearts-charStats(a.name).hearts||a.name.localeCompare(b.name,'vi'));
-      if(o==='copies')items.sort((a,b)=>charStats(b.name).copies-charStats(a.name).copies||a.name.localeCompare(b.name,'vi'));
-      if(o==='score')items.sort((a,b)=>{const sa=charStats(a.name),sb=charStats(b.name);return(sb.hearts*3+sb.copies*2+sb.pins*5)-(sa.hearts*3+sa.copies*2+sa.pins*5)||a.name.localeCompare(b.name,'vi');});
-      if(o==='random'){const k=`${rawQ}|${[...activeChipFilters].join(',')}|${o}`;if(!cachedRandom||lastRandomKey!==k){cachedRandom=[...items].sort(()=>Math.random()-0.5);lastRandomKey=k;}items=cachedRandom;}
-      return [...items.filter(i=>pinnedLocal.includes(i.name)),...items.filter(i=>!pinnedLocal.includes(i.name))];
-    }
-    function buildPag(tp,c){
-      if(tp<=1){paginationTop.innerHTML='';paginationBottom.innerHTML='';return;}
-      const set=new Set([1,tp,c-1,c,c+1]); if(c<=3){set.add(2);set.add(3);} if(c>=tp-2){set.add(tp-1);set.add(tp-2);}
-      const pages=[...set].filter(p=>p>=1&&p<=tp).sort((a,b)=>a-b);
-      let h=`<button class="page-btn" aria-label="Trang đầu" onclick="gotoPage(1)" ${c===1?'disabled':''}>«</button>`,prev=0;
-      pages.forEach(p=>{ if(p-prev>1)h+='<span class="page-gap" aria-hidden="true">…</span>'; h+=`<button class="page-btn ${p===c?'active':''}" ${p===c?'aria-current="page"':''} onclick="gotoPage(${p})">${p}</button>`; prev=p; });
-      h+=`<button class="page-btn" aria-label="Trang cuối" onclick="gotoPage(${tp})" ${c===tp?'disabled':''}>»</button>`;
-      paginationTop.innerHTML=h;paginationBottom.innerHTML=h;
-    }
-    function renderStatus(n){
-      const q=normalize(search.value);
-      const t=activeChipFilters.has('all')?'tất cả nhóm':[...activeChipFilters].map(filterLabel).join(' + ');
-      statusText.textContent=q?`Bộ lọc: ${t} · "${search.value}"`:`Đang xem: ${t}`;
-      countInfo.textContent=`${n} / ${chars.length} nhân vật`;
-      $('#statTotal').textContent=chars.length;$('#statShown').textContent=n;
-    }
-    function getPerRow(){
-      if(grid.classList.contains('list'))return 1;
-      const w=window.innerWidth;
-      if(w>=1000)return 4;
-      if(w>=700)return 3;
-      if(w>=460)return 2;
-      return 1;
-    }
-    function chunkArr(arr,n){const out=[];for(let i=0;i<arr.length;i+=n)out.push(arr.slice(i,i+n));return out;}
-    function render(){
-      const items=getFiltered();const tp=Math.max(1,Math.ceil(items.length/pageSize));
-      if(currentPage>tp)currentPage=tp;
-      const pi=items.slice((currentPage-1)*pageSize,currentPage*pageSize);
-      grid.classList.add('fade-out');
-      setTimeout(()=>{
-        const perRow=getPerRow();
-        grid.innerHTML=chunkArr(pi,perRow).map(row=>`<div class="card-row">${row.map(cardHTML).join('')}</div>`).join('');
-        grid.classList.remove('fade-out');
-        empty.style.display=items.length?'none':'block';
-        chips.forEach(b=>b.classList.toggle('active',activeChipFilters.has(b.dataset.filter)));
-        buildPag(tp,currentPage);renderStatus(items.length);
-      },150);
-    }
+    function refreshUI(){ if(typeof window.__pageRefresh === 'function') window.__pageRefresh(); }
+    function renderAll(){ refreshUI(); }
+    function attachG(el){el.addEventListener('click',async e=>{const b=e.target.closest('[data-action]');if(!b||b.disabled)return;const n=b.dataset.name;if(!n)return;b.classList.add('loading');if(b.dataset.action==='heart')await toggleHeart(n);else if(b.dataset.action==='pin')await togglePin(n);b.classList.remove('loading');});}
+
     /* SELECT CHARACTER CAROUSEL */
     function shadeColor(hex, percent){
       let c=(hex||'#a78bfa').replace('#','');
@@ -1151,268 +768,9 @@
       r=Math.round((t-r)*p)+r; g=Math.round((t-g)*p)+g; b=Math.round((t-b)*p)+b;
       return '#'+(0x1000000+(r<<16)+(g<<8)+b).toString(16).slice(1);
     }
-    function heroTagLine(tagStr){
-      const tags = parseTags(tagStr);
-      return tags.slice(0,3).map(t=>t.replace(/^#/,'').replace(/_/g,' ').toUpperCase()).join(' · ');
-    }
-    let heroIndex = Math.max(0, chars.findIndex(c=>c.name==='Lâm Sơ Yến'));
-    function renderHero(){
-      const item=chars[heroIndex]; if(!item) return;
-      const a=item.accent||'#a78bfa', a2=shadeColor(a,-0.55);
-      $('#heroName').textContent=item.name;
-      $('#heroMark').textContent=avatarText(item.name);
-      const heroBg=$('#heroMarkBg'); if(heroBg) heroBg.textContent=avatarText(item.name);
-      $('#heroStage').style.background=`linear-gradient(155deg, ${a} 0%, ${a2} 100%)`;
-      stagePhoto(item);
-      $('#heroTags').textContent=heroTagLine(item.tag);
-      $('#heroOpenBtn').href=item.link;
-      $('#heroCounter').textContent=`${String(heroIndex+1).padStart(2,'0')} / ${chars.length}`;
-      const peek=[1,2,3].map(o=>chars[(heroIndex+o)%chars.length]);
-      $('#heroPeek').innerHTML=peek.map(c=>`<button type="button" class="hs-peek-item" data-name="${escapeHtml(c.name)}">○ ${escapeHtml(c.name)}</button>`).join('');
-    }
-    function heroGo(delta){ heroIndex=(heroIndex+delta+chars.length)%chars.length; renderHero(); }
-    function heroGoTo(name){ const idx=chars.findIndex(c=>c.name===name); if(idx!==-1){ heroIndex=idx; renderHero(); } }
-    $('#heroPrev').addEventListener('click',()=>heroGo(-1));
-    $('#heroNext').addEventListener('click',()=>heroGo(1));
-    $('#heroPeek').addEventListener('click',e=>{
-      const b=e.target.closest('.hs-peek-item'); if(!b)return;
-      heroGoTo(b.dataset.name);
-    });
-    (function(){
-      let tX=null; const st=$('#heroStage');
-      st.addEventListener('touchstart',e=>{tX=e.touches[0].clientX;},{passive:true});
-      st.addEventListener('touchend',e=>{
-        if(tX==null)return;
-        const dx=e.changedTouches[0].clientX-tX;
-        if(Math.abs(dx)>40) heroGo(dx<0?1:-1);
-        tX=null;
-      },{passive:true});
-    })();
-    function renderAll(){render();renderStatus(getFiltered().length);}
-    function gotoPage(p){const items=getFiltered();const tp=Math.max(1,Math.ceil(items.length/pageSize));currentPage=Math.max(1,Math.min(p,tp));render();$('#library').scrollIntoView({behavior:'smooth',block:'start'});}
-    window.gotoPage=gotoPage;
-
-    function navigate(){
-      const h=location.hash||'#/';
-      if(h==='#featured')setTimeout(()=>$('#featured').scrollIntoView({behavior:'smooth'}),50);
-      else if(h==='#library')setTimeout(()=>$('#library').scrollIntoView({behavior:'smooth'}),50);
-      $$('.nav-link[data-nav]').forEach(a=>a.classList.toggle('active',(a.dataset.nav==='home'&&h!=='#featured'&&h!=='#library')||(a.dataset.nav==='featured'&&h==='#featured')));
-    }
-    window.addEventListener('hashchange',navigate);
-
-    const chips=$$('.chip');
-    chips.forEach(b=>b.addEventListener('click',()=>{
-      const v=b.dataset.filter;
-      if(v==='all'){ activeChipFilters=new Set(['all']); }
-      else {
-        activeChipFilters.delete('all');
-        if(activeChipFilters.has(v)) activeChipFilters.delete(v); else activeChipFilters.add(v);
-        if(activeChipFilters.size===0) activeChipFilters=new Set(['all']);
-      }
-      filterEl.value=(activeChipFilters.size===1&&!activeChipFilters.has('all'))?[...activeChipFilters][0]:'all';
-      currentPage=1;cachedRandom=null;render();
-    }));
-    filterEl.addEventListener('change',()=>{activeChipFilters=new Set([filterEl.value]);currentPage=1;cachedRandom=null;render();});
-    sortEl.addEventListener('change',()=>{currentPage=1;cachedRandom=null;render();});
-    $('#clearSearch').addEventListener('click',()=>{search.value='';$('#clearSearch').style.display='none';currentPage=1;render();search.focus();});
-    $('#resetFilters').addEventListener('click',()=>{search.value='';filterEl.value='all';sortEl.value='default';activeChipFilters=new Set(['all']);currentPage=1;chips.forEach(b=>b.classList.toggle('active',b.dataset.filter==='all'));cachedRandom=null;render();});
-    
-    /* ================= RANDOM HORIZONTAL SPIN ================= */
-    let isSpinning = false;
-    function shadeColorSpin(hex, percent){
-      let c=(hex||'#a78bfa').replace('#','');
-      if(c.length===3) c=c.split('').map(x=>x+x).join('');
-      const num=parseInt(c,16)||0xa78bfa;
-      let r=(num>>16)&255,g=(num>>8)&255,b=num&255;
-      const t=percent<0?0:255, p=Math.abs(percent);
-      r=Math.round((t-r)*p)+r; g=Math.round((t-g)*p)+g; b=Math.round((t-b)*p)+b;
-      return '#'+(0x1000000+(r<<16)+(g<<8)+b).toString(16).slice(1);
-    }
-    function startRandomSpin(){
-      if(isSpinning || !chars.length) return;
-      isSpinning = true;
-      const heroSelect = document.querySelector('.hero-select');
-      const stage = $('#heroStage');
-      const wishEl = $('#heroWish');
-      const openBtn = $('#heroOpenBtn');
-      if(wishEl){ wishEl.textContent=''; wishEl.classList.remove('show'); }
-      if(heroSelect) heroSelect.classList.add('spinning');
-      stage.classList.add('spin-mode');
-      const rb = $('#randomBtn'), rh = $('#randomHeroBtn');
-      if(rb){ rb.disabled = true; rb.style.opacity = '0.6'; }
-      if(rh){ rh.disabled = true; rh.style.opacity = '0.6'; }
-
-      // Scroll featured into view
-      const featured = $('#featured');
-      if(featured) featured.scrollIntoView({behavior:'smooth', block:'center'});
-
-      // Build a long strip of random chars for the spin
-      const targetIndex = Math.floor(Math.random() * chars.length);
-      const target = chars[targetIndex];
-      const stripLen = 40 + Math.floor(Math.random() * 12); // total items in track
-      const stopAt = stripLen - 4; // land near end
-      const strip = [];
-      for(let i=0; i<stripLen; i++){
-        if(i === stopAt) strip.push(target);
-        else strip.push(chars[Math.floor(Math.random()*chars.length)]);
-      }
-
-      // Create track
-      stage.innerHTML = '';
-      const track = document.createElement('div');
-      track.className = 'hs-spin-track';
-      strip.forEach((c, i) => {
-        const item = document.createElement('div');
-        item.className = 'hs-spin-item' + (i === 0 ? ' center' : '');
-        item.style.setProperty('--spin-a', c.accent || '#a78bfa');
-        item.style.setProperty('--spin-b', shadeColorSpin(c.accent || '#a78bfa', -0.55));
-        item.innerHTML = '<span class="hs-spin-mark">'+escapeHtml(avatarText(c.name))+'</span><span class="hs-spin-name">'+escapeHtml(c.name)+'</span>';
-        track.appendChild(item);
-      });
-      stage.appendChild(track);
-      // Force layout so measurements are accurate
-      void track.offsetWidth;
-
-      // Measure
-      const stageW = stage.clientWidth || 300;
-      const firstItem = track.children[0];
-      const itemStyle = firstItem ? getComputedStyle(firstItem) : null;
-      const gap = 16;
-      const itemW = firstItem ? (firstItem.offsetWidth + gap) : 136;
-      // Center the stop item under the stage midpoint
-      const targetOffset = Math.max(0, stopAt * itemW - (stageW / 2) + (itemW / 2));
-
-      // Animate with requestAnimationFrame + ease-out
-      const duration = 3200 + Math.random() * 800; // ~3.2–4s
-      const start = performance.now();
-      let lastCenter = -1;
-
-      function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
-
-      function frame(now){
-        const t = Math.min(1, (now - start) / duration);
-        const eased = easeOutCubic(t);
-        const x = -targetOffset * eased;
-        track.style.transform = 'translateX(' + x + 'px)';
-
-        // Highlight center item
-        const centerX = stageW / 2;
-        let closest = 0, closestDist = Infinity;
-        for(let i=0; i<track.children.length; i++){
-          const el = track.children[i];
-          const rect = el.getBoundingClientRect();
-          const stageRect = stage.getBoundingClientRect();
-          const mid = rect.left + rect.width/2 - stageRect.left;
-          const dist = Math.abs(mid - centerX);
-          if(dist < closestDist){ closestDist = dist; closest = i; }
-        }
-        if(closest !== lastCenter){
-          if(lastCenter >= 0 && track.children[lastCenter]) track.children[lastCenter].classList.remove('center');
-          if(track.children[closest]) track.children[closest].classList.add('center');
-          lastCenter = closest;
-          // Live update name while spinning (optional feedback)
-          const live = strip[closest];
-          if(live){
-            $('#heroName').textContent = live.name;
-            $('#heroTags').textContent = heroTagLine(live.tag);
-            $('#heroCounter').textContent = String(closest+1).padStart(2,'0') + ' / ' + strip.length;
-          }
-        }
-
-        if(t < 1){
-          requestAnimationFrame(frame);
-        } else {
-          // Final settle on target
-          track.style.transform = 'translateX(' + (-targetOffset) + 'px)';
-          Array.from(track.children).forEach((el,i)=>el.classList.toggle('center', i===stopAt));
-          heroIndex = targetIndex;
-          // Update surrounding UI (stage still shows spin track with winner centered)
-          $('#heroName').textContent = target.name;
-          stage.style.background = 'linear-gradient(155deg, '+(target.accent||'#a78bfa')+' 0%, '+shadeColor(target.accent||'#a78bfa',-0.55)+' 100%)';
-          $('#heroTags').textContent = heroTagLine(target.tag);
-          openBtn.href = target.link;
-          $('#heroCounter').textContent = String(heroIndex+1).padStart(2,'0') + ' / ' + chars.length;
-          const peek=[1,2,3].map(o=>chars[(heroIndex+o)%chars.length]);
-          $('#heroPeek').innerHTML = peek.map(c=>'<button type="button" class="hs-peek-item" data-name="'+escapeHtml(c.name)+'">○ '+escapeHtml(c.name)+'</button>').join('');
-
-          // Sau khi ngừng quay: hiện KHUNG LỚN + câu chúc (tự đóng sau 6 giây)
-          setTimeout(() => {
-            stage.classList.remove('spin-mode');
-            stage.innerHTML = '<span class="hs-stage-bgmark" id="heroMarkBg" aria-hidden="true">'+escapeHtml(avatarText(target.name))+'</span><span class="hs-stage-mark" id="heroMark">'+escapeHtml(avatarText(target.name))+'</span>';
-            if(heroSelect) heroSelect.classList.remove('spinning');
-            const rb2 = $('#randomBtn'), rh2 = $('#randomHeroBtn');
-            if(rb2){ rb2.disabled = false; rb2.style.opacity = ''; }
-            if(rh2){ rh2.disabled = false; rh2.style.opacity = ''; }
-            isSpinning = false;
-            stagePhoto(target);
-            renderHero(); csOpenAs(heroIndex, true);
-          }, 1600);
-        }
-      }
-      requestAnimationFrame(frame);
-    }
-
-    function openRandom(){ startRandomSpin(); }
-    $('#randomBtn').addEventListener('click',openRandom);
-    $('#randomHeroBtn').addEventListener('click',openRandom);
-
-    function attachG(el){el.addEventListener('click',async e=>{const b=e.target.closest('[data-action]');if(!b||b.disabled)return;const n=b.dataset.name;if(!n)return;b.classList.add('loading');if(b.dataset.action==='heart')await toggleHeart(n);else if(b.dataset.action==='pin')await togglePin(n);b.classList.remove('loading');});}
-    attachG(grid);
-
-    /* 11/10/2026 — bấm thẻ nhân vật = mở KHUNG LỚN (đã bỏ hiệu ứng nở thẻ cho hết lỗi "viền thừa" ở chế độ máy tính) */
-    function attachOpenCard(el){
-      el.addEventListener('click',e=>{
-        const mb=e.target.closest('[data-more]'); if(mb){ const c0=mb.closest('.card'); const i0=c0?parseInt(c0.dataset.idx,10):NaN; if(!isNaN(i0)) csOpenAs(i0,false); return; }
-        if(e.target.closest('a, button, details, summary, [data-action]'))return;
-        const card=e.target.closest('.card');
-        if(!card||!el.contains(card))return;
-        const i=parseInt(card.dataset.idx,10);
-        if(!isNaN(i)) csOpenAs(i,false);
-      });
-    }
-    attachOpenCard(grid);
-    let resizeT=null;
-    window.addEventListener('resize',()=>{clearTimeout(resizeT);resizeT=setTimeout(render,200);});
-
-    const bb=$('#backToTop');
-    window.addEventListener('scroll',()=>{bb.style.display=window.scrollY>400?'block':'none';});
-    bb.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
-
-    const tb=$('#toggleView');let vm=safeGet('viewMode')||'grid';
-    function apV(){if(vm==='list'){grid.classList.add('list');tb.innerHTML='📐 Dạng lưới';}else{grid.classList.remove('list');tb.innerHTML='📋 Danh sách';}}
-    apV();tb.addEventListener('click',()=>{vm=vm==='grid'?'list':'grid';safeSet('viewMode',vm);apV();render();});
-
     const tt=$('#themeToggle');const stm=safeGet('theme')||'dark';
     if(stm==='light'){document.body.classList.add('light');tt.textContent='☀️';}else tt.textContent='🌙';
     tt.addEventListener('click',()=>{document.body.classList.toggle('light');const l=document.body.classList.contains('light');safeSet('theme',l?'light':'dark');tt.textContent=l?'☀️':'🌙';});
-
-    function showSkeleton(n){
-      grid.classList.remove('fade-out');
-      const row = Array.from({length:getPerRow()}).map(()=>'<div class="skeleton-card"><div class="skeleton-avatar"></div><div class="skeleton-line w60"></div><div class="skeleton-line w40"></div><div class="skeleton-line w90"></div></div>').join('');
-      grid.innerHTML = Array.from({length:Math.max(1,Math.ceil(n/getPerRow()))}).map(()=>'<div class="card-row">'+row+'</div>').join('');
-    }
-    /* ══════════════ ẢNH NHÂN VẬT + KHUNG LỚN · thêm 11/10/2026 ══════════════ */
-    const CS_DIR = 'chars/';   // thư mục ảnh: chars/pic001.jpg … chars/pic120.jpg (đúng số thứ tự 01/120)
-    /* 08/11/2026 — 10 nhân vật mới dùng ảnh pic121→pic130 (đuôi .png) */
-    const PIC_FIX = {
-      "Huyền Quy":"pic121", "Charlotte Ha-eun Richter":"pic122", "Séraphine Valcourt":"pic123",
-      "Lâm Tinh Vũ remake":"pic124", "Lục Dư An remake":"pic125", "Thẩm Ngược Vũ remake":"pic126",
-      "Lục Ý Hiên remake":"pic127", "Xám Tro":"pic128", "Đoàn Thị Triều":"pic129", "Tạ Ngưng Quang":"pic130"
-    };
-    function picBase(i){ return (chars[i] && PIC_FIX[chars[i].name]) || ('pic'+String(i+1).padStart(3,'0')); }
-    function picExt(i){ return (chars[i] && PIC_FIX[chars[i].name]) ? ['.png','.jpg'] : ['.jpg','.png']; }
-    /* ảnh bìa: chars/pic001.jpg → pic001.jpg (gốc repo) → chars/pic001_1.jpg → pic001_1.jpg */
-    function coverCands(i){ const b=picBase(i), out=[]; picExt(i).forEach(function(e){ out.push(CS_DIR+b+e, b+e, CS_DIR+b+'_1'+e, b+'_1'+e); }); return out; }
-    chars.forEach((c,i)=>{ c.__i=i; const cd=coverCands(i); c.__img=cd[0]; c.__cands=cd.join(','); });
-
-    /* đổi sang đường dẫn kế tiếp khi ảnh lỗi */
-    window.__imgStep=function(el){
-      const cands=(el.getAttribute('data-c')||'').split(',').filter(Boolean);
-      let k=parseInt(el.getAttribute('data-k')||'1',10); if(isNaN(k)) k=1;
-      if(k<cands.length){ el.setAttribute('data-k',String(k+1)); el.setAttribute('src',cands[k]); return true; }
-      el.remove(); return false;
-    };
-    function __imgAlt(el){ return window.__imgStep(el); }
 
     function stagePhoto(item){
       const st=$('#heroStage'); if(!st) return;
@@ -1531,40 +889,211 @@
       g.addEventListener('pointerup',fin); g.addEventListener('pointercancel',fin);
       g.addEventListener('click',e=>{ e.stopPropagation(); csClose(); });
     })();
-    $('#heroStage').addEventListener('click',()=>{ if(!isSpinning) csOpenAs(heroIndex,false); });
     if(window.console) console.log('🏞️ Ảnh nhân vật: đã bật (12/10/2026 · sửa lỗi mở lại mất ảnh) · chars/pic001.jpg … pic120.jpg');
 
-    showSkeleton(8);
+    function heroTagLine(tagStr){
+      const tags = parseTags(tagStr);
+      return tags.slice(0,3).map(t=>t.replace(/^#/,'').replace(/_/g,' ').toUpperCase()).join(' · ');
+    }
+    let heroIndex = Math.max(0, chars.findIndex(c=>c.name==='Lâm Sơ Yến'));
+    (function(){ const sv=parseInt(safeGet('skyHeroIndex')||'',10); if(!isNaN(sv)&&sv>=0&&sv<chars.length) heroIndex=sv; })();
+    function renderHero(){
+      const item=chars[heroIndex]; if(!item) return;
+      const a=item.accent||'#a78bfa', a2=shadeColor(a,-0.55);
+      $('#heroName').textContent=item.name;
+      $('#heroMark').textContent=avatarText(item.name);
+      const heroBg=$('#heroMarkBg'); if(heroBg) heroBg.textContent=avatarText(item.name);
+      $('#heroStage').style.background=`linear-gradient(155deg, ${a} 0%, ${a2} 100%)`;
+      stagePhoto(item);
+      $('#heroTags').textContent=heroTagLine(item.tag);
+      $('#heroOpenBtn').href=item.link;
+      $('#heroCounter').textContent=`${String(heroIndex+1).padStart(2,'0')} / ${chars.length}`;
+      const peek=[1,2,3].map(o=>chars[(heroIndex+o)%chars.length]);
+      $('#heroPeek').innerHTML=peek.map(c=>`<button type="button" class="hs-peek-item" data-name="${escapeHtml(c.name)}">○ ${escapeHtml(c.name)}</button>`).join('');
+    }
+    function heroGo(delta){ heroIndex=(heroIndex+delta+chars.length)%chars.length; renderHero(); safeSet('skyHeroIndex',String(heroIndex)); }
+    function heroGoTo(name){ const idx=chars.findIndex(c=>c.name===name); if(idx!==-1){ heroIndex=idx; renderHero(); safeSet('skyHeroIndex',String(heroIndex)); } }
+    $('#heroPeek').addEventListener('click',e=>{
+      const b=e.target.closest('.hs-peek-item'); if(!b)return;
+      heroGoTo(b.dataset.name);
+    });
+    (function(){
+      let tX=null; const st=$('#heroStage');
+      st.addEventListener('touchstart',e=>{tX=e.touches[0].clientX;},{passive:true});
+      st.addEventListener('touchend',e=>{
+        if(tX==null)return;
+        const dx=e.changedTouches[0].clientX-tX;
+        if(Math.abs(dx)>40) heroGo(dx<0?1:-1);
+        tX=null;
+      },{passive:true});
+    })();
+    function stagePhoto(item){
+      const st=$('#heroStage'); if(!st) return;
+      let im=st.querySelector('.hero-photo');
+      if(!item||!item.__img){ if(im) im.remove(); st.classList.remove('has-photo'); return; }
+      if(!im){ im=document.createElement('img'); im.className='hero-photo'; im.alt=''; im.decoding='async';
+               st.insertBefore(im, st.firstChild); }
+      im.setAttribute('data-c', item.__cands||''); im.setAttribute('data-k','1');
+      im.onerror=()=>{ if(window.__imgStep(im)) return; im.classList.remove('on'); st.classList.remove('has-photo'); };
+      im.onload =()=>{ im.classList.add('on');    st.classList.add('has-photo'); };
+      if(im.getAttribute('data-src')!==item.__img){ im.setAttribute('data-src',item.__img); im.src=item.__img; }
+    }
+
+    /* ================= RANDOM HORIZONTAL SPIN ================= */
+    let isSpinning = false;
+    function shadeColorSpin(hex, percent){
+      let c=(hex||'#a78bfa').replace('#','');
+      if(c.length===3) c=c.split('').map(x=>x+x).join('');
+      const num=parseInt(c,16)||0xa78bfa;
+      let r=(num>>16)&255,g=(num>>8)&255,b=num&255;
+      const t=percent<0?0:255, p=Math.abs(percent);
+      r=Math.round((t-r)*p)+r; g=Math.round((t-g)*p)+g; b=Math.round((t-b)*p)+b;
+      return '#'+(0x1000000+(r<<16)+(g<<8)+b).toString(16).slice(1);
+    }
+    function startRandomSpin(){
+      if(isSpinning || !chars.length) return;
+      isSpinning = true;
+      const heroSelect = document.querySelector('.hero-select');
+      const stage = $('#heroStage');
+      const wishEl = $('#heroWish');
+      const openBtn = $('#heroOpenBtn');
+      if(wishEl){ wishEl.textContent=''; wishEl.classList.remove('show'); }
+      if(heroSelect) heroSelect.classList.add('spinning');
+      stage.classList.add('spin-mode');
+      const hr = $('#heroRandomBtn');
+      if(hr){ hr.disabled = true; hr.style.opacity = '0.6'; }
+
+      // Scroll featured into view
+      const featured = $('#featured');
+      if(featured) featured.scrollIntoView({behavior:'smooth', block:'center'});
+
+      // Build a long strip of random chars for the spin
+      const targetIndex = Math.floor(Math.random() * chars.length);
+      const target = chars[targetIndex];
+      const stripLen = 40 + Math.floor(Math.random() * 12); // total items in track
+      const stopAt = stripLen - 4; // land near end
+      const strip = [];
+      for(let i=0; i<stripLen; i++){
+        if(i === stopAt) strip.push(target);
+        else strip.push(chars[Math.floor(Math.random()*chars.length)]);
+      }
+
+      // Create track
+      stage.innerHTML = '';
+      const track = document.createElement('div');
+      track.className = 'hs-spin-track';
+      strip.forEach((c, i) => {
+        const item = document.createElement('div');
+        item.className = 'hs-spin-item' + (i === 0 ? ' center' : '');
+        item.style.setProperty('--spin-a', c.accent || '#a78bfa');
+        item.style.setProperty('--spin-b', shadeColorSpin(c.accent || '#a78bfa', -0.55));
+        item.innerHTML = '<span class="hs-spin-mark">'+escapeHtml(avatarText(c.name))+'</span><span class="hs-spin-name">'+escapeHtml(c.name)+'</span>';
+        track.appendChild(item);
+      });
+      stage.appendChild(track);
+      // Force layout so measurements are accurate
+      void track.offsetWidth;
+
+      // Measure
+      const stageW = stage.clientWidth || 300;
+      const firstItem = track.children[0];
+      const itemStyle = firstItem ? getComputedStyle(firstItem) : null;
+      const gap = 16;
+      const itemW = firstItem ? (firstItem.offsetWidth + gap) : 136;
+      // Center the stop item under the stage midpoint
+      const targetOffset = Math.max(0, stopAt * itemW - (stageW / 2) + (itemW / 2));
+
+      // Animate with requestAnimationFrame + ease-out
+      const duration = 3200 + Math.random() * 800; // ~3.2–4s
+      const start = performance.now();
+      let lastCenter = -1;
+
+      function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
+
+      function frame(now){
+        const t = Math.min(1, (now - start) / duration);
+        const eased = easeOutCubic(t);
+        const x = -targetOffset * eased;
+        track.style.transform = 'translateX(' + x + 'px)';
+
+        // Highlight center item
+        const centerX = stageW / 2;
+        let closest = 0, closestDist = Infinity;
+        for(let i=0; i<track.children.length; i++){
+          const el = track.children[i];
+          const rect = el.getBoundingClientRect();
+          const stageRect = stage.getBoundingClientRect();
+          const mid = rect.left + rect.width/2 - stageRect.left;
+          const dist = Math.abs(mid - centerX);
+          if(dist < closestDist){ closestDist = dist; closest = i; }
+        }
+        if(closest !== lastCenter){
+          if(lastCenter >= 0 && track.children[lastCenter]) track.children[lastCenter].classList.remove('center');
+          if(track.children[closest]) track.children[closest].classList.add('center');
+          lastCenter = closest;
+          // Live update name while spinning (optional feedback)
+          const live = strip[closest];
+          if(live){
+            $('#heroName').textContent = live.name;
+            $('#heroTags').textContent = heroTagLine(live.tag);
+            $('#heroCounter').textContent = String(closest+1).padStart(2,'0') + ' / ' + strip.length;
+          }
+        }
+
+        if(t < 1){
+          requestAnimationFrame(frame);
+        } else {
+          // Final settle on target
+          track.style.transform = 'translateX(' + (-targetOffset) + 'px)';
+          Array.from(track.children).forEach((el,i)=>el.classList.toggle('center', i===stopAt));
+          heroIndex = targetIndex;
+          safeSet('skyHeroIndex', String(targetIndex));
+          // Update surrounding UI (stage still shows spin track with winner centered)
+          $('#heroName').textContent = target.name;
+          stage.style.background = 'linear-gradient(155deg, '+(target.accent||'#a78bfa')+' 0%, '+shadeColor(target.accent||'#a78bfa',-0.55)+' 100%)';
+          $('#heroTags').textContent = heroTagLine(target.tag);
+          openBtn.href = target.link;
+          $('#heroCounter').textContent = String(heroIndex+1).padStart(2,'0') + ' / ' + chars.length;
+          const peek=[1,2,3].map(o=>chars[(heroIndex+o)%chars.length]);
+          $('#heroPeek').innerHTML = peek.map(c=>'<button type="button" class="hs-peek-item" data-name="'+escapeHtml(c.name)+'">○ '+escapeHtml(c.name)+'</button>').join('');
+
+          // Sau khi ngừng quay: hiện KHUNG LỚN + câu chúc (tự đóng sau 6 giây)
+          setTimeout(() => {
+            stage.classList.remove('spin-mode');
+            stage.innerHTML = '<span class="hs-stage-bgmark" id="heroMarkBg" aria-hidden="true">'+escapeHtml(avatarText(target.name))+'</span><span class="hs-stage-mark" id="heroMark">'+escapeHtml(avatarText(target.name))+'</span>';
+            if(heroSelect) heroSelect.classList.remove('spinning');
+            const hr2 = $('#heroRandomBtn');
+            if(hr2){ hr2.disabled = false; hr2.style.opacity = ''; }
+            isSpinning = false;
+            stagePhoto(target);
+            renderHero(); csOpenAs(heroIndex, true);
+          }, 1600);
+        }
+      }
+      requestAnimationFrame(frame);
+    }
+
+    function openRandom(){ startRandomSpin(); }
+    $('#heroRandomBtn').addEventListener('click',openRandom);
+
+    $('#heroStage').addEventListener('click',()=>{ if(!isSpinning) csOpenAs(heroIndex,false); });
+
+    window.__pageRefresh = function(){ if(csIsOpen){ const it=chars[heroIndex]; if(it) csFill(it, heroIndex); } };
     initStatsData();loadLocalPrefs();renderHero();
-    setTimeout(()=>{ render();renderStatus(getFiltered().length);navigate(); }, 300);
-        initSupabase().then(r=>{ renderAll(r); initSiteCounter(); });
-    // countdown no longer needed after BXH removal
+    initSupabase();
   </script>
-<!-- DẢI MỎNG: tên nhân vật đang chọn (hiện khi cuộn xuống thư viện) -->
-  <button type="button" class="sel-strip" id="selStrip" aria-label="Quay lại chọn nhân vật"><span aria-hidden="true">🕊️</span><b id="stripName"></b><span>⌃ chọn lại</span></button>
-
-  <!-- TABBAR 5 ICON -->
-  <nav class="tabbar" aria-label="Điều hướng nhanh">
-    <a href="#library" class="tab-item active"><span class="tab-ico">🌤️</span><span>Thư viện</span></a>
-    <a href="#featured" class="tab-item"><span class="tab-ico">🕊️</span><span>Nhân vật</span></a>
-    <a href="commands.html" class="tab-item"><span class="tab-ico">🪁</span><span>Lệnh</span></a>
-    <a href="isekai-guide.html" class="tab-item"><span class="tab-ico">🧭</span><span>Cẩm nang</span></a>
-    <a href="https://aistudio.google.com/" target="_blank" rel="noopener" class="tab-item"><span class="tab-ico">🎈</span><span>AI Studio</span></a>
-  </nav>
-
   <script id="sky-js">
-  /* ═══ BẦU TRỜI & CHIM · tương tác mobile ═══ (không đụng logic data/render; chỉ bọc thêm giao diện) */
+  /* ═══ BẦU TRỜI & CHIM · tương tác mobile ═══ (TRANG 1 · SELECT CHARACTER) */
   (function(){
-    const body=document.body, root=document.documentElement, land=matchMedia('(orientation: landscape)');
+    const body=document.body;
 
-    /* --- phụ trợ Select: chip, slogan, thẻ "peek", chấm, tên dải mỏng --- */
+    /* --- phụ trợ Select: chip, slogan, nền lùi, chấm --- */
     function selExtras(){
       const item=chars[heroIndex]; if(!item) return;
       const nx=chars[(heroIndex+1)%chars.length], a=(nx.accent||'#6FC3EC');
       const g='linear-gradient(155deg,'+a+','+shadeColor(a,-0.4)+')';
       const ch=$('#selChips'); if(ch) ch.innerHTML=parseTags(item.tag).slice(0,3).map(t=>'<span>'+escapeHtml(t.replace(/^#/,'').replace(/_/g,' '))+'</span>').join('');
       const sg=$('#selSlogan'); if(sg) sg.textContent=item.summary||'';
-      const sn=$('#stripName'); if(sn) sn.textContent=item.name;
       const bk=$('#selBack'); if(bk) bk.style.backgroundImage=(nx.__img?'url("'+nx.__img+'"),':'')+g;
       const dots=$('#selDots'); if(dots) [...dots.children].forEach((d,i)=>d.classList.toggle('on',i<=heroIndex%3));
       $('#heroCounter').textContent=(heroIndex+1)+' / '+chars.length;
@@ -1573,7 +1102,7 @@
     window.renderHero=function(){ _rh(); selExtras(); };
     selExtras();
 
-    /* --- thẻ bài vuốt DỌC: lên = kế tiếp, xuống = trước --- */
+    /* --- thẻ bài vuốt DỌC: lên = kế tiếp, xuống = trước (không còn nút ⤴ ⤵) --- */
     const card=$('#selCard'), deck=$('#selDeck');
     let y0=0, dy=0, t0=0, drag=false, moved=false, busy=false;
     function swap(d){
@@ -1604,45 +1133,15 @@
     window.addEventListener('pointerup',endDrag);
     window.addEventListener('pointercancel',endDrag);
     card.addEventListener('click',function(e){ if(moved){ e.stopPropagation(); e.preventDefault(); moved=false; } },true);
-    /* phương án thay thế cho vuốt: nút ⤴ ⤵ và phím mũi tên */
-    $('#heroNext').addEventListener('click',function(e){ e.stopImmediatePropagation(); swap(1); },true);
-    $('#heroPrev').addEventListener('click',function(e){ e.stopImmediatePropagation(); swap(-1); },true);
+    /* phím mũi tên vẫn đổi nhân vật được */
     deck.addEventListener('keydown',function(e){
       if(e.key==='ArrowDown'||e.key==='ArrowRight'||e.key==='PageDown'){ e.preventDefault(); swap(1); }
       else if(e.key==='ArrowUp'||e.key==='ArrowLeft'||e.key==='PageUp'){ e.preventDefault(); swap(-1); }
     });
-    $('#selToLib').addEventListener('click',function(){ $('#library').scrollIntoView({behavior:'smooth',block:'start'}); });
-    $('#selStrip').addEventListener('click',function(){ window.scrollTo({top:0,behavior:'smooth'}); });
+    /* "Thư viện ⌄" → CHUYỂN TRANG sang thu-vien.html */
+    $('#selToLib').addEventListener('click',function(){ location.href='thu-vien.html'; });
 
-    /* --- cuộn dọc: Select thu nhỏ, dải mỏng dính trên cùng, tab đang chọn --- */
-    const tabs=[...document.querySelectorAll('.tabbar .tab-item')];
-    let tick=false;
-    function onScroll(){
-      if(tick) return; tick=true;
-      requestAnimationFrame(function(){
-        tick=false;
-        if(land.matches){ root.style.setProperty('--p',0); body.classList.remove('sel-mini'); if(tabs[0]) tabs[0].classList.add('active'); if(tabs[1]) tabs[1].classList.remove('active'); return; }
-        const vh=window.innerHeight, y=window.scrollY, lib=y>vh*.5;
-        root.style.setProperty('--p',Math.min(1,y/(vh*.8)).toFixed(3));
-        body.classList.toggle('sel-mini',y>vh*.78);
-        if(tabs[0]) tabs[0].classList.toggle('active',lib);
-        if(tabs[1]) tabs[1].classList.toggle('active',!lib);
-      });
-    }
-    window.addEventListener('scroll',onScroll,{passive:true});
-    window.addEventListener('resize',onScroll); onScroll();
-
-    /* --- 🌙 ban đêm --- */
-    const moon=$('#skyMoon'), meta=document.querySelector('meta[name="theme-color"]');
-    function setNight(n){
-      body.classList.toggle('night',n); moon.textContent=n?'☀️':'🌙';
-      moon.setAttribute('aria-label',n?'Chuyển sang ban ngày':'Chuyển sang ban đêm');
-      if(meta) meta.setAttribute('content',n?'#0E1B2E':'#DFF1FB'); safeSet('skyNight',n?'1':'0');
-    }
-    moon.addEventListener('click',function(){ setNight(!body.classList.contains('night')); });
-    setNight(safeGet('skyNight')==='1');
-
-    /* --- MÀN 1: GHÉ VÔ → chim bay + thanh xanh 0→100% (~1.6s) → fade vào Màn 2 --- */
+    /* --- MÀN 1: GHÉ VÔ → chim bay + thanh xanh 0→100% (~1.6s) → fade vào Select --- */
     const sp=$('#splash');
     function seen(){ try{ return sessionStorage.getItem('skySplash')==='1'; }catch(e){ return false; } }
     function closeSplash(){
@@ -1658,10 +1157,6 @@
   })();
   </script>
 <script src="click-sound.js"></script>
-  <script src="music-player-v4.js"></script>
-  <script src="forest-portal.js?v=2"></script>
-    <script src="greeting-mail.js"></script>
-   <script src="bento-lunch.js"></script>
     <script>
     /* 📲 PWA 12/10/2026 — register service worker so web can be installed like an app */
     if ('serviceWorker' in navigator) {
@@ -1670,8 +1165,5 @@
       });
     }
     </script>
-  
-  
-
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a492d67da8fa0959',t:'MTc5MTc3Mzg1NA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a4931e9439c484e4',t:'MTc5MTc3NjgwNw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</body>
 </html>
