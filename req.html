@@ -676,7 +676,7 @@ body{
         <div class="list" id="reqList"></div>
 
         <div class="note">
-          <b>Mỗi tháng chỉ nhận 1 yêu cầu.</b> Tháng này slot đã thuộc về <span id="sentOwner">bạn</span> —
+          <b id="sentQuotaNote">Mỗi tháng nhận tối đa <span id="sentQuota2">1</span> yêu cầu.</b> Tháng này slot đã thuộc về <span id="sentOwner">bạn</span> (mỗi người 1 vé/tháng) —
           slot tiếp theo mở <b id="sentNext">01/12</b> lúc 00:00.
         </div>
       </div>
@@ -702,7 +702,7 @@ body{
             Đang xử lý một yêu cầu khác
           </h3>
           <p>
-            <b id="lkMonth">Tháng này</b> đã nhận đủ <b id="lkQuota">1</b> yêu cầu — nội dung và mã yêu cầu đó là riêng tư.
+            <b id="lkMonth">Tháng này</b> đã nhận đủ <b id="lkQuota">1</b> yêu cầu (mỗi người 1 vé/tháng) — nội dung và mã yêu cầu đó là riêng tư.
           </p>
           <div class="nextopen" style="margin:10px 0 0">
             Slot tiếp theo mở lúc <b id="lkNext">01/12</b> · còn <span class="cd" data-countdown>--</span>
@@ -944,6 +944,9 @@ function renderEntry() {
   const left = slotsLeft();
   const mineNow = myReqIn(info.period);
 
+  // ghi chú quota động ở màn "đã gửi"
+  const sqn = $('#sentQuota2');
+  if (sqn) sqn.textContent = quotaOf();
   if (mineNow) {
     const num = shortCode(mineNow.code);
     ticket.hidden = false;
@@ -1030,7 +1033,7 @@ $('#reqForm').addEventListener('submit', async (e) => {
     if (!title || !desc || !okEmail) return toast('Còn thiếu thông tin bắt buộc.', 'err');
   }
 
-  if (myReqIn(info.period)) { toast('Bạn đã đặt 1 yêu cầu trong ' + info.label + ' rồi.', 'err'); renderSent(); return view('sent'); }
+  if (myReqIn(info.period)) { toast('Bạn đã đặt yêu cầu trong ' + info.label + ' rồi (mỗi người 1 vé/tháng).', 'err'); renderSent(); return view('sent'); }
 
   const btn = $('#btnSend');
   busy = true; btn.disabled = true;
